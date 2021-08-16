@@ -1,0 +1,8 @@
+{
+  "name": "create-ckeditor5-plugin",
+  "version": "0.0.1",
+  "description": "A tool for creating a new package for CKEditor 5.",
+  "author": "CKSource (http://cksource.com/)",
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://ckeditor.com/ckeditor-5"
+}
