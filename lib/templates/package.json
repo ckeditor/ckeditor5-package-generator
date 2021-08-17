@@ -1,3 +1,6 @@
 {
-  "name": "<%= name %>"
+  "name": "<%= name %>",
+  "dependencies": {
+    "ckeditor5": ">=<%= version %>"
+  }
 }
