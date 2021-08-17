@@ -1,6 +1,11 @@
 {
   "name": "<%= name %>",
+  "main": "src/index.js",
   "dependencies": {
     "ckeditor5": ">=<%= version %>"
+  },
+  "scripts": {
+    "pretest": "node ./scripts/generate-test-file.js",
+    "test": "karma start karma.conf.js"
   }
 }
