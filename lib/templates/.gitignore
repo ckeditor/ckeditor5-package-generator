@@ -1,2 +1,4 @@
-tmp/
+build/
 coverage/
+node_modules/
+tmp/
