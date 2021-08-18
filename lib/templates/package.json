@@ -16,10 +16,33 @@
     "ckeditor5": ">=<%= version %>"
   },
   "devDependencies": {
+    "@ckeditor/ckeditor5-dev-utils": "^<%= devToolsVersion %>",
     "@ckeditor/ckeditor5-essentials": ">=<%= version %>",
     "@ckeditor/ckeditor5-paragraph": ">=<%= version %>",
     "@ckeditor/ckeditor5-heading": ">=<%= version %>",
-    "@ckeditor/ckeditor5-editor-classic": ">=<%= version %>"
+    "@ckeditor/ckeditor5-editor-classic": ">=<%= version %>",
+    "@ckeditor/ckeditor5-theme-lark": ">=<%= version %>",
+    "chai": "^4.2.0",
+    "css-loader": "^5.2.7",
+    "istanbul-instrumenter-loader": "^3.0.1",
+    "karma": "^5.0.9",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-coverage": "^2.0.2",
+    "karma-mocha": "^2.0.1",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-sinon": "^1.0.5",
+    "karma-sinon-chai": "^2.0.2",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^4.0.2",
+    "mocha": "^7.1.2",
+    "postcss-loader": "^4.0.0",
+    "raw-loader": "^4.0.1",
+    "sinon": "^9.0.2",
+    "sinon-chai": "^3.5.0",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
   },
   "files": [
     "lang",
@@ -28,7 +51,8 @@
     "build"
   ],
   "scripts": {
-    "dll:build": "webpack",
+    "start": "webpack --config webpack.server.js",
+    "dll:build": "webpack --config webpack.dll.js",
     "pretest": "node ./scripts/generate-test-file.js",
     "test": "karma start karma.conf.js"
   }
