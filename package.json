@@ -16,5 +16,9 @@
     "lodash.template": "^4.5.0",
     "mkdirp": "^1.0.4",
     "validate-npm-package-name": "^3.0.0"
-  }
+  },
+  "files": [
+    "package.json",
+    "README.md"
+  ]
 }
