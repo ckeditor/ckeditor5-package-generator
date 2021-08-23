@@ -5,6 +5,18 @@
   "author": "CKSource (http://cksource.com/)",
   "license": "GPL-2.0-or-later",
   "homepage": "https://ckeditor.com/ckeditor-5",
+  "main": "lib/index.js",
+  "engines": {
+    "node": ">= 12"
+  },
+  "devDependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^8.1.0",
+    "glob": "^7.1.7",
+    "lodash.template": "^4.5.0",
+    "mkdirp": "^1.0.4",
+    "validate-npm-package-name": "^3.0.0"
+  },
   "files": [
     "package.json",
     "README.md"

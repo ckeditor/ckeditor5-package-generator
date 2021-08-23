@@ -1,0 +1,5 @@
+build/
+coverage/
+node_modules/
+sample/script.dist.js
+tmp/
