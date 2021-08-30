@@ -7,6 +7,7 @@ This tool is used to create plugins / packages for CKEditor5.
 
 * [Creating a package](#creating-a-package)
    * [Options](#options)
+* [Developing the package](#developing-the-package)
 * [License](#license)
 
 ## Creating a package
@@ -27,6 +28,21 @@ Example of using some options:
 ```
 node lib/index.js @scope/ckeditor5-package-name -v --use-npm
 ```
+
+## Developing the package
+
+Once your package is generated, you can change your working directory to that of the package, and use the available scripts:
+
+```
+yarn run script_name
+```
+
+- `dll:build` - builds dll files
+- `lint` - verifies code style in js files
+- `pretest` - generates test file
+- `test` -  runs the tests
+- `start` - starts a server that allows manual testing of the plugin
+- `stylelint` - verifies code style in css files
 
 ## License
 
