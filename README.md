@@ -1,6 +1,8 @@
 Create CKEditor 5 Plugin
 ========================
 
+[![npm version](https://badge.fury.io/js/create-ckeditor5-plugin.svg)](https://badge.fury.io/js/create-ckeditor5-plugin)
+
 `create-ckeditor5-plugin` is a tool for creating a package with a plugin for CKEditor 5.
 
 ## Table of contents
@@ -8,6 +10,8 @@ Create CKEditor 5 Plugin
 * [Creating a package](#creating-a-package)
    * [Options](#options)
 * [Developing the package](#developing-the-package)
+* [Developing the tool](#developing-the-tool)
+* [Release](#release)
 * [License](#license)
 
 ## Creating a package
@@ -45,7 +49,11 @@ Once your package is generated, you can change your working directory to that of
 TODO: Mention the difference with specifying modifiers when using npm and Yarn.
 
 ## Developing the tool
+
+TBA
 ## Release
+
+TBA
 ## License
 
 TBA
