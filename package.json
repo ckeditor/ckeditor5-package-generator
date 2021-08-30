@@ -21,5 +21,14 @@
   "files": [
     "package.json",
     "README.md"
-  ]
+  ],
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "."
+    ],
+    "nohoist": [
+      "**/husky"
+    ]
+  }
 }
