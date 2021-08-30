@@ -1,7 +1,7 @@
 Create CKEditor 5 Plugin
 ========================
 
-This tool is used to create plugins / packages for CKEditor5.
+`create-ckeditor5-plugin` is a tool for creating a package with a plugin for CKEditor 5.
 
 ## Table of contents
 
@@ -12,38 +12,40 @@ This tool is used to create plugins / packages for CKEditor5.
 
 ## Creating a package
 
-To create a new package, You need to run `index.js` file located in the `lib` directory. Provided directory should start with the `@scope`, and the package name should follow the `ckeditor5-` prefix.
+Before starting, make sure you have cloned the repository because the tool's code is not available on npm yet.
 
-```
-node lib/index.js @scope/ckeditor5-package-name
+* Clone the repository: `git clone git@github.com:ckeditor/create-ckeditor5-plugin.git`
+* Install the package dependencies: `cd create-ckeditor5-plugin && yarn install`
+
+Then, to create a new plugin, call the `create-ckeditor5-plugin` executable file. It requires a single argument which is the package name. It must follow the schema: `@organization/ckeditor5-package`, which `@organization` is a [scope](https://docs.npmjs.com/about-scopes) of the package, and `ckeditor5-package` is the package name. It must start with the `ckeditor5-` prefix.
+
+The tool will create a new directory called `@organization/ckeditor5-package` with an initial plugin and tools for developing it inside.
+
+```bash
+node /path/to/create-ckeditor5-plugin <directory>
 ```
 
 ### Options
 
-- `-v` / `--verbose` - outputs additional logs
-- `--use-npm` - whether use npm to install packages
-
-Example of using some options:
-
-```
-node lib/index.js @scope/ckeditor5-package-name -v --use-npm
-```
+* `--verbose` - (alias: `-v`) whether to prints additional logs
 
 ## Developing the package
 
 Once your package is generated, you can change your working directory to that of the package, and use the available scripts:
 
-```
-yarn run script_name
-```
+* `test` - allow executing tests for the package. Available modifiers:
+    * `--coverage` - to create the code coverage raport,
+    * `--watch` - to observe the source files (the command does not end after executing tests)
+    * `--source-map` - to generate source maps of sources,
+    * `--verbose` - to print additional webpack logs.
+* `dll:build` - builds the DLL version of the package,
+* `lint` - verifies code style in `*.js` files,
+* `start` - starts a server that allows manual testing of the plugin.
 
-- `dll:build` - builds dll files
-- `lint` - verifies code style in js files
-- `pretest` - generates test file
-- `test` -  runs the tests
-- `start` - starts a server that allows manual testing of the plugin
-- `stylelint` - verifies code style in css files
+TODO: Mention the difference with specifying modifiers when using npm and Yarn.
 
+## Developing the tool
+## Release
 ## License
 
 TBA
