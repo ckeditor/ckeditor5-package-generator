@@ -1,5 +1,6 @@
 {
   "name": "create-ckeditor5-plugin",
+  "private": true,
   "version": "0.0.1",
   "description": "A tool for creating a new package for CKEditor 5.",
   "author": "CKSource (http://cksource.com/)",
