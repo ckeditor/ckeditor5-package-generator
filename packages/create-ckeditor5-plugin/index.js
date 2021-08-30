@@ -16,7 +16,7 @@ const template = require( 'lodash.template' );
 const glob = require( 'glob' );
 const chalk = require( 'chalk' );
 
-const packageJson = require( '../package.json' );
+const packageJson = require( '../../package.json' );
 const TEMPLATE_PATH = path.join( __dirname, 'templates' );
 
 // Files that need to be filled with data.
