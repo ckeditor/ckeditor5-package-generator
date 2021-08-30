@@ -38,7 +38,7 @@ node /path/to/create-ckeditor5-plugin <directory>
 Once your package is generated, you can change your working directory to that of the package, and use the available scripts:
 
 * `test` - allow executing tests for the package. Available modifiers:
-    * `--coverage` - to create the code coverage raport,
+    * `--coverage` - to create the code coverage report,
     * `--watch` - to observe the source files (the command does not end after executing tests)
     * `--source-map` - to generate source maps of sources,
     * `--verbose` - to print additional webpack logs.
@@ -51,9 +51,11 @@ TODO: Mention the difference with specifying modifiers when using npm and Yarn.
 ## Developing the tool
 
 TBA
+
 ## Release
 
 TBA
+
 ## License
 
 TBA
