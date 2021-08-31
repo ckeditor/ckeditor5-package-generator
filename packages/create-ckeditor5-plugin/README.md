@@ -1,8 +1,6 @@
 Create CKEditor 5 Plugin
 ========================
 
-[![npm version](https://badge.fury.io/js/create-ckeditor5-plugin.svg)](https://badge.fury.io/js/create-ckeditor5-plugin)
-
 `create-ckeditor5-plugin` is a tool for creating a package with a plugin for CKEditor 5.
 
 ## Table of contents
@@ -10,6 +8,7 @@ Create CKEditor 5 Plugin
 * [Creating a package](#creating-a-package)
    * [Options](#options)
 * [Developing the package](#developing-the-package)
+   * [Using modifiers](#using-modifiers)
 * [Developing the tool](#developing-the-tool)
 
 ## Creating a package
@@ -39,7 +38,18 @@ Once your package is generated, you can change your working directory to that of
 * `lint` - verifies code style in `*.js` files,
 * `start` - starts a server that allows manual testing of the plugin.
 
-TODO: Mention the difference with specifying modifiers when using npm and Yarn.
+### Using modifiers
+
+Keep in mind that the way you use modifiers depends on which package managed you use. `yarn` takes modifiers directly after the script name, while `npm` requires additional `--` separator. That separator ensures that options for `npm` and for the scipt do not mix up.
+
+Using `yarn`:
+```
+yarn run test --coverage
+```
+Using `npm`
+```
+npm run test -- --coverage
+```
 
 ## Developing the tool
 
