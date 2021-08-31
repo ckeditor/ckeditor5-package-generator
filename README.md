@@ -1,7 +1,7 @@
 Create CKEditor 5 Plugin
 ========================
 
-`create-ckeditor5-plugin` is a tool for creating a package with a plugin for CKEditor 5.
+This repository follows the mono-repository structure. It contains multiple npm packages.
 
 ## Table of contents
 
@@ -31,25 +31,25 @@ Before starting, make sure you have cloned the repository because the tool's cod
 
 <tr>
 	<td>
-		<a href="https://github.com/ckeditor/create-ckeditor5-plugin/tree/master/packages/create-ckeditor5-plugin"><code>create-ckeditor5-plugin</code></a>
+		<a href="/packages/create-ckeditor5-plugin"><code>create-ckeditor5-plugin</code></a>
 	</td>
 	<td>
 		<a href="https://badge.fury.io/js/create-ckeditor5-plugin"><img src="https://badge.fury.io/js/create-ckeditor5-plugin.svg" alt="@ckeditor/create-ckeditor5-plugin npm package badge"></a>
 	</td>
 	<td>
-		The Package creation tool.
+		The tool for creating CKEditor 5 packages.
 	</td>
 </tr>
 
 <tr>
 	<td>
-		<a href="https://github.com/ckeditor/create-ckeditor5-plugin/tree/master/packages/ckeditor5-package-tools"><code>ckeditor5-package-tools</code></a>
+		<a href="/packages/ckeditor5-package-tools"><code>@ckeditor/ckeditor5-package-tools</code></a>
 	</td>
 	<td>
-		TBA
+		<a href="https://badge.fury.io/js/@ckeditor%2Fckeditor5-package-tools"><img src="https://badge.fury.io/js/@ckeditor%2Fckeditor5-package-tools.svg" alt="npm version" height="18"></a>
 	</td>
 	<td>
-		Tools for packages.
+		Development environment tools for CKEditor 5 packages.
 	</td>
 </tr>
 
