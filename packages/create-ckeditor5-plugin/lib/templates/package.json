@@ -68,7 +68,7 @@
   "scripts": {
     "dll:build": "webpack --config webpack.dll.js",
     "lint": "eslint --quiet '**/*.js'",
-    "pretest": "node ./scripts/generate-test-file.js",
+    "pretest": "node scripts/generate-test-file.js",
     "test": "karma start karma.conf.js",
     "start": "webpack serve --config webpack.server.js",
     "stylelint": "stylelint --quiet --allow-empty-input 'src/**/*.css'"

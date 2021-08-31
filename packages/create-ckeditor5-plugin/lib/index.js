@@ -41,7 +41,7 @@ new Command( packageJson.name )
  * @param {String} directory
  * @param {Object} options
  */
-async function init( directory, options ) {
+async function init( directory ) {
 	// 1. Validate package name.
 	// 2. Create directory.
 	// 3. Copy files.
@@ -189,17 +189,17 @@ function copyTemplate( templateFile, packagePath, data ) {
 /**
  * @param {String} directoryPath
  */
-function installPackages( directoryPath, /* Support for NPM */ ) {
-	const arguments = [
+function installPackages( directoryPath /* Support for NPM */ ) {
+	const yarnArguments = [
 		'--cwd',
 		directoryPath
 	];
 
 	// if ( verbose ) {
-	// 	arguments.push( '--verbose' );
+	// 	yarnArguments.push( '--verbose' );
 	// }
 
-	spawnSync( 'yarnpkg', arguments, {
+	spawnSync( 'yarnpkg', yarnArguments, {
 		encoding: 'utf8',
 		shell: true,
 		cwd: directoryPath,
@@ -268,5 +268,3 @@ function getGlobalKeyForPackage( packageName ) {
 function getIndexFileName( packageName ) {
 	return packageName.replace( /^ckeditor5-/, '' ) + '.js';
 }
-
-

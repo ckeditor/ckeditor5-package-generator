@@ -1,0 +1,12 @@
+{
+  "name": "@ckeditor/ckeditor5-package-tools",
+  "version": "0.0.1",
+  "description": "Development environment tools for the CKEditor 5 packages.",
+  "author": "CKSource (http://cksource.com/)",
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://ckeditor.com/ckeditor-5",
+  "files": [
+    "package.json",
+    "README.md"
+  ]
+}

@@ -1,24 +1,43 @@
 {
-  "name": "create-ckeditor5-plugin",
+  "name": "@ckeditor/create-ckeditor5-plugin",
   "version": "0.0.1",
-  "description": "A tool for creating a new package for CKEditor 5.",
+  "private": true,
   "author": "CKSource (http://cksource.com/)",
   "license": "GPL-2.0-or-later",
   "homepage": "https://ckeditor.com/ckeditor-5",
-  "main": "lib/index.js",
-  "engines": {
-    "node": ">= 12"
-  },
   "devDependencies": {
-    "chalk": "^4.1.2",
-    "commander": "^8.1.0",
-    "glob": "^7.1.7",
-    "lodash.template": "^4.5.0",
-    "mkdirp": "^1.0.4",
-    "validate-npm-package-name": "^3.0.0"
+    "eslint": "^7.32.0",
+    "eslint-config-ckeditor5": "^3.1.0",
+    "husky": "^4.3.8",
+    "lint-staged": "^10.5.4"
   },
-  "files": [
-    "package.json",
-    "README.md"
-  ]
+  "engines": {
+    "node": ">=12"
+  },
+  "scripts": {
+    "lint": "eslint --quiet '**/*.js'",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "eslint --quiet"
+    ]
+  },
+  "eslintIgnore": [
+    "coverage/**",
+    "packages/*/node_modules/**"
+  ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/husky"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
 }

@@ -20,7 +20,7 @@ import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 
 import MyPlugin from '../src/myplugin';
 
-/* global console, document, window */
+/* global document, window */
 
 ClassicEditor
 	.create( document.querySelector( '#editor' ), {
@@ -78,8 +78,8 @@ ClassicEditor
 	.then( editor => {
 		window.editor = editor;
 
-		console.log( 'CKEditor 5 is ready.', editor );
+		window.console.log( 'CKEditor 5 is ready.', editor );
 	} )
 	.catch( err => {
-		console.error( err.stack );
+		window.console.error( err.stack );
 	} );
