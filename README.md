@@ -15,7 +15,7 @@ This repository follows the mono-repository structure. It contains multiple npm 
 Before starting, make sure you have cloned the repository because the tool's code is not available on npm yet.
 
 * Clone the repository: `git clone git@github.com:ckeditor/create-ckeditor5-plugin.git`
-* Install the package dependencies: `cd create-ckeditor5-plugin && yarn install`
+* Install the package dependencies: `yarn install`
 
 ## Packages
 
