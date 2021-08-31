@@ -26,7 +26,7 @@ Then, to create a new plugin, call the `create-ckeditor5-plugin` executable file
 The tool will create a new directory called `@organization/ckeditor5-package` with an initial plugin and tools for developing it inside.
 
 ```bash
-node /path/to/create-ckeditor5-plugin <directory>
+node /path/to/repository/packages/create-ckeditor5-plugin <directory>
 ```
 
 ### Options
