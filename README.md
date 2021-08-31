@@ -34,7 +34,7 @@ Before starting, make sure you have cloned the repository because the tool's cod
 		<a href="/packages/create-ckeditor5-plugin"><code>create-ckeditor5-plugin</code></a>
 	</td>
 	<td>
-		<a href="https://badge.fury.io/js/create-ckeditor5-plugin"><img src="https://badge.fury.io/js/create-ckeditor5-plugin.svg" alt="@ckeditor/create-ckeditor5-plugin npm package badge"></a>
+		<a href="https://badge.fury.io/js/create-ckeditor5-plugin"><img src="https://badge.fury.io/js/create-ckeditor5-plugin.svg" alt="npm version" height="18"></a>
 	</td>
 	<td>
 		The tool for creating CKEditor 5 packages.
