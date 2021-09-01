@@ -9,9 +9,9 @@ const mkdirp = require( 'mkdirp' );
 
 /**
  * CKEditor 5 files must be compiled in a single process to avoid duplicating the `CKEDITOR_VERSION` global variable.
- * The purpose of this script is to create an entry test file processed by karma when executing tests.
+ * The purpose of this function is to create an entry test file processed by karma when executing tests.
  *
- * @param {String} entryFilePath
+ * @param {String} entryFilePath An entry file to create.
  */
 module.exports = entryFilePath => {
 	// Creates a directory for saving the entry point file.
@@ -29,6 +29,7 @@ module.exports = entryFilePath => {
 	// An ugly hack blocks the loop and tests are executed once. See: https://github.com/webpack/watchpack/issues/25.
 	const now = Date.now() / 1000;
 	// 10 sec is default value of the `FS_ACCURENCY` variable which is hardcoded in the webpack watcher.
-	const then = now - 10;
-	fs.utimesSync( entryFilePath, then, then );
+	const time = now - 10;
+
+	fs.utimesSync( entryFilePath, time, time );
 };
