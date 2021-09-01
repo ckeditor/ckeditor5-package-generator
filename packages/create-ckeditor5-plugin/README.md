@@ -23,7 +23,8 @@ node /path/to/repository/packages/create-ckeditor5-plugin <directory>
 
 ### Options
 
-* `--verbose` - (alias: `-v`) whether to prints additional logs
+* `--verbose` - (alias: `-v`) whether to prints additional logs.
+* `--dev` - whether to execute in the development mode. It means that the `@ckeditor/ckeditor5-package-tools` will not be installed from npm, but from the local file system.
 
 ## Developing the package
 

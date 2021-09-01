@@ -32,6 +32,14 @@ const TEMPLATES_TO_FILL = [
 new Command( packageJson.name )
 	.argument( '<directory>', 'directory where the package should be created' )
 	.option( '-v, --verbose', 'output additional logs', false )
+	.option( '--dev', 'execution of the script in the development mode', () => {
+		// An absolute path to the repository that tracks the package.
+		const rootRepositoryPath = path.join( __dirname, '..', '..', '..' );
+
+		// The assumption here is that if the `--dev` flag was used, the entire repository is cloned.
+		// Otherwise, the executable was downloaded from npm, and it can't be executed in dev-mode.
+		return fs.existsSync( path.join( rootRepositoryPath, '.git' ) );
+	} )
 	.option( '--use-npm', 'whether use npm to install packages', false )
 	.allowUnknownOption()
 	.action( ( directory, options ) => init( directory, options ) )
@@ -41,9 +49,9 @@ new Command( packageJson.name )
 
 /**
  * @param {String} directory
- * @param {Object} options
+ * @param {CreateCKeditor5PluginOptions} options
  */
-async function init( directory ) {
+async function init( directory, options ) {
 	// 1. Validate package name.
 	// 2. Create directory.
 	// 3. Copy files.
@@ -79,12 +87,15 @@ async function init( directory ) {
 	console.log( `📍 Creating the directory "${ chalk.cyan( directoryPath ) }".` );
 	mkdirp.sync( directoryPath );
 
-	const ckeditor5Version = getLatestCKEditor5Version();
-	const devUtilsVersion = getLatestCKEditor5DevelopmentUtilsVersion();
+	// TODO: Move to a separate util.
+	const packageVersions = {
+		ckeditor5: getLatestVersionOfPackage( 'ckeditor5' ),
+		devUtils: getLatestVersionOfPackage( '@ckeditor/ckeditor5-dev-utils' ),
+		packageTools: options.dev ?
+			'file:' + path.resolve( __dirname, '..', '..', 'ckeditor5-package-tools' ) :
+			'^' + getLatestVersionOfPackage( '@ckeditor/ckeditor5-package-tools' )
+	};
 
-	// TODO: This should be installed by default if used `--dev` option.
-	// TODO: Otherwise, find the proper version on npm.
-	const packageToolsVersion = 'file:' + path.resolve( __dirname, '..', '..', 'ckeditor5-package-tools' );
 	const dllConfiguration = getDllConfiguration( directory );
 
 	const templatesToCopy = glob.sync( '**/*', {
@@ -103,9 +114,9 @@ async function init( directory ) {
 		if ( TEMPLATES_TO_FILL.includes( templatePath ) ) {
 			data = {
 				name: directory,
-				ckeditor5Version,
-				devUtilsVersion,
-				packageToolsVersion,
+				ckeditor5Version: packageVersions.ckeditor5,
+				devUtilsVersion: packageVersions.devUtils,
+				packageToolsVersion: packageVersions.packageTools,
 				dllFileName: dllConfiguration.fileName,
 				dllLibrary: dllConfiguration.library
 			};
@@ -157,17 +168,11 @@ function validateDirectory( directory ) {
 }
 
 /**
+ * @param packageName
  * @return {String}
  */
-function getLatestCKEditor5Version() {
-	return execSync( 'npm view ckeditor5 version' ).toString().trim();
-}
-
-/**
- * @return {String}
- */
-function getLatestCKEditor5DevelopmentUtilsVersion() {
-	return execSync( 'npm view @ckeditor/ckeditor5-dev-utils version' ).toString().trim();
+function getLatestVersionOfPackage( packageName ) {
+	return execSync( `npm view ${ packageName } version` ).toString().trim();
 }
 
 /**
@@ -275,3 +280,13 @@ function getGlobalKeyForPackage( packageName ) {
 function getIndexFileName( packageName ) {
 	return packageName.replace( /^ckeditor5-/, '' ) + '.js';
 }
+
+/**
+ * @typedef {Object} CreateCKeditor5PluginOptions
+ *
+ * @property {Boolean} [verbose=false]
+ *
+ * @property {Boolean} [useNpm=false]
+ *
+ * @property {Boolean} [dev=false]
+ */
