@@ -145,16 +145,14 @@ function getWebpackConfiguration( options ) {
 						'css-loader',
 						{
 							loader: 'postcss-loader',
-							options: {
-								postcssOptions: getPostCssConfig( {
-									themeImporter: {
-										themePath: require.resolve(
-											path.join( options.cwd, 'node_modules', '@ckeditor', 'ckeditor5-theme-lark' )
-										)
-									},
-									minify: true
-								} )
-							}
+							options: getPostCssConfig( {
+								themeImporter: {
+									themePath: require.resolve(
+										path.join( options.cwd, 'node_modules', '@ckeditor', 'ckeditor5-theme-lark' )
+									)
+								},
+								minify: true
+							} )
 						}
 					]
 				},
