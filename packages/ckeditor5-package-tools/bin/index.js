@@ -24,7 +24,6 @@ const options = parseArguments( process.argv.slice( 2 ) );
 if ( availableTasks[ options.task ] ) {
 	availableTasks[ options.task ]( options );
 } else {
+	// TODO: A message when calling a non-existing task could be more precise.
 	console.log( 'Unknown task.' );
 }
-
-module.exports = availableTasks;
