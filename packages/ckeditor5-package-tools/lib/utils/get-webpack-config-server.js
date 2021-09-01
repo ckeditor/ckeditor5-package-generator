@@ -25,13 +25,10 @@ module.exports = options => {
 		},
 
 		devServer: {
-			socket: 'socket',
-			contentBase: [
-				path.join( options.cwd, 'sample' )
-			],
-			compress: true,
-			port: 9000,
-			watchContentBase: true
+			static: {
+				directory: path.join( options.cwd, 'sample' )
+			},
+			compress: true
 		},
 
 		module: {

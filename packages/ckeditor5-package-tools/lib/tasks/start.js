@@ -13,12 +13,12 @@ const getWebpackConfigServer = require( '../utils/get-webpack-config-server' );
 module.exports = options => {
 	const webpackConfig = getWebpackConfigServer( options );
 	const compiler = webpack( webpackConfig );
+	const serverOptions = {
+		...webpackConfig.devServer,
+		open: true
+	};
 
-	const server = new WebpackDevServer( compiler, {
-		...webpackConfig.devServer
-	} );
+	const server = new WebpackDevServer( serverOptions, compiler );
 
-	server.listen( 9000, '127.0.0.1', () => {
-		console.log( 'Starting server on http://localhost:9000' );
-	} );
+	server.start( webpackConfig.devServer.port, '127.0.0.1' );
 };
