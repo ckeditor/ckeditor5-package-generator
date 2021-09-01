@@ -12,13 +12,11 @@ const { Server: KarmaServer } = require( 'karma' );
 const generateEntryFile = require( '../utils/generate-entry-file' );
 const getKarmaConfig = require( '../utils/get-karma-config' );
 
-// An absolute path to the tests entry point file.
-const ENTRY_FILE_PATH = path.join( process.cwd(), 'tmp', 'tests-entry-point.js' );
-
 module.exports = options => {
-	options.entryFile = ENTRY_FILE_PATH;
+	// An absolute path to the tests entry point file.
+	options.entryFile = path.join( options.cwd, 'tmp', 'tests-entry-point.js' );
 
-	generateEntryFile( ENTRY_FILE_PATH );
+	generateEntryFile( options.entryFile );
 
 	return runKarma( options );
 };
@@ -41,10 +39,7 @@ function runKarma( options ) {
 			server.on( 'run_complete', () => {
 				// Use timeout to not write to the console in the middle of Karma's status.
 				setTimeout( () => {
-					const { logger } = require( '@ckeditor/ckeditor5-dev-utils' );
-					const log = logger();
-
-					log.info( `Coverage report saved in '${ chalk.cyan( coveragePath ) }'.` );
+					console.log( `Coverage report saved in '${ chalk.cyan( coveragePath ) }'.` );
 				} );
 			} );
 		}

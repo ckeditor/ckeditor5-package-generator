@@ -79,8 +79,12 @@ async function init( directory ) {
 	console.log( `📍 Creating the directory "${ chalk.cyan( directoryPath ) }".` );
 	mkdirp.sync( directoryPath );
 
-	const ckeditor5version = getLatestCKEditor5Version();
-	const ckeditor5DevVersion = getLatestCKEditor5DevelopmentUtilsVersion();
+	const ckeditor5Version = getLatestCKEditor5Version();
+	const devUtilsVersion = getLatestCKEditor5DevelopmentUtilsVersion();
+
+	// TODO: This should be installed by default if used `--dev` option.
+	// TODO: Otherwise, find the proper version on npm.
+	const packageToolsVersion = 'file:' + path.resolve( __dirname, '..', '..', 'ckeditor5-package-tools' );
 	const dllConfiguration = getDllConfiguration( directory );
 
 	const templatesToCopy = glob.sync( '**/*', {
@@ -99,8 +103,9 @@ async function init( directory ) {
 		if ( TEMPLATES_TO_FILL.includes( templatePath ) ) {
 			data = {
 				name: directory,
-				version: ckeditor5version,
-				devToolsVersion: ckeditor5DevVersion,
+				ckeditor5Version,
+				devUtilsVersion,
+				packageToolsVersion,
 				dllFileName: dllConfiguration.fileName,
 				dllLibrary: dllConfiguration.library
 			};

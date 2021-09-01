@@ -13,24 +13,25 @@
   "main": "src/index.js",
   "license": "MIT",
   "dependencies": {
-    "ckeditor5": ">=<%= version %>"
+    "ckeditor5": ">=<%= ckeditor5Version %>"
   },
   "devDependencies": {
-    "@ckeditor/ckeditor5-dev-utils": "^<%= devToolsVersion %>",
-    "@ckeditor/ckeditor5-editor-classic": ">=<%= version %>",
-    "@ckeditor/ckeditor5-autoformat": ">=<%= version %>",
-    "@ckeditor/ckeditor5-basic-styles": ">=<%= version %>",
-    "@ckeditor/ckeditor5-block-quote": ">=<%= version %>",
-    "@ckeditor/ckeditor5-image": ">=<%= version %>",
-    "@ckeditor/ckeditor5-indent": ">=<%= version %>",
-    "@ckeditor/ckeditor5-link": ">=<%= version %>",
-    "@ckeditor/ckeditor5-list": ">=<%= version %>",
-    "@ckeditor/ckeditor5-media-embed": ">=<%= version %>",
-    "@ckeditor/ckeditor5-table": ">=<%= version %>",
-    "@ckeditor/ckeditor5-essentials": ">=<%= version %>",
-    "@ckeditor/ckeditor5-heading": ">=<%= version %>",
-    "@ckeditor/ckeditor5-paragraph": ">=<%= version %>",
-    "@ckeditor/ckeditor5-theme-lark": ">=<%= version %>"
+    "@ckeditor/ckeditor5-package-tools": "<%= packageToolsVersion %>",
+    "@ckeditor/ckeditor5-dev-utils": "^<%= devUtilsVersion %>",
+    "@ckeditor/ckeditor5-editor-classic": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-autoformat": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-basic-styles": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-block-quote": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-image": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-indent": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-link": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-list": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-media-embed": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-table": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-essentials": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-heading": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-paragraph": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-theme-lark": ">=<%= ckeditor5Version %>"
   },
   "files": [
     "lang",
@@ -41,9 +42,8 @@
   "scripts": {
     "dll:build": "webpack --config webpack.dll.js",
     "lint": "eslint --quiet '**/*.js'",
-    "pretest": "node scripts/generate-test-file.js",
-    "test": "karma start karma.conf.js",
-    "start": "webpack serve --config webpack.server.js",
-    "stylelint": "stylelint --quiet --allow-empty-input 'src/**/*.css'"
+    "start": "ckeditor5-package-tools start",
+    "stylelint": "stylelint --quiet --allow-empty-input 'src/**/*.css'",
+    "test": "ckeditor5-package-tools test"
   }
 }
