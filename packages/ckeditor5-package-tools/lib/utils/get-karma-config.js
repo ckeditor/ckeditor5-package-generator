@@ -148,7 +148,9 @@ function getWebpackConfiguration( options ) {
 							options: {
 								postcssOptions: getPostCssConfig( {
 									themeImporter: {
-										themePath: path.join( options.cwd, 'node_modules', '@ckeditor/ckeditor5-theme-lark' )
+										themePath: require.resolve(
+											path.join( options.cwd, 'node_modules', '@ckeditor', 'ckeditor5-theme-lark' )
+										)
 									},
 									minify: true
 								} )

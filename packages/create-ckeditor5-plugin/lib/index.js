@@ -5,6 +5,8 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
+'use strict';
+
 const path = require( 'path' );
 const fs = require( 'fs' );
 const { execSync, spawnSync } = require( 'child_process' );

@@ -16,7 +16,6 @@ const getKarmaConfig = require( '../utils/get-karma-config' );
 const ENTRY_FILE_PATH = path.join( process.cwd(), 'tmp', 'tests-entry-point.js' );
 
 module.exports = options => {
-	options.cwd = process.cwd();
 	options.entryFile = ENTRY_FILE_PATH;
 
 	generateEntryFile( ENTRY_FILE_PATH );

@@ -12,7 +12,6 @@
   ],
   "dependencies": {
     "@ckeditor/ckeditor5-dev-utils": "^25.4.2",
-    "@webpack-cli/serve": "^1.5.2",
     "chai": "^4.2.0",
     "css-loader": "^5.2.7",
     "eslint": "^7.19.0",

@@ -11,11 +11,11 @@ const minimist = require( 'minimist' );
 
 const tasks = {
 	test( options ) {
-		require( './tasks/test' )( options );
+		return require( './tasks/test' )( options );
 	},
 
-	start() {
-
+	start( options ) {
+		return require( './tasks/start' )( options );
 	}
 };
 
@@ -48,6 +48,7 @@ function parseArguments( args ) {
 
 	const parsedOptions = minimist( args, config );
 
+	parsedOptions.cwd = process.cwd();
 	parsedOptions.task = parsedOptions._[ 0 ];
 
 	return parsedOptions;
