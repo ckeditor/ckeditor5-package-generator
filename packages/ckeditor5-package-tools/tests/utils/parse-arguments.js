@@ -12,7 +12,7 @@ describe( 'lib/utils/parse-arguments', () => {
 	let parseArguments;
 
 	beforeEach( () => {
-		parseArguments = require( '../../../lib/utils/parse-arguments' );
+		parseArguments = require( '../../lib/utils/parse-arguments' );
 	} );
 
 	afterEach( () => {

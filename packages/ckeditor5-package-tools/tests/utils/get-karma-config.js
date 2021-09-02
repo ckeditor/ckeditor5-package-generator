@@ -7,15 +7,15 @@
 
 const expect = require( 'chai' ).expect;
 
-describe( 'lib/utils/get-webpack-config-server', () => {
-	let getWebpackConfigServer;
+describe( 'lib/utils/get-karma-config', () => {
+	let getKarmaConfig;
 
 	beforeEach( () => {
-		getWebpackConfigServer = require( '../../../lib/utils/get-webpack-config-server' );
+		getKarmaConfig = require( '../../lib/utils/get-karma-config' );
 	} );
 
 	it( 'should be a function', () => {
-		expect( getWebpackConfigServer ).to.be.a( 'function' );
+		expect( getKarmaConfig ).to.be.a( 'function' );
 	} );
 	// TODO: Add tests.
 } );

@@ -31,7 +31,7 @@ describe( 'lib/index', () => {
 		mockery.registerMock( '../lib/tasks/test', stubs.tasks.test );
 		mockery.registerMock( '../lib/tasks/start', stubs.tasks.start );
 
-		tasks = require( '../../lib/index' );
+		tasks = require( '../lib' );
 	} );
 
 	afterEach( () => {

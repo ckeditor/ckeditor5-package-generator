@@ -37,7 +37,7 @@ describe( 'lib/tasks/start', () => {
 		} );
 		mockery.registerMock( '../utils/get-webpack-config-server', stubs.webpackConfig );
 
-		startTask = require( '../../../lib/tasks/start' );
+		startTask = require( '../../lib/tasks/start' );
 	} );
 
 	afterEach( () => {

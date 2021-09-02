@@ -47,7 +47,7 @@ describe( 'lib/utils/generate-entry-file', () => {
 
 		sinon.stub( console, 'info' );
 
-		generateEntryFile = require( '../../../lib/utils/generate-entry-file' );
+		generateEntryFile = require( '../../lib/utils/generate-entry-file' );
 	} );
 
 	afterEach( () => {

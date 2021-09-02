@@ -55,7 +55,7 @@ describe( 'lib/tasks/test', () => {
 		mockery.registerMock( 'fs', stubs.fs );
 		mockery.registerMock( 'path', stubs.path );
 
-		testTask = require( '../../../lib/tasks/test' );
+		testTask = require( '../../lib/tasks/test' );
 	} );
 
 	afterEach( () => {
