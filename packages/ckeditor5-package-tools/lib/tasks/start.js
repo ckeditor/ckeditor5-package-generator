@@ -20,5 +20,5 @@ module.exports = options => {
 
 	const server = new WebpackDevServer( serverOptions, compiler );
 
-	server.start( webpackConfig.devServer.port, '127.0.0.1' );
+	server.start();
 };

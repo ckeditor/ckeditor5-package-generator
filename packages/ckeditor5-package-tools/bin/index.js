@@ -8,16 +8,7 @@
 'use strict';
 
 const parseArguments = require( '../lib/utils/parse-arguments' );
-
-const availableTasks = {
-	test( options ) {
-		return require( '../lib/tasks/test' )( options );
-	},
-
-	start( options ) {
-		return require( '../lib/tasks/start' )( options );
-	}
-};
+const availableTasks = require( '../lib/index' );
 
 const options = parseArguments( process.argv.slice( 2 ) );
 

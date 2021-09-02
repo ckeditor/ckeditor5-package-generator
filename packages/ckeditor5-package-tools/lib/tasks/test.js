@@ -34,12 +34,12 @@ function runKarma( options ) {
 		} );
 
 		if ( options.coverage ) {
-			const coveragePath = path.join( process.cwd(), 'coverage' );
+			const coveragePath = path.join( options.cwd, 'coverage' );
 
 			server.on( 'run_complete', () => {
 				// Use timeout to not write to the console in the middle of Karma's status.
 				setTimeout( () => {
-					console.log( `Coverage report saved in '${ chalk.cyan( coveragePath ) }'.` );
+					console.info( `Coverage report saved in '${ chalk.cyan( coveragePath ) }'.` );
 				} );
 			} );
 		}

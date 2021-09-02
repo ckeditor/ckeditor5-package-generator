@@ -21,6 +21,13 @@ module.exports = args => {
 			w: 'watch',
 			v: 'verbose',
 			s: 'source-map'
+		},
+
+		default: {
+			coverage: false,
+			watch: false,
+			'source-map': false,
+			verbose: false
 		}
 	};
 

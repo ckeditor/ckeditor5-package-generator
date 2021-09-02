@@ -9,6 +9,7 @@
     "package.json",
     "README.md"
   ],
+  "main": "lib/index.js",
   "dependencies": {
     "@ckeditor/ckeditor5-dev-utils": "^25.4.2",
     "chai": "^4.3.4",
@@ -37,6 +38,11 @@
     "stylelint-config-ckeditor5": "^2.0.1",
     "webpack": "^4.46.0",
     "webpack-dev-server": "^4.1.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "mockery": "^2.1.0",
+    "sinon": "^11.1.2"
   },
   "bin": {
     "ckeditor5-package-tools": "bin/index.js"
