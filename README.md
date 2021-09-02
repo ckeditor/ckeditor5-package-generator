@@ -5,17 +5,14 @@ This repository follows the mono-repository structure. It contains multiple npm 
 
 ## Table of contents
 
-* [Cloning the repository](#cloning-the-repository)
 * [Packages](#packages)
+* [Develop the `create-ckeditor5-plugin` repository](#develop-the-create-ckeditor5-plugin-repository)
+  * [Creating a package](#creating-a-package)
+    * [Options](#options)
+    * [Developing the package](#developing-the-package)
+  * [Developing tools in the repository](#developing-tools-in-the-repository)
 * [Release](#release)
 * [License](#license)
-
-## Cloning the repository
-
-Before starting, make sure you have cloned the repository because the tool's code is not available on npm yet.
-
-* Clone the repository: `git clone git@github.com:ckeditor/create-ckeditor5-plugin.git`
-* Install the package dependencies: `yarn install`
 
 ## Packages
 
@@ -55,6 +52,50 @@ Before starting, make sure you have cloned the repository because the tool's cod
 
 </tbody>
 </table>
+
+## Develop the `create-ckeditor5-plugin` repository
+
+* Clone the repository: `git clone git@github.com:ckeditor/create-ckeditor5-plugin.git`
+* Install required dependencies: `yarn install`
+
+### Creating a package
+
+To create a new plugin, call the `create-ckeditor5-plugin` executable file. It requires a single argument which is the package name. It must follow the schema: `@organization/ckeditor5-package`, which `@organization` is a [scope](https://docs.npmjs.com/about-scopes) of the package, and `ckeditor5-package` is the package name. It must start with the `ckeditor5-` prefix.
+
+The tool will create a new directory called `@organization/ckeditor5-package` with an initial plugin and tools for developing it inside.
+
+To use a local version of the `@ckeditor/ckeditor5-package-tools` package, use the `--dev` option when executing the command.
+
+```bash
+node /path/to/repository/packages/create-ckeditor5-plugin <directory> [--dev]
+```
+
+#### Options
+
+* `--verbose` - (alias: `-v`) whether to prints additional logs.
+* `--dev` - whether to execute in the development mode. It means that the `@ckeditor/ckeditor5-package-tools` will not be installed from npm, but from the local file system.
+
+#### Developing the package
+
+Available scripts and their modifiers are described in the [`README.md` file of the `create-ckeditor5-plugin` package](/packages/create-ckeditor5-plugin).
+
+### Developing tools in the repository
+
+When creating a new package with the `--dev` option, the local version of the `@ckeditor/ckeditor5-package-tools` will be installed instead of its npm version.
+
+However, applying changes in the repository does not impact the created package. Hence, you need to create a [link](https://docs.npmjs.com/cli/link/) between the repository and the new package.
+
+```bash
+# The assumption here is your current working directory points to the root directory in the repository.
+cd packages/ckeditor5-package-tools
+yarn link
+
+# Then, go to the newly created package.
+cd /path/to/new/package/ckeditor5-foo
+yarn link @ckeditor/ckeditor5-package-tools
+```
+
+Now, the newly created package uses changes from the repository.
 
 ## Release
 
