@@ -17,8 +17,10 @@ To create a new plugin, call the `create-ckeditor5-plugin` executable file. It r
 
 The tool will create a new directory called `@organization/ckeditor5-package` with an initial plugin and tools for developing it inside.
 
+To use a local version of the `@ckeditor/ckeditor5-package-tools` package, use the `--dev` option when executing the command.
+
 ```bash
-node /path/to/repository/packages/create-ckeditor5-plugin <directory>
+node /path/to/repository/packages/create-ckeditor5-plugin <directory> --dev
 ```
 
 ### Options
@@ -54,4 +56,18 @@ npm run test -- --coverage
 
 ## Developing the tool
 
-TBA
+When creating a new package with the `--dev` option, the local version of the `@ckeditor/ckeditor5-package-tools` will be installed instead of its npm version.
+
+However, applying changes in the repository does not impact the created package. Hence, you need to create a [link])(https://docs.npmjs.com/cli/link/) between the repository and the new package.
+
+```bash
+# The assumption here is your current working directory points to the root directory in the repository.
+
+cd packages/ckeditor5-package-tools
+yarn link
+
+cd /path/to/new/package/ckeditor5-foo
+yarn link @ckeditor/ckeditor5-package-tools
+```
+
+Now, changes in the repository will be synchronized with the new package.
