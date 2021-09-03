@@ -30,7 +30,10 @@ describe( 'lib/utils/generate-entry-file', () => {
 				join: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) ),
 				sep: sinon.stub().returns( '/' ),
 				dirname: sinon.stub().callsFake( file => file.split( '/' ).slice( 0, -1 ).join( '/' ) ),
-				resolve: sinon.stub().callsFake( file => `/process/cwd/${ file }` )
+				resolve: sinon.stub().callsFake( file => `/process/cwd/${ file }` ),
+				posix: {
+					sep: sinon.stub().returns( '/' )
+				}
 			},
 			mkdirp: {
 				sync: sinon.stub()
