@@ -92,7 +92,9 @@ async function init( directory, options ) {
 		ckeditor5: getLatestVersionOfPackage( 'ckeditor5' ),
 		devUtils: getLatestVersionOfPackage( '@ckeditor/ckeditor5-dev-utils' ),
 		packageTools: options.dev ?
-			'file:' + path.resolve( __dirname, '..', '..', 'ckeditor5-package-tools' ) :
+			// Windows accepts unix-like paths in `package.json`, so let's unify it to avoid errors with paths.
+			// TODO: Consider creating the common utils between all packages in the repository.
+			'file:' + path.resolve( __dirname, '..', '..', 'ckeditor5-package-tools' ).split( path.sep ).join( path.posix.sep ) :
 			'^' + getLatestVersionOfPackage( '@ckeditor/ckeditor5-package-tools' )
 	};
 

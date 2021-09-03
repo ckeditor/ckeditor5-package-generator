@@ -18,7 +18,7 @@ module.exports = entryFilePath => {
 	mkdirp.sync( path.dirname( entryFilePath ) );
 
 	const filesImports = glob.sync( 'tests/**/*.js', { nodir: true } )
-		.map( file => `import "${ path.resolve( file ) }";` )
+		.map( file => `import "${ normalizePath( path.resolve( file ) ) }";` )
 		.join( '\n' );
 
 	fs.writeFileSync( entryFilePath, filesImports );
@@ -33,3 +33,12 @@ module.exports = entryFilePath => {
 
 	fs.utimesSync( entryFilePath, time, time );
 };
+
+// TODO: Consider creating the common utils between all packages in the repository.
+/**
+ * @param {String} file
+ * @returns {String}
+ */
+function normalizePath( file ) {
+	return file.split( path.sep ).join( path.posix.sep );
+}
