@@ -60,7 +60,7 @@ This repository follows the mono-repository structure. It contains multiple npm 
 
 ### Creating a package
 
-To create a new plugin, call the `create-ckeditor5-plugin` executable file. It requires a single argument which is the package name. It must follow the schema: `@organization/ckeditor5-package`, which `@organization` is a [scope](https://docs.npmjs.com/about-scopes) of the package, and `ckeditor5-package` is the package name. It must start with the `ckeditor5-` prefix.
+To create a new plugin, call the `create-ckeditor5-plugin` executable file. It requires a single argument which is the package name. It must follow the schema: `@organization/ckeditor5-package`, where `@organization` is a [scope](https://docs.npmjs.com/about-scopes) of the package, and `ckeditor5-package` is the package name. It must start with the `ckeditor5-` prefix.
 
 The tool will create a new directory called `@organization/ckeditor5-package` with an initial plugin and tools for developing it inside.
 
@@ -83,7 +83,7 @@ Available scripts and their modifiers are described in the [`README.md` file of 
 
 When creating a new package with the `--dev` option, the local version of the `@ckeditor/ckeditor5-package-tools` will be installed instead of its npm version.
 
-However, applying changes in the repository does not impact the created package. Hence, you need to create a [link](https://docs.npmjs.com/cli/link/) between the repository and the new package.
+However, applying changes in the local repository does not impact an already created package. Hence, you need to create a [link](https://docs.npmjs.com/cli/link/) between the local repository and the new package.
 
 ```bash
 # The assumption here is your current working directory points to the root directory in the repository.
@@ -95,7 +95,7 @@ cd /path/to/new/package/ckeditor5-foo
 yarn link @ckeditor/ckeditor5-package-tools
 ```
 
-Now, the newly created package uses changes from the repository.
+Now, the newly created package uses changes from the local repository.
 
 ## Release
 

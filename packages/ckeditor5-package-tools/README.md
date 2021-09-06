@@ -7,5 +7,5 @@ This repository contains scripts and functions used by the [`create-ckeditor5-pl
 
 The following scripts are available:
 
-* `test` – prepares an entry file and pass it to [karma](https://karma-runner.github.io/) test runner,
+* `test` – prepares an entry file and passes it to [karma](https://karma-runner.github.io/) test runner,
 * `start` – prepares [development server](https://webpack.js.org/configuration/dev-server/) with the live-reloading mechanism.
