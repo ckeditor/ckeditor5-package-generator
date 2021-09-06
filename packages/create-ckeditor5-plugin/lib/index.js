@@ -13,13 +13,14 @@ const { execSync, spawnSync } = require( 'child_process' );
 
 const { Command } = require( 'commander' );
 const mkdirp = require( 'mkdirp' );
-const validateNpmPackageName = require( 'validate-npm-package-name' );
 const template = require( 'lodash.template' );
 const glob = require( 'glob' );
 const chalk = require( 'chalk' );
 
 const packageJson = require( '../package.json' );
 const TEMPLATE_PATH = path.join( __dirname, 'templates' );
+
+const { validateDirectory, getPackageVersions } = require( './utils' );
 
 // Files that need to be filled with data.
 const TEMPLATES_TO_FILL = [
@@ -87,16 +88,7 @@ async function init( directory, options ) {
 	console.log( `📍 Creating the directory "${ chalk.cyan( directoryPath ) }".` );
 	mkdirp.sync( directoryPath );
 
-	// TODO: Move to a separate util.
-	const packageVersions = {
-		ckeditor5: getLatestVersionOfPackage( 'ckeditor5' ),
-		devUtils: getLatestVersionOfPackage( '@ckeditor/ckeditor5-dev-utils' ),
-		packageTools: options.dev ?
-			// Windows accepts unix-like paths in `package.json`, so let's unify it to avoid errors with paths.
-			// TODO: Consider creating the common utils between all packages in the repository.
-			'file:' + path.resolve( __dirname, '..', '..', 'ckeditor5-package-tools' ).split( path.sep ).join( path.posix.sep ) :
-			'^' + getLatestVersionOfPackage( '@ckeditor/ckeditor5-package-tools' )
-	};
+	const packageVersions = getPackageVersions( options );
 
 	const dllConfiguration = getDllConfiguration( directory );
 
@@ -137,45 +129,6 @@ async function init( directory, options ) {
 
 	// (6.)
 	console.log( chalk.green( 'Done!' ) );
-}
-
-/**
- * @param {String} directory
- */
-function validateDirectory( directory ) {
-	const validateResult = validateNpmPackageName( directory );
-
-	if ( !validateResult.validForNewPackages ) {
-		console.log( 'Provided <directory> is not valid name for a npm package.' );
-
-		for ( const error of ( validateResult.errors || [] ) ) {
-			console.log( '  * ' + error );
-		}
-
-		for ( const warning of ( validateResult.warnings || [] ) ) {
-			console.log( '  * ' + warning );
-		}
-
-		process.exit( 1 );
-	}
-
-	if ( !directory.match( /^ckeditor5-/ ) ) {
-		console.log( 'Package name should follow the "ckeditor5-" prefix.' );
-		process.exit( 1 );
-	}
-
-	if ( directory.length <= 'ckeditor5-'.length ) {
-		console.log( 'Package name should contain its name after the "ckeditor5-" prefix.' );
-		process.exit( 1 );
-	}
-}
-
-/**
- * @param packageName
- * @return {String}
- */
-function getLatestVersionOfPackage( packageName ) {
-	return execSync( `npm view ${ packageName } version` ).toString().trim();
 }
 
 /**
