@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+/**
+ * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+
+'use strict';
+
+const parseArguments = require( '../lib/utils/parse-arguments' );
+const availableTasks = require( '../lib/index' );
+
+const options = parseArguments( process.argv.slice( 2 ) );
+
+if ( availableTasks[ options.task ] ) {
+	availableTasks[ options.task ]( options );
+} else {
+	// TODO: A message when calling a non-existing task could be more precise.
+	console.log( 'Unknown task.' );
+}

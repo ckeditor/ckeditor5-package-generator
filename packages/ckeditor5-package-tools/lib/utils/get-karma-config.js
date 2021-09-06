@@ -5,31 +5,22 @@
 const path = require( 'path' );
 const { getPostCssConfig } = require( '@ckeditor/ckeditor5-dev-utils' ).styles;
 
-const ROOT_DIRECTORY = __dirname;
-const ENTRY_FILE_PATH = path.join( ROOT_DIRECTORY, 'tmp', 'tests-entry-point.js' );
-
 /**
  * @param {Object} options
  * @returns {Object}
  */
-module.exports = config => {
-	const coverageDir = path.join( ROOT_DIRECTORY, 'coverage' );
-	const options = {
-		coverage: process.argv.includes( '--coverage' ),
-		sourceMap: process.argv.includes( '--source-map' ),
-		verbose: process.argv.includes( '--verbose' ),
-		watch: process.argv.includes( '--watch' )
-	};
+module.exports = options => {
+	const coverageDir = path.join( options.cwd, 'coverage' );
 
 	const karmaConfig = {
-		basePath: ROOT_DIRECTORY,
+		basePath: options.cwd,
 
 		frameworks: [ 'mocha', 'sinon-chai' ],
 
-		files: [ ENTRY_FILE_PATH ],
+		files: [ options.entryFile ],
 
 		preprocessors: {
-			[ ENTRY_FILE_PATH ]: [ 'webpack' ]
+			[ options.entryFile ]: [ 'webpack' ]
 		},
 
 		webpack: getWebpackConfiguration( options ),
@@ -74,7 +65,7 @@ module.exports = config => {
 	};
 
 	if ( options.sourceMap ) {
-		karmaConfig.preprocessors[ ENTRY_FILE_PATH ].push( 'sourcemap' );
+		karmaConfig.preprocessors[ options.entryFile ].push( 'sourcemap' );
 	}
 
 	if ( options.watch ) {
@@ -120,7 +111,7 @@ module.exports = config => {
 		};
 	}
 
-	config.set( karmaConfig );
+	return karmaConfig;
 };
 
 /**
@@ -154,14 +145,14 @@ function getWebpackConfiguration( options ) {
 						'css-loader',
 						{
 							loader: 'postcss-loader',
-							options: {
-								postcssOptions: getPostCssConfig( {
-									themeImporter: {
-										themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
-									},
-									minify: true
-								} )
-							}
+							options: getPostCssConfig( {
+								themeImporter: {
+									themePath: require.resolve(
+										path.join( options.cwd, 'node_modules', '@ckeditor', 'ckeditor5-theme-lark' )
+									)
+								},
+								minify: true
+							} )
 						}
 					]
 				},
@@ -188,7 +179,7 @@ function getWebpackConfiguration( options ) {
 			{
 				test: /\.js$/,
 				loader: 'istanbul-instrumenter-loader',
-				include: path.join( ROOT_DIRECTORY, 'src' ),
+				include: path.join( options.cwd, 'src' ),
 				query: {
 					esModules: true
 				}
