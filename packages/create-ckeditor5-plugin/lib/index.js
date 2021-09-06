@@ -159,12 +159,13 @@ function validateDirectory( directory ) {
 		process.exit( 1 );
 	}
 
-	// Extract the package name from the scoped directory.
-	const [ , packageName ] = directory.split( '/' );
+	if ( !directory.match( /^ckeditor5-/ ) ) {
+		console.log( 'Package name should follow the "ckeditor5-" prefix.' );
+		process.exit( 1 );
+	}
 
-	if ( !packageName || !packageName.match( /^ckeditor5/ ) ) {
-		console.log( 'Provided <directory> should start with the "@scope", and the package name should follow the "ckeditor5-" prefix.' );
-
+	if ( directory.length <= 'ckeditor5-'.length ) {
+		console.log( 'Package name should contain its name after the "ckeditor5-" prefix.' );
 		process.exit( 1 );
 	}
 }
@@ -252,13 +253,12 @@ function initializeGitRepository( directoryPath ) {
  */
 function getDllConfiguration( directory ) {
 	// For the scoped package, webpack exports it as `window.CKEditor5[ packageName ]`.
-	const [ , packageName ] = directory.split( '/' );
-	const packageNameSlug = getGlobalKeyForPackage( packageName );
+	const packageNameSlug = getGlobalKeyForPackage( directory );
 
 	// The `packageName` represents the package name as a slug, and scope starts without the `at` (@) character.
 	return {
 		library: packageNameSlug,
-		fileName: getIndexFileName( packageName )
+		fileName: getIndexFileName( directory )
 	};
 }
 
