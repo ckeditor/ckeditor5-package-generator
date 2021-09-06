@@ -88,7 +88,7 @@ async function init( directory, options ) {
 	console.log( `📍 Creating the directory "${ chalk.cyan( directoryPath ) }".` );
 	mkdirp.sync( directoryPath );
 
-	const packageVersions = getPackageVersions( options );
+	const packageVersions = getPackageVersions( options.dev );
 
 	const dllConfiguration = getDllConfiguration( directory );
 

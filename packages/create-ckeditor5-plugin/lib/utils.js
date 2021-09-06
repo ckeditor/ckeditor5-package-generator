@@ -47,11 +47,11 @@ function validateDirectory( directory ) {
 	}
 }
 
-function getPackageVersions( options ) {
+function getPackageVersions( devMode ) {
 	return {
 		ckeditor5: getLatestVersionOfPackage( 'ckeditor5' ),
 		devUtils: getLatestVersionOfPackage( '@ckeditor/ckeditor5-dev-utils' ),
-		packageTools: options.dev ?
+		packageTools: devMode ?
 			// Windows accepts unix-like paths in `package.json`, so let's unify it to avoid errors with paths.
 			'file:' + path.resolve( __dirname, '..', '..', 'ckeditor5-package-tools' ).split( path.sep ).join( path.posix.sep ) :
 			'^' + getLatestVersionOfPackage( '@ckeditor/ckeditor5-package-tools' )
