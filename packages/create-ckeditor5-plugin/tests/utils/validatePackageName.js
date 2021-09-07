@@ -25,7 +25,7 @@ describe( 'lib/utils-ccp/validatePackageName()', () => {
 
 		sinon.stub( console, 'info' );
 
-		validatePackageName = require( '../../../create-ckeditor5-plugin/lib/utils/validatePackageName' );
+		validatePackageName = require( '../../lib/utils/validatePackageName' );
 	} );
 
 	afterEach( () => {

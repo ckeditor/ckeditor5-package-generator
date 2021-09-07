@@ -8,7 +8,7 @@
 const expect = require( 'chai' ).expect;
 
 describe( 'lib/utils', () => {
-	const getCKEditor5PackagesVersions = require( '../../../create-ckeditor5-plugin/lib/utils/getCKEditor5PackagesVersions' );
+	const getCKEditor5PackagesVersions = require( '../../lib/utils/getCKEditor5PackagesVersions' );
 
 	describe( 'getPackageVersions()', () => {
 		it( 'should be a function', () => {
