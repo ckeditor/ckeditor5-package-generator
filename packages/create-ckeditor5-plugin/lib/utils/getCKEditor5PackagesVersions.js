@@ -10,7 +10,7 @@
 const path = require( 'path' );
 const { execSync } = require( 'child_process' );
 
-module.exports = function getPackageVersions( devMode ) {
+module.exports = function getCKEditor5PackagesVersions( devMode ) {
 	return {
 		ckeditor5: getLatestVersionOfPackage( 'ckeditor5' ),
 		devUtils: getLatestVersionOfPackage( '@ckeditor/ckeditor5-dev-utils' ),

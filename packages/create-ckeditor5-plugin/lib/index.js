@@ -20,7 +20,7 @@ const chalk = require( 'chalk' );
 const packageJson = require( '../package.json' );
 const TEMPLATE_PATH = path.join( __dirname, 'templates' );
 
-const getPackageVersions = require( './utils/getPackageVersions' );
+const getCKEditor5PackagesVersions = require( './utils/getCKEditor5PackagesVersions' );
 const validateDirectory = require( './utils/validateDirectory' );
 
 // Files that need to be filled with data.
@@ -93,7 +93,7 @@ async function init( directory, options ) {
 	console.log( `📍 Creating the directory "${ chalk.cyan( directoryPath ) }".` );
 	mkdirp.sync( directoryPath );
 
-	const packageVersions = getPackageVersions( options.dev );
+	const packageVersions = getCKEditor5PackagesVersions( options.dev );
 
 	const dllConfiguration = getDllConfiguration( directory );
 

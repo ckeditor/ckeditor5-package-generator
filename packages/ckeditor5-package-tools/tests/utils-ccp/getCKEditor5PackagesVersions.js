@@ -8,11 +8,11 @@
 const expect = require( 'chai' ).expect;
 
 describe( 'lib/utils', () => {
-	const getPackageVersions = require( '../../../create-ckeditor5-plugin/lib/utils/getPackageVersions' );
+	const getCKEditor5PackagesVersions = require( '../../../create-ckeditor5-plugin/lib/utils/getCKEditor5PackagesVersions' );
 
 	describe( 'getPackageVersions()', () => {
 		it( 'should be a function', () => {
-			expect( getPackageVersions ).to.be.an( 'function' );
+			expect( getCKEditor5PackagesVersions ).to.be.an( 'function' );
 		} );
 
 		it( 'should return an object containing proper attributes', () => {
