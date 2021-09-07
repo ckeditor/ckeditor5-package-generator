@@ -33,18 +33,20 @@ function validateDirectory( directory ) {
 			console.log( '  * ' + warning );
 		}
 
-		process.exit( 1 );
+		return false;
 	}
 
 	if ( !directory.match( /^ckeditor5-/ ) ) {
 		console.log( 'Package name should follow the "ckeditor5-" prefix.' );
-		process.exit( 1 );
+		return false;
 	}
 
 	if ( directory.length <= 'ckeditor5-'.length ) {
 		console.log( 'Package name should contain its name after the "ckeditor5-" prefix.' );
-		process.exit( 1 );
+		return false;
 	}
+
+	return true;
 }
 
 function getPackageVersions( devMode ) {

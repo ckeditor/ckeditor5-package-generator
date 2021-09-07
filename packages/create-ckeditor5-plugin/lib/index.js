@@ -71,7 +71,11 @@ async function init( directory, options ) {
 
 	// (1.)
 	console.log( '📍 Verifying the specified package name.' );
-	validateDirectory( directory );
+	const directoryValidated = validateDirectory( directory );
+
+	if ( !directoryValidated ) {
+		process.exit( 1 );
+	}
 
 	const directoryPath = path.resolve( directory );
 
