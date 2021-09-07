@@ -7,19 +7,12 @@
 
 'use strict';
 
-const path = require( 'path' );
-const { execSync } = require( 'child_process' );
 const validateNpmPackageName = require( 'validate-npm-package-name' );
 
-module.exports = {
-	validateDirectory,
-	getPackageVersions
-};
-
 /**
- * @param {String} directory
- */
-function validateDirectory( directory ) {
+  * @param {String} directory
+  */
+module.exports = function validateDirectory( directory ) {
 	const validateResult = validateNpmPackageName( directory );
 
 	if ( !validateResult.validForNewPackages ) {
@@ -47,23 +40,4 @@ function validateDirectory( directory ) {
 	}
 
 	return true;
-}
-
-function getPackageVersions( devMode ) {
-	return {
-		ckeditor5: getLatestVersionOfPackage( 'ckeditor5' ),
-		devUtils: getLatestVersionOfPackage( '@ckeditor/ckeditor5-dev-utils' ),
-		packageTools: devMode ?
-			// Windows accepts unix-like paths in `package.json`, so let's unify it to avoid errors with paths.
-			'file:' + path.resolve( __dirname, '..', '..', 'ckeditor5-package-tools' ).split( path.sep ).join( path.posix.sep ) :
-			'^' + getLatestVersionOfPackage( '@ckeditor/ckeditor5-package-tools' )
-	};
-}
-
-/**
- * @param packageName
- * @return {String}
- */
-function getLatestVersionOfPackage( packageName ) {
-	return execSync( `npm view ${ packageName } version` ).toString().trim();
-}
+};
