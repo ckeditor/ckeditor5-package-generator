@@ -12,11 +12,11 @@ const validateNpmPackageName = require( 'validate-npm-package-name' );
 /**
   * @param {String} directory
   */
-module.exports = function validateDirectory( directory ) {
+module.exports = function validatePackageName( directory ) {
 	const validateResult = validateNpmPackageName( directory );
 
 	if ( !validateResult.validForNewPackages ) {
-		console.log( 'Provided <directory> is not valid name for a npm package.' );
+		console.log( 'Provided <packageName> is not valid name for a npm package.' );
 
 		for ( const error of ( validateResult.errors || [] ) ) {
 			console.log( '  * ' + error );

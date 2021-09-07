@@ -21,7 +21,7 @@ const packageJson = require( '../package.json' );
 const TEMPLATE_PATH = path.join( __dirname, 'templates' );
 
 const getCKEditor5PackagesVersions = require( './utils/getCKEditor5PackagesVersions' );
-const validateDirectory = require( './utils/validateDirectory' );
+const validatePackageName = require( './utils/validatePackageName' );
 
 // Files that need to be filled with data.
 const TEMPLATES_TO_FILL = [
@@ -32,7 +32,7 @@ const TEMPLATES_TO_FILL = [
 ];
 
 new Command( packageJson.name )
-	.argument( '<directory>', 'directory where the package should be created' )
+	.argument( '<packageName>', 'name of the package, and it\'s directory name' )
 	.option( '-v, --verbose', 'output additional logs', false )
 	.option( '--dev', 'execution of the script in the development mode', () => {
 		// An absolute path to the repository that tracks the package.
@@ -44,16 +44,16 @@ new Command( packageJson.name )
 	} )
 	.option( '--use-npm', 'whether use npm to install packages', false )
 	.allowUnknownOption()
-	.action( ( directory, options ) => init( directory, options ) )
+	.action( ( packageName, options ) => init( packageName, options ) )
 	// .on( '--help', () => {
 	// } )
 	.parse( process.argv );
 
 /**
- * @param {String} directory
+ * @param {String} packageName
  * @param {CreateCKeditor5PluginOptions} options
  */
-async function init( directory, options ) {
+async function init( packageName, options ) {
 	// 1. Validate package name.
 	// 2. Create directory.
 	// 3. Copy files.
@@ -72,13 +72,13 @@ async function init( directory, options ) {
 
 	// (1.)
 	console.log( '📍 Verifying the specified package name.' );
-	const directoryValidated = validateDirectory( directory );
+	const packageNameValidated = validatePackageName( packageName );
 
-	if ( !directoryValidated ) {
+	if ( !packageNameValidated ) {
 		process.exit( 1 );
 	}
 
-	const directoryPath = path.resolve( directory );
+	const directoryPath = path.resolve( packageName );
 
 	console.log( '📍 Checking whether the specified directory can be created.' );
 
@@ -95,7 +95,7 @@ async function init( directory, options ) {
 
 	const packageVersions = getCKEditor5PackagesVersions( options.dev );
 
-	const dllConfiguration = getDllConfiguration( directory );
+	const dllConfiguration = getDllConfiguration( packageName );
 
 	const templatesToCopy = glob.sync( '**/*', {
 		cwd: TEMPLATE_PATH,
@@ -112,7 +112,7 @@ async function init( directory, options ) {
 
 		if ( TEMPLATES_TO_FILL.includes( templatePath ) ) {
 			data = {
-				name: directory,
+				name: packageName,
 				ckeditor5Version: packageVersions.ckeditor5,
 				devUtilsVersion: packageVersions.devUtils,
 				packageToolsVersion: packageVersions.packageTools,
@@ -206,17 +206,17 @@ function initializeGitRepository( directoryPath ) {
 /**
  * Configuration for output produces by webpack.
  *
- * @param {String} directory
+ * @param {String} packageName
  * @return {Object}
  */
-function getDllConfiguration( directory ) {
+function getDllConfiguration( packageName ) {
 	// For the scoped package, webpack exports it as `window.CKEditor5[ packageName ]`.
-	const packageNameSlug = getGlobalKeyForPackage( directory );
+	const packageNameSlug = getGlobalKeyForPackage( packageName );
 
 	// The `packageName` represents the package name as a slug, and scope starts without the `at` (@) character.
 	return {
 		library: packageNameSlug,
-		fileName: getIndexFileName( directory )
+		fileName: getIndexFileName( packageName )
 	};
 }
 

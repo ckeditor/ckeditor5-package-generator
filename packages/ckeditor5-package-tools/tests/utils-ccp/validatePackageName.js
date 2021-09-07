@@ -8,11 +8,11 @@
 const expect = require( 'chai' ).expect;
 
 describe( 'lib/utils', () => {
-	const validateDirectory = require( '../../../create-ckeditor5-plugin/lib/utils/validateDirectory' );
+	const validatePackageName = require( '../../../create-ckeditor5-plugin/lib/utils/validatePackageName' );
 
-	describe( 'validateDirectory()', () => {
+	describe( 'validatePackageName()', () => {
 		it( 'should be a function', () => {
-			expect( validateDirectory ).to.be.an( 'function' );
+			expect( validatePackageName ).to.be.an( 'function' );
 		} );
 
 		it( 'work correctly with valid package name', () => {
