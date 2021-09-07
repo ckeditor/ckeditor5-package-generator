@@ -16,7 +16,7 @@ module.exports = function getCKEditor5PackagesVersions( devMode ) {
 		devUtils: getLatestVersionOfPackage( '@ckeditor/ckeditor5-dev-utils' ),
 		packageTools: devMode ?
 			// Windows accepts unix-like paths in `package.json`, so let's unify it to avoid errors with paths.
-			'file:' + path.resolve( __dirname, '..', '..', 'ckeditor5-package-tools' ).split( path.sep ).join( path.posix.sep ) :
+			'file:' + path.resolve( __dirname, '..', '..', '..', 'ckeditor5-package-tools' ).split( path.sep ).join( path.posix.sep ) :
 			'^' + getLatestVersionOfPackage( '@ckeditor/ckeditor5-package-tools' )
 	};
 };
