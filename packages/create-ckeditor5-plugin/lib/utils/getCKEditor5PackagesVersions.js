@@ -8,7 +8,7 @@
 'use strict';
 
 const path = require( 'path' );
-const { execSync } = require( 'child_process' );
+const getLatestVersionOfPackage = require( './getLatestVersionOfPackage' );
 
 module.exports = function getCKEditor5PackagesVersions( devMode ) {
 	return {
@@ -20,11 +20,3 @@ module.exports = function getCKEditor5PackagesVersions( devMode ) {
 			'^' + getLatestVersionOfPackage( '@ckeditor/ckeditor5-package-tools' )
 	};
 };
-
-/**
- * @param packageName
- * @return {String}
- */
-function getLatestVersionOfPackage( packageName ) {
-	return execSync( `npm view ${ packageName } version` ).toString().trim();
-}

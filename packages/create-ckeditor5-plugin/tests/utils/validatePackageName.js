@@ -9,7 +9,7 @@ const sinon = require( 'sinon' );
 const expect = require( 'chai' ).expect;
 const mockery = require( 'mockery' );
 
-describe( 'lib/utils-ccp/validatePackageName()', () => {
+describe( 'lib/utils/validatePackageName()', () => {
 	let validatePackageName, validateNpmPackageName;
 
 	beforeEach( () => {
