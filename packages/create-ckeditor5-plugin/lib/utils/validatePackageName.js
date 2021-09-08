@@ -10,29 +10,38 @@
 const validateNpmPackageName = require( 'validate-npm-package-name' );
 
 /**
-  * @param {String} directory
+  * @param {String} packageName
   */
-module.exports = function validatePackageName( directory ) {
-	const validateResult = validateNpmPackageName( directory );
+module.exports = function validatePackageName( packageName ) {
+	const errorLogs = [];
+
+	const validateResult = validateNpmPackageName( packageName );
 
 	if ( !validateResult.validForNewPackages ) {
-		console.log( 'Provided <packageName> is not valid name for a npm package.' );
+		errorLogs.push( 'Provided <packageName> is not valid name for a npm package:' );
 
 		for ( const error of ( validateResult.errors || [] ) ) {
-			console.log( '  * ' + error );
+			errorLogs.push( '  * ' + error );
 		}
 
 		for ( const warning of ( validateResult.warnings || [] ) ) {
-			console.log( '  * ' + warning );
+			errorLogs.push( '  * ' + warning );
 		}
-
-		return false;
 	}
 
-	if ( !directory.match( /^ckeditor5-./ ) ) {
-		console.log( 'Package name should follow the "ckeditor5-" prefix.' );
-		return false;
+	const [ scope, name ] = packageName.split( '/' );
+
+	if ( !scope || !scope.match( /^@./ ) ) {
+		errorLogs.push( 'Provided <packageName> should start with the "@scope".' );
 	}
 
-	return true;
+	if ( !packageName.includes( '/' ) ) {
+		errorLogs.push( 'Scope and the package name should be separated by "/".' );
+	}
+
+	if ( !name || !name.match( /^ckeditor5-./ ) ) {
+		errorLogs.push( 'Package name should contain the "ckeditor5-" prefix followed by the package name.' );
+	}
+
+	return errorLogs;
 };

@@ -72,13 +72,17 @@ async function init( packageName, options ) {
 
 	// (1.)
 	console.log( '📍 Verifying the specified package name.' );
-	const packageNameValidated = validatePackageName( packageName );
+	const validationErrors = validatePackageName( packageName );
 
-	if ( !packageNameValidated ) {
+	if ( validationErrors.length ) {
+		console.error( `Package name "${ packageName }" is invalid:` );
+		for ( const error of validationErrors ) {
+			console.error( error );
+		}
 		process.exit( 1 );
 	}
 
-	const directoryPath = path.resolve( packageName );
+	const directoryPath = path.resolve( packageName.split( '/' )[ 1 ] );
 
 	console.log( '📍 Checking whether the specified directory can be created.' );
 
