@@ -46,7 +46,8 @@ describe( 'lib/utils/validate-package-name', () => {
 	} );
 
 	describe( 'returns an array with correct error messages for a package name that:', () => {
-		it( 'is not valid name for a npm package (error)', () => {
+		// See: https://www.npmjs.com/package/validate-npm-package-name#naming-rules.
+		it( 'if a package name does not match to npm rules', () => {
 			validateNpmPackageName.returns( { validForNewPackages: false, errors: [ 'Example error' ] } );
 
 			const returnedValue = validatePackageName( '@scope/ckeditor5-test-package' );
@@ -57,7 +58,8 @@ describe( 'lib/utils/validate-package-name', () => {
 			] );
 		} );
 
-		it( 'is not valid name for a npm package (warning)', () => {
+		// See https://www.npmjs.com/package/validate-npm-package-name#legacy-names.
+		it( 'if a package name does not match to legacy npm rules', () => {
 			validateNpmPackageName.returns( { validForNewPackages: false, warnings: [ 'Example warning' ] } );
 
 			const returnedValue = validatePackageName( '@scope/ckeditor5-test-package' );
@@ -75,17 +77,6 @@ describe( 'lib/utils/validate-package-name', () => {
 
 			expect( returnedValue ).to.eql( [
 				'Provided <packageName> should start with the "@scope".'
-			] );
-		} );
-
-		it( 'does not contain the "/" separator', () => {
-			validateNpmPackageName.returns( { validForNewPackages: true } );
-
-			const returnedValue = validatePackageName( '@scopeckeditor5-test-package' );
-
-			expect( returnedValue ).to.eql( [
-				'Scope and the package name should be separated by "/".',
-				'Package name should contain the "ckeditor5-" prefix followed by the package name.'
 			] );
 		} );
 
