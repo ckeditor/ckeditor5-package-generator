@@ -10,9 +10,11 @@
 const { execSync } = require( 'child_process' );
 
 /**
-* @param packageName
-* @return {String}
-*/
+ * Returns version of the specified package.
+ *
+ * @param packageName Name of the package to check the version of.
+ * @return {String}
+ */
 module.exports = function getLatestVersionOfPackage( packageName ) {
 	return execSync( `npm view ${ packageName } version` ).toString().trim();
 };

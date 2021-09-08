@@ -9,6 +9,23 @@
 const path = require( 'path' );
 const getLatestVersionOfPackage = require( './get-latest-version-of-package' );
 
+/**
+ * Returns an object containing string values:
+ *
+ * {
+ *   ckeditor5: (version),
+ *   devUtils: (version),
+ *   packageTools: (version|path)
+ * }
+ *
+ * Last value is dependent on the devMode parameter:
+ *
+ * True: Path to where locally cloned package should be.
+ * False: Latest NPM version.
+ *
+ * @param {Boolean} devMode whether or not to use locally cloned packageTools.
+ * @returns {Object}
+ */
 module.exports = function getCKEditor5PackagesVersions( devMode ) {
 	return {
 		ckeditor5: getLatestVersionOfPackage( 'ckeditor5' ),
