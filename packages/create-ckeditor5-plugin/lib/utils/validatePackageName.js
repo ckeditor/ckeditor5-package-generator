@@ -29,13 +29,8 @@ module.exports = function validatePackageName( directory ) {
 		return false;
 	}
 
-	if ( !directory.match( /^ckeditor5-/ ) ) {
+	if ( !directory.match( /^ckeditor5-./ ) ) {
 		console.log( 'Package name should follow the "ckeditor5-" prefix.' );
-		return false;
-	}
-
-	if ( directory.length <= 'ckeditor5-'.length ) {
-		console.log( 'Package name should contain its name after the "ckeditor5-" prefix.' );
 		return false;
 	}
 
