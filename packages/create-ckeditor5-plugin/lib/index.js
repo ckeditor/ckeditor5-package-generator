@@ -20,8 +20,8 @@ const chalk = require( 'chalk' );
 const packageJson = require( '../package.json' );
 const TEMPLATE_PATH = path.join( __dirname, 'templates' );
 
-const getCKEditor5PackagesVersions = require( './utils/getCKEditor5PackagesVersions' );
-const validatePackageName = require( './utils/validatePackageName' );
+const getCKEditor5PackagesVersions = require( './utils/get-ckeditor5-packages-versions' );
+const validatePackageName = require( './utils/validate-package-name' );
 
 // Files that need to be filled with data.
 const TEMPLATES_TO_FILL = [

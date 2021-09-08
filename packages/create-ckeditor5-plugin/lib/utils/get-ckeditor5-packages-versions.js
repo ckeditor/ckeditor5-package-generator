@@ -7,7 +7,7 @@
 'use strict';
 
 const path = require( 'path' );
-const getLatestVersionOfPackage = require( './getLatestVersionOfPackage' );
+const getLatestVersionOfPackage = require( './get-latest-version-of-package' );
 
 module.exports = function getCKEditor5PackagesVersions( devMode ) {
 	return {

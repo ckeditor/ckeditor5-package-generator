@@ -25,7 +25,7 @@ describe( 'lib/utils/getPackageVersions()', () => {
 		mockery.registerMock( './getLatestVersionOfPackage', getLatestVersionOfPackage );
 		getLatestVersionOfPackage.returns( '30.0.0' );
 
-		getCKEditor5PackagesVersions = require( '../../lib/utils/getCKEditor5PackagesVersions' );
+		getCKEditor5PackagesVersions = require( '../../lib/utils/get-ckeditor5-packages-versions' );
 	} );
 
 	afterEach( () => {

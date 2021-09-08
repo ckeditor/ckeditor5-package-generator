@@ -25,7 +25,7 @@ describe( 'lib/utils/validatePackageName()', () => {
 
 		sinon.stub( console, 'info' );
 
-		validatePackageName = require( '../../lib/utils/validatePackageName' );
+		validatePackageName = require( '../../lib/utils/validate-package-name' );
 	} );
 
 	afterEach( () => {
