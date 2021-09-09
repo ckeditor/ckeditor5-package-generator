@@ -13,14 +13,16 @@ Create CKEditor 5 Plugin
 To create a new plugin, call the following command:
 
 ```bash
-npx create-ckeditor5-plugin <directory>
+npx create-ckeditor5-plugin <packageName>
 ```
 
-The `<directory>` argument is obligatory and must follow a few rules:
+The `<packageName>` argument is obligatory and must follow a few rules:
 
 * The provided name must match the schema: `@organization/ckeditor5-package`
   * `@organization` is a [scope](https://docs.npmjs.com/about-scopes) of the package,
 * The package name must start with the `ckeditor5-` prefix. 
+
+As a result of executing the command, a new directory with a package will be created. The directory's name will be equal to the specified package name without the `@scope` part, and it will contain an example plugin and development environment.
 
 ## Developing the package
 

@@ -13,13 +13,15 @@ const { execSync, spawnSync } = require( 'child_process' );
 
 const { Command } = require( 'commander' );
 const mkdirp = require( 'mkdirp' );
-const validateNpmPackageName = require( 'validate-npm-package-name' );
 const template = require( 'lodash.template' );
 const glob = require( 'glob' );
 const chalk = require( 'chalk' );
 
 const packageJson = require( '../package.json' );
 const TEMPLATE_PATH = path.join( __dirname, 'templates' );
+
+const getDependenciesVersions = require( './utils/get-dependencies-versions' );
+const validatePackageName = require( './utils/validate-package-name' );
 
 // Files that need to be filled with data.
 const TEMPLATES_TO_FILL = [
@@ -30,7 +32,7 @@ const TEMPLATES_TO_FILL = [
 ];
 
 new Command( packageJson.name )
-	.argument( '<directory>', 'directory where the package should be created' )
+	.argument( '<packageName>', 'name of the package (@scope/ckeditor5-*)' )
 	.option( '-v, --verbose', 'output additional logs', false )
 	.option( '--dev', 'execution of the script in the development mode', () => {
 		// An absolute path to the repository that tracks the package.
@@ -42,16 +44,16 @@ new Command( packageJson.name )
 	} )
 	.option( '--use-npm', 'whether use npm to install packages', false )
 	.allowUnknownOption()
-	.action( ( directory, options ) => init( directory, options ) )
+	.action( ( packageName, options ) => init( packageName, options ) )
 	// .on( '--help', () => {
 	// } )
 	.parse( process.argv );
 
 /**
- * @param {String} directory
+ * @param {String} packageName
  * @param {CreateCKeditor5PluginOptions} options
  */
-async function init( directory, options ) {
+async function init( packageName, options ) {
 	// 1. Validate package name.
 	// 2. Create directory.
 	// 3. Copy files.
@@ -70,9 +72,20 @@ async function init( directory, options ) {
 
 	// (1.)
 	console.log( '📍 Verifying the specified package name.' );
-	validateDirectory( directory );
+	const validationErrors = validatePackageName( packageName );
 
-	const directoryPath = path.resolve( directory );
+	if ( validationErrors.length ) {
+		console.error( `Package name "${ packageName }" is invalid.` );
+
+		for ( const error of validationErrors ) {
+			console.error( error );
+		}
+
+		process.exit( 1 );
+	}
+
+	const directoryName = packageName.split( '/' )[ 1 ];
+	const directoryPath = path.resolve( directoryName );
 
 	console.log( '📍 Checking whether the specified directory can be created.' );
 
@@ -87,18 +100,9 @@ async function init( directory, options ) {
 	console.log( `📍 Creating the directory "${ chalk.cyan( directoryPath ) }".` );
 	mkdirp.sync( directoryPath );
 
-	// TODO: Move to a separate util.
-	const packageVersions = {
-		ckeditor5: getLatestVersionOfPackage( 'ckeditor5' ),
-		devUtils: getLatestVersionOfPackage( '@ckeditor/ckeditor5-dev-utils' ),
-		packageTools: options.dev ?
-			// Windows accepts unix-like paths in `package.json`, so let's unify it to avoid errors with paths.
-			// TODO: Consider creating the common utils between all packages in the repository.
-			'file:' + path.resolve( __dirname, '..', '..', 'ckeditor5-package-tools' ).split( path.sep ).join( path.posix.sep ) :
-			'^' + getLatestVersionOfPackage( '@ckeditor/ckeditor5-package-tools' )
-	};
+	const packageVersions = getDependenciesVersions( options.dev );
 
-	const dllConfiguration = getDllConfiguration( directory );
+	const dllConfiguration = getDllConfiguration( packageName );
 
 	const templatesToCopy = glob.sync( '**/*', {
 		cwd: TEMPLATE_PATH,
@@ -115,7 +119,7 @@ async function init( directory, options ) {
 
 		if ( TEMPLATES_TO_FILL.includes( templatePath ) ) {
 			data = {
-				name: directory,
+				name: packageName,
 				ckeditor5Version: packageVersions.ckeditor5,
 				devUtilsVersion: packageVersions.devUtils,
 				packageToolsVersion: packageVersions.packageTools,
@@ -137,44 +141,6 @@ async function init( directory, options ) {
 
 	// (6.)
 	console.log( chalk.green( 'Done!' ) );
-}
-
-/**
- * @param {String} directory
- */
-function validateDirectory( directory ) {
-	const validateResult = validateNpmPackageName( directory );
-
-	if ( !validateResult.validForNewPackages ) {
-		console.log( 'Provided <directory> is not valid name for a npm package.' );
-
-		for ( const error of ( validateResult.errors || [] ) ) {
-			console.log( '  * ' + error );
-		}
-
-		for ( const warning of ( validateResult.warnings || [] ) ) {
-			console.log( '  * ' + warning );
-		}
-
-		process.exit( 1 );
-	}
-
-	// Extract the package name from the scoped directory.
-	const [ , packageName ] = directory.split( '/' );
-
-	if ( !packageName || !packageName.match( /^ckeditor5/ ) ) {
-		console.log( 'Provided <directory> should start with the "@scope", and the package name should follow the "ckeditor5-" prefix.' );
-
-		process.exit( 1 );
-	}
-}
-
-/**
- * @param packageName
- * @return {String}
- */
-function getLatestVersionOfPackage( packageName ) {
-	return execSync( `npm view ${ packageName } version` ).toString().trim();
 }
 
 /**
@@ -247,12 +213,12 @@ function initializeGitRepository( directoryPath ) {
 /**
  * Configuration for output produces by webpack.
  *
- * @param {String} directory
+ * @param {String} packageName
  * @return {Object}
  */
-function getDllConfiguration( directory ) {
+function getDllConfiguration( packageName ) {
 	// For the scoped package, webpack exports it as `window.CKEditor5[ packageName ]`.
-	const [ , packageName ] = directory.split( '/' );
+	[ , packageName ] = packageName.split( '/' );
 	const packageNameSlug = getGlobalKeyForPackage( packageName );
 
 	// The `packageName` represents the package name as a slug, and scope starts without the `at` (@) character.
