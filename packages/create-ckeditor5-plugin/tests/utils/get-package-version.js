@@ -52,6 +52,6 @@ describe( 'lib/utils/get-package-version', () => {
 	it( 'returns a version matching semantic versioning specification', () => {
 		const returnedValue = getPackageVersion( 'ckeditor5' );
 
-		expect( returnedValue ).to.match( /^\d+\.\d+\.\d+$/ );
+		expect( returnedValue ).to.equal( '30.0.0' );
 	} );
 } );
