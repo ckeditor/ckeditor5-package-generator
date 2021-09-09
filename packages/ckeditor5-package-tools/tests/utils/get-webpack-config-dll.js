@@ -53,7 +53,7 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 	} );
 
 	afterEach( () => {
-		mockery.resetCache();
+		mockery.deregisterAll();
 		mockery.disable();
 	} );
 
