@@ -43,7 +43,7 @@ describe( 'lib/utils/get-package-version', () => {
 		expect( returnedValue ).to.be.a( 'string' );
 	} );
 
-	it( 'calls "npm show" to deterine the version', () => {
+	it( 'calls "npm show" to determine the version', () => {
 		getPackageVersion( 'ckeditor5' );
 
 		expect( execSyncStub.firstCall.firstArg ).to.equal( 'npm view ckeditor5 version' );
