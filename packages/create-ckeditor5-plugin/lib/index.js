@@ -32,7 +32,7 @@ const TEMPLATES_TO_FILL = [
 ];
 
 new Command( packageJson.name )
-	.argument( '<packageName>', 'name of the package, and it\'s directory name' )
+	.argument( '<packageName>', 'name of the package (@scope/ckeditor5-*)' )
 	.option( '-v, --verbose', 'output additional logs', false )
 	.option( '--dev', 'execution of the script in the development mode', () => {
 		// An absolute path to the repository that tracks the package.
@@ -75,14 +75,17 @@ async function init( packageName, options ) {
 	const validationErrors = validatePackageName( packageName );
 
 	if ( validationErrors.length ) {
-		console.error( `Package name "${ packageName }" is invalid:` );
+		console.error( `Package name "${ packageName }" is invalid.` );
+
 		for ( const error of validationErrors ) {
 			console.error( error );
 		}
+
 		process.exit( 1 );
 	}
 
-	const directoryPath = path.resolve( packageName.split( '/' )[ 1 ] );
+	const directoryName = packageName.split( '/' )[ 1 ];
+	const directoryPath = path.resolve( directoryName );
 
 	console.log( '📍 Checking whether the specified directory can be created.' );
 

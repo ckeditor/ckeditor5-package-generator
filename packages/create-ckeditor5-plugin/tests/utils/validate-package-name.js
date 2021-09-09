@@ -45,7 +45,7 @@ describe( 'lib/utils/validate-package-name', () => {
 		expect( returnedValue ).to.eql( [] );
 	} );
 
-	describe( 'returns an array with correct error messages for a package name that:', () => {
+	describe( 'returns an array with error messages for a package name', () => {
 		// See: https://www.npmjs.com/package/validate-npm-package-name#naming-rules.
 		it( 'if a package name does not match to npm rules', () => {
 			validateNpmPackageName.returns( { validForNewPackages: false, errors: [ 'Example error' ] } );
