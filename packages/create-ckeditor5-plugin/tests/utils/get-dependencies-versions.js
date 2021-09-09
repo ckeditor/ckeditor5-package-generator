@@ -10,8 +10,8 @@ const expect = require( 'chai' ).expect;
 const mockery = require( 'mockery' );
 const path = require( 'path' );
 
-describe( 'lib/utils/get-ckeditor5-packages-versions', () => {
-	let getCKEditor5PackagesVersions, getLatestVersionOfPackage;
+describe( 'lib/utils/get-dependencies-versions', () => {
+	let getDependenciesVersions, getPackageVersion;
 
 	beforeEach( () => {
 		mockery.enable( {
@@ -20,14 +20,14 @@ describe( 'lib/utils/get-ckeditor5-packages-versions', () => {
 			warnOnUnregistered: false
 		} );
 
-		getLatestVersionOfPackage = sinon.stub();
+		getPackageVersion = sinon.stub();
 
-		mockery.registerMock( './get-latest-version-of-package', getLatestVersionOfPackage );
-		getLatestVersionOfPackage.withArgs( 'ckeditor5' ).returns( '30.0.0' );
-		getLatestVersionOfPackage.withArgs( '@ckeditor/ckeditor5-dev-utils' ).returns( '25.0.0' );
-		getLatestVersionOfPackage.withArgs( '@ckeditor/ckeditor5-package-tools' ).returns( '1.0.0' );
+		mockery.registerMock( './get-package-version', getPackageVersion );
+		getPackageVersion.withArgs( 'ckeditor5' ).returns( '30.0.0' );
+		getPackageVersion.withArgs( '@ckeditor/ckeditor5-dev-utils' ).returns( '25.0.0' );
+		getPackageVersion.withArgs( '@ckeditor/ckeditor5-package-tools' ).returns( '1.0.0' );
 
-		getCKEditor5PackagesVersions = require( '../../lib/utils/get-ckeditor5-packages-versions' );
+		getDependenciesVersions = require( '../../lib/utils/get-dependencies-versions' );
 	} );
 
 	afterEach( () => {
@@ -36,26 +36,26 @@ describe( 'lib/utils/get-ckeditor5-packages-versions', () => {
 	} );
 
 	it( 'should be a function', () => {
-		expect( getCKEditor5PackagesVersions ).to.be.an( 'function' );
+		expect( getDependenciesVersions ).to.be.an( 'function' );
 	} );
 
 	it( 'returns an object with a version of the "ckeditor5" package', () => {
-		const returnedValue = getCKEditor5PackagesVersions( false );
+		const returnedValue = getDependenciesVersions( false );
 		expect( returnedValue.ckeditor5 ).to.equal( '30.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "@ckeditor/ckeditor5-dev-utils" package', () => {
-		const returnedValue = getCKEditor5PackagesVersions( false );
+		const returnedValue = getDependenciesVersions( false );
 		expect( returnedValue.devUtils ).to.equal( '25.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "@ckeditor/ckeditor5-package-tools" package if "devMode" is disabled', () => {
-		const returnedValue = getCKEditor5PackagesVersions( false );
+		const returnedValue = getDependenciesVersions( false );
 		expect( returnedValue.packageTools ).to.equal( '^1.0.0' );
 	} );
 
 	it( 'it returns an absolute path to the "@ckeditor/ckeditor5-package-tools" package if "devMode" is enabled', () => {
-		const returnedValue = getCKEditor5PackagesVersions( true );
+		const returnedValue = getDependenciesVersions( true );
 
 		const PROJECT_ROOT_DIRECTORY = path.join( __dirname, '..', '..', '..' );
 		let packageTools = 'file:' + path.resolve( PROJECT_ROOT_DIRECTORY, 'ckeditor5-package-tools' );

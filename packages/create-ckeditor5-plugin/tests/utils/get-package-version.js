@@ -9,8 +9,8 @@ const sinon = require( 'sinon' );
 const expect = require( 'chai' ).expect;
 const mockery = require( 'mockery' );
 
-describe( 'lib/utils/get-latest-version-of-package', () => {
-	let getLatestVersionOfPackage, execSyncStub;
+describe( 'lib/utils/get-package-version', () => {
+	let getPackageVersion, execSyncStub;
 
 	beforeEach( () => {
 		mockery.enable( {
@@ -25,7 +25,7 @@ describe( 'lib/utils/get-latest-version-of-package', () => {
 			execSync: execSyncStub
 		} );
 
-		getLatestVersionOfPackage = require( '../../lib/utils/get-latest-version-of-package' );
+		getPackageVersion = require( '../../lib/utils/get-package-version' );
 	} );
 
 	afterEach( () => {
@@ -34,23 +34,23 @@ describe( 'lib/utils/get-latest-version-of-package', () => {
 	} );
 
 	it( 'should be a function', () => {
-		expect( getLatestVersionOfPackage ).to.be.an( 'function' );
+		expect( getPackageVersion ).to.be.an( 'function' );
 	} );
 
 	it( 'returns a string', () => {
-		const returnedValue = getLatestVersionOfPackage( 'ckeditor5' );
+		const returnedValue = getPackageVersion( 'ckeditor5' );
 
 		expect( returnedValue ).to.be.a( 'string' );
 	} );
 
 	it( 'calls "npm show" to deterine the version', () => {
-		getLatestVersionOfPackage( 'ckeditor5' );
+		getPackageVersion( 'ckeditor5' );
 
 		expect( execSyncStub.firstCall.firstArg ).to.equal( 'npm view ckeditor5 version' );
 	} );
 
 	it( 'returns a version matching semantic versioning specification', () => {
-		const returnedValue = getLatestVersionOfPackage( 'ckeditor5' );
+		const returnedValue = getPackageVersion( 'ckeditor5' );
 
 		expect( returnedValue ).to.match( /^\d+\.\d+\.\d+$/ );
 	} );
