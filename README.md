@@ -53,7 +53,7 @@ This repository follows the mono-repository structure. It contains multiple npm 
 </tbody>
 </table>
 
-## Develop the `create-ckeditor5-plugin` repository
+## Developing the `create-ckeditor5-plugin` repository
 
 * Clone the repository: `git clone git@github.com:ckeditor/create-ckeditor5-plugin.git`
 * Install required dependencies: `yarn install`
