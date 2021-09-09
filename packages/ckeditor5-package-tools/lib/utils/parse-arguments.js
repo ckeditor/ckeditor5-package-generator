@@ -51,3 +51,21 @@ module.exports = args => {
 
 	return options;
 };
+
+/**
+ * @typedef {Object} Ckeditor5PackageToolsOptions
+ *
+ * @property {String} cwd An absolute path to the root directory which contains the main `package.json` file.
+ *
+ * @property {String} task A name of a task to execute.
+ *
+ * @property {Array.<String>} _ Additional modifiers for the executed task that could not be matched with the supported options.
+ *
+ * @property {Boolean} [coverage=false] When executing tests, this option allows creating a code coverage report.
+ *
+ * @property {Boolean} [watch=false] When executing tests, this option
+ *
+ * @property {Boolean} [verbose=false]
+ *
+ * @property {Boolean} [sourceMap=false] When executing tests, it allows creating source maps between built test file, and sources.
+ */
