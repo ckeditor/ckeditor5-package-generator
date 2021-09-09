@@ -20,7 +20,7 @@
     "coverage": "nyc --reporter=lcov --reporter=text-summary npm run test",
     "lint": "eslint --quiet '**/*.js'",
     "precommit": "lint-staged",
-    "test": "mocha packages/ckeditor5-package-tools/tests --recursive"
+    "test": "mocha 'packages/*/tests/**/*.js'"
   },
   "lint-staged": {
     "**/*.js": [

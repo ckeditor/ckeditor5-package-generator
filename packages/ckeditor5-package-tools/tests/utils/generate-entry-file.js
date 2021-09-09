@@ -54,15 +54,10 @@ describe( 'lib/utils/generate-entry-file', () => {
 	} );
 
 	afterEach( () => {
-		// To avoid "TypeError: expecting a function but got [object Object]" error, deregister all mocks manually.
-		mockery.deregisterMock( 'fs' );
-		mockery.deregisterMock( 'path' );
-		mockery.deregisterMock( 'mkdirp' );
-		mockery.deregisterMock( 'glob' );
-
-		clock.restore();
-		sinon.restore();
+		mockery.deregisterAll();
 		mockery.disable();
+		sinon.restore();
+		clock.restore();
 	} );
 
 	it( 'should be a function', () => {
