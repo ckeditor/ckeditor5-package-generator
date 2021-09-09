@@ -218,6 +218,7 @@ function initializeGitRepository( directoryPath ) {
  */
 function getDllConfiguration( packageName ) {
 	// For the scoped package, webpack exports it as `window.CKEditor5[ packageName ]`.
+	[ , packageName ] = packageName.split( '/' );
 	const packageNameSlug = getGlobalKeyForPackage( packageName );
 
 	// The `packageName` represents the package name as a slug, and scope starts without the `at` (@) character.
