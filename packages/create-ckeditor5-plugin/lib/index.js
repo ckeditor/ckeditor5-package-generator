@@ -25,8 +25,7 @@ const TEMPLATE_PATH = path.join( __dirname, 'templates' );
 const TEMPLATES_TO_FILL = [
 	'sample/dll.html',
 	'package.json',
-	'README.md',
-	'webpack.dll.js'
+	'README.md'
 ];
 
 new Command( packageJson.name )
