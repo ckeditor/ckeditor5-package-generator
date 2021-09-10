@@ -12,5 +12,9 @@ module.exports = {
 
 	start( options ) {
 		return require( '../lib/tasks/start' )( options );
+	},
+
+	'dll:build'( options ) {
+		return require( '../lib/tasks/dll-build' )( options );
 	}
 };

@@ -27,8 +27,7 @@ const validatePackageName = require( './utils/validate-package-name' );
 const TEMPLATES_TO_FILL = [
 	'sample/dll.html',
 	'package.json',
-	'README.md',
-	'webpack.dll.js'
+	'README.md'
 ];
 
 new Command( packageJson.name )
