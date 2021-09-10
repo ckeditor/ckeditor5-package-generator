@@ -105,4 +105,4 @@ TBA
 
 The `create-ckeditor5-plugin` tool is available under the [MIT license](https://opensource.org/licenses/MIT).
 
-All packages created with the tool are also covered by the MIT license.
+All packages created with the tool are also available under the MIT license.
