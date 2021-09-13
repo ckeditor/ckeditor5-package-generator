@@ -23,7 +23,7 @@
     "lint": "eslint --quiet '**/*.js'",
     "precommit": "lint-staged",
     "test": "mocha 'packages/*/tests/**/*.js'",
-    "stylelint": "stylelint --quiet --allow-empty-input 'packages/**/*.css'"
+    "stylelint": "stylelint --quiet --allow-empty-input '**/*.css'"
   },
   "lint-staged": {
     "**/*.js": [
