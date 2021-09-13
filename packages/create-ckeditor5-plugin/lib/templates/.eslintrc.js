@@ -4,25 +4,6 @@
 
 module.exports = {
 	extends: 'ckeditor5',
-	settings: {
-		// List of CKEditor 5 packages (without the "ckeditor5-" prefix) that are considered as
-		// the core DLL packages. The list must be compatible with packages mentioned in the "Base DLL build" point.
-		// See: https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html#anatomy-of-a-dll-build.
-		dllPackages: [
-			'clipboard',
-			'core',
-			'engine',
-			'enter',
-			'paragraph',
-			'select-all',
-			'typing',
-			'ui',
-			'undo',
-			'upload',
-			'utils',
-			'widget'
-		]
-	},
 	rules: {
 		// This rule disallows importing core DLL packages directly. Imports should be done using the `ckeditor5` package.
 		// Also, importing non-DLL packages is not allowed. If the plugin requires other features to work, they should be
