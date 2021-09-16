@@ -7,7 +7,7 @@ const { getPostCssConfig } = require( '@ckeditor/ckeditor5-dev-utils' ).styles;
 
 module.exports = options => {
 	return {
-		mode: 'development',
+		mode: options.production ? 'production' : 'development',
 
 		performance: {
 			hints: false
