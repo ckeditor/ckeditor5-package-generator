@@ -17,6 +17,8 @@ import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Table from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
+import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
+import Code from '@ckeditor/ckeditor5-basic-styles/src/code';
 
 import MyPlugin from '../src/myplugin';
 
@@ -42,7 +44,9 @@ ClassicEditor
 			Paragraph,
 			Table,
 			TableToolbar,
-			MyPlugin
+			MyPlugin,
+			CodeBlock,
+			Code
 		],
 		toolbar: [
 			'myButton',
@@ -52,6 +56,7 @@ ClassicEditor
 			'bold',
 			'italic',
 			'link',
+			'code',
 			'bulletedList',
 			'numberedList',
 			'|',
@@ -62,7 +67,8 @@ ClassicEditor
 			'insertTable',
 			'mediaEmbed',
 			'undo',
-			'redo'
+			'redo',
+			'codeBlock'
 		],
 		image: {
 			toolbar: [ 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side', '|', 'imageTextAlternative' ]
