@@ -16,21 +16,74 @@
 
 <ul>
     <li><a href="dll.html">DLL Sample</a></li>
-    <li><a href="https://github.com/ckeditor/create-ckeditor5-plugin#creating-a-package" target="_blank">How to create a plugin</a></li>
-    <li><a href="https://ckeditor.com/docs/ckeditor5/latest/api/" target="_blank">API documentation</a></li>
-    <li><a href="https://github.com/ckeditor/ckeditor5/issues/new/choose" target="_blank">Report an issue with CKEditor5</a></li>
 </ul>
 
 <div id="editor">
-    <h2>Sample</h2>
+    <p>This is a demo of the <a href="https://ckeditor.com/docs/ckeditor5/latest/builds/guides/overview.html#classic-editor">classic
+    editor build</a> that contains <code>MyPlugin</code>, which is an example plugin. You can use this sample to validate whether your
+    <a href="https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/custom-builds.html">custom build</a> works fine. To
+    use the example plugin and insert text into the editor, click on the CKEditor5 icon that is located leftmost on the toolbar.</p>
 
-    <p>This is an instance of the <a href="https://ckeditor.com/docs/ckeditor5/latest/builds/guides/overview.html#classic-editor">classic editor build</a>.</p>
+    <p>Some helpful resources:</p>
+    <ul>
+        <li>
+            <a href="https://github.com/ckeditor/create-ckeditor5-plugin#creating-a-package" target="_blank">How to create a plugin</a>
+        </li>
+        <li>
+            <a href="https://ckeditor.com/docs/ckeditor5/latest/api/" target="_blank">API documentation</a>
+        </li>
+        <li>
+            <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/index.html" target="_blank">Documentation</a> - Worth checking out:
+            <ul>
+                <li>
+                    <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/guides/creating-simple-plugin.html" target="_blank">Creating a simple plugin</a> - the old fashioned way
+                </li>
+                <li>
+                    <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/guides/development-tools.html" target="_blank">Development tools</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
 
-    <figure class="image">
-        <img src="https://ckeditor.com/docs/ckeditor5/latest/assets/img/warsaw.jpg" alt="Warsaw" />
-    </figure>
+    Correct plugin file structure:
+    <ul>
+        <li>
+            <code>.js</code> files in the <code>src/</code> directory
+        </li>
+        <li>
+            <code>.css</code> files in the <code>theme/</code> directory
+        </li>
+        <li>
+            <code>.svg</code> files in the <code>theme/icons/</code> directory
+        </li>
+    </ul>
+    <pre><code class="language-plaintext">ckeditor5-plugin/
+├─ ...
+├─ src/
+│  ├─ index.js
+│  ├─ ....js
+├─ ...
+├─ theme/
+│  ├─ icons/
+│  │  ├─ icon.svg
+│  │  ├─ ....svg
+│  ├─ style.css
+│  ├─ ....css
+├─ ...</code></pre>
 
-    <p>You can use this sample to validate whether your <a href="https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/custom-builds.html">custom build</a> works fine.</p>
+    <p>Report issues here:</p>
+    <ul>
+        <li>
+            <a href="https://github.com/ckeditor/ckeditor5/issues/new/choose" target="_blank">
+                CKEditor5
+            </a> - issues with the editor itself
+        </li>
+        <li>
+            <a href="https://github.com/ckeditor/create-ckeditor5-plugin/issues/new" target="_blank">
+                Create CKEditor5 Plugin
+            </a> - issues concerning plugin generator
+        </li>
+    </ul>
 </div>
 
 <script src="./script.dist.js"></script>
