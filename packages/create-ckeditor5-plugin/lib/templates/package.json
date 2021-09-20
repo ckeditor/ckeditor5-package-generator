@@ -22,16 +22,18 @@
     "@ckeditor/ckeditor5-autoformat": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-basic-styles": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-block-quote": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-code-block": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-essentials": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-heading": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-image": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-indent": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-link": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-list": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-media-embed": ">=<%= ckeditor5Version %>",
-    "@ckeditor/ckeditor5-table": ">=<%= ckeditor5Version %>",
-    "@ckeditor/ckeditor5-essentials": ">=<%= ckeditor5Version %>",
-    "@ckeditor/ckeditor5-heading": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-paragraph": ">=<%= ckeditor5Version %>",
-    "@ckeditor/ckeditor5-theme-lark": ">=<%= ckeditor5Version %>"
+    "@ckeditor/ckeditor5-table": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-theme-lark": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-upload": ">=<%= ckeditor5Version %>"
   },
   "files": [
     "lang",

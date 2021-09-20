@@ -9,6 +9,8 @@ import Image from '@ckeditor/ckeditor5-image/src/image';
 import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
 import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar';
+import ImageUpload from '@ckeditor/ckeditor5-image/src/imageupload';
+import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
 import Indent from '@ckeditor/ckeditor5-indent/src/indent';
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import Link from '@ckeditor/ckeditor5-link/src/link';
@@ -17,6 +19,8 @@ import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Table from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
+import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
+import Code from '@ckeditor/ckeditor5-basic-styles/src/code';
 
 import MyPlugin from '../src/myplugin';
 
@@ -34,6 +38,7 @@ ClassicEditor
 			ImageCaption,
 			ImageStyle,
 			ImageToolbar,
+			ImageUpload,
 			Indent,
 			Italic,
 			Link,
@@ -42,7 +47,10 @@ ClassicEditor
 			Paragraph,
 			Table,
 			TableToolbar,
-			MyPlugin
+			MyPlugin,
+			CodeBlock,
+			Code,
+			Base64UploadAdapter
 		],
 		toolbar: [
 			'myButton',
@@ -52,15 +60,19 @@ ClassicEditor
 			'bold',
 			'italic',
 			'link',
+			'code',
 			'bulletedList',
 			'numberedList',
 			'|',
 			'outdent',
 			'indent',
 			'|',
+			'uploadImage',
 			'blockQuote',
 			'insertTable',
 			'mediaEmbed',
+			'codeBlock',
+			'|',
 			'undo',
 			'redo'
 		],
