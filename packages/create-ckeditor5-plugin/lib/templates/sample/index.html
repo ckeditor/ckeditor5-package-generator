@@ -19,70 +19,80 @@
 </ul>
 
 <div id="editor">
-    <p>This is a demo of the <a href="https://ckeditor.com/docs/ckeditor5/latest/builds/guides/overview.html#classic-editor">classic
-    editor build</a> that contains <code>MyPlugin</code>, which is an example plugin. You can use this sample to validate whether your
-    <a href="https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/custom-builds.html">custom build</a> works fine. To
-    use the example plugin and insert text into the editor, click on the CKEditor5 icon that is located leftmost on the toolbar.</p>
+    <h2>Development environment</h2>
+    <p>
+        This is a demo of the <a href="https://ckeditor.com/docs/ckeditor5/latest/builds/guides/overview.html#classic-editor">classic editor
+        build</a> that loads <code>MyPlugin</code>, which is an example plugin produced by the package generator. You can modify this
+        sample to validate whether a plugin or set of plugins work fine.
+    </p>
+    <p>
+        <code>MyPlugin</code> inserts a text into the editor. You can click the CKEditor 5 icon in the toolbar and see results.
+    </p>
 
-    <p>Some helpful resources:</p>
+    <h3>Helpful resources</h3>
     <ul>
-        <li>
-            <a href="https://github.com/ckeditor/create-ckeditor5-plugin#creating-a-package" target="_blank">How to create a plugin</a>
-        </li>
-        <li>
-            <a href="https://ckeditor.com/docs/ckeditor5/latest/api/" target="_blank">API documentation</a>
-        </li>
-        <li>
-            <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/index.html" target="_blank">Documentation</a> - Worth checking out:
+        <li>Architecture
             <ul>
                 <li>
-                    <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/guides/creating-simple-plugin.html" target="_blank">Creating a simple plugin</a> - the old fashioned way
+                    <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/guides/architecture/core-editor-architecture.html">Core editor architecture</a>
                 </li>
+            </ul>
+            <ul>
                 <li>
-                    <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/guides/development-tools.html" target="_blank">Development tools</a>
+                    <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/guides/architecture/editing-engine.html">Editing engine</a>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/guides/architecture/ui-library.html">UI library</a>
                 </li>
             </ul>
         </li>
+
+        <li>
+            <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/browser-compatibility.html">Browser compatibility</a>
+        </li>
+
+        <li>
+            <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/error-codes.html">Error codes</a>
+        </li>
+
+        <li><a href="https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html">DLL builds</a></li>
     </ul>
 
-    Correct plugin file structure:
-    <ul>
-        <li>
-            <code>.js</code> files in the <code>src/</code> directory
-        </li>
-        <li>
-            <code>.css</code> files in the <code>theme/</code> directory
-        </li>
-        <li>
-            <code>.svg</code> files in the <code>theme/icons/</code> directory
-        </li>
-    </ul>
-    <pre><code class="language-plaintext">ckeditor5-plugin/
-├─ ...
-├─ src/
-│  ├─ index.js
-│  ├─ ....js
-├─ ...
-├─ theme/
-│  ├─ icons/
-│  │  ├─ icon.svg
-│  │  ├─ ....svg
-│  ├─ style.css
-│  ├─ ....css
-├─ ...</code></pre>
+    <h3>The directory structure</h3>
 
-    <p>Report issues here:</p>
+    <p>
+        The code snippet describes the directory structure.
+    </p>
+
+    <pre><code class="language-plaintext">.
+├─ sample
+│  ├─ dll.html         # The editor initialized using the DLL builds.
+│  ├─ index.html       # The current displayed file.
+│  └─ script.js        # The editor initialization script.
+├─ src
+│  ├─ index.js         # Modules exported by the package when using the DLL builds.
+│  ├─ myplugin.js      # Plugin that shows the very basic usage of the CKEditor 5 framework.
+│  └─ **/*.js          # All JavaScript source files should be saved here.
+├─ tests
+│  ├─ index.js         # Tests for the plugin.
+│  ├─ myplugin.js
+│  └─ **/*.js          # All tests should be saved here.
+├─ theme
+│  ├─ icons
+│  │  ├─ ckeditor.svg  # The CKEditor 5 icon displayed in the toolbar.
+│  │  └─ **/*.svg      # All icon files should be saved here.
+│  └─ **/*.css         # All CSS files should be saved here.
+├─ .editorconfig
+├─ ...
+└─ README.md</code></pre>
+
+    <h3>Reporting issues</h3>
+    <p>If you found a problem with CKEditor 5 or the package generator, please, report an issue:</p>
     <ul>
-        <li>
-            <a href="https://github.com/ckeditor/ckeditor5/issues/new/choose" target="_blank">
-                CKEditor5
-            </a> - issues with the editor itself
-        </li>
-        <li>
-            <a href="https://github.com/ckeditor/create-ckeditor5-plugin/issues/new" target="_blank">
-                Create CKEditor5 Plugin
-            </a> - issues concerning plugin generator
-        </li>
+        <li><a href="https://github.com/ckeditor/ckeditor5/issues/new/choose">CKEditor 5</a></li>
+        <li><a href="https://github.com/ckeditor/create-ckeditor5-plugin/issues/new">The package generator</a></li>
     </ul>
 </div>
 

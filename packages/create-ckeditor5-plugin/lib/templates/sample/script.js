@@ -9,6 +9,8 @@ import Image from '@ckeditor/ckeditor5-image/src/image';
 import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
 import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar';
+import ImageUpload from '@ckeditor/ckeditor5-image/src/imageupload';
+import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
 import Indent from '@ckeditor/ckeditor5-indent/src/indent';
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import Link from '@ckeditor/ckeditor5-link/src/link';
@@ -36,6 +38,7 @@ ClassicEditor
 			ImageCaption,
 			ImageStyle,
 			ImageToolbar,
+			ImageUpload,
 			Indent,
 			Italic,
 			Link,
@@ -46,7 +49,8 @@ ClassicEditor
 			TableToolbar,
 			MyPlugin,
 			CodeBlock,
-			Code
+			Code,
+			Base64UploadAdapter
 		],
 		toolbar: [
 			'myButton',
@@ -63,12 +67,14 @@ ClassicEditor
 			'outdent',
 			'indent',
 			'|',
+			'uploadImage',
 			'blockQuote',
 			'insertTable',
 			'mediaEmbed',
+			'codeBlock',
+			'|',
 			'undo',
-			'redo',
-			'codeBlock'
+			'redo'
 		],
 		image: {
 			toolbar: [ 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side', '|', 'imageTextAlternative' ]
