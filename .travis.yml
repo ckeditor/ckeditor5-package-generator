@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+  - '12'
+cache:
+  yarn: true
+cache:
+  - node_modules
+before_install:
+  - npm i -g yarn
+install:
+  - yarn install
+script:
+  - yarn run test
+  - node packages/create-ckeditor5-plugin @xyz/ckeditor5-test-package --dev
+  - cd ckeditor5-test-package
+  - yarn run test
+  - yarn run lint
+  - yarn run start
