@@ -19,10 +19,10 @@
     <p>
         This is a demo of the <a href="https://ckeditor.com/docs/ckeditor5/latest/builds/guides/overview.html#classic-editor">classic editor
         build</a> that loads <code>MyPlugin</code>, which is an example plugin produced by the package generator. You can modify this
-        sample to validate whether a plugin or set of plugins work fine.
+        sample and use it to validate whether a plugin or a set of plugins work fine.
     </p>
     <p>
-        <code>MyPlugin</code> inserts a text into the editor. You can click the CKEditor 5 icon in the toolbar and see results.
+        <code>MyPlugin</code> inserts a text into the editor. You can click the CKEditor 5 icon in the toolbar and see the results.
     </p>
 
     <h3>Helpful resources</h3>
@@ -35,12 +35,12 @@
             </ul>
             <ul>
                 <li>
-                    <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/guides/architecture/editing-engine.html">Editing engine</a>
+                    <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/guides/architecture/editing-engine.html">The editing engine</a>
                 </li>
             </ul>
             <ul>
                 <li>
-                    <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/guides/architecture/ui-library.html">UI library</a>
+                    <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/guides/architecture/ui-library.html">The UI library</a>
                 </li>
             </ul>
         </li>
@@ -50,26 +50,26 @@
         </li>
 
         <li>
-            <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/error-codes.html">Error codes</a>
+            <a href="https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/error-codes.html">The error codes</a>
         </li>
 
-        <li><a href="https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html">DLL builds</a></li>
+        <li><a href="https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html">The DLL builds</a></li>
     </ul>
 
     <h3>The directory structure</h3>
 
     <p>
-        The code snippet describes the directory structure.
+        The code snippet below presents the directory structure.
     </p>
 
     <pre><code class="language-plaintext">.
 ├─ sample
 │  ├─ dll.html         # The editor initialized using the DLL builds.
-│  ├─ index.html       # The current displayed file.
+│  ├─ index.html       # The currently displayed file.
 │  └─ script.js        # The editor initialization script.
 ├─ src
-│  ├─ index.js         # Modules exported by the package when using the DLL builds.
-│  ├─ myplugin.js      # Plugin that shows the very basic usage of the CKEditor 5 framework.
+│  ├─ index.js         # The modules exported by the package when using the DLL builds.
+│  ├─ myplugin.js      # The plugin that shows the very basic usage of the CKEditor 5 framework.
 │  └─ **/*.js          # All JavaScript source files should be saved here.
 ├─ tests
 │  ├─ index.js         # Tests for the plugin.
