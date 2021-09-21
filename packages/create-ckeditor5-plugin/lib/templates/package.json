@@ -46,6 +46,7 @@
     "lint": "eslint --quiet '**/*.js'",
     "start": "ckeditor5-package-tools start",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
-    "test": "ckeditor5-package-tools test"
+    "test": "ckeditor5-package-tools test",
+    "crawler": "ckeditor5-package-tools crawler"
   }
 }

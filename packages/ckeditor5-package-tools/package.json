@@ -12,6 +12,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "@ckeditor/ckeditor5-dev-utils": "^25.4.2",
+    "@ckeditor/ckeditor5-dev-docs": "^25.4.0",
     "chai": "^4.3.4",
     "css-loader": "^5.2.7",
     "eslint": "^7.32.0",

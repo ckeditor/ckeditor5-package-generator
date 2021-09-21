@@ -14,6 +14,10 @@ module.exports = {
 		return require( '../lib/tasks/start' )( options );
 	},
 
+	crawler() {
+		return require( '../lib/tasks/crawler' );
+	},
+
 	'dll:build'( options ) {
 		return require( '../lib/tasks/dll-build' )( options );
 	}
