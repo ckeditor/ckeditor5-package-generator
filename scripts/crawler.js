@@ -26,14 +26,16 @@ const process = spawn( commands, {
 	shell: true
 } );
 process.stderr.on( 'data', data => {
-	console.error( 'STDERR:\n', data.toString() );
+	console.error( data.toString() );
 } );
 process.stdout.on( 'data', data => {
-	console.log( 'STDOUT:\n', data.toString() );
+	console.log( data.toString() );
 } );
 process.on( 'exit', exitCode => {
 	console.log( 'Child process exited with code: ' + exitCode );
 } );
+
+let i = 0;
 
 const timer = setInterval( () => {
 	checkUrlAvailability( SAMPLE_ADDRESS )
@@ -49,6 +51,11 @@ const timer = setInterval( () => {
 		.catch( err => {
 			console.error( err.message );
 		} );
+	i++;
+	if ( i >= 10 ) {
+		clearInterval( timer );
+		console.error( `Failed to attach the crawler, ${ SAMPLE_ADDRESS } is not available!` );
+	}
 }, 2500 );
 
 function checkUrlAvailability( url ) {
