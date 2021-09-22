@@ -15,4 +15,5 @@ script:
   - cd ckeditor5-test-package
   - yarn run test
   - yarn run lint
+  - cd ..
   - yarn run crawler

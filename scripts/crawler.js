@@ -18,7 +18,6 @@ const CRAWLER_OPTIONS = {
 	url: SAMPLE_ADDRESS
 };
 const commands = [
-	'node packages/create-ckeditor5-plugin @test/ckeditor5-test-package --dev',
 	'cd ckeditor5-test-package',
 	'yarn run start'
 ].join( ' && ' );
@@ -41,7 +40,7 @@ const timer = setInterval( () => {
 		.then( value => {
 			if ( value ) {
 				clearInterval( timer );
-				console.log( 'Succes! Starting the crawler...' );
+				console.log( 'Success! Starting the crawler...' );
 				crawler( CRAWLER_OPTIONS );
 			} else {
 				console.log( 'Crawler waiting...' );
