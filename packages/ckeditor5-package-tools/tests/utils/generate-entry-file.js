@@ -108,8 +108,8 @@ describe( 'lib/utils/generate-entry-file', () => {
 		expect( stubs.fs.writeFileSync.calledOnce ).to.equal( true );
 		expect( stubs.fs.writeFileSync.firstCall.args[ 0 ] ).to.equal( '/Users/ckeditor/ckeditor5-foo/tmp/tests-entry-point.js' );
 		expect( stubs.fs.writeFileSync.firstCall.args[ 1 ] ).to.equal(
-			'import "/process/cwd/tests/1.js";\n' +
-			'import "/process/cwd/tests/foo/2.js";'
+			'import \'/process/cwd/tests/1.js\';\n' +
+			'import \'/process/cwd/tests/foo/2.js\';'
 		);
 	} );
 
