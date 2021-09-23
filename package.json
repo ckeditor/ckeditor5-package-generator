@@ -26,6 +26,10 @@
     "release:publish": "node ./scripts/publish.js",
     "test": "mocha 'packages/*/tests/**/*.js'"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ckeditor/create-ckeditor5-plugin.git"
+  },
   "lint-staged": {
     "**/*.js": [
       "eslint --quiet"

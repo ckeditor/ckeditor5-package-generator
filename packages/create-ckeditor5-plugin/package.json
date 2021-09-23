@@ -20,7 +20,11 @@
     "stylelint-config-ckeditor5": "^2.0.1"
   },
   "files": [
-    "package.json",
-    "README.md"
-  ]
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ckeditor/create-ckeditor5-plugin.git",
+    "directory": "packages/create-ckeditor5-plugin"
+  }
 }
