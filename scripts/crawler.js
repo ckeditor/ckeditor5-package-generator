@@ -9,65 +9,44 @@
 
 'use strict';
 
-const http = require( 'http' );
-const { spawn } = require( 'child_process' );
+const childProcess = require( 'child_process' );
 const crawler = require( '@ckeditor/ckeditor5-dev-docs/lib/web-crawler/index.js' );
 
-const SAMPLE_ADDRESS = 'http://localhost:8080/';
-const CRAWLER_OPTIONS = {
-	url: SAMPLE_ADDRESS
-};
 const commands = [
-	'cd ckeditor5-test-package',
+	'node packages/create-ckeditor5-plugin @xyz/ckeditor5-test-package --dev',
+	'mv ckeditor5-test-package ..',
+	'cd ../ckeditor5-test-package',
+	'yarn run test',
+	'yarn run lint',
 	'yarn run start'
 ].join( ' && ' );
 
-const process = spawn( commands, {
+let sampleUrl;
+
+const process = childProcess.spawn( commands, {
 	shell: true
 } );
 process.stderr.on( 'data', data => {
-	console.error( data.toString() );
+	const content = data.toString().slice( 0, -1 );
+	const urlMatch = content.match( /http:\/\/localhost:\d+\// );
+
+	console.log( content );
+
+	if ( urlMatch && !sampleUrl ) {
+		sampleUrl = urlMatch[ 0 ];
+	}
 } );
 process.stdout.on( 'data', data => {
-	console.log( data.toString() );
+	const content = data.toString().slice( 0, -1 );
+	const endMatch = /\+ \d+ hidden modules/.test( content );
+
+	console.log( content );
+
+	if ( endMatch ) {
+		console.log( '\nServer ready, launching the crawler...\n' );
+		crawler( { url: sampleUrl } );
+	}
 } );
 process.on( 'exit', exitCode => {
 	console.log( 'Child process exited with code: ' + exitCode );
 } );
-
-let i = 0;
-
-const timer = setInterval( () => {
-	checkUrlAvailability( SAMPLE_ADDRESS )
-		.then( value => {
-			if ( value ) {
-				clearInterval( timer );
-				console.log( 'Success! Starting the crawler...' );
-				crawler( CRAWLER_OPTIONS );
-			} else {
-				console.log( 'Crawler waiting...' );
-			}
-		} )
-		.catch( err => {
-			console.error( err.message );
-		} );
-	i++;
-	if ( i >= 10 ) {
-		clearInterval( timer );
-		console.error( `Failed to attach the crawler, ${ SAMPLE_ADDRESS } is not available!` );
-	}
-}, 2500 );
-
-function checkUrlAvailability( url ) {
-	return new Promise( resolve => {
-		http.get( url, response => {
-			if ( response.statusCode === 200 ) {
-				resolve( true );
-			} else {
-				resolve( false );
-			}
-		} ).on( 'error', () => {
-			resolve( false );
-		} );
-	} );
-}
