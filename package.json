@@ -6,6 +6,7 @@
   "license": "GPL-2.0-or-later",
   "homepage": "https://ckeditor.com/ckeditor-5",
   "devDependencies": {
+    "@ckeditor/ckeditor5-dev-env": "^25.4.3",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": "^3.1.0",
     "husky": "^4.3.8",
@@ -17,9 +18,12 @@
     "node": ">=12"
   },
   "scripts": {
+    "changelog": "node ./scripts/changelog.js",
     "coverage": "nyc --reporter=lcov --reporter=text-summary npm run test",
     "lint": "eslint --quiet '**/*.js'",
     "precommit": "lint-staged",
+    "release:bump-version": "node ./scripts/bump-versions.js",
+    "release:publish": "node ./scripts/publish.js",
     "test": "mocha 'packages/*/tests/**/*.js'"
   },
   "lint-staged": {
