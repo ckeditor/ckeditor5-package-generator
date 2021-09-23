@@ -11,6 +11,7 @@ require( '@ckeditor/ckeditor5-dev-env' )
 	.generateChangelogForMonoRepository( {
 		cwd: process.cwd(),
 		packages: 'packages',
+		releaseBranch: 'i/17',
 		transformScope: name => {
 			if ( name === 'create-ckeditor5-plugin' ) {
 				return 'https://www.npmjs.com/package/create-ckeditor5-plugin';
