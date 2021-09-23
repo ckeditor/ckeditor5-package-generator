@@ -27,7 +27,6 @@ require( '@ckeditor/ckeditor5-dev-env' )
 	.releaseSubRepositories( {
 		cwd: process.cwd(),
 		packages: 'packages',
-		releaseBranch: 'i/17',
 		skipNpmPublish: [
 			rootPackageJson.name
 		],

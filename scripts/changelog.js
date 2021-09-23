@@ -11,7 +11,6 @@ require( '@ckeditor/ckeditor5-dev-env' )
 	.generateChangelogForMonoRepository( {
 		cwd: process.cwd(),
 		packages: 'packages',
-		releaseBranch: 'i/17',
 		// TODO: To remove after the initial release.
 		from: '11aac066c2cd145528632b0fbc508f661e7d6e57',
 		transformScope: name => {
