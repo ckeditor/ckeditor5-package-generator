@@ -22,7 +22,7 @@
     "lint": "eslint --quiet '**/*.js'",
     "precommit": "lint-staged",
     "test": "mocha 'packages/*/tests/**/*.js'",
-    "crawler": "node scripts/crawler.js"
+    "travis": "node scripts/ci/travis-check.js"
   },
   "lint-staged": {
     "**/*.js": [
