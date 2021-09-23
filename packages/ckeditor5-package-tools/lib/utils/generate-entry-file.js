@@ -18,8 +18,9 @@ module.exports = entryFilePath => {
 	mkdirp.sync( path.dirname( entryFilePath ) );
 
 	const filesImports = glob.sync( 'tests/**/*.js', { nodir: true } )
-		.map( file => `import "${ normalizePath( path.resolve( file ) ) }";` )
-		.join( '\n' );
+		.map( file => `import '${ normalizePath( path.resolve( file ) ) }';` )
+		.join( '\n' ) +
+		'\n';
 
 	fs.writeFileSync( entryFilePath, filesImports );
 
