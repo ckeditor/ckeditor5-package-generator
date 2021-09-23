@@ -15,7 +15,8 @@
     "nyc": "^15.1.0"
   },
   "engines": {
-    "node": ">=12"
+    "node": ">=12",
+    "npm": "7.24.0"
   },
   "scripts": {
     "changelog": "node ./scripts/changelog.js",
