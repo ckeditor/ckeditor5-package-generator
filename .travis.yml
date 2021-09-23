@@ -1,6 +1,8 @@
 addons:
   chrome: stable
 language: node_js
+services:
+  - xvfb
 node_js:
   - '12'
 cache:
