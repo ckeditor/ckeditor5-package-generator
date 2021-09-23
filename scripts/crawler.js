@@ -64,7 +64,7 @@ function checkUrlAvailability( url ) {
 			if ( response.statusCode === 200 ) {
 				resolve( true );
 			} else {
-				resolve( true );
+				resolve( false );
 			}
 		} ).on( 'error', () => {
 			resolve( false );
