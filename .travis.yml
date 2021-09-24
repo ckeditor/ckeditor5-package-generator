@@ -1,0 +1,18 @@
+addons:
+  chrome: stable
+language: node_js
+services:
+  - xvfb
+node_js:
+  - '12'
+cache:
+  yarn: true
+cache:
+  - node_modules
+before_install:
+  - npm i -g yarn
+install:
+  - yarn install
+script:
+  - yarn run test
+  - node scripts/ci/travis-check.js

@@ -31,6 +31,7 @@ describe( 'lib/utils/parse-arguments', () => {
 		expect( options.sourceMap ).to.equal( false );
 		expect( options.verbose ).to.equal( false );
 		expect( options.watch ).to.equal( false );
+		expect( options.open ).to.equal( true );
 	} );
 
 	it( 'assigns the current work directory as the "#cwd" property', () => {
@@ -109,5 +110,11 @@ describe( 'lib/utils/parse-arguments', () => {
 		expect( options.s ).to.equal( undefined );
 		expect( options.v ).to.equal( undefined );
 		expect( options.w ).to.equal( undefined );
+	} );
+
+	it( 'allows set to `false` the "open" option by passing "--no-open"', () => {
+		const options = parseArguments( [ 'task-to-execute', '--no-open' ] );
+
+		expect( options.open ).to.equal( false );
 	} );
 } );

@@ -26,6 +26,8 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 		getPackageVersion.withArgs( 'ckeditor5' ).returns( '30.0.0' );
 		getPackageVersion.withArgs( '@ckeditor/ckeditor5-dev-utils' ).returns( '25.0.0' );
 		getPackageVersion.withArgs( '@ckeditor/ckeditor5-package-tools' ).returns( '1.0.0' );
+		getPackageVersion.withArgs( 'eslint-config-ckeditor5' ).returns( '5.0.0' );
+		getPackageVersion.withArgs( 'stylelint-config-ckeditor5' ).returns( '3.0.0' );
 
 		getDependenciesVersions = require( '../../lib/utils/get-dependencies-versions' );
 	} );
@@ -47,6 +49,16 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 	it( 'returns an object with a version of the "@ckeditor/ckeditor5-dev-utils" package', () => {
 		const returnedValue = getDependenciesVersions( false );
 		expect( returnedValue.devUtils ).to.equal( '25.0.0' );
+	} );
+
+	it( 'returns an object with a version of the "eslint-config-ckeditor5', () => {
+		const returnedValue = getDependenciesVersions( false );
+		expect( returnedValue.eslintConfigCkeditor5 ).to.equal( '5.0.0' );
+	} );
+
+	it( 'returns an object with a version of the "stylelint-config-ckeditor5" package', () => {
+		const returnedValue = getDependenciesVersions( false );
+		expect( returnedValue.stylelintConfigCkeditor5 ).to.equal( '3.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "@ckeditor/ckeditor5-package-tools" package if "devMode" is disabled', () => {

@@ -15,7 +15,7 @@ module.exports = options => {
 	const compiler = webpack( webpackConfig );
 	const serverOptions = {
 		...webpackConfig.devServer,
-		open: true
+		open: options.open
 	};
 
 	const server = new WebpackDevServer( serverOptions, compiler );
