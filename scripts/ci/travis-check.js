@@ -9,24 +9,32 @@
 
 'use strict';
 
-const { spawn } = require( 'child_process' );
+const path = require( 'path' );
+const { spawn, spawnSync } = require( 'child_process' );
 const crawler = require( '@ckeditor/ckeditor5-dev-docs/lib/web-crawler/index.js' );
 
-const commands = [
-	'node packages/create-ckeditor5-plugin @xyz/ckeditor5-test-package --dev',
-	'mv ckeditor5-test-package ..',
-	'cd ../ckeditor5-test-package',
-	'yarn run test',
-	'yarn run lint',
-	'yarn run start'
-].join( ' && ' );
+console.log( path.join( __dirname, '..', '..' ) );
+console.log( path.join( __dirname, '..', '..', '..', 'ckeditor5-test-package' ) );
 
+const spawnOptions = {
+	encoding: 'utf8',
+	cwd: path.join( __dirname, '..', '..' ),
+	stdio: [ 'inherit', 'inherit', 'inherit', 'inherit', 'inherit' ]
+};
+
+spawnSync( 'node', [ 'packages/create-ckeditor5-plugin', '@xyz/ckeditor5-test-package', '--dev' ], spawnOptions );
+spawnSync( 'mv', [ 'ckeditor5-test-package', '..' ], spawnOptions );
+spawnOptions.cwd = path.join( __dirname, '..', '..', '..', 'ckeditor5-test-package' );
+spawnSync( 'yarn', [ 'run', 'test' ], spawnOptions );
+spawnSync( 'yarn', [ 'run', 'lint' ], spawnOptions );
+
+const sampleServer = spawn( 'yarn', [ 'run', 'start' ], {
+	shell: true,
+	cwd: path.join( __dirname, '..', '..', '..', 'ckeditor5-test-package' )
+} );
 let sampleUrl;
 
-const process = spawn( commands, {
-	shell: true
-} );
-process.stderr.on( 'data', data => {
+sampleServer.stderr.on( 'data', data => {
 	const content = data.toString().slice( 0, -1 );
 	const urlMatch = content.match( /http:\/\/localhost:\d+\// );
 
@@ -36,7 +44,8 @@ process.stderr.on( 'data', data => {
 		sampleUrl = urlMatch[ 0 ];
 	}
 } );
-process.stdout.on( 'data', data => {
+
+sampleServer.stdout.on( 'data', data => {
 	const content = data.toString().slice( 0, -1 );
 	const endMatch = /\+ \d+ hidden modules/.test( content );
 
@@ -47,6 +56,7 @@ process.stdout.on( 'data', data => {
 		crawler( { url: sampleUrl } );
 	}
 } );
-process.on( 'exit', exitCode => {
+
+sampleServer.on( 'exit', exitCode => {
 	console.log( 'Child process exited with code: ' + exitCode );
 } );
