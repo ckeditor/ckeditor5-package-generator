@@ -11,9 +11,10 @@ module.exports = args => {
 	const config = {
 		boolean: [
 			'coverage',
-			'watch',
+			'open',
+			'source-map',
 			'verbose',
-			'source-map'
+			'watch'
 		],
 
 		alias: {
@@ -25,9 +26,10 @@ module.exports = args => {
 
 		default: {
 			coverage: false,
+			open: true,
+			verbose: false,
 			watch: false,
-			'source-map': false,
-			verbose: false
+			'source-map': false
 		}
 	};
 
@@ -68,4 +70,7 @@ module.exports = args => {
  * @property {Boolean} [verbose=false]
  *
  * @property {Boolean} [sourceMap=false] When executing tests, it allows creating source maps between built test file, and sources.
+ *
+ * @property {Boolean} [open=true] When starting the development server, the default system browser will launch the compiled sample.
+ * To disable the mechanism, type `--no-open` when starting the server.
  */

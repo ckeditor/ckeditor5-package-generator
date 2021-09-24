@@ -33,7 +33,11 @@
     "@ckeditor/ckeditor5-paragraph": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-table": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-theme-lark": ">=<%= ckeditor5Version %>",
-    "@ckeditor/ckeditor5-upload": ">=<%= ckeditor5Version %>"
+    "@ckeditor/ckeditor5-upload": ">=<%= ckeditor5Version %>",
+    "eslint": "^7.32.0",
+    "eslint-config-ckeditor5": ">=<%= eslintConfigCkeditor5Version %>",
+    "stylelint": "^13.13.1",
+    "stylelint-config-ckeditor5": ">=<%= stylelintConfigCkeditor5Version %>"
   },
   "files": [
     "lang",
