@@ -45,7 +45,7 @@ startDevelopmentServer( NEW_PACKAGE_DIRECTORY )
 		fs.rmdirSync( NEW_PACKAGE_DIRECTORY, { recursive: true } );
 
 		if ( foundError ) {
-			console.log( '\n' + chalk.red( 'Found errors during the verification. Please, review the lgo above.' ) );
+			console.log( '\n' + chalk.red( 'Found errors during the verification. Please, review the log above.' ) );
 		}
 
 		process.exit( foundError ? 1 : 0 );
