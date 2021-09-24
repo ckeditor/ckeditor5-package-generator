@@ -9,7 +9,7 @@
 
 'use strict';
 
-const childProcess = require( 'child_process' );
+const { spawn } = require( 'child_process' );
 const crawler = require( '@ckeditor/ckeditor5-dev-docs/lib/web-crawler/index.js' );
 
 const commands = [
@@ -23,7 +23,7 @@ const commands = [
 
 let sampleUrl;
 
-const process = childProcess.spawn( commands, {
+const process = spawn( commands, {
 	shell: true
 } );
 process.stderr.on( 'data', data => {
@@ -32,7 +32,7 @@ process.stderr.on( 'data', data => {
 
 	console.log( content );
 
-	if ( urlMatch && !sampleUrl ) {
+	if ( !sampleUrl && urlMatch ) {
 		sampleUrl = urlMatch[ 0 ];
 	}
 } );

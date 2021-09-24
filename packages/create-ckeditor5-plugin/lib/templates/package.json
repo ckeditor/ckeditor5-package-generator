@@ -47,7 +47,7 @@
   ],
   "scripts": {
     "dll:build": "ckeditor5-package-tools dll:build",
-    "lint": "eslint --quiet **/*.js",
+    "lint": "eslint --quiet '**/*.js'",
     "start": "ckeditor5-package-tools start",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
     "test": "ckeditor5-package-tools test"
