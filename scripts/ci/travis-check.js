@@ -9,54 +9,126 @@
 
 'use strict';
 
-const path = require( 'path' );
 const { spawn, spawnSync } = require( 'child_process' );
-const crawler = require( '@ckeditor/ckeditor5-dev-docs/lib/web-crawler/index.js' );
+const path = require( 'path' );
+const fs = require( 'fs' );
+const chalk = require( 'chalk' );
 
-console.log( path.join( __dirname, '..', '..' ) );
-console.log( path.join( __dirname, '..', '..', '..', 'ckeditor5-test-package' ) );
+const REPOSITORY_DIRECTORY = path.join( __dirname, '..', '..' );
+const NEW_PACKAGE_DIRECTORY = path.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-test-package' );
 
-const spawnOptions = {
-	encoding: 'utf8',
-	cwd: path.join( __dirname, '..', '..' ),
-	stdio: [ 'inherit', 'inherit', 'inherit', 'inherit', 'inherit' ]
-};
+// A flag that determines whether any of the executed commands resulted in an error.
+let foundError = false;
 
-spawnSync( 'node', [ 'packages/create-ckeditor5-plugin', '@xyz/ckeditor5-test-package', '--dev' ], spawnOptions );
-spawnSync( 'mv', [ 'ckeditor5-test-package', '..' ], spawnOptions );
-spawnOptions.cwd = path.join( __dirname, '..', '..', '..', 'ckeditor5-test-package' );
-spawnSync( 'yarn', [ 'run', 'test' ], spawnOptions );
-spawnSync( 'yarn', [ 'run', 'lint' ], spawnOptions );
+logProcess( 'Creating new package: "@ckeditor/ckeditor5-test-package"...' );
+executeCommand( REPOSITORY_DIRECTORY, 'node', [ 'packages/create-ckeditor5-plugin', '@ckeditor/ckeditor5-test-package', '--dev' ] );
 
-const sampleServer = spawn( 'yarn', [ 'run', 'start' ], {
-	shell: true,
-	cwd: path.join( __dirname, '..', '..', '..', 'ckeditor5-test-package' )
-} );
-let sampleUrl;
+logProcess( 'Moving the package to temporary directory...' );
+executeCommand( REPOSITORY_DIRECTORY, 'mv', [ 'ckeditor5-test-package', '..' ] );
 
-sampleServer.stderr.on( 'data', data => {
-	const content = data.toString().slice( 0, -1 );
-	const urlMatch = content.match( /http:\/\/localhost:\d+\// );
+logProcess( 'Executing tests...' );
+executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'test' ] );
 
-	console.log( content );
+logProcess( 'Executing linters...' );
+executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'lint' ] );
+executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'stylelint' ] );
 
-	if ( !sampleUrl && urlMatch ) {
-		sampleUrl = urlMatch[ 0 ];
+logProcess( 'Starting the development server...' );
+startDevelopmentServer( NEW_PACKAGE_DIRECTORY )
+	.then( options => {
+		logProcess( 'Verifying the sample...' );
+		executeCommand( REPOSITORY_DIRECTORY, 'node', [ path.join( 'scripts', 'ci', 'verify-sample.js' ), options.url ] );
+
+		options.server.kill();
+
+		logProcess( 'Removing the created package...' );
+		fs.rmdirSync( NEW_PACKAGE_DIRECTORY, { recursive: true } );
+
+		if ( foundError ) {
+			console.log( '\n' + chalk.red( 'Found errors during the verification. Please, review the lgo above.' ) );
+		}
+
+		process.exit( foundError ? 1 : 0 );
+	} );
+
+/**
+ * Executes the specified program with its modifiers in the specified `cwd` directory.
+ *
+ * @param {String} cwd
+ * @param {String} command Program to execute.
+ * @param {Array.<String>} modifiers Program's modifiers.
+ * @return {Object}
+ */
+function executeCommand( cwd, command, modifiers ) {
+	const fullCommand = [ command, ...modifiers ].join( ' ' );
+	console.log( chalk.italic.gray( `Executing: "${ fullCommand }".` ) );
+
+	const newProcess = spawnSync( command, modifiers, {
+		cwd,
+		encoding: 'utf8',
+		shell: true,
+		stdio: 'inherit',
+		stderr: 'inherit'
+	} );
+
+	if ( newProcess.status ) {
+		foundError = true;
 	}
-} );
 
-sampleServer.stdout.on( 'data', data => {
-	const content = data.toString().slice( 0, -1 );
-	const endMatch = /\+ \d+ hidden modules/.test( content );
+	return newProcess;
+}
 
-	console.log( content );
+/**
+ * Starts the development server and resolves its process object and URL.
+ *
+ * @param {String} cwd
+ * @return {Promise.<Object>}
+ */
+function startDevelopmentServer( cwd ) {
+	return new Promise( ( resolve, reject ) => {
+		const sampleServer = spawn( 'yarn', [ 'run', 'start', '--no-open' ], {
+			cwd,
+			encoding: 'utf8',
+			shell: true
+		} );
 
-	if ( endMatch ) {
-		console.log( '\nServer ready, launching the crawler...\n' );
-		crawler( { url: sampleUrl } );
-	}
-} );
+		let sampleUrl;
 
-sampleServer.on( 'exit', exitCode => {
-	console.log( 'Child process exited with code: ' + exitCode );
-} );
+		// The `webpack-dev-server` package prints the URL to stderr.
+		sampleServer.stderr.on( 'data', data => {
+			const content = data.toString().slice( 0, -1 );
+			const urlMatch = content.match( /http:\/\/localhost:\d+\// );
+
+			if ( !sampleUrl && urlMatch ) {
+				sampleUrl = urlMatch[ 0 ];
+			}
+		} );
+
+		// Webpack prints the "hidden modules..." string when finished processing the file.
+		// Hence, we can assume that the server is live at this stage.
+		sampleServer.stdout.on( 'data', data => {
+			const content = data.toString().slice( 0, -1 );
+			const endMatch = /\+ \d+ hidden modules/.test( content );
+
+			if ( endMatch ) {
+				return resolve( {
+					server: sampleServer,
+					url: sampleUrl
+				} );
+			}
+		} );
+
+		sampleServer.on( 'error', error => {
+			return reject( error );
+		} );
+	} );
+}
+
+/**
+ * Prints the current executed task specified as `message`.
+ *
+ * @param {String} message
+ */
+function logProcess( message ) {
+	console.log( '\n🔹 ' + chalk.cyan( message ) );
+}
