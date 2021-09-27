@@ -1,7 +1,7 @@
 Create CKEditor 5 Plugin
 ========================
 
-[![Build Status](https://travis-ci.com/ckeditor/ckeditor5.svg?branch=master)](https://travis-ci.com/ckeditor/ckeditor5)
+[![Build Status](https://travis-ci.com/ckeditor/ckeditor5.svg?branch=master)](https://travis-ci.com/ckeditor/create-ckeditor5-plugin)
 
 This repository follows the mono-repository structure. It contains multiple npm packages.
 
