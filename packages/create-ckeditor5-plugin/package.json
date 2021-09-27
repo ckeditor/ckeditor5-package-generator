@@ -18,7 +18,11 @@
     "validate-npm-package-name": "^3.0.0"
   },
   "files": [
-    "package.json",
-    "README.md"
-  ]
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ckeditor/create-ckeditor5-plugin.git",
+    "directory": "packages/create-ckeditor5-plugin"
+  }
 }
