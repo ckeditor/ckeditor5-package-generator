@@ -71,17 +71,20 @@ async function init( packageName, options ) {
 
 	// (1.)
 	console.log( '📍 Verifying the specified package name.' );
-	const validationErrors = validatePackageName( packageName );
+	const validationError = validatePackageName( packageName );
 
-	if ( validationErrors.length ) {
-		console.error( `Package name "${ packageName }" is invalid.` );
+	if ( validationError ) {
+		console.error( '\n❗ Provided package name is invalid:' );
 
-		for ( const error of validationErrors ) {
-			console.error( error );
-		}
+		console.error( '\n' + chalk.red( validationError ) + '\n' );
+
+		console.error( 'Provided package name:  ' + chalk.red( packageName ) );
+		console.error( 'Correct pattern:        ' + chalk.green( '@scope/ckeditor5-name' ) );
 
 		process.exit( 1 );
 	}
+
+	process.exit( 1 );
 
 	const directoryName = packageName.split( '/' )[ 1 ];
 	const directoryPath = path.resolve( directoryName );
