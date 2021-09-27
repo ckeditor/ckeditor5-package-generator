@@ -13,7 +13,7 @@ This repository follows the mono-repository structure. It contains multiple npm 
     * [Options](#options)
     * [Developing the package](#developing-the-package)
   * [Developing tools in the repository](#developing-tools-in-the-repository)
-* [Release](#release)
+* [Releasing packages](#releasing-packages)
 * [License](#license)
 
 ## Packages
@@ -99,9 +99,35 @@ yarn link @ckeditor/ckeditor5-package-tools
 
 Now, the newly created package uses changes from the local repository.
 
-## Release
+## Releasing packages
 
-TBA
+### Changelog
+
+1. Fetch all changes and switch to the `##master` branch.
+2. Execute `npm run changelog`:
+
+  * Scan the logs printed by the tool – search for errors (incorrect changelog entries). Incorrect entries (e.g., ones without the type) are being ignored. You may need to create entries for them manually. This is done directly in `CHANGELOG.md` (in the root directory). Make sure to verify the proposed version after you modify the changelog.
+  * When unsure what has changed in this version of a specific package, use `git diff <hash of the previous release> packages/<name>/`.
+
+### Publishing
+
+After generating the changelog, you are ready for publishing packages.
+
+First, you need to bump their versions:
+
+```bash
+npm run release:bump-version
+```
+
+You can also use the `--dry-run` option to see what this task does.
+
+After bumping versions, you can publish changes:
+
+```bash
+npm run release:publish
+```
+
+As in the previous task, the `--dry-run` option is also available.
 
 ## License
 

@@ -6,8 +6,8 @@
   "license": "GPL-2.0-or-later",
   "homepage": "https://ckeditor.com/ckeditor-5",
   "files": [
-    "package.json",
-    "README.md"
+    "bin",
+    "lib"
   ],
   "main": "lib/index.js",
   "dependencies": {
@@ -43,5 +43,10 @@
   },
   "bin": {
     "ckeditor5-package-tools": "bin/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ckeditor/create-ckeditor5-plugin.git",
+    "directory": "packages/ckeditor5-package-tools"
   }
 }
