@@ -134,7 +134,7 @@ async function init( packageName, options ) {
 
 	// (4.)
 	console.log( '📍 Install dependencies...' );
-	installPackages( directoryPath );
+	installPackages( directoryPath, options.useNpm );
 
 	// (5.)
 	console.log( '📍 Initializing Git repository...' );
@@ -170,23 +170,31 @@ function copyTemplate( templateFile, packagePath, data ) {
 /**
  * @param {String} directoryPath
  */
-function installPackages( directoryPath /* Support for NPM */ ) {
-	const yarnArguments = [
-		'--cwd',
-		directoryPath
-	];
-
-	// if ( verbose ) {
-	// 	yarnArguments.push( '--verbose' );
-	// }
-
-	spawnSync( 'yarnpkg', yarnArguments, {
+function installPackages( directoryPath, useNpm ) {
+	const spawnOptions = {
 		encoding: 'utf8',
 		shell: true,
 		cwd: directoryPath,
 		stdio: 'inherit',
 		stderr: 'inherit'
-	} );
+	};
+
+	if ( useNpm ) {
+		const npmArguments = [
+			'install',
+			'--prefix',
+			directoryPath
+		];
+
+		spawnSync( 'npm', npmArguments, spawnOptions );
+	} else {
+		const yarnArguments = [
+			'--cwd',
+			directoryPath
+		];
+
+		spawnSync( 'yarnpkg', yarnArguments, spawnOptions );
+	}
 }
 
 /**
