@@ -8,10 +8,10 @@
 /**
  * Checks if the package name is valid for npm package, and if it follows the "@scope/ckeditor5-name" format.
  *
- * Returns array of strings containing all found errors, or an empty array if no errors were found.
+ * Returns string containing validation error, or undefined if no errors were found.
  *
  * @param {String} packageName
- * @returns {Array}
+ * @returns {String|undefined}
  */
 module.exports = function validatePackageName( packageName ) {
 	if ( packageName.length > 214 ) {
