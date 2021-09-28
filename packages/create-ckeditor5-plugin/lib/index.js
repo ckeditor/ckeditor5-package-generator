@@ -80,11 +80,10 @@ async function init( packageName, options ) {
 
 		console.error( 'Provided package name:  ' + chalk.red( packageName ) );
 		console.error( 'Correct pattern:        ' + chalk.green( '@scope/ckeditor5-name' ) );
+		console.error( 'Allowed characters:     ' + chalk.blue( '0-9 a-z - . _' ) );
 
 		process.exit( 1 );
 	}
-
-	process.exit( 1 );
 
 	const directoryName = packageName.split( '/' )[ 1 ];
 	const directoryPath = path.resolve( directoryName );

@@ -10,7 +10,7 @@ const expect = require( 'chai' ).expect;
 const mockery = require( 'mockery' );
 
 describe( 'lib/utils/validate-package-name', () => {
-	let validatePackageName, validateNpmPackageName;
+	let validatePackageName;
 
 	beforeEach( () => {
 		mockery.enable( {
@@ -19,85 +19,75 @@ describe( 'lib/utils/validate-package-name', () => {
 			warnOnUnregistered: false
 		} );
 
-		validateNpmPackageName = sinon.stub();
-
-		mockery.registerMock( 'validate-npm-package-name', validateNpmPackageName );
-
-		sinon.stub( console, 'info' );
-
 		validatePackageName = require( '../../lib/utils/validate-package-name' );
 	} );
 
 	afterEach( () => {
 		sinon.restore();
-		mockery.disable();
 	} );
 
 	it( 'should be a function', () => {
 		expect( validatePackageName ).to.be.an( 'function' );
 	} );
 
-	it( 'returns an empty array for a valid package name', () => {
-		validateNpmPackageName.returns( { validForNewPackages: true } );
-
+	it( 'returns undefined for a valid package name', () => {
 		const returnedValue = validatePackageName( '@scope/ckeditor5-test-package' );
 
-		expect( returnedValue ).to.eql( [] );
+		expect( returnedValue ).to.equal( undefined );
 	} );
 
-	describe( 'returns an array with error messages for a package name', () => {
-		// See: https://www.npmjs.com/package/validate-npm-package-name#naming-rules.
-		it( 'if a package name does not match to npm rules', () => {
-			validateNpmPackageName.returns( { validForNewPackages: false, errors: [ 'Example error' ] } );
+	it( 'returns correct string for a name longer than 214 characters', () => {
+		let packageName = '@scope/ckeditor5-test-package';
+		while ( packageName.length <= 215 ) {
+			packageName += 'x';
+		}
+		const returnedValue = validatePackageName( packageName );
 
-			const returnedValue = validatePackageName( '@scope/ckeditor5-test-package' );
+		expect( returnedValue ).to.equal( 'Name can not be longer than 214 characters.' );
+	} );
 
-			expect( returnedValue ).to.eql( [
-				'Provided <packageName> is not valid name for a npm package:',
-				'  * Example error'
-			] );
+	it( 'returns correct string for a name containing capital characters', () => {
+		const returnedValue = validatePackageName( '@scope/ckeditor5-TEST-package' );
+
+		expect( returnedValue ).to.equal( 'Capital letters are not allowed.' );
+	} );
+
+	it( 'returns correct string for a scope containing invalid characters', () => {
+		const returnedValue = validatePackageName( '@sc*ope/ckeditor5-test-package' );
+
+		expect( returnedValue ).to.equal( 'Scope contains invalid characters.' );
+	} );
+
+	it( 'returns correct string for a name containing invalid characters', () => {
+		const returnedValue = validatePackageName( '@scope/ckeditor5-test(package)' );
+
+		expect( returnedValue ).to.equal( 'Name contains invalid characters.' );
+	} );
+
+	describe( 'returns correct string for a name not following correct pattern', () => {
+		it( 'missing "@scope"', () => {
+			const returnedValue = validatePackageName( 'ckeditor5-test-package' );
+
+			expect( returnedValue ).to.equal( 'Name has to follow the correct pattern.' );
 		} );
 
-		// See https://www.npmjs.com/package/validate-npm-package-name#legacy-names.
-		it( 'if a package name does not match to legacy npm rules', () => {
-			validateNpmPackageName.returns( { validForNewPackages: false, warnings: [ 'Example warning' ] } );
+		it( 'missing "/"', () => {
+			const returnedValue = validatePackageName( '@scopeckeditor5-test-package' );
 
-			const returnedValue = validatePackageName( '@scope/ckeditor5-test-package' );
-
-			expect( returnedValue ).to.eql( [
-				'Provided <packageName> is not valid name for a npm package:',
-				'  * Example warning'
-			] );
+			expect( returnedValue ).to.equal( 'Name has to follow the correct pattern.' );
 		} );
 
-		it( 'does not contain "@scope"', () => {
-			validateNpmPackageName.returns( { validForNewPackages: true } );
-
-			const returnedValue = validatePackageName( '/ckeditor5-test-package' );
-
-			expect( returnedValue ).to.eql( [
-				'Provided <packageName> should start with the "@scope".'
-			] );
-		} );
-
-		it( 'does not contain the "ckeditor5-" prefix', () => {
-			validateNpmPackageName.returns( { validForNewPackages: true } );
-
+		it( 'missing "ckeditor5-"', () => {
 			const returnedValue = validatePackageName( '@scope/test-package' );
 
-			expect( returnedValue ).to.eql( [
-				'Package name should contain the "ckeditor5-" prefix followed by the package name.'
-			] );
+			expect( returnedValue ).to.equal( 'Name has to follow the correct pattern.' );
 		} );
 
-		it( 'does not follow the "ckeditor5-" prefix with a package name', () => {
-			validateNpmPackageName.returns( { validForNewPackages: true } );
-
+		it( 'missing package name', () => {
 			const returnedValue = validatePackageName( '@scope/ckeditor5-' );
 
-			expect( returnedValue ).to.eql( [
-				'Package name should contain the "ckeditor5-" prefix followed by the package name.'
-			] );
+			expect( returnedValue ).to.equal( 'Name has to follow the correct pattern.' );
 		} );
 	} );
 } );
+'@scope/ckeditor5-test-package';
