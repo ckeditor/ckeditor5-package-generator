@@ -34,4 +34,5 @@ Once your package is generated, you can change your working directory to that of
     * `--verbose` - to print additional webpack logs.
 * `dll:build` - builds the DLL version of the package.
 * `lint` - verifies code style in `*.js` files.
+* `stylelint` - verifies code style in `*.css` files located in the `/theme` directory.
 * `start` - starts a server that allows manual testing of the plugin.
