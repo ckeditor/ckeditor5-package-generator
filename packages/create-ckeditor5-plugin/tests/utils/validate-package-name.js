@@ -30,10 +30,10 @@ describe( 'lib/utils/validate-package-name', () => {
 		expect( validatePackageName ).to.be.an( 'function' );
 	} );
 
-	it( 'returns undefined for a valid package name', () => {
+	it( 'returns null for a valid package name', () => {
 		const returnedValue = validatePackageName( '@scope/ckeditor5-test-package' );
 
-		expect( returnedValue ).to.equal( undefined );
+		expect( returnedValue ).to.equal( null );
 	} );
 
 	it( 'returns correct string for a name longer than 214 characters', () => {
