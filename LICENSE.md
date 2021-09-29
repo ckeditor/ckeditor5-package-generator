@@ -2,7 +2,7 @@ Software License Agreement
 ==========================
 
 **Create CKEditor 5 Plugin** – https://github.com/ckeditor/ckeditor5 <br>
-Copyright (c) 2003-2021, [CKSource](http://cksource.com) Frederico Knabben. All rights reserved.
+Copyright (c) 2020-2021, [CKSource](http://cksource.com) Frederico Knabben. All rights reserved.
 
 Licensed under the terms of the [MIT license](https://opensource.org/licenses/MIT).
 
