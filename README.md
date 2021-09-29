@@ -78,8 +78,6 @@ node /path/to/repository/packages/create-ckeditor5-plugin <packageName> [--dev] 
 * `--dev` - whether to execute in the development mode. It means that the `@ckeditor/ckeditor5-package-tools` will not be installed from npm, but from the local file system.
 * `--use-npm` - whether to use `npm` instead of `yarn` when installing dependencies in a newly created package.
 
-⚠️ Installing packages using npm from local files (the combination of `--dev` and `--use-npm` options) ends with missing packages in the newly created packages, as npm does not download dependencies of linked packages. Hence, we suggest using `yarn` when contributing to this project.   
-
 #### Developing the package
 
 Available scripts and their modifiers are described in the [`README.md` file of the `create-ckeditor5-plugin` package](/packages/create-ckeditor5-plugin).

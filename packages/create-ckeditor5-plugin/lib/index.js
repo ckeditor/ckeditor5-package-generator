@@ -99,8 +99,7 @@ async function init( packageName, options ) {
 	mkdirp.sync( directoryPath );
 
 	const packageVersions = getDependenciesVersions( {
-		devMode: options.dev,
-		useNpm: options.useNpm
+		devMode: options.dev
 	} );
 
 	const dllConfiguration = getDllConfiguration( packageName );
