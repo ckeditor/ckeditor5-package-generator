@@ -5,8 +5,6 @@ Copyright (c) 2020-2021, [CKSource](http://cksource.com) Frederico Knabben. All 
 
 Licensed under the terms of [MIT license](https://opensource.org/licenses/MIT).
 
-All packages created with the tool are also available under the MIT license.
-
 Trademarks
 ----------
 
