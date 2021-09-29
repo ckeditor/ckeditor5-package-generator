@@ -42,32 +42,32 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 	} );
 
 	it( 'returns an object with a version of the "ckeditor5" package', () => {
-		const returnedValue = getDependenciesVersions( false );
+		const returnedValue = getDependenciesVersions( { devMode: false } );
 		expect( returnedValue.ckeditor5 ).to.equal( '30.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "@ckeditor/ckeditor5-dev-utils" package', () => {
-		const returnedValue = getDependenciesVersions( false );
+		const returnedValue = getDependenciesVersions( { devMode: false } );
 		expect( returnedValue.devUtils ).to.equal( '25.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "eslint-config-ckeditor5', () => {
-		const returnedValue = getDependenciesVersions( false );
+		const returnedValue = getDependenciesVersions( { devMode: false } );
 		expect( returnedValue.eslintConfigCkeditor5 ).to.equal( '5.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "stylelint-config-ckeditor5" package', () => {
-		const returnedValue = getDependenciesVersions( false );
+		const returnedValue = getDependenciesVersions( { devMode: false } );
 		expect( returnedValue.stylelintConfigCkeditor5 ).to.equal( '3.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "@ckeditor/ckeditor5-package-tools" package if "devMode" is disabled', () => {
-		const returnedValue = getDependenciesVersions( false );
+		const returnedValue = getDependenciesVersions( { devMode: false } );
 		expect( returnedValue.packageTools ).to.equal( '^1.0.0' );
 	} );
 
 	it( 'it returns an absolute path to the "@ckeditor/ckeditor5-package-tools" package if "devMode" is enabled', () => {
-		const returnedValue = getDependenciesVersions( true );
+		const returnedValue = getDependenciesVersions( { devMode: true, useNpm: true } );
 
 		const PROJECT_ROOT_DIRECTORY = path.join( __dirname, '..', '..', '..' );
 		let packageTools = 'file:' + path.resolve( PROJECT_ROOT_DIRECTORY, 'ckeditor5-package-tools' );
