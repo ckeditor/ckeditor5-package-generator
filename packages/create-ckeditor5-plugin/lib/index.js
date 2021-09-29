@@ -44,8 +44,6 @@ new Command( packageJson.name )
 	.option( '--use-npm', 'whether use npm to install packages', false )
 	.allowUnknownOption()
 	.action( ( packageName, options ) => init( packageName, options ) )
-	// .on( '--help', () => {
-	// } )
 	.parse( process.argv );
 
 /**
@@ -68,6 +66,7 @@ async function init( packageName, options ) {
 	//
 	// TODO: Implement the `--info` flag for reporting issues.
 	// Use: https://www.npmjs.com/package/envinfo.
+	const log = getLogger( options.verbose );
 
 	// (1.)
 	console.log( '📍 Verifying the specified package name.' );
@@ -86,7 +85,7 @@ async function init( packageName, options ) {
 	const directoryName = packageName.split( '/' )[ 1 ];
 	const directoryPath = path.resolve( directoryName );
 
-	console.log( '📍 Checking whether the specified directory can be created.' );
+	console.log( `📍 Checking whether the "${ chalk.cyan( directoryName ) }" directory can be created.` );
 
 	if ( fs.existsSync( directoryPath ) ) {
 		console.log( chalk.red( 'Error:' ), 'Cannot create a directory as the location is already taken.' );
@@ -99,7 +98,9 @@ async function init( packageName, options ) {
 	console.log( `📍 Creating the directory "${ chalk.cyan( directoryPath ) }".` );
 	mkdirp.sync( directoryPath );
 
-	const packageVersions = getDependenciesVersions( options.dev );
+	const packageVersions = getDependenciesVersions( {
+		devMode: options.dev
+	} );
 
 	const dllConfiguration = getDllConfiguration( packageName );
 
@@ -113,7 +114,7 @@ async function init( packageName, options ) {
 	console.log( '📍 Copying files...' );
 
 	for ( const templatePath of templatesToCopy ) {
-		console.log( `* Copying "${ chalk.gray( templatePath ) }"...` );
+		log( `* Copying "${ chalk.gray( templatePath ) }"...` );
 		let data;
 
 		if ( TEMPLATES_TO_FILL.includes( templatePath ) ) {
@@ -134,7 +135,10 @@ async function init( packageName, options ) {
 
 	// (4.)
 	console.log( '📍 Install dependencies...' );
-	installPackages( directoryPath );
+	installPackages( directoryPath, {
+		useNpm: options.useNpm,
+		verbose: options.verbose
+	} );
 
 	// (5.)
 	console.log( '📍 Initializing Git repository...' );
@@ -169,24 +173,38 @@ function copyTemplate( templateFile, packagePath, data ) {
 
 /**
  * @param {String} directoryPath
+ * @param {Object} options
+ * @param {Boolean} options.useNpm
+ * @param {Boolean} options.verbose
  */
-function installPackages( directoryPath /* Support for NPM */ ) {
-	const yarnArguments = [
-		'--cwd',
-		directoryPath
-	];
-
-	// if ( verbose ) {
-	// 	yarnArguments.push( '--verbose' );
-	// }
-
-	spawnSync( 'yarnpkg', yarnArguments, {
+function installPackages( directoryPath, options ) {
+	const spawnOptions = {
 		encoding: 'utf8',
 		shell: true,
 		cwd: directoryPath,
-		stdio: 'inherit',
 		stderr: 'inherit'
-	} );
+	};
+
+	if ( options.verbose ) {
+		spawnOptions.stdio = 'inherit';
+	}
+
+	if ( options.useNpm ) {
+		const npmArguments = [
+			'install',
+			'--prefix',
+			directoryPath
+		];
+
+		spawnSync( 'npm', npmArguments, spawnOptions );
+	} else {
+		const yarnArguments = [
+			'--cwd',
+			directoryPath
+		];
+
+		spawnSync( 'yarnpkg', yarnArguments, spawnOptions );
+	}
 }
 
 /**
@@ -248,6 +266,18 @@ function getGlobalKeyForPackage( packageName ) {
  */
 function getIndexFileName( packageName ) {
 	return packageName.replace( /^ckeditor5-/, '' ) + '.js';
+}
+
+/**
+ * @param {Boolean} verbose
+ * @return {Function}
+ */
+function getLogger( verbose ) {
+	return message => {
+		if ( verbose ) {
+			console.log( message );
+		}
+	};
 }
 
 /**
