@@ -3,11 +3,11 @@
   "version": "0.0.1",
   "description": "Development environment tools for the CKEditor 5 packages.",
   "author": "CKSource (http://cksource.com/)",
-  "license": "GPL-2.0-or-later",
+  "license": "MIT",
   "homepage": "https://ckeditor.com/ckeditor-5",
   "files": [
-    "package.json",
-    "README.md"
+    "bin",
+    "lib"
   ],
   "main": "lib/index.js",
   "dependencies": {
@@ -43,5 +43,10 @@
   },
   "bin": {
     "ckeditor5-package-tools": "bin/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ckeditor/create-ckeditor5-plugin.git",
+    "directory": "packages/ckeditor5-package-tools"
   }
 }
