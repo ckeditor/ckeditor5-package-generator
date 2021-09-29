@@ -67,6 +67,7 @@ async function init( packageName, options ) {
 	// TODO: Implement the `--info` flag for reporting issues.
 	// Use: https://www.npmjs.com/package/envinfo.
 	const log = getLogger( options.verbose );
+	const program = options.useNpm ? 'npm' : 'yarn';
 
 	// (1.)
 	console.log( '📍 Verifying the specified package name.' );
@@ -120,6 +121,7 @@ async function init( packageName, options ) {
 		if ( TEMPLATES_TO_FILL.includes( templatePath ) ) {
 			data = {
 				name: packageName,
+				program,
 				ckeditor5Version: packageVersions.ckeditor5,
 				devUtilsVersion: packageVersions.devUtils,
 				eslintConfigCkeditor5Version: packageVersions.eslintConfigCkeditor5,
@@ -145,7 +147,19 @@ async function init( packageName, options ) {
 	initializeGitRepository( directoryPath );
 
 	// (6.)
+	console.log();
 	console.log( chalk.green( 'Done!' ) );
+	console.log();
+	console.log( 'Execute the "' + chalk.cyan( 'cd ' + directoryName ) + '" command to change the current working directory' );
+	console.log( 'to the newly created package. Then, the package offers a few predefined scripts:' );
+	console.log();
+	console.log( '  * ' + chalk.underline( 'start' ) + ' - for creating the HTTP server with the editor sample,' );
+	console.log( '  * ' + chalk.underline( 'test' ) + ' - for executing unit tests of an example plugin,' );
+	console.log( '  * ' + chalk.underline( 'lint' ) + ' - for running a tool for static analyzing JavaScript files,' );
+	console.log( '  * ' + chalk.underline( 'stylelint' ) + ' - for running a tool for static analyzing CSS files.' );
+	console.log();
+	console.log( 'Example: ' + chalk.gray( program + ' run start' ) );
+	console.log();
 }
 
 /**

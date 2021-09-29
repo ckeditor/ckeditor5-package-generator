@@ -8,10 +8,22 @@
     "ckeditor 5",
     "ckeditor5-feature",
     "ckeditor5-plugin",
-    "ckeditor5-dll"
+    "ckeditor5-dll",
+    "ckeditor5-package-generator"
   ],
   "main": "src/index.js",
   "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0",
+    "npm": ">=5.7.1"
+  },
+  "files": [
+    "lang",
+    "src",
+    "theme",
+    "build",
+    "ckeditor5-metadata.json"
+  ],
   "dependencies": {
     "ckeditor5": ">=<%= ckeditor5Version %>"
   },
@@ -39,12 +51,6 @@
     "stylelint": "^13.13.1",
     "stylelint-config-ckeditor5": ">=<%= stylelintConfigCkeditor5Version %>"
   },
-  "files": [
-    "lang",
-    "src",
-    "theme",
-    "build"
-  ],
   "scripts": {
     "dll:build": "ckeditor5-package-tools dll:build",
     "lint": "eslint '**/*.js' --quiet --ignore-pattern 'build/'",
