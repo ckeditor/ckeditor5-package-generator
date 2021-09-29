@@ -29,41 +29,28 @@ describe( 'lib/utils/validate-package-name', () => {
 		expect( returnedValue ).to.equal( null );
 	} );
 
-	it( 'returns correct string for a name longer than 214 characters', () => {
-		const packageName = '@scope/ckeditor5-f' + 'o'.repeat( 214 );
-		const returnedValue = validatePackageName( packageName );
+	describe( 'returns correct string for a name containing', () => {
+		it( 'more than 214 characters', () => {
+			const packageName = '@scope/ckeditor5-f' + 'o'.repeat( 214 );
+			const returnedValue = validatePackageName( packageName );
 
-		expect( returnedValue ).to.equal( 'Name can not be longer than 214 characters.' );
-	} );
+			expect( returnedValue ).to.equal( 'Name can not be longer than 214 characters.' );
+		} );
 
-	it( 'returns correct string for a name containing capital characters', () => {
-		const returnedValue = validatePackageName( '@scope/ckeditor5-TEST-package' );
+		it( 'capital characters', () => {
+			const returnedValue = validatePackageName( '@scope/ckeditor5-TEST-package' );
 
-		expect( returnedValue ).to.equal( 'Capital letters are not allowed.' );
-	} );
+			expect( returnedValue ).to.equal( 'Capital letters are not allowed.' );
+		} );
 
-	describe( 'returns correct string for a scope containing invalid characters', () => {
-		it( 'escaped by encodeURIComponent', () => {
+		it( 'invalid characters escaped by encodeURIComponent', () => {
 			const returnedValue = validatePackageName( '@sco¶e/ckeditor5-test-package' );
-
-			expect( returnedValue ).to.equal( 'Scope contains invalid characters.' );
-		} );
-		it( 'not escaped by encodeURIComponent', () => {
-			const returnedValue = validatePackageName( '@sc*pe/ckeditor5-test-package' );
-
-			expect( returnedValue ).to.equal( 'Scope contains invalid characters.' );
-		} );
-	} );
-
-	describe( 'returns correct string for a name containing invalid characters', () => {
-		it( 'escaped by encodeURIComponent', () => {
-			const returnedValue = validatePackageName( '@scope/ckeditor5-test-paçkage' );
 
 			expect( returnedValue ).to.equal( 'Name contains invalid characters.' );
 		} );
 
-		it( 'not escaped by encodeURIComponent', () => {
-			const returnedValue = validatePackageName( '@scope/ckeditor5-test(package)' );
+		it( 'invalid characters not escaped by encodeURIComponent', () => {
+			const returnedValue = validatePackageName( '@sc*pe/ckeditor5-test-package' );
 
 			expect( returnedValue ).to.equal( 'Name contains invalid characters.' );
 		} );
