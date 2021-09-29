@@ -120,6 +120,7 @@ async function init( packageName, options ) {
 		if ( TEMPLATES_TO_FILL.includes( templatePath ) ) {
 			data = {
 				name: packageName,
+				program: options.useNpm ? 'npm' : 'yarn',
 				ckeditor5Version: packageVersions.ckeditor5,
 				devUtilsVersion: packageVersions.devUtils,
 				eslintConfigCkeditor5Version: packageVersions.eslintConfigCkeditor5,
