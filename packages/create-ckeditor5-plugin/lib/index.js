@@ -74,12 +74,12 @@ async function init( packageName, options ) {
 	const validationError = validatePackageName( packageName );
 
 	if ( validationError ) {
-		console.error( '\n❗ Provided package name is invalid:' );
+		console.error( '\n❗ The provided package name is invalid.' );
 
 		console.error( '\n' + chalk.red( validationError ) + '\n' );
 
 		console.error( 'Provided package name:  ' + chalk.red( packageName ) );
-		console.error( 'Correct pattern:        ' + chalk.green( '@scope/ckeditor5-name' ) );
+		console.error( 'Valid pattern:          ' + chalk.green( '@scope/ckeditor5-name' ) );
 		console.error( 'Allowed characters:     ' + chalk.blue( '0-9 a-z - . _' ) );
 
 		process.exit( 1 );

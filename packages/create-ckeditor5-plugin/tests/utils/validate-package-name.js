@@ -7,18 +7,11 @@
 
 const sinon = require( 'sinon' );
 const expect = require( 'chai' ).expect;
-const mockery = require( 'mockery' );
 
 describe( 'lib/utils/validate-package-name', () => {
 	let validatePackageName;
 
 	beforeEach( () => {
-		mockery.enable( {
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
-		} );
-
 		validatePackageName = require( '../../lib/utils/validate-package-name' );
 	} );
 
@@ -37,10 +30,7 @@ describe( 'lib/utils/validate-package-name', () => {
 	} );
 
 	it( 'returns correct string for a name longer than 214 characters', () => {
-		let packageName = '@scope/ckeditor5-test-package';
-		while ( packageName.length <= 215 ) {
-			packageName += 'x';
-		}
+		const packageName = '@scope/ckeditor5-f' + 'o'.repeat( 214 );
 		const returnedValue = validatePackageName( packageName );
 
 		expect( returnedValue ).to.equal( 'Name can not be longer than 214 characters.' );
@@ -105,4 +95,3 @@ describe( 'lib/utils/validate-package-name', () => {
 		} );
 	} );
 } );
-'@scope/ckeditor5-test-package';

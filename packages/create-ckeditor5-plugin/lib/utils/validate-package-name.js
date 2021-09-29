@@ -8,7 +8,7 @@
 /**
  * Checks if the package name is valid for npm package, and if it follows the "@scope/ckeditor5-name" format.
  *
- * Returns string containing validation error, or null if no errors were found.
+ * Returns a string containing the validation error, or `null` if no errors were found.
  *
  * @param {String} packageName
  * @returns {String|null}
