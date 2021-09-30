@@ -1,7 +1,7 @@
 CKEditor 5 Package Generator
 ========================
 
-[![Build Status](https://travis-ci.com/ckeditor/ckeditor5-package-generator.svg?branch=master)](https://travis-ci.com/ckeditor/ckeditor5-package-generator)
+[![Build Status](https://app.travis-ci.com/ckeditor/ckeditor5-package-generator.svg?branch=master)](https://app.travis-ci.com/ckeditor/ckeditor5-package-generator)
 
 This repository follows the mono-repository structure. It contains multiple npm packages.
 
