@@ -70,6 +70,6 @@ describe( 'lib/utils/get-package-version', () => {
 
 		expect(
 			() => getPackageVersion( 'non-existing-foo-package' )
-		).to.throw( 'The specified package has not been published on npm yet', Error );
+		).to.throw( 'The specified package has not been published on npm yet.', Error );
 	} );
 } );
