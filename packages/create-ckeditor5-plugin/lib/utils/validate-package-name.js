@@ -5,42 +5,47 @@
 
 'use strict';
 
-const validateNpmPackageName = require( 'validate-npm-package-name' );
+const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
 
 /**
  * Checks if the package name is valid for npm package, and if it follows the "@scope/ckeditor5-name" format.
  *
- * Returns array of strings containing all found errors, or an empty array if no errors were found.
+ * Returns a string containing the validation error, or `null` if no errors were found.
  *
  * @param {String} packageName
- * @returns {Array}
+ * @returns {String|null}
  */
 module.exports = function validatePackageName( packageName ) {
-	const errorLogs = [];
-
-	const validateResult = validateNpmPackageName( packageName );
-
-	if ( !validateResult.validForNewPackages ) {
-		errorLogs.push( 'Provided <packageName> is not valid name for a npm package:' );
-
-		for ( const error of ( validateResult.errors || [] ) ) {
-			errorLogs.push( '  * ' + error );
-		}
-
-		for ( const warning of ( validateResult.warnings || [] ) ) {
-			errorLogs.push( '  * ' + warning );
-		}
+	if ( !packageName.length ) {
+		return 'The package name cannot be an empty string.';
 	}
 
-	const [ scope, name ] = packageName.split( '/' );
-
-	if ( !scope || !scope.match( /^@./ ) ) {
-		errorLogs.push( 'Provided <packageName> should start with the "@scope".' );
+	// Npm does not allow names longer than 214 characters.
+	if ( packageName.length > 214 ) {
+		return 'The length of the package name cannot be longer than 214 characters.';
 	}
 
-	if ( !name || !name.match( /^ckeditor5-./ ) ) {
-		errorLogs.push( 'Package name should contain the "ckeditor5-" prefix followed by the package name.' );
+	// Npm does not allow new packages to contain capital letters.
+	if ( /[A-Z]/.test( packageName ) ) {
+		return 'The package name cannot contain capital letters.';
 	}
 
-	return errorLogs;
+	const match = packageName.match( SCOPED_PACKAGE_REGEXP );
+
+	// The package name must follow the @scope/ckeditor5-name pattern.
+	if ( !match ) {
+		return 'The package name must match the "@scope/ckeditor5-*" pattern.';
+	}
+
+	// encodeURIComponent() will escape majority of characters not allowed for the npm package name.
+	if ( match[ 1 ] !== encodeURIComponent( match[ 1 ] ) || match[ 2 ] !== encodeURIComponent( match[ 2 ] ) ) {
+		return 'The package name contains non-allowed characters.';
+	}
+
+	// Characters ~'!()*  will not be escaped by `encodeURIComponent()`, but they aren't allowed for the npm package name.
+	if ( /[~'!()*]/.test( packageName ) ) {
+		return 'The package name contains non-allowed characters.';
+	}
+
+	return null;
 };
