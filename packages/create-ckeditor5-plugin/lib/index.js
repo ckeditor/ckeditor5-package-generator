@@ -71,14 +71,15 @@ async function init( packageName, options ) {
 
 	// (1.)
 	console.log( '📍 Verifying the specified package name.' );
-	const validationErrors = validatePackageName( packageName );
+	const validationError = validatePackageName( packageName );
 
-	if ( validationErrors.length ) {
-		console.error( `Package name "${ packageName }" is invalid.` );
+	if ( validationError ) {
+		console.log( '\n❗ Found an error while verifying the provided package name.' );
+		console.log( chalk.red( validationError ) + '\n' );
 
-		for ( const error of validationErrors ) {
-			console.error( error );
-		}
+		console.log( 'Expected pattern:            ' + chalk.green( '@[scope]/ckeditor5-[feature-name]' ) );
+		console.log( 'The provided package name:   ' + chalk.red( packageName ) );
+		console.log( 'Allowed characters list:     ' + chalk.blue( '0-9 a-z - . _' ) );
 
 		process.exit( 1 );
 	}
