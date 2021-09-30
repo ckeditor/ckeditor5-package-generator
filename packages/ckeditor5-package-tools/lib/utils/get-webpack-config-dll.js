@@ -53,6 +53,8 @@ module.exports = options => {
 			]
 		},
 
+		watch: options.watch,
+
 		plugins: [
 			// Uncomment the `CKEditorWebpackPlugin` definition if your plugin contains translations files.
 			// Read more about creating localization files.
