@@ -59,7 +59,7 @@
     "start": "ckeditor5-package-tools start",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
     "test": "ckeditor5-package-tools test",
-    "prepublish": "<%= program %> run dll:build",
+    "prepare": "<%= program %> run dll:build",
     "prepublishOnly": "<%= program %> run dll:build"
   }
 }
