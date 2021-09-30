@@ -23,62 +23,127 @@ describe( 'lib/utils/validate-package-name', () => {
 		expect( validatePackageName ).to.be.an( 'function' );
 	} );
 
+	describe( 'verifying package name length', () => {
+		it( 'rejects an empty package name', () => {
+			const error = validatePackageName( '' );
+
+			expect( error ).to.equal( 'The package name cannot be an empty string.' );
+		} );
+
+		it( 'accepts a name lesser than 214 characters', () => {
+			const error = validatePackageName( '@ckeditor/ckeditor5-foo' );
+
+			expect( error ).to.not.equal( 'The length of the package name cannot be longer than 214 characters.' );
+		} );
+
+		it( 'accepts the length of a name equal to 214', () => {
+			// 214 is a limit, 21 is the length of the string, the rest is "o".
+			const error = validatePackageName( '@ckeditor/ckeditor5-f' + 'o'.repeat( 193 ) );
+
+			expect( error ).to.not.equal( 'The length of the package name cannot be longer than 214 characters.' );
+		} );
+
+		it( 'rejects a name longer than 214 characters', () => {
+			// 214 is a limit, 21 is the length of the string, the rest is "o". Add 1 to exceed the limit.
+			const error = validatePackageName( '@ckeditor/ckeditor5-f' + 'o'.repeat( 194 ) );
+
+			expect( error ).to.equal( 'The length of the package name cannot be longer than 214 characters.' );
+		} );
+	} );
+
+	describe( 'verifying capital letters', () => {
+		it( 'rejects a package name if it contains at least a single capital letter', () => {
+			const error = validatePackageName( '@ckeditor/ckeditor5-Foo' );
+
+			expect( error ).to.equal( 'The package name cannot contain capital letters.' );
+		} );
+	} );
+
+	describe( 'verifying compliance with the pattern', () => {
+		it( 'rejects the package name without a scope', () => {
+			const error = validatePackageName( 'ckeditor5-foo' );
+
+			expect( error ).to.equal( 'The package name must match the "@scope/ckeditor5-*" pattern.' );
+		} );
+
+		it( 'rejects the package name if the scope misses the "at" (@) character at the beginning', () => {
+			const error = validatePackageName( 'ckeditor/ckeditor5-foo' );
+
+			expect( error ).to.equal( 'The package name must match the "@scope/ckeditor5-*" pattern.' );
+		} );
+
+		it( 'rejects the package name if the name ends with the slash (/)', () => {
+			const error = validatePackageName( '@ckeditor/ckeditor5-foo/' );
+
+			expect( error ).to.equal( 'The package name must match the "@scope/ckeditor5-*" pattern.' );
+		} );
+
+		it( 'rejects the package name if it does not match to the ckeditor5-* pattern', () => {
+			const error = validatePackageName( '@ckeditor/foo' );
+
+			expect( error ).to.equal( 'The package name must match the "@scope/ckeditor5-*" pattern.' );
+		} );
+
+		it( 'rejects the package name if it does not match to the ckeditor5-* pattern', () => {
+			const error = validatePackageName( '@ckeditor/ckeditor5_foo' );
+
+			expect( error ).to.equal( 'The package name must match the "@scope/ckeditor5-*" pattern.' );
+		} );
+	} );
+
+	describe( 'verifying allowed characters', () => {
+		it( 'rejects if the package name contains non-friendly URL characters - check ~', () => {
+			const error = validatePackageName( '@ckeditor/ckeditor5-foo~foo' );
+
+			expect( error ).to.equal( 'The package name contains non-allowed characters.' );
+		} );
+
+		it( 'rejects if the package name contains non-friendly URL characters - check \'', () => {
+			const error = validatePackageName( '@ckeditor/ckeditor5-foo\'foo' );
+
+			expect( error ).to.equal( 'The package name contains non-allowed characters.' );
+		} );
+
+		it( 'rejects if the package name contains non-friendly URL characters - check !', () => {
+			const error = validatePackageName( '@ckeditor/ckeditor5-foo!foo' );
+
+			expect( error ).to.equal( 'The package name contains non-allowed characters.' );
+		} );
+
+		it( 'rejects if the package name contains non-friendly URL characters - check (', () => {
+			const error = validatePackageName( '@ckeditor/ckeditor5-foo(foo' );
+
+			expect( error ).to.equal( 'The package name contains non-allowed characters.' );
+		} );
+
+		it( 'rejects if the package name contains non-friendly URL characters - check )', () => {
+			const error = validatePackageName( '@ckeditor/ckeditor5-foo)foo' );
+
+			expect( error ).to.equal( 'The package name contains non-allowed characters.' );
+		} );
+
+		it( 'rejects if the package name contains non-friendly URL characters - check *', () => {
+			const error = validatePackageName( '@ckeditor/ckeditor5-foo*foo' );
+
+			expect( error ).to.equal( 'The package name contains non-allowed characters.' );
+		} );
+
+		it( 'rejects if the scope contains non-alphanumeric characters', () => {
+			const error = validatePackageName( '@ćkèditör/ckeditor5-foo' );
+
+			expect( error ).to.equal( 'The package name contains non-allowed characters.' );
+		} );
+
+		it( 'rejects if the package name contains non-alphanumeric characters', () => {
+			const error = validatePackageName( '@ckeditor/ckeditor5-fø' );
+
+			expect( error ).to.equal( 'The package name contains non-allowed characters.' );
+		} );
+	} );
+
 	it( 'returns null for a valid package name', () => {
-		const returnedValue = validatePackageName( '@scope/ckeditor5-test-package' );
+		const error = validatePackageName( '@scope/ckeditor5-test-package' );
 
-		expect( returnedValue ).to.equal( null );
-	} );
-
-	describe( 'returns correct string for a name containing', () => {
-		it( 'more than 214 characters', () => {
-			const packageName = '@scope/ckeditor5-f' + 'o'.repeat( 214 );
-			const returnedValue = validatePackageName( packageName );
-
-			expect( returnedValue ).to.equal( 'Name can not be longer than 214 characters.' );
-		} );
-
-		it( 'capital characters', () => {
-			const returnedValue = validatePackageName( '@scope/ckeditor5-TEST-package' );
-
-			expect( returnedValue ).to.equal( 'Capital letters are not allowed.' );
-		} );
-
-		it( 'invalid characters escaped by encodeURIComponent', () => {
-			const returnedValue = validatePackageName( '@sco¶e/ckeditor5-test-package' );
-
-			expect( returnedValue ).to.equal( 'Name contains invalid characters.' );
-		} );
-
-		it( 'invalid characters not escaped by encodeURIComponent', () => {
-			const returnedValue = validatePackageName( '@sc*pe/ckeditor5-test-package' );
-
-			expect( returnedValue ).to.equal( 'Name contains invalid characters.' );
-		} );
-	} );
-
-	describe( 'returns correct string for a name not following correct pattern', () => {
-		it( 'missing "@scope"', () => {
-			const returnedValue = validatePackageName( 'ckeditor5-test-package' );
-
-			expect( returnedValue ).to.equal( 'Name has to follow the correct pattern.' );
-		} );
-
-		it( 'missing "/"', () => {
-			const returnedValue = validatePackageName( '@scopeckeditor5-test-package' );
-
-			expect( returnedValue ).to.equal( 'Name has to follow the correct pattern.' );
-		} );
-
-		it( 'missing "ckeditor5-"', () => {
-			const returnedValue = validatePackageName( '@scope/test-package' );
-
-			expect( returnedValue ).to.equal( 'Name has to follow the correct pattern.' );
-		} );
-
-		it( 'missing package name', () => {
-			const returnedValue = validatePackageName( '@scope/ckeditor5-' );
-
-			expect( returnedValue ).to.equal( 'Name has to follow the correct pattern.' );
-		} );
+		expect( error ).to.equal( null );
 	} );
 } );
