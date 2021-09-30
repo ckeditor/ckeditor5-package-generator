@@ -1,7 +1,7 @@
-Create CKEditor 5 Plugin
+CKEditor 5 Package Generator
 ========================
 
-`create-ckeditor5-plugin` is a tool for plugins creators that creates a new package with the development environment that allows creating a new plugin for CKEditor 5.. 
+`ckeditor5-package-generator` is a tool for package creators that creates a new package with the development environment that allows creating a new plugin for CKEditor 5.
 
 ## Table of contents
 
@@ -14,7 +14,7 @@ Create CKEditor 5 Plugin
 To create a new package, execute the following command:
 
 ```bash
-npx create-ckeditor5-plugin <packageName> [--verbose] [--use-npm]
+npx ckeditor5-package-generator <packageName> [--verbose] [--use-npm]
 ```
 
 The `<packageName>` argument is required and must follow these rules:
