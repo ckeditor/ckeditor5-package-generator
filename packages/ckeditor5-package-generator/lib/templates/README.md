@@ -1,7 +1,7 @@
 <%= name %>
 <% print( '='.repeat( name.length ) ) %>
 
-This package was created by the [create-ckeditor5-plugin](https://www.npmjs.com/package/create-ckeditor5-plugin) package.
+This package was created by the [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator) package.
 
 ## Table of contents
 
@@ -27,13 +27,13 @@ The following scripts are available in the package.
 
 Starts the HTTP server with the live-reload mechanism that allows previewing and testing plugins available in the package.
 
-When the server had been started, the default browser will open the developer sample. It can be disabled by passing the `--no-open` option to that command. 
+When the server had been started, the default browser will open the developer sample. It can be disabled by passing the `--no-open` option to that command.
 
 Examples:
 
 ```bash
 # Starts the server and open the browser.
-<%= program %> run start 
+<%= program %> run start
 
 # Disable auto-opening the browser.
 <%= program %> run start --no-open
@@ -52,7 +52,7 @@ Examples:
 
 ```bash
 # Execute tests.
-<%= program %> run test 
+<%= program %> run test
 
 # Generate code coverage report after each change in the sources.
 <%= program %> run test --coverage --test
@@ -82,7 +82,7 @@ Examples:
 
 ### `dll:build`
 
-Creates the DLL-compatible package build which can be loaded into an editor using [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html). 
+Creates the DLL-compatible package build which can be loaded into an editor using [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html).
 
 Examples:
 
@@ -109,4 +109,4 @@ Examples:
 
 The `<%= name %>` package is available under the [MIT license](https://opensource.org/licenses/MIT).
 
-However, it is the default license of packages created by the [create-ckeditor5-plugin](https://www.npmjs.com/package/create-ckeditor5-plugin) package and it can be changed.
+However, it is the default license of packages created by the [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator) package and it can be changed.

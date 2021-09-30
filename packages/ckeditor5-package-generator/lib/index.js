@@ -48,7 +48,7 @@ new Command( packageJson.name )
 
 /**
  * @param {String} packageName
- * @param {CreateCKeditor5PluginOptions} options
+ * @param {CKeditor5PackageGeneratorOptions} options
  */
 async function init( packageName, options ) {
 	// 1. Validate package name.
@@ -137,7 +137,7 @@ async function init( packageName, options ) {
 	}
 
 	// (4.)
-	console.log( '📍 Install dependencies...' );
+	console.log( '📍 Installing dependencies...' );
 	installPackages( directoryPath, {
 		useNpm: options.useNpm,
 		verbose: options.verbose
@@ -235,7 +235,7 @@ function initializeGitRepository( directoryPath ) {
 
 	try {
 		execSync( 'git add -A', options );
-		execSync( 'git commit -m "Initialize the package using Create CKEditor 5 Plugin."', options );
+		execSync( 'git commit -m "Initialize the repository using CKEditor 5 Package Generator."', options );
 	} catch ( error ) {
 		// Remove the `.git` directory in case of an error. It may happen that the developer didn't configure Git yet.
 		// The error could be resolved by ourselves.
@@ -296,7 +296,7 @@ function getLogger( verbose ) {
 }
 
 /**
- * @typedef {Object} CreateCKeditor5PluginOptions
+ * @typedef {Object} CKeditor5PackageGeneratorOptions
  *
  * @property {Boolean} [verbose=false]
  *
