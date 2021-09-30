@@ -14,10 +14,10 @@ require( '@ckeditor/ckeditor5-dev-env' )
 		// TODO: To remove after the initial release.
 		from: '11aac066c2cd145528632b0fbc508f661e7d6e57',
 		transformScope: name => {
-			if ( name === 'ckeditor5-package-generator' ) {
+			if ( name === 'generator' ) {
 				return 'https://www.npmjs.com/package/ckeditor5-package-generator';
 			}
 
-			return 'https://www.npmjs.com/package/@ckeditor/ckeditor5-' + name;
+			return 'https://www.npmjs.com/package/@ckeditor/ckeditor5-package-' + name;
 		}
 	} );
