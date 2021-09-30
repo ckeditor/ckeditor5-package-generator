@@ -137,7 +137,7 @@ async function init( packageName, options ) {
 	}
 
 	// (4.)
-	console.log( '📍 Install dependencies...' );
+	console.log( '📍 Installing dependencies...' );
 	installPackages( directoryPath, {
 		useNpm: options.useNpm,
 		verbose: options.verbose
