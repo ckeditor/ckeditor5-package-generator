@@ -10,5 +10,5 @@ Type (scope): Message. Closes #000.
 
 ### Supported scopes
 
-* `create-ckeditor5-plugin` → https://www.npmjs.com/package/create-ckeditor5-plugin
+* `ckeditor5-package-generator` → https://www.npmjs.com/package/ckeditor5-package-generator
 * `*` → https://www.npmjs.com/package/@ckeditor/ckeditor5-*

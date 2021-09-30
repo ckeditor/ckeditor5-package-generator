@@ -3,7 +3,7 @@ CKEditor 5 Package Tools
 
 [![npm version](https://badge.fury.io/js/@ckeditor%2Fckeditor5-package-tools.svg)](https://badge.fury.io/js/@ckeditor%2Fckeditor5-package-tools)
 
-This repository contains scripts and functions used by the [`create-ckeditor5-plugin`](https://www.npmjs.com/package/create-ckeditor5-plugin) tool.
+This repository contains scripts and functions used by the [`ckeditor5-package-generator`](https://www.npmjs.com/package/ckeditor5-package-generator) tool.
 
 The following scripts are available:
 

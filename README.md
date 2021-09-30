@@ -1,14 +1,14 @@
-Create CKEditor 5 Plugin
+CKEditor 5 Package Generator
 ========================
 
-[![Build Status](https://travis-ci.com/ckeditor/ckeditor5.svg?branch=master)](https://travis-ci.com/ckeditor/create-ckeditor5-plugin)
+[![Build Status](https://travis-ci.com/ckeditor/ckeditor5-package-generator.svg?branch=master)](https://travis-ci.com/ckeditor/ckeditor5-package-generator)
 
 This repository follows the mono-repository structure. It contains multiple npm packages.
 
 ## Table of contents
 
 * [Packages](#packages)
-* [Develop the `create-ckeditor5-plugin` repository](#develop-the-create-ckeditor5-plugin-repository)
+* [Develop the `ckeditor5-package-generator` repository](#develop-the-ckeditor5-package-generator-repository)
   * [Creating a package](#creating-a-package)
     * [Options](#options)
     * [Developing the package](#developing-the-package)
@@ -30,10 +30,10 @@ This repository follows the mono-repository structure. It contains multiple npm 
 
 <tr>
 	<td>
-		<a href="/packages/create-ckeditor5-plugin"><code>create-ckeditor5-plugin</code></a>
+		<a href="/packages/ckeditor5-package-generator"><code>ckeditor5-package-generator</code></a>
 	</td>
 	<td>
-		<a href="https://badge.fury.io/js/create-ckeditor5-plugin"><img src="https://badge.fury.io/js/create-ckeditor5-plugin.svg" alt="npm version" height="18"></a>
+		<a href="https://badge.fury.io/js/ckeditor5-package-generator"><img src="https://badge.fury.io/js/ckeditor5-package-generator.svg" alt="npm version" height="18"></a>
 	</td>
 	<td>
 		The tool for creating CKEditor 5 packages.
@@ -55,21 +55,21 @@ This repository follows the mono-repository structure. It contains multiple npm 
 </tbody>
 </table>
 
-## Developing the `create-ckeditor5-plugin` repository
+## Developing the `ckeditor5-package-generator` repository
 
-* Clone the repository: `git clone git@github.com:ckeditor/create-ckeditor5-plugin.git`
+* Clone the repository: `git clone git@github.com:ckeditor/ckeditor5-package-generator.git`
 * Install required dependencies: `yarn install`
 
 ### Creating a package
 
-To create a new plugin, call the `create-ckeditor5-plugin` executable file. It requires a single argument which is the package name. It must follow the schema: `@organization/ckeditor5-package`, where `@organization` is a [scope](https://docs.npmjs.com/about-scopes) of the package, and `ckeditor5-package` is the package name. It must start with the `ckeditor5-` prefix.
+To create a new package, call the `ckeditor5-package-generator` executable file. It requires a single argument which is the package name. It must follow the schema: `@organization/ckeditor5-package`, where `@organization` is a [scope](https://docs.npmjs.com/about-scopes) of the package, and `ckeditor5-package` is the package name. It must start with the `ckeditor5-` prefix.
 
-The tool will create a new directory called `@organization/ckeditor5-package` with an initial plugin and tools for developing it inside.
+The tool will create a new directory called `ckeditor5-package` with an example plugin called `MyPlugin` and tools for developing the package.
 
 To use a local version of the `@ckeditor/ckeditor5-package-tools` package, use the `--dev` option when executing the command.
 
 ```bash
-node /path/to/repository/packages/create-ckeditor5-plugin <packageName> [--dev] [--verbose] [--use-npm]
+node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--dev] [--verbose] [--use-npm]
 ```
 
 #### Options
@@ -80,7 +80,7 @@ node /path/to/repository/packages/create-ckeditor5-plugin <packageName> [--dev] 
 
 #### Developing the package
 
-Available scripts and their modifiers are described in the [`README.md` file of the `create-ckeditor5-plugin` package](/packages/create-ckeditor5-plugin).
+Available scripts and their modifiers are described in the [`README.md` file of the `ckeditor5-package-generator` package](/packages/ckeditor5-package-generator).
 
 ### Developing tools in the repository
 
@@ -132,6 +132,6 @@ As in the previous task, the `--dry-run` option is also available.
 
 ## License
 
-The `create-ckeditor5-plugin` tool is available under the [MIT license](https://opensource.org/licenses/MIT).
+The `ckeditor5-package-generator` tool is available under the [MIT license](https://opensource.org/licenses/MIT).
 
 All packages created with the tool are also available under the MIT license.
