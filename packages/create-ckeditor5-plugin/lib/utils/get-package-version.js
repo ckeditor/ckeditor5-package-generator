@@ -5,7 +5,7 @@
 
 'use strict';
 
-const { execSync } = require( 'child_process' );
+const { spawnSync } = require( 'child_process' );
 
 /**
  * Returns version of the specified package.
@@ -14,5 +14,15 @@ const { execSync } = require( 'child_process' );
  * @return {String}
  */
 module.exports = function getPackageVersion( packageName ) {
-	return execSync( `npm view ${ packageName } version` ).toString().trim();
+	// See: #39.
+	const response = spawnSync( 'npm', [ 'view', packageName, '--json' ], {
+		encoding: 'utf8',
+		shell: true
+	} );
+
+	try {
+		return JSON.parse( response.stdout.toString() ).versions.pop();
+	} catch ( err ) {
+		throw new Error( 'The specified package has not been published on npm yet.' );
+	}
 };
