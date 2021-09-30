@@ -34,6 +34,13 @@
     <h3>Anatomy of the DLL build</h3>
     <p>The source of the DLL build is located in the <code>src/index.js</code> file. It may export as many things as the package offers.</p>
 
+    <h4>Maintaining the sample</h4>
+    <p>Whenever you change objects exported by the DLL build, please, review the content of the sample. Things to keep in mind:</p>
+    <ul>
+        <li>Review the list of loaded plugins in the configuration</li>
+        <li>Review name of items registered in toolbars</li>
+    </ul>
+
     <h3>The goal</h3>
     <p>The primary purpose of the sample is to verify whether plugins in the package will work together with CKEditor 5 created with the DLL approach.</p>
 
