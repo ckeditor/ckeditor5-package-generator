@@ -235,7 +235,7 @@ function initializeGitRepository( directoryPath ) {
 
 	try {
 		execSync( 'git add -A', options );
-		execSync( 'git commit -m "Initialize the package using CKEditor 5 Package Generator."', options );
+		execSync( 'git commit -m "Initialize the repository using CKEditor 5 Package Generator."', options );
 	} catch ( error ) {
 		// Remove the `.git` directory in case of an error. It may happen that the developer didn't configure Git yet.
 		// The error could be resolved by ourselves.
