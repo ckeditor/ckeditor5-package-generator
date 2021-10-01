@@ -132,6 +132,6 @@ As in the previous task, the `--dry-run` option is also available.
 
 ## License
 
-The `ckeditor5-package-generator` tool is available under the [MIT license](https://opensource.org/licenses/MIT).
+The `ckeditor5-package-generator` tool is available under [MIT license](https://opensource.org/licenses/MIT).
 
 All packages created with the tool are also available under the MIT license.

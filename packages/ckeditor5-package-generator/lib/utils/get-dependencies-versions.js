@@ -9,7 +9,7 @@ const path = require( 'path' );
 const getPackageVersion = require( './get-package-version' );
 
 /**
- * Returns an object containing version for packages listed below:
+ * Returns an object containing version for the packages listed below:
  *
  *   * ckeditor5
  *   * @ckeditor/ckeditor5-dev-utils (as `devUtils`)
@@ -19,10 +19,10 @@ const getPackageVersion = require( './get-package-version' );
  *
  * The value for the `packageTools` package depends on the `options.devMode` modifier:
  *
- *   * `true` - an absolute path to locally cloned package.
+ *   * `true` - an absolute path to the locally cloned package.
  *   * `false` - the latest version published on npm.
  *
- * @param {Boolean} devMode Whether current process is executed in the developer mode.
+ * @param {Boolean} devMode Whether the current process is executed in the developer mode.
  * @param {Boolean} useNpm Whether to use `npm` when installing packages.
  * @returns {Object}
  */

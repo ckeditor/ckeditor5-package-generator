@@ -8,7 +8,7 @@
 const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
 
 /**
- * Checks if the package name is valid for npm package, and if it follows the "@scope/ckeditor5-name" format.
+ * Checks if the package name is valid for the npm package, and if it follows the "@scope/ckeditor5-name" format.
  *
  * Returns a string containing the validation error, or `null` if no errors were found.
  *

@@ -8,7 +8,7 @@
 const { spawnSync } = require( 'child_process' );
 
 /**
- * Returns version of the specified package.
+ * Returns the version of the specified package.
  *
  * @param packageName Name of the package to check the version of.
  * @return {String}
