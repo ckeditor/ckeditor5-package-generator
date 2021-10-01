@@ -7,12 +7,12 @@ This package was created by the [ckeditor5-package-generator](https://www.npmjs.
 
 * [Developing the package](#developing-the-package)
 * [Available scripts](#available-scripts)
-    * [`start`](#start)
-    * [`test`](#test)
-    * [`lint`](#lint)
-    * [`stylelint`](#stylelint)
-    * [`dll:build`](#dllbuild)
-    * [`dll:serve`](#dllserve)
+  * [`start`](#start)
+  * [`test`](#test)
+  * [`lint`](#lint)
+  * [`stylelint`](#stylelint)
+  * [`dll:build`](#dllbuild)
+  * [`dll:serve`](#dllserve)
 * [License](#license)
 
 ## Developing the package
@@ -21,13 +21,17 @@ To read about the CKEditor 5 framework, visit the [CKEditor5 documentation](http
 
 ## Available scripts
 
+Npm scripts are a convenient way to provide commands in a project. They are defined in the `package.json` file and shared with other people contributing to the project. It ensures that developers use the same command with the same options (flags).
+
+All the scripts can be executed by running `<%= program %> run <script>`. Pre and post commands with matching names will be run for those as well.
+
 The following scripts are available in the package.
 
 ### `start`
 
-Starts the HTTP server with the live-reload mechanism that allows previewing and testing plugins available in the package.
+Starts a HTTP server with the live-reload mechanism that allows previewing and testing plugins available in the package.
 
-When the server had been started, the default browser will open the developer sample. It can be disabled by passing the `--no-open` option to that command.
+When the server has been started, the default browser will open the developer sample. This can be disabled by passing the `--no-open` option to that command.
 
 Examples:
 
@@ -41,12 +45,12 @@ Examples:
 
 ### `test`
 
-Allows executing unit tests for the package specified in the `tests/` directory. The command accepts the following modifiers:
+Allows executing unit tests for the package, specified in the `tests/` directory. The command accepts the following modifiers:
 
-* `--coverage` – to create the code coverage report,
-* `--watch` – to observe the source files (the command does not end after executing tests),
-* `--source-map` – to generate source maps of sources,
-* `--verbose` – to print additional webpack logs.
+* `--coverage` &ndash; to create the code coverage report,
+* `--watch` &ndash; to observe the source files (the command does not end after executing tests),
+* `--source-map` &ndash; to generate source maps of sources,
+* `--verbose` &ndash; to print additional webpack logs.
 
 Examples:
 
@@ -60,7 +64,7 @@ Examples:
 
 ### `lint`
 
-Runs ESLint which analyzes the code (all `*.js` files) to quickly find problems.
+Runs ESLint, which analyzes the code (all `*.js` files) to quickly find problems.
 
 Examples:
 
@@ -82,7 +86,7 @@ Examples:
 
 ### `dll:build`
 
-Creates the DLL-compatible package build which can be loaded into an editor using [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html).
+Creates a DLL-compatible package build which can be loaded into an editor using [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html).
 
 Examples:
 
@@ -107,6 +111,6 @@ Examples:
 
 ## License
 
-The `<%= name %>` package is available under the [MIT license](https://opensource.org/licenses/MIT).
+The `<%= name %>` package is available under [MIT license](https://opensource.org/licenses/MIT).
 
 However, it is the default license of packages created by the [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator) package and it can be changed.

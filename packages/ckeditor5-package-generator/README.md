@@ -1,7 +1,7 @@
 CKEditor 5 Package Generator
 ============================
 
-`ckeditor5-package-generator` is a tool for developers, and it creates a new package with the development environment that allows creating a new package for CKEditor 5.
+The `ckeditor5-package-generator` is a tool for developers. It creates a working package with the development environment that allows creating new packages for CKEditor 5.
 
 ## Table of contents
 
@@ -26,5 +26,5 @@ As a result of executing the command, a new directory with a package will be cre
 
 ### Modifiers
 
-* `--verbose` - (alias: `-v`) whether to prints additional logs about the current executed task.
-* `--use-npm` - whether to use `npm` instead of `yarn` when installing dependencies in a newly created package.
+* `--verbose` &ndash; (alias: `-v`) whether to prints additional logs about the current executed task.
+* `--use-npm` &ndash; whether to use `npm` instead of `yarn` when installing dependencies in a newly created package.

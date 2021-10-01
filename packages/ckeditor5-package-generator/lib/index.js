@@ -27,6 +27,7 @@ const validatePackageName = require( './utils/validate-package-name' );
 const TEMPLATES_TO_FILL = [
 	'sample/dll.html',
 	'package.json',
+	'LICENSE.md',
 	'README.md'
 ];
 
@@ -51,8 +52,8 @@ new Command( packageJson.name )
  * @param {CKeditor5PackageGeneratorOptions} options
  */
 async function init( packageName, options ) {
-	// 1. Validate package name.
-	// 2. Create directory.
+	// 1. Validate the package name.
+	// 2. Create a directory.
 	// 3. Copy files.
 	// 4. Call npm/yarn install.
 	// 5. Initialize the git repository.
@@ -60,9 +61,9 @@ async function init( packageName, options ) {
 	//
 	// * Should we validate Node.js version?
 	// * Should we force using Yarn?
-	// * Should be Yarn used if found?
+	// * Should Yarn be used if found?
 	// * Should the developer be able to use npm?
-	// * Should create the Git repository by default?
+	// * Should the Git repository be created by default?
 	//
 	// TODO: Implement the `--info` flag for reporting issues.
 	// Use: https://www.npmjs.com/package/envinfo.
@@ -122,6 +123,7 @@ async function init( packageName, options ) {
 		if ( TEMPLATES_TO_FILL.includes( templatePath ) ) {
 			data = {
 				name: packageName,
+				now: new Date(),
 				program,
 				ckeditor5Version: packageVersions.ckeditor5,
 				devUtilsVersion: packageVersions.devUtils,
@@ -164,9 +166,9 @@ async function init( packageName, options ) {
 }
 
 /**
- * @param {String} templateFile A relative path to the "templates/" directory of the file to copy.
- * @param {String} packagePath A destination directory where the new package is created.
- * @param {Object} [data] Data to fill in the template file.
+ * @param {String} templateFile The relative path to the "templates/" directory of the file to copy.
+ * @param {String} packagePath The destination directory where the new package is created.
+ * @param {Object} [data] The data to fill in the template file.
  */
 function copyTemplate( templateFile, packagePath, data ) {
 	// Adjust the directory separator based on OS.
@@ -238,7 +240,7 @@ function initializeGitRepository( directoryPath ) {
 		execSync( 'git commit -m "Initialize the repository using CKEditor 5 Package Generator."', options );
 	} catch ( error ) {
 		// Remove the `.git` directory in case of an error. It may happen that the developer didn't configure Git yet.
-		// The error could be resolved by ourselves.
+		// We could resolved the error ourselves.
 		// See: https://github.com/ember-cli/ember-cli/blob/3192a441e13ec7e88c71d480778971d81bfa436c/lib/tasks/git-init.js#L49-L66.
 		fs.removeSync( path.join( directoryPath, '.git' ) );
 	}
