@@ -18,31 +18,30 @@
     <h2>Production sample</h2>
     <p>
         This is a demo of the <a href="https://ckeditor.com/docs/ckeditor5/latest/builds/guides/overview.html#classic-editor">classic editor
-        build</a> initialized using the <a href="https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html">DLL builds</a>.
+        build</a>, initialized using the <a href="https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html">DLL builds</a>.
     </p>
     <p>
-        The package generator creates an example plugin (<code>MyPlugin</code>) which is loaded into the editor by default. If you changed
-        its name or toolbar items it exposes, make sure to update the editor configuration in the <code>sample/dll.html</code> file.
+        The package generator creates an example plugin (<code>MyPlugin</code>) which is loaded into the editor by default. If you changed its name or toolbar items it exposes, make sure to update the editor configuration in the <code>sample/dll.html</code> file.
     </p>
 
     <h3>Uncaught TypeError</h3>
-    <p>If the editor is not initialized correctly and the browser console displays an error as the following:</p>
+    <p>If the editor is not initialized correctly and the browser console displays an error such as the following:</p>
     <pre><code>Uncaught TypeError: Cannot read properties of undefined (reading 'MyPlugin') at dll.html:85</code></pre>
-    <p>It means that the DLL build of the <code><%= name %></code> package has not been made.</p>
-    <p>Please, call the <code><%= program %> run dll:build</code> command in the CLI, and when it finishes, refresh the page.</p>
+    <p>it means that the DLL build of the <code><%= name %></code> package has not been created.</p>
+    <p>Please call the <code><%= program %> run dll:build</code> command in the CLI, and after it finishes, refresh the page.</p>
 
     <h3>Anatomy of the DLL build</h3>
     <p>The source of the DLL build is located in the <code>src/index.js</code> file. It may export as many things as the package offers.</p>
 
     <h4>Maintaining the sample</h4>
-    <p>Whenever you change objects exported by the DLL build, please, review the content of the sample. Things to keep in mind:</p>
+    <p>Whenever you change objects exported by the DLL build, please review the content of the sample. Things to keep in mind:</p>
     <ul>
-        <li>Review the list of loaded plugins in the configuration</li>
-        <li>Review name of items registered in toolbars</li>
+        <li>Review the list of loaded plugins in the configuration.</li>
+        <li>Review names of items registered in toolbars.</li>
     </ul>
 
     <h3>The goal</h3>
-    <p>The primary purpose of the sample is to verify whether plugins in the package will work together with CKEditor 5 created with the DLL approach.</p>
+    <p>The primary purpose of the sample is to verify whether the plugins in the package will work together with CKEditor 5 created with the DLL approach.</p>
 
     <h3>Publishing the package</h3>
     <p>
@@ -50,8 +49,7 @@
         array in the <a href="../package.json"><code>package.json</code></a> file. It means all its contents will be published when calling the <code><%= program %> publish</code> command.
     </p>
     <p>
-        Unfortunately, it is easy to forget to refresh the DLL build before making a new release. Hence, we created the  <a href="https://docs.npmjs.com/cli/v7/using-npm/scripts#pre--post-scripts">prescript</a>
-        that would refresh the build automatically when calling the <code><%= program %> publish</code> command.
+        Unfortunately, it is easy to forget to refresh the DLL build before making a new release. Hence, we created the <a href="https://docs.npmjs.com/cli/v7/using-npm/scripts#pre--post-scripts">prescript</a> that would refresh the build automatically when calling the <code><%= program %> publish</code> command.
     </p>
 
     <h3>Reporting issues</h3>

@@ -96,7 +96,7 @@ Examples:
 
 ### `dll:serve`
 
-Creates the simple HTTP server (without the live-reload mechanism) that allows verifying whether the DLL build of the package is compatible with CKEditor 5 [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html).
+Creates a simple HTTP server (without the live-reload mechanism) that allows verifying whether the DLL build of the package is compatible with the CKEditor 5 [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html).
 
 Examples:
 
