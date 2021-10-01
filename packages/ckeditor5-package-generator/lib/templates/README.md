@@ -21,6 +21,10 @@ To read about the CKEditor 5 framework, visit the [CKEditor5 documentation](http
 
 ## Available scripts
 
+Npm scripts are a convenient way to provide commands in a project. Npm scripts are a convenient way to provide commands in a project. They are defined in the `package.json` file and shared with other people contributing to the project. It ensures that developers use the same command with the same options (flags).
+
+All of can be executed by running `<%= program %> run <script>`. Pre and post commands with matching names will be run for those as well.
+
 The following scripts are available in the package.
 
 ### `start`
