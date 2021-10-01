@@ -27,6 +27,7 @@ const validatePackageName = require( './utils/validate-package-name' );
 const TEMPLATES_TO_FILL = [
 	'sample/dll.html',
 	'package.json',
+	'LICENSE.md',
 	'README.md'
 ];
 
@@ -122,6 +123,7 @@ async function init( packageName, options ) {
 		if ( TEMPLATES_TO_FILL.includes( templatePath ) ) {
 			data = {
 				name: packageName,
+				now: new Date(),
 				program,
 				ckeditor5Version: packageVersions.ckeditor5,
 				devUtilsVersion: packageVersions.devUtils,
