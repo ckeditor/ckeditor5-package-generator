@@ -12,6 +12,7 @@ This package was created by the [ckeditor5-package-generator](https://www.npmjs.
     * [`lint`](#lint)
     * [`stylelint`](#stylelint)
     * [`dll:build`](#dllbuild)
+    * [`dll:serve`](#dllserve)
 * [License](#license)
 
 ## Developing the package
@@ -65,7 +66,7 @@ Examples:
 
 ```bash
 # Execute eslint.
-yarn run lint
+<%= program %> run lint
 ```
 
 ### `stylelint`
@@ -76,7 +77,7 @@ Examples:
 
 ```bash
 # Execute stylelint.
-yarn run stylelint
+<%= program %> run stylelint
 ```
 
 ### `dll:build`
@@ -87,7 +88,21 @@ Examples:
 
 ```bash
 # Build the DLL file that is ready to publish.
-yarn run dll:build
+<%= program %> run dll:build
+
+# Build the DLL file and listen to changes in its sources.
+<%= program %> run dll:build --watch
+```
+
+### `dll:serve`
+
+Creates a simple HTTP server (without the live-reload mechanism) that allows verifying whether the DLL build of the package is compatible with the CKEditor 5 [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html).
+
+Examples:
+
+```bash
+# Starts the HTTP server and opens the browser.
+<%= program %> run dll:serve
 ```
 
 ## License

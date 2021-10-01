@@ -52,9 +52,16 @@ describe( 'lib/tasks/dll-build', () => {
 		// Mock reading the configuration.
 		stubs.webpackConfig.returns( webpackConfig );
 
+		const consoleStub = sinon.stub( console, 'log' );
+
 		// Execute the task.
 		dllBuild( taskOptions )
 			.then( () => {
+				consoleStub.restore();
+
+				expect( consoleStub.calledOnce ).to.equal( true );
+				expect( consoleStub.firstCall.args[ 0 ] ).to.equal( 'Compilation stats.' );
+
 				done();
 			} );
 
@@ -66,6 +73,9 @@ describe( 'lib/tasks/dll-build', () => {
 		doneCallback( null, {
 			hasErrors() {
 				return false;
+			},
+			toString() {
+				return 'Compilation stats.';
 			}
 		} );
 	} );

@@ -48,14 +48,18 @@
     "@ckeditor/ckeditor5-upload": ">=<%= ckeditor5Version %>",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": ">=<%= eslintConfigCkeditor5Version %>",
+    "http-server": "^13.0.2",
     "stylelint": "^13.13.1",
     "stylelint-config-ckeditor5": ">=<%= stylelintConfigCkeditor5Version %>"
   },
   "scripts": {
     "dll:build": "ckeditor5-package-tools dll:build",
+    "dll:serve": "http-server ./ -o sample/dll.html",
     "lint": "eslint '**/*.js' --quiet --ignore-pattern 'build/'",
     "start": "ckeditor5-package-tools start",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
-    "test": "ckeditor5-package-tools test"
+    "test": "ckeditor5-package-tools test",
+    "prepare": "<%= program %> run dll:build",
+    "prepublishOnly": "<%= program %> run dll:build"
   }
 }

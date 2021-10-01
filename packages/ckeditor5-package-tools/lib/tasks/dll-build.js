@@ -26,6 +26,9 @@ function runWebpack( webpackConfig ) {
 			} else if ( stats.hasErrors() ) {
 				reject( new Error( stats.toString() ) );
 			} else {
+				// Display the compilation results.
+				console.log( stats.toString() );
+
 				resolve();
 			}
 		} );
