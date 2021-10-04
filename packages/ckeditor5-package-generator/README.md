@@ -1,7 +1,7 @@
 CKEditor 5 Package Generator
 ============================
 
-The `ckeditor5-package-generator` is a tool for developers. It creates a working package with the development environment that allows creating new packages for CKEditor 5.
+The `ckeditor5-package-generator` is a tool for developers, and it creates a working package with the development environment that allows writing new plugins for CKEditor 5.
 
 ## Table of contents
 
