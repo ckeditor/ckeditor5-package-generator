@@ -19,10 +19,10 @@ npx ckeditor5-package-generator <packageName> [--verbose] [--use-npm]
 
 The `<packageName>` argument is required and must follow these rules:
 
-* The provided name must match the schema: `@organization/ckeditor5-*`, where `@organization` is the [scope](https://docs.npmjs.com/about-scopes) of the package.
+* The provided name must match the schema: `@scope/ckeditor5-*`, where [@scope](https://docs.npmjs.com/about-scopes) is an owner of the package.
 * The package name must start with the `ckeditor5-` prefix.
 
-As a result of executing the command, a new directory with a package will be created. The directory's name will be equal to the specified package name without the `@organization` part, and it will contain an example plugin and the development environment.
+As a result of executing the command, a new directory with a package will be created. The directory's name will be equal to the specified package name without the `@scope` part, and it will contain an example plugin and the development environment.
 
 ### Modifiers
 

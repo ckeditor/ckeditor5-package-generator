@@ -62,7 +62,7 @@ This repository follows the mono-repository structure. It contains multiple npm 
 
 ### Creating a package
 
-To create a new package, call the `ckeditor5-package-generator` executable file. It requires a single argument which is the package name. It must follow the schema: `@organization/ckeditor5-package`, where `@organization` is a [scope](https://docs.npmjs.com/about-scopes) of the package, and `ckeditor5-package` is the package name. It must start with the `ckeditor5-` prefix.
+To create a new package, call the `ckeditor5-package-generator` executable file. It requires a single argument which is the package name. It must follow the schema: `@scope/ckeditor5-package`, where [@scope](https://docs.npmjs.com/about-scopes) is an owner of the package, and `ckeditor5-package` is the package name. It must start with the `ckeditor5-` prefix.
 
 The tool will create a new directory called `ckeditor5-package` with an example plugin called `MyPlugin` and tools for developing the package.
 
