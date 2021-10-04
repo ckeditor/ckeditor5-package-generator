@@ -1,6 +1,6 @@
 {
   "name": "@ckeditor/ckeditor5-package-tools",
-  "version": "0.0.1",
+  "version": "1.0.0-beta.0",
   "description": "Development environment tools for the CKEditor 5 packages.",
   "author": "CKSource (http://cksource.com/)",
   "license": "MIT",
