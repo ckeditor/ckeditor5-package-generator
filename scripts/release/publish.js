@@ -9,7 +9,7 @@
 
 'use strict';
 
-const rootPackageJson = require( '../package.json' );
+const rootPackageJson = require( '../../package.json' );
 
 // This scripts publish changes.
 //

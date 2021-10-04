@@ -21,12 +21,12 @@
     "npm": ">=7.24.0"
   },
   "scripts": {
-    "changelog": "node ./scripts/changelog.js",
+    "changelog": "node scripts/release/changelog.js",
     "coverage": "nyc --reporter=lcov --reporter=text-summary npm run test",
     "lint": "eslint --quiet '**/*.js'",
     "precommit": "lint-staged",
-    "release:bump-version": "node ./scripts/bump-versions.js",
-    "release:publish": "node ./scripts/publish.js",
+    "release:bump-version": "node scripts/release/bump-versions.js",
+    "release:publish": "node scripts/release/publish.js",
     "test": "mocha 'packages/*/tests/**/*.js'"
   },
   "repository": {
