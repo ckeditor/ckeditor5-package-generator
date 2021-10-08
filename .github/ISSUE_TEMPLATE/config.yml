@@ -6,5 +6,5 @@ contact_links:
       Please **DO NOT report security issues here**,
       use the contact form at https://ckeditor.com/contact/ instead.
   - name: "\U0001F4BB CKEditor 5 issue"
-    about: Issue tracker for CKEditor 5..
+    about: Issue tracker for CKEditor 5.
     url: https://github.com/ckeditor/ckeditor5/issues/new/choose
