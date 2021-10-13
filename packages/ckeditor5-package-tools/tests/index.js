@@ -24,12 +24,14 @@ describe( 'lib/index', () => {
 		stubs = {
 			tasks: {
 				start: sinon.stub(),
-				test: sinon.stub()
+				test: sinon.stub(),
+				'dll:build': sinon.stub()
 			}
 		};
 
 		mockery.registerMock( '../lib/tasks/test', stubs.tasks.test );
 		mockery.registerMock( '../lib/tasks/start', stubs.tasks.start );
+		mockery.registerMock( '../lib/tasks/dll-build', stubs.tasks[ 'dll:build' ] );
 
 		tasks = require( '../lib' );
 	} );
@@ -78,6 +80,25 @@ describe( 'lib/index', () => {
 			tasks.test( options );
 
 			expect( stubs.tasks.test.firstCall.args[ 0 ] ).to.deep.equal( options );
+		} );
+	} );
+
+	describe( '#dll:build', () => {
+		it( 'is available', () => {
+			expect( tasks[ 'dll:build' ] ).is.a( 'function' );
+		} );
+
+		it( 'executes the proper function from the "tasks/" directory', () => {
+			tasks[ 'dll:build' ]();
+
+			expect( stubs.tasks[ 'dll:build' ].calledOnce ).to.equal( true );
+		} );
+
+		it( 'passes arguments directly to the function', () => {
+			const options = { foo: 1, bar: true };
+			tasks[ 'dll:build' ]( options );
+
+			expect( stubs.tasks[ 'dll:build' ].firstCall.args[ 0 ] ).to.deep.equal( options );
 		} );
 	} );
 } );

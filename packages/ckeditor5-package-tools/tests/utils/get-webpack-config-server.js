@@ -25,10 +25,6 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 			packageJson: {
 				name: '@ckeditor/ckeditor5-foo'
 			},
-			ckeditor5manifest: {
-				name: 'CKEditor5.dll',
-				content: {}
-			},
 			path: {
 				join: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) ),
 				resolve: sinon.stub().callsFake( file => `/process/cwd/${ file }` )
@@ -106,6 +102,7 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		let webpackConfig;
 
 		beforeEach( () => {
+			stubs.getThemePath.returns( '/process/cwd/node_modules/@ckeditor/ckeditor5-theme/theme/theme.css' );
 			stubs.devUtils.styles.getPostCssConfig.returns( { foo: true } );
 
 			webpackConfig = getWebpackConfigServer( { cwd } );
@@ -148,6 +145,14 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 			it( 'uses "postcss-loader" for processing CKEditor 5 assets', () => {
 				expect( stubs.getThemePath.calledOnce ).to.equal( true );
 				expect( stubs.getThemePath.firstCall.args[ 0 ] ).to.equal( '/process/cwd' );
+
+				expect( stubs.devUtils.styles.getPostCssConfig.calledOnce ).to.equal( true );
+				expect( stubs.devUtils.styles.getPostCssConfig.firstCall.firstArg ).to.deep.equal( {
+					minify: true,
+					themeImporter: {
+						themePath: '/process/cwd/node_modules/@ckeditor/ckeditor5-theme/theme/theme.css'
+					}
+				} );
 
 				const postcssLoader = loader.use.slice( -1 ).pop();
 

@@ -134,7 +134,7 @@ function getWebpackConfiguration( options ) {
 			rules: [
 				{
 					test: /\.svg$/,
-					use: [ 'raw-loader' ]
+					use: 'raw-loader'
 				},
 				{
 					test: /\.css$/,
@@ -164,7 +164,7 @@ function getWebpackConfiguration( options ) {
 				},
 				{
 					test: /\.(txt|html|rtf)$/,
-					use: [ 'raw-loader' ]
+					use: 'raw-loader'
 				}
 			]
 		},
