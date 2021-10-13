@@ -8,7 +8,9 @@
 /* eslint-env node */
 
 const path = require( 'path' );
+const webpack = require( 'webpack' );
 const { getPostCssConfig } = require( '@ckeditor/ckeditor5-dev-utils' ).styles;
+const getThemePath = require( './get-theme-path' );
 
 module.exports = options => {
 	return {
@@ -36,11 +38,18 @@ module.exports = options => {
 			compress: true
 		},
 
+		plugins: [
+			new webpack.ProvidePlugin( {
+				process: 'process/browser',
+				Buffer: [ 'buffer', 'Buffer' ]
+			} )
+		],
+
 		module: {
 			rules: [
 				{
 					test: /\.svg$/,
-					use: [ 'raw-loader' ]
+					use: 'raw-loader'
 				},
 				{
 					test: /\.css$/,
@@ -57,14 +66,14 @@ module.exports = options => {
 						'css-loader',
 						{
 							loader: 'postcss-loader',
-							options: getPostCssConfig( {
-								themeImporter: {
-									themePath: require.resolve(
-										path.join( options.cwd, 'node_modules', '@ckeditor', 'ckeditor5-theme-lark' )
-									)
-								},
-								minify: true
-							} )
+							options: {
+								postcssOptions: getPostCssConfig( {
+									themeImporter: {
+										themePath: getThemePath( options.cwd )
+									},
+									minify: true
+								} )
+							}
 						}
 					]
 				}
