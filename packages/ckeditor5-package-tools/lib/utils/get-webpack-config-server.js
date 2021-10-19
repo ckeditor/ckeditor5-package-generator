@@ -18,7 +18,7 @@ module.exports = options => {
 			hints: false
 		},
 
-		entry: path.join( options.cwd, 'sample', 'script.js' ),
+		entry: path.join( options.cwd, 'sample', 'ckeditor.js' ),
 
 		output: {
 			filename: 'script.dist.js',
