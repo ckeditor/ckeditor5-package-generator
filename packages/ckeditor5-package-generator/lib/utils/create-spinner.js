@@ -14,7 +14,7 @@ const cliSpinners = require( 'cli-spinners' );
  * @param {Boolean} [options.isDisabled] Whether the spinner should be disabled.
  * @return {CKEditor5Spinner}
  */
-module.exports = function createSpinner( title, options ) {
+module.exports = function createSpinner( title, options = {} ) {
 	const isEnabled = !options.isDisabled && isInteractive();
 
 	let timerId;
@@ -26,7 +26,6 @@ module.exports = function createSpinner( title, options ) {
 				return;
 			}
 
-			const interval = options.interval || cliSpinners.dots12.interval;
 			const frames = cliSpinners.dots12.frames;
 
 			let index = 0;
@@ -43,7 +42,7 @@ module.exports = function createSpinner( title, options ) {
 
 				process.stdout.write( `${ frames[ index++ ] } ${ title }` );
 				shouldClearLastLine = true;
-			}, interval );
+			}, cliSpinners.dots12.interval );
 		},
 
 		finish() {
