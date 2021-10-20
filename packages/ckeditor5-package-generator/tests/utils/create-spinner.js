@@ -135,6 +135,7 @@ describe( 'lib/utils/create-spinner', () => {
 			expect( cursorToStub.callCount ).to.equal( 4 );
 
 			expect( cursorToStub.firstCall.args[ 0 ] ).to.equal( 0 );
+			expect( clearLineStub.firstCall.args[ 0 ] ).to.equal( 1 );
 
 			clearLineStub.restore();
 			cursorToStub.restore();

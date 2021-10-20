@@ -58,7 +58,7 @@ module.exports = function createSpinner( title, options = {} ) {
 	};
 
 	function clearLastLine() {
-		process.stdout.clearLine();
+		process.stdout.clearLine( 1 );
 		process.stdout.cursorTo( 0 );
 	}
 };
