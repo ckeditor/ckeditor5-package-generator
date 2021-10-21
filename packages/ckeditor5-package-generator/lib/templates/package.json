@@ -55,7 +55,7 @@
   "scripts": {
     "dll:build": "ckeditor5-package-tools dll:build",
     "dll:serve": "http-server ./ -o sample/dll.html",
-    "lint": "eslint '**/*.js' --quiet --ignore-pattern 'build/'",
+    "lint": "eslint \"**/*.js\" --quiet --ignore-pattern \"build/\"",
     "start": "ckeditor5-package-tools start",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
     "test": "ckeditor5-package-tools test",

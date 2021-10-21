@@ -23,7 +23,7 @@
   "scripts": {
     "changelog": "node scripts/release/changelog.js",
     "coverage": "nyc --reporter=lcov --reporter=text-summary npm run test",
-    "lint": "eslint --quiet '**/*.js'",
+    "lint": "eslint --quiet \"**/*.js\"",
     "precommit": "lint-staged",
     "release:bump-version": "node scripts/release/bump-versions.js",
     "release:publish": "node scripts/release/publish.js",
