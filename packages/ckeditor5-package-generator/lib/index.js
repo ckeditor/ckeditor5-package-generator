@@ -40,7 +40,8 @@ const GITIGNORE_ENTRIES = [
 	'coverage/',
 	'node_modules/',
 	'tmp/',
-	'sample/ckeditor.dist.js'
+	'sample/ckeditor.dist.js',
+	''
 ];
 
 new Command( packageJson.name )
