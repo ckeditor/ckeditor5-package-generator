@@ -7,6 +7,7 @@
 
 'use strict';
 
+const { EOL } = require( 'os' );
 const path = require( 'path' );
 const fs = require( 'fs' );
 const { execSync, spawnSync } = require( 'child_process' );
@@ -29,6 +30,16 @@ const TEMPLATES_TO_FILL = [
 	'package.json',
 	'LICENSE.md',
 	'README.md'
+];
+
+// Npm does not publish the `.gitignore` file even if it's somewhere inside the package.
+// Hence, the package generator will create it manually. See: #50.
+const GITIGNORE_ENTRIES = [
+	'build/',
+	'coverage/',
+	'node_modules/',
+	'tmp/',
+	'sample/ckeditor.dist.js'
 ];
 
 new Command( packageJson.name )
@@ -137,6 +148,9 @@ async function init( packageName, options ) {
 
 		copyTemplate( templatePath, directoryPath, data );
 	}
+
+	// Create the `.gitignore` file. See #50.
+	fs.writeFileSync( path.join( directoryPath, '.gitignore' ), GITIGNORE_ENTRIES.join( EOL ) );
 
 	// (4.)
 	console.log( '📍 Installing dependencies...' );
