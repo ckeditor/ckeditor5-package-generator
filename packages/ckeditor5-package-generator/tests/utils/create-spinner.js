@@ -28,11 +28,16 @@ describe( 'lib/utils/create-spinner', () => {
 					frames: [ '|', '/', '-', '\\' ],
 					interval: 5
 				}
+			},
+			cliCursor: {
+				show: sinon.stub(),
+				hide: sinon.stub()
 			}
 		};
 
 		mockery.registerMock( 'is-interactive', stubs.isInteractive );
 		mockery.registerMock( 'cli-spinners', stubs.cliSpinners );
+		mockery.registerMock( 'cli-cursor', stubs.cliCursor );
 
 		createSpinner = require( '../../lib/utils/create-spinner' );
 	} );
@@ -141,6 +146,14 @@ describe( 'lib/utils/create-spinner', () => {
 			cursorToStub.restore();
 			writeStub.restore();
 		} );
+
+		it( 'hides a cursor when starting spinning', () => {
+			const spinner = createSpinner( 'Foo.' );
+
+			spinner.start();
+
+			expect( stubs.cliCursor.hide.calledOnce ).to.equal( true );
+		} );
 	} );
 
 	describe( '#finish', () => {
@@ -202,6 +215,17 @@ describe( 'lib/utils/create-spinner', () => {
 
 			expect( consoleStub.calledOnce ).to.equal( true );
 			expect( consoleStub.firstCall.firstArg ).to.equal( '📍 Foo.' );
+		} );
+
+		it( 'shows a cursor when finished spinning', () => {
+			const spinner = createSpinner( 'Foo.' );
+			const consoleStub = sinon.stub( console, 'log' );
+
+			spinner.start();
+			spinner.finish();
+
+			consoleStub.restore();
+			expect( stubs.cliCursor.show.calledOnce ).to.equal( true );
 		} );
 	} );
 } );

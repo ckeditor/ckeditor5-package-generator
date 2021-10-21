@@ -12,6 +12,7 @@
   "dependencies": {
     "chalk": "^4.1.2",
     "cli-spinners": "^2.6.1",
+    "cli-cursor": "^3.1.0",
     "commander": "^8.1.0",
     "glob": "^7.1.7",
     "is-interactive": "^1.0.0",

@@ -7,6 +7,7 @@
 
 const isInteractive = require( 'is-interactive' );
 const cliSpinners = require( 'cli-spinners' );
+const cliCursor = require( 'cli-cursor' );
 
 /**
  * @param {String} title Description of the current processed task.
@@ -31,6 +32,8 @@ module.exports = function createSpinner( title, options = {} ) {
 			let index = 0;
 			let shouldClearLastLine = false;
 
+			cliCursor.hide();
+
 			timerId = setInterval( () => {
 				if ( index === frames.length ) {
 					index = 0;
@@ -53,6 +56,7 @@ module.exports = function createSpinner( title, options = {} ) {
 			clearInterval( timerId );
 			clearLastLine();
 
+			cliCursor.show();
 			console.log( `📍 ${ title }` );
 		}
 	};
