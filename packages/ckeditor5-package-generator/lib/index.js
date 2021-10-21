@@ -10,19 +10,20 @@
 const { EOL } = require( 'os' );
 const path = require( 'path' );
 const fs = require( 'fs' );
-const { execSync, spawnSync } = require( 'child_process' );
+const { execSync, spawn } = require( 'child_process' );
 
 const { Command } = require( 'commander' );
-const mkdirp = require( 'mkdirp' );
+const chalk = require( 'chalk' );
 const template = require( 'lodash.template' );
 const glob = require( 'glob' );
-const chalk = require( 'chalk' );
+const mkdirp = require( 'mkdirp' );
 
 const packageJson = require( '../package.json' );
 const TEMPLATE_PATH = path.join( __dirname, 'templates' );
 
 const getDependenciesVersions = require( './utils/get-dependencies-versions' );
 const validatePackageName = require( './utils/validate-package-name' );
+const createSpinner = require( './utils/create-spinner' );
 
 // Files that need to be filled with data.
 const TEMPLATES_TO_FILL = [
@@ -65,10 +66,11 @@ new Command( packageJson.name )
 async function init( packageName, options ) {
 	// 1. Validate the package name.
 	// 2. Create a directory.
-	// 3. Copy files.
-	// 4. Call npm/yarn install.
-	// 5. Initialize the git repository.
-	// 6. Display an instruction what to do next.
+	// 3. Collecting the latest version of CKEditor 5 dependencies.
+	// 4. Copy files.
+	// 5. Call npm/yarn install.
+	// 6. Initialize the git repository.
+	// 7. Display an instruction what to do next.
 	//
 	// * Should we validate Node.js version?
 	// * Should we force using Yarn?
@@ -112,6 +114,8 @@ async function init( packageName, options ) {
 	console.log( `📍 Creating the directory "${ chalk.cyan( directoryPath ) }".` );
 	mkdirp.sync( directoryPath );
 
+	// (3.)
+	console.log( '📍 Collecting the latest CKEditor 5 packages versions...' );
 	const packageVersions = getDependenciesVersions( {
 		devMode: options.dev
 	} );
@@ -124,7 +128,7 @@ async function init( packageName, options ) {
 		nodir: true
 	} );
 
-	// (3.)
+	// (4.)
 	console.log( '📍 Copying files...' );
 
 	for ( const templatePath of templatesToCopy ) {
@@ -152,18 +156,25 @@ async function init( packageName, options ) {
 	// Create the `.gitignore` file. See #50.
 	fs.writeFileSync( path.join( directoryPath, '.gitignore' ), GITIGNORE_ENTRIES.join( EOL ) );
 
-	// (4.)
-	console.log( '📍 Installing dependencies...' );
-	installPackages( directoryPath, {
+	// (5.)
+	const installSpinner = createSpinner( 'Installing dependencies... ' + chalk.gray.italic( 'It takes a while.' ), {
+		isDisabled: options.verbose
+	} );
+
+	installSpinner.start();
+
+	await installPackages( directoryPath, {
 		useNpm: options.useNpm,
 		verbose: options.verbose
 	} );
 
-	// (5.)
+	installSpinner.finish();
+
+	// (6.)
 	console.log( '📍 Initializing Git repository...' );
 	initializeGitRepository( directoryPath );
 
-	// (6.)
+	// (7.)
 	console.log();
 	console.log( chalk.green( 'Done!' ) );
 	console.log();
@@ -203,39 +214,52 @@ function copyTemplate( templateFile, packagePath, data ) {
 }
 
 /**
- * @param {String} directoryPath
+ * @param {String} directoryPath An absolute path to the directory where packages should be installed.
  * @param {Object} options
- * @param {Boolean} options.useNpm
- * @param {Boolean} options.verbose
+ * @param {Boolean} options.useNpm Whether to use `npm` instead of `yarn`.
+ * @param {Boolean} options.verbose Whether to display additional logs.
+ * @returns {Promise}
  */
 function installPackages( directoryPath, options ) {
-	const spawnOptions = {
-		encoding: 'utf8',
-		shell: true,
-		cwd: directoryPath,
-		stderr: 'inherit'
-	};
+	return new Promise( ( resolve, reject ) => {
+		const spawnOptions = {
+			encoding: 'utf8',
+			shell: true,
+			cwd: directoryPath,
+			stderr: 'inherit'
+		};
 
-	if ( options.verbose ) {
-		spawnOptions.stdio = 'inherit';
-	}
+		let installTask;
 
-	if ( options.useNpm ) {
-		const npmArguments = [
-			'install',
-			'--prefix',
-			directoryPath
-		];
+		if ( options.verbose ) {
+			spawnOptions.stdio = 'inherit';
+		}
 
-		spawnSync( 'npm', npmArguments, spawnOptions );
-	} else {
-		const yarnArguments = [
-			'--cwd',
-			directoryPath
-		];
+		if ( options.useNpm ) {
+			const npmArguments = [
+				'install',
+				'--prefix',
+				directoryPath
+			];
 
-		spawnSync( 'yarnpkg', yarnArguments, spawnOptions );
-	}
+			installTask = spawn( 'npm', npmArguments, spawnOptions );
+		} else {
+			const yarnArguments = [
+				'--cwd',
+				directoryPath
+			];
+
+			installTask = spawn( 'yarnpkg', yarnArguments, spawnOptions );
+		}
+
+		installTask.on( 'close', exitCode => {
+			if ( exitCode ) {
+				return reject( new Error( 'Installing dependencies finished with an error.' ) );
+			}
+
+			return resolve();
+		} );
+	} );
 }
 
 /**
