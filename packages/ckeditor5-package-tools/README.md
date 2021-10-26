@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/@ckeditor%2Fckeditor5-package-tools.svg)](https://badge.fury.io/js/@ckeditor%2Fckeditor5-package-tools)
 
-This package implements scripts and utils used by [`ckeditor5-package-generator`](https://www.npmjs.com/package/ckeditor5-package-generator).
+This package implements the scripts and utils used by [`ckeditor5-package-generator`](https://www.npmjs.com/package/ckeditor5-package-generator).
 
 ## Installation
 
@@ -14,11 +14,11 @@ npm install --save @ckeditor/ckeditor5-package-tools
 
 The following scripts are available in the package:
 
-* `test` &ndash; prepares an entry file and passes it to [karma](https://karma-runner.github.io/) test runner,
+* `test` &ndash; prepares an entry file and passes it to the [karma](https://karma-runner.github.io/) test runner,
 * `start` &ndash; prepares the [development server](https://webpack.js.org/configuration/dev-server/) with the live-reloading mechanism,
-* `dll:build` &ndash; prepares a compatible with [CKEditor 5 DLL](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html) file that exposes plugins from the package.
+* `dll:build` &ndash; prepares a file compatible with [CKEditor 5 DLL](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html) that exposes plugins from the package.
 
-There are two ways to integrate these scripts. Either [npm scripts](https://docs.npmjs.com/cli/v7/using-npm/scripts) or Node.js scripts.
+There are two ways to integrate these scripts, either with [npm scripts](https://docs.npmjs.com/cli/v7/using-npm/scripts) or Node.js scripts.
 
 ### Integration with npm scripts
 
