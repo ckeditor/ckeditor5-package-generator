@@ -78,13 +78,13 @@ describe( 'lib/utils/validate-package-name', () => {
 			expect( error ).to.equal( 'The package name must match the "@[scope]/ckeditor5-[feature-name]" pattern.' );
 		} );
 
-		it( 'rejects the package name if it does not match to the ckeditor5-* pattern', () => {
+		it( 'rejects the package name if it does not match to the ckeditor5-* pattern (missing "ckeditor5-" prefix)', () => {
 			const error = validatePackageName( '@ckeditor/foo' );
 
 			expect( error ).to.equal( 'The package name must match the "@[scope]/ckeditor5-[feature-name]" pattern.' );
 		} );
 
-		it( 'rejects the package name if it does not match to the ckeditor5-* pattern', () => {
+		it( 'rejects the package name if it does not match to the ckeditor5-* pattern (missing hyphen-minus)', () => {
 			const error = validatePackageName( '@ckeditor/ckeditor5_foo' );
 
 			expect( error ).to.equal( 'The package name must match the "@[scope]/ckeditor5-[feature-name]" pattern.' );
