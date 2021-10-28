@@ -34,7 +34,7 @@ module.exports = function validatePackageName( packageName ) {
 
 	// The package name must follow the @scope/ckeditor5-name pattern.
 	if ( !match ) {
-		return 'The package name must match the "@scope/ckeditor5-*" pattern.';
+		return 'The package name must match the "@[scope]/ckeditor5-[feature-name]" pattern.';
 	}
 
 	// encodeURIComponent() will escape majority of characters not allowed for the npm package name.

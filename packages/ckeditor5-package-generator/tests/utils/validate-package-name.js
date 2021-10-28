@@ -63,31 +63,31 @@ describe( 'lib/utils/validate-package-name', () => {
 		it( 'rejects the package name without a scope', () => {
 			const error = validatePackageName( 'ckeditor5-foo' );
 
-			expect( error ).to.equal( 'The package name must match the "@scope/ckeditor5-*" pattern.' );
+			expect( error ).to.equal( 'The package name must match the "@[scope]/ckeditor5-[feature-name]" pattern.' );
 		} );
 
 		it( 'rejects the package name if the scope misses the "at" (@) character at the beginning', () => {
 			const error = validatePackageName( 'ckeditor/ckeditor5-foo' );
 
-			expect( error ).to.equal( 'The package name must match the "@scope/ckeditor5-*" pattern.' );
+			expect( error ).to.equal( 'The package name must match the "@[scope]/ckeditor5-[feature-name]" pattern.' );
 		} );
 
 		it( 'rejects the package name if the name ends with the slash (/)', () => {
 			const error = validatePackageName( '@ckeditor/ckeditor5-foo/' );
 
-			expect( error ).to.equal( 'The package name must match the "@scope/ckeditor5-*" pattern.' );
+			expect( error ).to.equal( 'The package name must match the "@[scope]/ckeditor5-[feature-name]" pattern.' );
 		} );
 
 		it( 'rejects the package name if it does not match to the ckeditor5-* pattern', () => {
 			const error = validatePackageName( '@ckeditor/foo' );
 
-			expect( error ).to.equal( 'The package name must match the "@scope/ckeditor5-*" pattern.' );
+			expect( error ).to.equal( 'The package name must match the "@[scope]/ckeditor5-[feature-name]" pattern.' );
 		} );
 
 		it( 'rejects the package name if it does not match to the ckeditor5-* pattern', () => {
 			const error = validatePackageName( '@ckeditor/ckeditor5_foo' );
 
-			expect( error ).to.equal( 'The package name must match the "@scope/ckeditor5-*" pattern.' );
+			expect( error ).to.equal( 'The package name must match the "@[scope]/ckeditor5-[feature-name]" pattern.' );
 		} );
 	} );
 
