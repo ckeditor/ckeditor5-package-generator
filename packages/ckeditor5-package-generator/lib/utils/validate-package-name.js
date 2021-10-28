@@ -17,7 +17,7 @@ const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
  */
 module.exports = function validatePackageName( packageName ) {
 	if ( !packageName.length ) {
-		return 'The package name cannot be an empty string.';
+		return 'The package name cannot be an empty string - pass the name as the first argument to the script.';
 	}
 
 	// Npm does not allow names longer than 214 characters.

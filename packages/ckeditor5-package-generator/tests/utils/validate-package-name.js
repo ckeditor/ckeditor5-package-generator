@@ -27,7 +27,7 @@ describe( 'lib/utils/validate-package-name', () => {
 		it( 'rejects an empty package name', () => {
 			const error = validatePackageName( '' );
 
-			expect( error ).to.equal( 'The package name cannot be an empty string.' );
+			expect( error ).to.equal( 'The package name cannot be an empty string - pass the name as the first argument to the script.' );
 		} );
 
 		it( 'accepts a name lesser than 214 characters', () => {
