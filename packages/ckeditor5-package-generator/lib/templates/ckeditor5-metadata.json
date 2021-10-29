@@ -1,0 +1,23 @@
+{
+	"plugins": [
+		{
+			"name": "<%= name.split('/')[1] %>",
+			"className": "<%= name.split('/')[1].replace(/ /g, '') %>",
+			"description": "Adds text to the editor.",
+			"path": "src/myplugin.js",
+			"docs": "features/text-alignment.html",
+			"uiComponents": [
+				{
+					"name": "myButton",
+					"type": "Button",
+					"iconPath": "theme/icons/ckeditor.svg"
+				}
+			],
+			"htmlOutput": [
+				{
+					"elements": "p"
+				}
+			]
+		}
+	]
+}
