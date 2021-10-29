@@ -17,7 +17,7 @@ const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
  */
 module.exports = function validatePackageName( packageName ) {
 	if ( !packageName.length ) {
-		return 'The package name cannot be an empty string.';
+		return 'The package name cannot be an empty string - pass the name as the first argument to the script.';
 	}
 
 	// Npm does not allow names longer than 214 characters.
@@ -34,7 +34,7 @@ module.exports = function validatePackageName( packageName ) {
 
 	// The package name must follow the @scope/ckeditor5-name pattern.
 	if ( !match ) {
-		return 'The package name must match the "@scope/ckeditor5-*" pattern.';
+		return 'The package name must match the "@[scope]/ckeditor5-[feature-name]" pattern.';
 	}
 
 	// encodeURIComponent() will escape majority of characters not allowed for the npm package name.

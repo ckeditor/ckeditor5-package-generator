@@ -45,7 +45,7 @@ const GITIGNORE_ENTRIES = [
 ];
 
 new Command( packageJson.name )
-	.argument( '<packageName>', 'name of the package (@scope/ckeditor5-*)' )
+	.argument( '[packageName]', 'name of the package (@scope/ckeditor5-*)' )
 	.option( '-v, --verbose', 'output additional logs', false )
 	.option( '--dev', 'execution of the script in the development mode', () => {
 		// An absolute path to the repository that tracks the package.
@@ -64,7 +64,7 @@ new Command( packageJson.name )
  * @param {String} packageName
  * @param {CKeditor5PackageGeneratorOptions} options
  */
-async function init( packageName, options ) {
+async function init( packageName = '', options ) {
 	// 1. Validate the package name.
 	// 2. Create a directory.
 	// 3. Collecting the latest version of CKEditor 5 dependencies.
