@@ -28,7 +28,6 @@ const createSpinner = require( './utils/create-spinner' );
 // Files that need to be filled with data.
 const TEMPLATES_TO_FILL = [
 	'sample/dll.html',
-	'ckeditor5-metadata.json',
 	'package.json',
 	'LICENSE.md',
 	'README.md'
