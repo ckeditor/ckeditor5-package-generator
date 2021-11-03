@@ -46,6 +46,7 @@
     "@ckeditor/ckeditor5-table": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-theme-lark": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-upload": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-inspector": "^2.2.2",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": ">=<%= eslintConfigCkeditor5Version %>",
     "http-server": "^13.0.2",
