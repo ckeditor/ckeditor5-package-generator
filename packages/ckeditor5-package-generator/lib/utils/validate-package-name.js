@@ -12,11 +12,11 @@ const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
  *
  * Returns a string containing the validation error, or `null` if no errors were found.
  *
- * @param {String} packageName
+ * @param {String|undefined} packageName
  * @returns {String|null}
  */
 module.exports = function validatePackageName( packageName ) {
-	if ( !packageName.length ) {
+	if ( !packageName ) {
 		return 'The package name cannot be an empty string - pass the name as the first argument to the script.';
 	}
 

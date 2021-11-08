@@ -61,10 +61,10 @@ new Command( packageJson.name )
 	.parse( process.argv );
 
 /**
- * @param {String} packageName
+ * @param {String|undefined} packageName
  * @param {CKeditor5PackageGeneratorOptions} options
  */
-async function init( packageName = '', options ) {
+async function init( packageName, options ) {
 	// 1. Validate the package name.
 	// 2. Create a directory.
 	// 3. Collecting the latest version of CKEditor 5 dependencies.
@@ -93,7 +93,7 @@ async function init( packageName = '', options ) {
 		console.log( chalk.red( validationError ) + '\n' );
 
 		console.log( 'Expected pattern:            ' + chalk.green( '@[scope]/ckeditor5-[feature-name]' ) );
-		console.log( 'The provided package name:   ' + chalk.red( packageName ) );
+		console.log( 'The provided package name:   ' + chalk.red( packageName || '' ) );
 		console.log( 'Allowed characters list:     ' + chalk.blue( '0-9 a-z - . _' ) );
 
 		process.exit( 1 );

@@ -24,6 +24,12 @@ describe( 'lib/utils/validate-package-name', () => {
 	} );
 
 	describe( 'verifying package name length', () => {
+		it( 'rejects undefined value', () => {
+			const error = validatePackageName( undefined );
+
+			expect( error ).to.equal( 'The package name cannot be an empty string - pass the name as the first argument to the script.' );
+		} );
+
 		it( 'rejects an empty package name', () => {
 			const error = validatePackageName( '' );
 
