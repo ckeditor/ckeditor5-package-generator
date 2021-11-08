@@ -36,6 +36,7 @@
     "@ckeditor/ckeditor5-basic-styles": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-block-quote": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-code-block": ">=<%= ckeditor5Version %>",
+    "@ckeditor/ckeditor5-core": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-essentials": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-heading": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-image": ">=<%= ckeditor5Version %>",
