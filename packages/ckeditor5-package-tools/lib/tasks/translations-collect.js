@@ -1,0 +1,47 @@
+/**
+ * @license Copyright (c) 2020-2021, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md.
+ */
+
+'use strict';
+
+const path = require( 'path' );
+const glob = require( 'glob' );
+
+module.exports = options => {
+	const createPotFiles = require( '@ckeditor/ckeditor5-dev-env/lib/translations/createpotfiles' );
+	const logger = require( '@ckeditor/ckeditor5-dev-utils' ).logger();
+
+	return createPotFiles( {
+		// An array containing absolute paths the package sources.
+		sourceFiles: getPackageSources( options.cwd ),
+
+		// An absolute path to the package.
+		packagePaths: [ options.cwd ],
+
+		// A relative path to the `@ckeditor/ckeditor5-core` package where common translations are located.
+		corePackagePath: path.join( 'node_modules', '@ckeditor', 'ckeditor5-core' ),
+
+		// Ignore unused  from the core package, as the shared context may but does not have to be used.
+		ignoreUnusedCorePackageContexts: true,
+
+		// Where to save translation files.
+		outputDirectory: path.join( options.cwd, 'tmp', '.transifex' ),
+
+		// Skip the license header.
+		skipLicenseHeader: true,
+
+		// Logger instance.
+		logger
+	} );
+};
+
+/**
+ * Returns absolute paths to package sources.
+ *
+ * @param {String} cwd
+ * @returns {Array.<String>}
+ */
+function getPackageSources( cwd ) {
+	return glob.sync( path.posix.join( cwd, 'src', '**', '*.js' ) );
+}
