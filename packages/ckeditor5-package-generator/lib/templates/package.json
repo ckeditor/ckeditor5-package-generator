@@ -29,8 +29,6 @@
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-package-tools": "<%= packageToolsVersion %>",
-    "@ckeditor/ckeditor5-dev-utils": "^<%= devUtilsVersion %>",
-    "@ckeditor/ckeditor5-dev-env": "^<%= devUtilsVersion %>",
     "@ckeditor/ckeditor5-editor-classic": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-autoformat": ">=<%= ckeditor5Version %>",
     "@ckeditor/ckeditor5-basic-styles": ">=<%= ckeditor5Version %>",
