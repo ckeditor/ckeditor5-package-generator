@@ -20,5 +20,13 @@ module.exports = {
 
 	'translations:collect'( options ) {
 		return require( '../lib/tasks/translations-collect' )( options );
+	},
+
+	'translations:upload'( options ) {
+		return require( '../lib/tasks/translations-upload' )( options );
+	},
+
+	'translations:download'( options ) {
+		return require( '../lib/tasks/translations-download' )( options );
 	}
 };

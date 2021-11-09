@@ -8,8 +8,11 @@
 /* eslint-env node */
 
 const path = require( 'path' );
+const fs = require( 'fs' );
+
 const webpack = require( 'webpack' );
 const TerserPlugin = require( 'terser-webpack-plugin' );
+const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
 const { getPostCssConfig } = require( '@ckeditor/ckeditor5-dev-utils' ).styles;
 
 module.exports = options => {
@@ -26,6 +29,27 @@ module.exports = options => {
 
 	// An absolute path to the manifest file that the `DllReferencePlugin` plugin uses for mapping dependencies.
 	const ckeditor5manifestPath = path.join( options.cwd, 'node_modules', 'ckeditor5', 'build', 'ckeditor5-dll.manifest.json' );
+
+	const webpackPlugins = [
+		new webpack.DllReferencePlugin( {
+			manifest: require( ckeditor5manifestPath ),
+			scope: 'ckeditor5/src',
+			name: 'CKEditor5.dll'
+		} )
+	];
+
+	// If the package contains localization for the English language, which is the default option for the DLL build,
+	// include the CKEditor 5 Webpack plugin that produces translation files.
+	if ( fs.existsSync( path.join( options.cwd, 'lang', 'translations', 'en.po' ) ) ) {
+		webpackPlugins.push(
+			new CKEditorWebpackPlugin( {
+				language: 'en',
+				additionalLanguages: 'all',
+				sourceFilesPattern: /^src[/\\].+\.js$/,
+				skipPluralFormFunction: true
+			} )
+		);
+	}
 
 	return {
 		mode: 'production',
@@ -55,23 +79,7 @@ module.exports = options => {
 
 		watch: options.watch,
 
-		plugins: [
-			// Uncomment the `CKEditorWebpackPlugin` definition if your plugin contains translations files.
-			// Read more about creating localization files.
-			// See: https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/ui/localization.html.
-			// new CKEditorWebpackPlugin( {
-			// 	// UI language. Language codes follow the https://en.wikipedia.org/wiki/ISO_639-1 format.
-			// 	language: 'en',
-			// 	additionalLanguages: 'all',
-			// 	sourceFilesPattern: /^src[/\\].+\.js$/,
-			// 	skipPluralFormFunction: true
-			// } ),
-			new webpack.DllReferencePlugin( {
-				manifest: require( ckeditor5manifestPath ),
-				scope: 'ckeditor5/src',
-				name: 'CKEditor5.dll'
-			} )
-		],
+		plugins: webpackPlugins,
 
 		module: {
 			rules: [

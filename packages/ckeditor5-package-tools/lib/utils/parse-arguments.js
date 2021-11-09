@@ -29,7 +29,8 @@ module.exports = args => {
 			open: true,
 			verbose: false,
 			watch: false,
-			'source-map': false
+			'source-map': false,
+			transifex: null
 		}
 	};
 
@@ -60,6 +61,8 @@ module.exports = args => {
  * @property {String} cwd An absolute path to the root directory which contains the main `package.json` file.
  *
  * @property {String} task A name of a task to execute.
+ *
+ * @property {String|null} transifex An end-point API URL to upload/download translations from the Transifex service.
  *
  * @property {Array.<String>} _ Additional modifiers for the executed task that could not be matched with the supported options.
  *
