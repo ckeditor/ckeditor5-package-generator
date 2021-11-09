@@ -291,7 +291,7 @@ function installGitHooks( directoryPath, options ) {
 			spawnOptions.stdio = 'inherit';
 		}
 
-		// 'rebuild' was added to yarn in version 2, but we use yarn 1, thus only npm can be used
+		// 'rebuild' was added to yarn in version 2, but we use yarn 1, thus only npm can be used.
 		const rebuildTask = spawn( 'npm', spawnArguments, spawnOptions );
 
 		rebuildTask.on( 'close', exitCode => {
