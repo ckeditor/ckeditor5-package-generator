@@ -52,6 +52,8 @@
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": ">=<%= eslintConfigCkeditor5Version %>",
     "http-server": "^13.0.2",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.6",
     "stylelint": "^13.13.1",
     "stylelint-config-ckeditor5": ">=<%= stylelintConfigCkeditor5Version %>"
   },
@@ -67,5 +69,18 @@
     "translations:collect": "ckeditor5-package-tools translations:collect",
     "translations:download": "ckeditor5-package-tools translations:download",
     "translations:upload": "ckeditor5-package-tools translations:upload"
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "eslint --quiet"
+    ],
+    "**/*.css": [
+      "stylelint --quiet --allow-empty-input"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

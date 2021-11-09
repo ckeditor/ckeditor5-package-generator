@@ -71,7 +71,8 @@ async function init( packageName, options ) {
 	// 4. Copy files.
 	// 5. Call npm/yarn install.
 	// 6. Initialize the git repository.
-	// 7. Display an instruction what to do next.
+	// 7. Install git hooks.
+	// 8. Display an instruction what to do next.
 	//
 	// * Should we validate Node.js version?
 	// * Should we force using Yarn?
@@ -176,6 +177,12 @@ async function init( packageName, options ) {
 	initializeGitRepository( directoryPath );
 
 	// (7.)
+	console.log( '📍 Installing git hooks...' );
+	await installGitHooks( directoryPath, {
+		verbose: options.verbose
+	} );
+
+	// (8.)
 	console.log();
 	console.log( chalk.green( 'Done!' ) );
 	console.log();
@@ -256,6 +263,40 @@ function installPackages( directoryPath, options ) {
 		installTask.on( 'close', exitCode => {
 			if ( exitCode ) {
 				return reject( new Error( 'Installing dependencies finished with an error.' ) );
+			}
+
+			return resolve();
+		} );
+	} );
+}
+
+/**
+ * @param {String} directoryPath An absolute path to the directory where packages should be installed.
+ * @param {Object} options
+ * @param {Boolean} options.verbose Whether to display additional logs.
+ * @returns {Promise}
+ */
+function installGitHooks( directoryPath, options ) {
+	return new Promise( ( resolve, reject ) => {
+		const spawnOptions = {
+			encoding: 'utf8',
+			shell: true,
+			cwd: directoryPath,
+			stderr: 'inherit'
+		};
+
+		const spawnArguments = [ 'rebuild', 'husky' ];
+
+		if ( options.verbose ) {
+			spawnOptions.stdio = 'inherit';
+		}
+
+		// 'rebuild' was added to yarn in version 2, but we use yarn 1, thus only npm can be used.
+		const rebuildTask = spawn( 'npm', spawnArguments, spawnOptions );
+
+		rebuildTask.on( 'close', exitCode => {
+			if ( exitCode ) {
+				return reject( new Error( 'Rebuilding finished with an error.' ) );
 			}
 
 			return resolve();
