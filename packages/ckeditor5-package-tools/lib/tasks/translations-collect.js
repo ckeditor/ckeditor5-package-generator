@@ -10,7 +10,6 @@ const glob = require( 'glob' );
 
 module.exports = options => {
 	const sourceFilesGlob = path.posix.join( options.cwd, 'src', '**', '*.js' );
-	const logger = require( '@ckeditor/ckeditor5-dev-utils' ).logger();
 
 	return require( '@ckeditor/ckeditor5-dev-env' ).createPotFiles( {
 		// An array containing absolute paths the package sources.
@@ -29,9 +28,6 @@ module.exports = options => {
 		translationsDirectory: path.join( options.cwd, 'tmp', '.transifex' ),
 
 		// Skip the license header.
-		skipLicenseHeader: true,
-
-		// Logger instance.
-		logger
+		skipLicenseHeader: true
 	} );
 };
