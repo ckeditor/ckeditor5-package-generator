@@ -33,6 +33,9 @@ logProcess( 'Executing linters...' );
 executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'lint' ] );
 executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'stylelint' ] );
 
+logProcess( 'Verifying translations...' );
+executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'translations:collect' ] );
+
 logProcess( 'Starting the development server...' );
 startDevelopmentServer( NEW_PACKAGE_DIRECTORY )
 	.then( options => {
