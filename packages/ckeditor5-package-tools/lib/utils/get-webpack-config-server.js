@@ -8,9 +8,26 @@
 /* eslint-env node */
 
 const path = require( 'path' );
+const webpack = require( 'webpack' );
+const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
 const { getPostCssConfig } = require( '@ckeditor/ckeditor5-dev-utils' ).styles;
 
 module.exports = options => {
+	const webpackPlugins = [
+		new webpack.DefinePlugin( {
+			EDITOR_LANGUAGE: JSON.stringify( options.language )
+		} )
+	];
+
+	if ( options.language !== 'en' ) {
+		webpackPlugins.push(
+			new CKEditorWebpackPlugin( {
+				language: options.language,
+				sourceFilesPattern: /src[/\\].+\.js$/
+			} )
+		);
+	}
+
 	return {
 		mode: options.production ? 'production' : 'development',
 
@@ -28,6 +45,8 @@ module.exports = options => {
 		optimization: {
 			minimize: false
 		},
+
+		plugins: webpackPlugins,
 
 		devServer: {
 			static: {
