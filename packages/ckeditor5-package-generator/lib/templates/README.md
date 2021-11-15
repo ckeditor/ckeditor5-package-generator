@@ -33,6 +33,8 @@ Starts a HTTP server with the live-reload mechanism that allows previewing and t
 
 When the server has been started, the default browser will open the developer sample. This can be disabled by passing the `--no-open` option to that command.
 
+You can also define a language that will translate the created editor by specifying the `--language [LANG]` option. It defaults to `'en'`.
+
 Examples:
 
 ```bash
@@ -40,7 +42,10 @@ Examples:
 <%= program %> run start
 
 # Disable auto-opening the browser.
-<%= program %> run start --no-open
+<%= program %> run start <%= cliSeparator %>--no-open
+
+# Create the editor with the interface using the German language.
+<%= program %> run start <%= cliSeparator %>--language=de
 ```
 
 ### `test`
@@ -59,7 +64,7 @@ Examples:
 <%= program %> run test
 
 # Generate code coverage report after each change in the sources.
-<%= program %> run test --coverage --test
+<%= program %> run test <%= cliSeparator %>--coverage --test
 ```
 
 ### `lint`
@@ -95,7 +100,7 @@ Examples:
 <%= program %> run dll:build
 
 # Build the DLL file and listen to changes in its sources.
-<%= program %> run dll:build --watch
+<%= program %> run dll:build <%= cliSeparator %>--watch
 ```
 
 ### `dll:serve`
@@ -136,7 +141,7 @@ To avoid passing the `--transifex` option every time when calls the command, you
 Examples:
 
 ```bash
-<%= program %> run translations:download --transifex [API URL]
+<%= program %> run translations:download <%= cliSeparator %>--transifex [API URL]
 ```
 
 ### `translations:upload`
@@ -150,7 +155,7 @@ To avoid passing the `--transifex` option every time when calls the command, you
 Examples:
 
 ```bash
-<%= program %> run translations:upload --transifex [API URL]
+<%= program %> run translations:upload <%= cliSeparator %>--transifex [API URL]
 ```
 
 ## License
