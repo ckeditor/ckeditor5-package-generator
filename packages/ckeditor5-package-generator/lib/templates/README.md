@@ -109,6 +109,50 @@ Examples:
 <%= program %> run dll:serve
 ```
 
+### `translations:collect`
+
+Collects translation messages (arguments of the `t()` function) and context files, then validate whether provided values do not interfere with the values specified in the `@ckeditor/ckeditor5-core` package.
+
+The task may end with an error if one of the following conditions is met:
+
+* Found the "Unused context" error &ndash; entries specified in the `lang/contexts.json` file are not used in source files. They should be removed.
+* Found the "Context is duplicated for the id" error &ndash; some of the entries are duplicated. Consider removing them from the `lang/contexts.json` file, or rewrite them.
+* Found the "Context for the message id is missing" error &ndash; entries specified in source files are not described in the `lang/contexts.json` file. They should be added.
+
+Examples:
+
+```bash
+<%= program %> run translations:collect
+```
+
+### `translations:download`
+
+Download translations from the Transifex server. Depending on users' activity in the project, it creates translations files used for building the editor.
+
+The task requires passing the URL to Transifex API. Usually, it matches the following format: `https://www.transifex.com/api/2/project/[PROJECT_SLUG]`.
+
+To avoid passing the `--transifex` option every time when calls the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:download` command.
+
+Examples:
+
+```bash
+<%= program %> run translations:download --transifex [API URL]
+```
+
+### `translations:upload`
+
+Uploads translation messages on the Transifex server. It allows the creation of translations for other languages by users using the Transifex platform.
+
+The task requires passing the URL to Transifex API. Usually, it matches the following format: `https://www.transifex.com/api/2/project/[PROJECT_SLUG]`.
+
+To avoid passing the `--transifex` option every time when calls the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:upload` command.
+
+Examples:
+
+```bash
+<%= program %> run translations:upload --transifex [API URL]
+```
+
 ## License
 
 The `<%= name %>` package is available under [MIT license](https://opensource.org/licenses/MIT).
