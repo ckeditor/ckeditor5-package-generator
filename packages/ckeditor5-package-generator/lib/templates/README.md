@@ -13,6 +13,9 @@ This package was created by the [ckeditor5-package-generator](https://www.npmjs.
   * [`stylelint`](#stylelint)
   * [`dll:build`](#dllbuild)
   * [`dll:serve`](#dllserve)
+  * [`translations:collect`](#translationscollect)
+  * [`translations:download`](#translationsdownload)
+  * [`translations:upload`](#translationsupload)
 * [License](#license)
 
 ## Developing the package
