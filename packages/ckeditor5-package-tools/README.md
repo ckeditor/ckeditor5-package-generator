@@ -16,7 +16,10 @@ The following scripts are available in the package:
 
 * `test` &ndash; prepares an entry file and passes it to the [karma](https://karma-runner.github.io/) test runner,
 * `start` &ndash; prepares the [development server](https://webpack.js.org/configuration/dev-server/) with the live-reloading mechanism,
-* `dll:build` &ndash; prepares a file compatible with [CKEditor 5 DLL](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html) that exposes plugins from the package.
+* `dll:build` &ndash; prepares a file compatible with [CKEditor 5 DLL](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html) that exposes plugins from the package,
+* `translations:collect` &ndash; collects translations context and prepares them to be sent to [Transifex](https://www.transifex.com/),
+* `translations:upload` &ndash; uploads collected contexts to [Transifex](https://www.transifex.com/),
+* `translations:download` &ndash; downloads translated contexts from [Transifex](https://www.transifex.com/).
 
 There are two ways to integrate these scripts, either with [npm scripts](https://docs.npmjs.com/cli/v7/using-npm/scripts) or Node.js scripts.
 
@@ -29,6 +32,9 @@ Add the following tasks in `package.json`, in the `#scripts` section:
   "dll:build": "ckeditor5-package-tools dll:build",
   "start": "ckeditor5-package-tools start",
   "test": "ckeditor5-package-tools test",
+  "translations:collect": "ckeditor5-package-tools translations:collect",
+  "translations:download": "ckeditor5-package-tools translations:download --transifex [API URL]",
+  "translations:upload": "ckeditor5-package-tools translations:upload --transifex [API URL]"
 }
 ```
 
@@ -63,6 +69,40 @@ const packageTools = require( '@ckeditor/ckeditor5-package-tools' );
 
 packageTools[ 'dll:build' ]( /* Ckeditor5PackageToolsOptions */ );
 ```
+
+The "translations:collect" task:
+
+```js
+'use strict';
+
+const packageTools = require( '@ckeditor/ckeditor5-package-tools' );
+
+packageTools[ 'translations:collect' ]( /* Ckeditor5PackageToolsOptions */ );
+```
+
+The "translations:download" task:
+
+```js
+'use strict';
+
+const packageTools = require( '@ckeditor/ckeditor5-package-tools' );
+
+packageTools[ 'translations:download' ]( /* Ckeditor5PackageToolsOptions */ );
+```
+
+This task requires the `transifex` option to be passed in the `Ckeditor5PackageToolsOptions` object.
+
+The "translations:upload" task:
+
+```js
+'use strict';
+
+const packageTools = require( '@ckeditor/ckeditor5-package-tools' );
+
+packageTools[ 'translations:upload' ]( /* Ckeditor5PackageToolsOptions */ );
+```
+
+This task requires the `transifex` option to be passed in the `Ckeditor5PackageToolsOptions` object.
 
 The `Ckeditor5PackageToolsOptions` object interface is described in the [`lib/utils/parse-arguments.js`](https://github.com/ckeditor/ckeditor5-package-generator/blob/master/packages/ckeditor5-package-tools/lib/utils/parse-arguments.js) file.
 

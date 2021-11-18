@@ -142,13 +142,9 @@ async function init( packageName, options ) {
 				name: packageName,
 				now: new Date(),
 				program,
-				ckeditor5Version: packageVersions.ckeditor5,
-				devUtilsVersion: packageVersions.devUtils,
-				eslintConfigCkeditor5Version: packageVersions.eslintConfigCkeditor5,
-				stylelintConfigCkeditor5Version: packageVersions.stylelintConfigCkeditor5,
-				packageToolsVersion: packageVersions.packageTools,
-				dllFileName: dllConfiguration.fileName,
-				dllLibrary: dllConfiguration.library
+				packageVersions,
+				dll: dllConfiguration,
+				cliSeparator: program === 'npm' ? '-- ' : ''
 			};
 		}
 

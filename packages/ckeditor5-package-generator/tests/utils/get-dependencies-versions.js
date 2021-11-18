@@ -24,7 +24,6 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 
 		mockery.registerMock( './get-package-version', getPackageVersion );
 		getPackageVersion.withArgs( 'ckeditor5' ).returns( '30.0.0' );
-		getPackageVersion.withArgs( '@ckeditor/ckeditor5-dev-utils' ).returns( '25.0.0' );
 		getPackageVersion.withArgs( '@ckeditor/ckeditor5-package-tools' ).returns( '1.0.0' );
 		getPackageVersion.withArgs( 'eslint-config-ckeditor5' ).returns( '5.0.0' );
 		getPackageVersion.withArgs( 'stylelint-config-ckeditor5' ).returns( '3.0.0' );
@@ -44,11 +43,6 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 	it( 'returns an object with a version of the "ckeditor5" package', () => {
 		const returnedValue = getDependenciesVersions( { devMode: false } );
 		expect( returnedValue.ckeditor5 ).to.equal( '30.0.0' );
-	} );
-
-	it( 'returns an object with a version of the "@ckeditor/ckeditor5-dev-utils" package', () => {
-		const returnedValue = getDependenciesVersions( { devMode: false } );
-		expect( returnedValue.devUtils ).to.equal( '25.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "eslint-config-ckeditor5', () => {

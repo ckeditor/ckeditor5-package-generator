@@ -29,9 +29,11 @@ describe( 'lib/utils/parse-arguments', () => {
 
 		expect( options.coverage ).to.equal( false );
 		expect( options.sourceMap ).to.equal( false );
+		expect( options.production ).to.equal( false );
 		expect( options.verbose ).to.equal( false );
 		expect( options.watch ).to.equal( false );
 		expect( options.open ).to.equal( true );
+		expect( options.language ).to.equal( 'en' );
 	} );
 
 	it( 'assigns the current work directory as the "#cwd" property', () => {
@@ -95,6 +97,12 @@ describe( 'lib/utils/parse-arguments', () => {
 		expect( options.watch ).to.equal( true );
 	} );
 
+	it( 'allows specifying the production option', () => {
+		const options = parseArguments( [ 'task-to-execute', '--production' ] );
+
+		expect( options.production ).to.equal( true );
+	} );
+
 	it( 'allows specifying many modifiers', () => {
 		const options = parseArguments( [ 'task-to-execute', '--watch', '--coverage', '-s' ] );
 
@@ -116,5 +124,11 @@ describe( 'lib/utils/parse-arguments', () => {
 		const options = parseArguments( [ 'task-to-execute', '--no-open' ] );
 
 		expect( options.open ).to.equal( false );
+	} );
+
+	it( 'allows specifying the language option', () => {
+		const options = parseArguments( [ 'task-to-execute', '--language', 'pl' ] );
+
+		expect( options.language ).to.equal( 'pl' );
 	} );
 } );
