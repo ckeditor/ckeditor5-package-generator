@@ -36,7 +36,7 @@ Starts a HTTP server with the live-reload mechanism that allows previewing and t
 
 When the server has been started, the default browser will open the developer sample. This can be disabled by passing the `--no-open` option to that command.
 
-You can also define a language that will translate the created editor by specifying the `--language [LANG]` option. It defaults to `'en'`.
+You can also define the language that will translate the created editor by specifying the `--language [LANG]` option. It defaults to `'en'`.
 
 Examples:
 
@@ -47,7 +47,7 @@ Examples:
 # Disable auto-opening the browser.
 <%= program %> run start <%= cliSeparator %>--no-open
 
-# Create the editor with the interface using the German language.
+# Create the editor with the interface in German.
 <%= program %> run start <%= cliSeparator %>--language=de
 ```
 
@@ -119,7 +119,7 @@ Examples:
 
 ### `translations:collect`
 
-Collects translation messages (arguments of the `t()` function) and context files, then validate whether provided values do not interfere with the values specified in the `@ckeditor/ckeditor5-core` package.
+Collects translation messages (arguments of the `t()` function) and context files, then validates whether the provided values do not interfere with the values specified in the `@ckeditor/ckeditor5-core` package.
 
 The task may end with an error if one of the following conditions is met:
 
@@ -149,11 +149,11 @@ Examples:
 
 ### `translations:upload`
 
-Uploads translation messages on the Transifex server. It allows the creation of translations for other languages by users using the Transifex platform.
+Uploads translation messages onto the Transifex server. It allows for the creation of translations into other languages by users using the Transifex platform.
 
-The task requires passing the URL to Transifex API. Usually, it matches the following format: `https://www.transifex.com/api/2/project/[PROJECT_SLUG]`.
+The task requires passing the URL to the Transifex API. Usually, it matches the following format: `https://www.transifex.com/api/2/project/[PROJECT_SLUG]`.
 
-To avoid passing the `--transifex` option every time when calls the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:upload` command.
+To avoid passing the `--transifex` option every time when you call the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:upload` command.
 
 Examples:
 
