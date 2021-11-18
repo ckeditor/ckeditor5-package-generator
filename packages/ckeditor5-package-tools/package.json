@@ -11,9 +11,9 @@
   ],
   "main": "lib/index.js",
   "dependencies": {
-    "@ckeditor/ckeditor5-dev-utils": "^25.4.2",
-    "@ckeditor/ckeditor5-dev-env": "^25.4.2",
-    "@ckeditor/ckeditor5-dev-webpack-plugin": "^25.4.2",
+    "@ckeditor/ckeditor5-dev-utils": "^26.0.0",
+    "@ckeditor/ckeditor5-dev-env": "^26.0.0",
+    "@ckeditor/ckeditor5-dev-webpack-plugin": "^26.0.0",
     "chai": "^4.3.4",
     "css-loader": "^5.2.7",
     "istanbul-instrumenter-loader": "^3.0.1",
