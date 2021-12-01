@@ -37,8 +37,6 @@ executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'stylelint' ] );
 logProcess( 'Verifying translations...' );
 executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'translations:collect' ] );
 
-logProcess( 'Creating the DLL build...' );
-executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'dll:build' ] );
 
 logProcess( 'Starting the development servers and verifying the sample builds...' );
 Promise.all( [
