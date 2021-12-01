@@ -173,7 +173,7 @@ async function init( packageName, options ) {
 	initializeGitRepository( directoryPath );
 
 	// (7.)
-	console.log( '📍 Installing git hooks...' );
+	console.log( '📍 Installing Git hooks...' );
 	await installGitHooks( directoryPath, {
 		verbose: options.verbose
 	} );
