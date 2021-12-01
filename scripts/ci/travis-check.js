@@ -13,6 +13,7 @@ const { spawn, spawnSync } = require( 'child_process' );
 const path = require( 'path' );
 const fs = require( 'fs' );
 const chalk = require( 'chalk' );
+const stripAnsiEscapeCodes = require( 'strip-ansi' );
 
 const REPOSITORY_DIRECTORY = path.join( __dirname, '..', '..' );
 const NEW_PACKAGE_DIRECTORY = path.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-test-package' );
@@ -36,14 +37,24 @@ executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'stylelint' ] );
 logProcess( 'Verifying translations...' );
 executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'translations:collect' ] );
 
-logProcess( 'Starting the development server...' );
-startDevelopmentServer( NEW_PACKAGE_DIRECTORY )
-	.then( options => {
-		logProcess( 'Verifying the sample...' );
-		executeCommand( REPOSITORY_DIRECTORY, 'node', [ path.join( 'scripts', 'ci', 'verify-sample.js' ), options.url ] );
 
-		options.server.kill();
+logProcess( 'Starting the development servers and verifying the sample builds...' );
+Promise.all( [
+	startDevelopmentServer( NEW_PACKAGE_DIRECTORY ),
+	startDevelopmentServerForDllBuild( NEW_PACKAGE_DIRECTORY )
+] )
+	.then( optionsList => {
+		optionsList.forEach( options => {
+			executeCommand( REPOSITORY_DIRECTORY, 'node', [ path.join( 'scripts', 'ci', 'verify-sample.js' ), options.url ] );
+		} );
 
+		return optionsList;
+	} )
+	.then( optionsList => {
+		logProcess( 'Stopping the development servers...' );
+		optionsList.forEach( options => options.server.kill() );
+	} )
+	.then( () => {
 		logProcess( 'Removing the created package...' );
 		fs.rmdirSync( NEW_PACKAGE_DIRECTORY, { recursive: true } );
 
@@ -114,6 +125,41 @@ function startDevelopmentServer( cwd ) {
 			const endMatch = /\+ \d+ hidden modules/.test( content );
 
 			if ( endMatch ) {
+				return resolve( {
+					server: sampleServer,
+					url: sampleUrl
+				} );
+			}
+		} );
+
+		sampleServer.on( 'error', error => {
+			return reject( error );
+		} );
+	} );
+}
+
+/**
+ * Starts the development server for the DLL build and resolves its process object and URL.
+ *
+ * @param {String} cwd
+ * @return {Promise.<Object>}
+ */
+function startDevelopmentServerForDllBuild( cwd ) {
+	return new Promise( ( resolve, reject ) => {
+		const sampleServer = spawn( 'http-server', [ './' ], {
+			cwd,
+			encoding: 'utf8',
+			shell: true
+		} );
+
+		// The `http-server` package prints the URL with colors, which have to be removed before searching for the server URL.
+		sampleServer.stdout.on( 'data', data => {
+			const content = stripAnsiEscapeCodes( data.toString() );
+			const urlMatch = content.match( /http:\/\/127.0.0.1:\d+/ );
+
+			if ( urlMatch ) {
+				const sampleUrl = `${ urlMatch[ 0 ] }/sample/dll.html`;
+
 				return resolve( {
 					server: sampleServer,
 					url: sampleUrl
