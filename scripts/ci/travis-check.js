@@ -13,6 +13,7 @@ const { spawn, spawnSync } = require( 'child_process' );
 const path = require( 'path' );
 const fs = require( 'fs' );
 const chalk = require( 'chalk' );
+const stripAnsiEscapeCodes = require( 'strip-ansi' );
 
 const REPOSITORY_DIRECTORY = path.join( __dirname, '..', '..' );
 const NEW_PACKAGE_DIRECTORY = path.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-test-package' );
@@ -33,14 +34,26 @@ logProcess( 'Executing linters...' );
 executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'lint' ] );
 executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'stylelint' ] );
 
-logProcess( 'Starting the development server...' );
-startDevelopmentServer( NEW_PACKAGE_DIRECTORY )
-	.then( options => {
-		logProcess( 'Verifying the sample...' );
-		executeCommand( REPOSITORY_DIRECTORY, 'node', [ path.join( 'scripts', 'ci', 'verify-sample.js' ), options.url ] );
+logProcess( 'Verifying translations...' );
+executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'translations:collect' ] );
 
-		options.server.kill();
+logProcess( 'Starting the development servers and verifying the sample builds...' );
+Promise.all( [
+	startDevelopmentServer( NEW_PACKAGE_DIRECTORY ),
+	startDevelopmentServerForDllBuild( NEW_PACKAGE_DIRECTORY )
+] )
+	.then( optionsList => {
+		optionsList.forEach( options => {
+			executeCommand( REPOSITORY_DIRECTORY, 'node', [ path.join( 'scripts', 'ci', 'verify-sample.js' ), options.url ] );
+		} );
 
+		return optionsList;
+	} )
+	.then( optionsList => {
+		logProcess( 'Stopping the development servers...' );
+		return Promise.all( optionsList.map( options => killProcess( options.server ) ) );
+	} )
+	.then( () => {
 		logProcess( 'Removing the created package...' );
 		fs.rmdirSync( NEW_PACKAGE_DIRECTORY, { recursive: true } );
 
@@ -121,6 +134,67 @@ function startDevelopmentServer( cwd ) {
 		sampleServer.on( 'error', error => {
 			return reject( error );
 		} );
+	} );
+}
+
+/**
+ * Starts the development server for the DLL build and resolves its process object and URL.
+ *
+ * @param {String} cwd
+ * @return {Promise.<Object>}
+ */
+function startDevelopmentServerForDllBuild( cwd ) {
+	return new Promise( ( resolve, reject ) => {
+		const sampleServer = spawn( 'http-server', [ './' ], {
+			cwd,
+			encoding: 'utf8',
+			shell: true
+		} );
+
+		// The `http-server` package prints the URL with colors, which have to be removed before searching for the server URL.
+		sampleServer.stdout.on( 'data', data => {
+			const content = stripAnsiEscapeCodes( data.toString() );
+			const urlMatch = content.match( /http:\/\/127.0.0.1:\d+/ );
+
+			if ( urlMatch ) {
+				const sampleUrl = `${ urlMatch[ 0 ] }/sample/dll.html`;
+
+				return resolve( {
+					server: sampleServer,
+					url: sampleUrl
+				} );
+			}
+		} );
+
+		sampleServer.on( 'error', error => {
+			return reject( error );
+		} );
+	} );
+}
+
+/**
+ * Terminates the process.
+ *
+ * @param {Object} childProcess The process to terminate.
+ * @returns {Promise}
+ */
+function killProcess( childProcess ) {
+	return new Promise( resolve => {
+		childProcess.on( 'exit', () => resolve() );
+
+		// On Windows, for unknown reasons, the `childProcess.kill()` does not terminate successfully the development server processes.
+		// This in turn made it impossible to remove the created test package directory, because the `EBUSY` error was emitted when trying
+		// to remove it. So to unify the method of process termination on different operating systems, the `taskkill` command is used on
+		// Windows and `kill` command on other systems.
+		//
+		// See https://github.com/ckeditor/ckeditor5-package-generator/issues/79.
+		if ( process.platform === 'win32' ) {
+			// Terminate the process indicated by its id (/pid) and any child processes which were started by it (/t), forcefully (/f).
+			spawnSync( 'taskkill', [ '/pid', childProcess.pid, '/t', '/f' ] );
+		} else {
+			// Terminate the process indicated by its id by sending the `kill` signal that cannot be caught or ignored (-9).
+			spawnSync( 'kill', [ '-9', childProcess.pid ] );
+		}
 	} );
 }
 

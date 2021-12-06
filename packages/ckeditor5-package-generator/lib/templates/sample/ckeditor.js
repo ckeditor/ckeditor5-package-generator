@@ -1,4 +1,5 @@
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
@@ -91,7 +92,7 @@ ClassicEditor
 	} )
 	.then( editor => {
 		window.editor = editor;
-
+		CKEditorInspector.attach( editor );
 		window.console.log( 'CKEditor 5 is ready.', editor );
 	} )
 	.catch( err => {

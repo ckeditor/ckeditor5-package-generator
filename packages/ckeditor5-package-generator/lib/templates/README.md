@@ -13,6 +13,9 @@ This package was created by the [ckeditor5-package-generator](https://www.npmjs.
   * [`stylelint`](#stylelint)
   * [`dll:build`](#dllbuild)
   * [`dll:serve`](#dllserve)
+  * [`translations:collect`](#translationscollect)
+  * [`translations:download`](#translationsdownload)
+  * [`translations:upload`](#translationsupload)
 * [License](#license)
 
 ## Developing the package
@@ -33,6 +36,8 @@ Starts a HTTP server with the live-reload mechanism that allows previewing and t
 
 When the server has been started, the default browser will open the developer sample. This can be disabled by passing the `--no-open` option to that command.
 
+You can also define the language that will translate the created editor by specifying the `--language [LANG]` option. It defaults to `'en'`.
+
 Examples:
 
 ```bash
@@ -40,7 +45,10 @@ Examples:
 <%= program %> run start
 
 # Disable auto-opening the browser.
-<%= program %> run start --no-open
+<%= program %> run start <%= cliSeparator %>--no-open
+
+# Create the editor with the interface in German.
+<%= program %> run start <%= cliSeparator %>--language=de
 ```
 
 ### `test`
@@ -59,7 +67,7 @@ Examples:
 <%= program %> run test
 
 # Generate code coverage report after each change in the sources.
-<%= program %> run test --coverage --test
+<%= program %> run test <%= cliSeparator %>--coverage --test
 ```
 
 ### `lint`
@@ -95,7 +103,7 @@ Examples:
 <%= program %> run dll:build
 
 # Build the DLL file and listen to changes in its sources.
-<%= program %> run dll:build --watch
+<%= program %> run dll:build <%= cliSeparator %>--watch
 ```
 
 ### `dll:serve`
@@ -107,6 +115,50 @@ Examples:
 ```bash
 # Starts the HTTP server and opens the browser.
 <%= program %> run dll:serve
+```
+
+### `translations:collect`
+
+Collects translation messages (arguments of the `t()` function) and context files, then validates whether the provided values do not interfere with the values specified in the `@ckeditor/ckeditor5-core` package.
+
+The task may end with an error if one of the following conditions is met:
+
+* Found the `Unused context` error &ndash; entries specified in the `lang/contexts.json` file are not used in source files. They should be removed.
+* Found the `Context is duplicated for the id` error &ndash; some of the entries are duplicated. Consider removing them from the `lang/contexts.json` file, or rewrite them.
+* Found the `Context for the message id is missing` error &ndash; entries specified in source files are not described in the `lang/contexts.json` file. They should be added.
+
+Examples:
+
+```bash
+<%= program %> run translations:collect
+```
+
+### `translations:download`
+
+Download translations from the Transifex server. Depending on users' activity in the project, it creates translations files used for building the editor.
+
+The task requires passing the URL to Transifex API. Usually, it matches the following format: `https://www.transifex.com/api/2/project/[PROJECT_SLUG]`.
+
+To avoid passing the `--transifex` option every time when calls the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:download` command.
+
+Examples:
+
+```bash
+<%= program %> run translations:download <%= cliSeparator %>--transifex [API URL]
+```
+
+### `translations:upload`
+
+Uploads translation messages onto the Transifex server. It allows for the creation of translations into other languages by users using the Transifex platform.
+
+The task requires passing the URL to the Transifex API. Usually, it matches the following format: `https://www.transifex.com/api/2/project/[PROJECT_SLUG]`.
+
+To avoid passing the `--transifex` option every time when you call the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:upload` command.
+
+Examples:
+
+```bash
+<%= program %> run translations:upload <%= cliSeparator %>--transifex [API URL]
 ```
 
 ## License

@@ -12,6 +12,7 @@ module.exports = args => {
 		boolean: [
 			'coverage',
 			'open',
+			'production',
 			'source-map',
 			'verbose',
 			'watch'
@@ -27,9 +28,12 @@ module.exports = args => {
 		default: {
 			coverage: false,
 			open: true,
+			language: 'en',
 			verbose: false,
+			production: false,
 			watch: false,
-			'source-map': false
+			'source-map': false,
+			transifex: null
 		}
 	};
 
@@ -61,15 +65,21 @@ module.exports = args => {
  *
  * @property {String} task A name of a task to execute.
  *
+ * @property {String|null} transifex An end-point API URL to upload/download translations from the Transifex service.
+ *
  * @property {Array.<String>} _ Additional modifiers for the executed task that could not be matched with the supported options.
  *
  * @property {Boolean} [coverage=false] When executing tests, this option allows creating a code coverage report.
  *
  * @property {Boolean} [watch=false] When executing tests, this option
  *
- * @property {Boolean} [verbose=false]
+ * @property {Boolean} [verbose=false] Whether to display additional logs by tasks.
  *
  * @property {Boolean} [sourceMap=false] When executing tests, it allows creating source maps between built test file, and sources.
+ *
+ * @property {Boolean} [production=false] Whether to prepare an optimized build.
+ *
+ * @property {String} [language='en'] Language that will be used to build an editor when starting the development server.
  *
  * @property {Boolean} [open=true] When starting the development server, the default system browser will launch the compiled sample.
  * To disable the mechanism, type `--no-open` when starting the server.

@@ -1,6 +1,6 @@
 {
   "name": "@ckeditor/ckeditor5-package-tools",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "Development environment tools for the CKEditor 5 packages.",
   "author": "CKSource (http://cksource.com/)",
   "license": "MIT",
@@ -11,7 +11,9 @@
   ],
   "main": "lib/index.js",
   "dependencies": {
-    "@ckeditor/ckeditor5-dev-utils": "^25.4.2",
+    "@ckeditor/ckeditor5-dev-utils": "^26.0.0",
+    "@ckeditor/ckeditor5-dev-env": "^26.0.0",
+    "@ckeditor/ckeditor5-dev-webpack-plugin": "^26.0.0",
     "buffer": "^6.0.3",
     "chai": "^4.3.4",
     "css-loader": "^5.2.7",
@@ -37,7 +39,7 @@
     "style-loader": "^2.0.0",
     "stylelint": "^13.13.1",
     "stylelint-config-ckeditor5": "^2.0.1",
-    "util": "^0.12.4",
+    "terser-webpack-plugin": "^3.0.2",
     "webpack": "^5.58.1",
     "webpack-dev-server": "^4.3.1"
   },

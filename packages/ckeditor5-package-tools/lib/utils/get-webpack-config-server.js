@@ -9,10 +9,30 @@
 
 const path = require( 'path' );
 const webpack = require( 'webpack' );
+const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
 const { getPostCssConfig } = require( '@ckeditor/ckeditor5-dev-utils' ).styles;
 const getThemePath = require( './get-theme-path' );
 
 module.exports = options => {
+	const webpackPlugins = [
+		new webpack.DefinePlugin( {
+			EDITOR_LANGUAGE: JSON.stringify( options.language )
+		} ),
+		new webpack.ProvidePlugin( {
+			process: 'process/browser',
+			Buffer: [ 'buffer', 'Buffer' ]
+		} )
+	];
+
+	if ( options.language !== 'en' ) {
+		webpackPlugins.push(
+			new CKEditorWebpackPlugin( {
+				language: options.language,
+				sourceFilesPattern: /src[/\\].+\.js$/
+			} )
+		);
+	}
+
 	return {
 		mode: options.production ? 'production' : 'development',
 
@@ -20,7 +40,7 @@ module.exports = options => {
 			hints: false
 		},
 
-		entry: path.join( options.cwd, 'sample', 'script.js' ),
+		entry: path.join( options.cwd, 'sample', 'ckeditor.js' ),
 
 		output: {
 			filename: 'script.dist.js',
@@ -31,19 +51,14 @@ module.exports = options => {
 			minimize: false
 		},
 
+		plugins: webpackPlugins,
+
 		devServer: {
 			static: {
 				directory: path.join( options.cwd, 'sample' )
 			},
 			compress: true
 		},
-
-		plugins: [
-			new webpack.ProvidePlugin( {
-				process: 'process/browser',
-				Buffer: [ 'buffer', 'Buffer' ]
-			} )
-		],
 
 		module: {
 			rules: [

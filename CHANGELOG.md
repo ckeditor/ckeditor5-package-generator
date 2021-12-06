@@ -1,6 +1,42 @@
 Changelog
 =========
 
+## [1.0.0-beta.2](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2021-10-26)
+
+### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
+
+* Renamed the `sample/script.js` file to `sample/ckeditor.js` and aligned webpack configuration.
+
+### Features
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Added a spinner when installing packages. Closes [#52](https://github.com/ckeditor/ckeditor5-package-generator/issues/52). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/1792fddf7ef1a80c8e77fdcbb9638fcb06ba22e2))
+
+### Bug fixes
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Changed how arguments are specified for the `lint` task due to errors on Windows environments. Closes [#65](https://github.com/ckeditor/ckeditor5-package-generator/issues/65). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/60d7b95b8f4edea13386bb0ecda460a35b885b8b))
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Created the `.gitignore` file when generating a new package. Closes [#50](https://github.com/ckeditor/ckeditor5-package-generator/issues/50). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/18394eb0f4a3d2ef98a2c77c673107c3291db5bd))
+
+### Other changes
+
+* Renamed the script that produces the demo/sample. Now it is called `ckeditor.js` and matches to official CKEditor 5 builds. Closes [#49](https://github.com/ckeditor/ckeditor5-package-generator/issues/49). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/1b3a1cda064a33ccea356ec6fa26594a0582e612))
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Releases containing new features:
+
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator): v1.0.0-beta.1 => v1.0.0-beta.2
+
+Other releases:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools): v1.0.0-beta.1 => v1.0.0-beta.2
+</details>
+
+
 ## [1.0.0-beta.1](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.0...v1.0.0-beta.1) (2021-10-04)
 
 ### Bug fixes
