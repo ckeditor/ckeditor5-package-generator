@@ -131,7 +131,7 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 			} );
 
 			it( 'uses "raw-loader" for providing files', () => {
-				expect( loader.use ).to.equal( 'raw-loader' );
+				expect( loader.use ).to.deep.equal( [ 'raw-loader' ] );
 			} );
 
 			it( 'loads paths that end with the ".svg" suffix', () => {

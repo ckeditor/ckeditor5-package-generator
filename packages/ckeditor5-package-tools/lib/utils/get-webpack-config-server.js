@@ -43,7 +43,7 @@ module.exports = options => {
 		entry: path.join( options.cwd, 'sample', 'ckeditor.js' ),
 
 		output: {
-			filename: 'script.dist.js',
+			filename: 'ckeditor.dist.js',
 			path: path.join( options.cwd, 'sample' )
 		},
 

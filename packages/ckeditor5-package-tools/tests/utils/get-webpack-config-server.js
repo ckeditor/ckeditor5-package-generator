@@ -36,11 +36,16 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 			},
 			getThemePath: sinon.stub(),
 			webpack: sinon.stub(),
-			providePlugin: sinon.stub()
+			providePlugin: sinon.stub(),
+			definePlugin: sinon.stub()
 		};
 
 		stubs.webpack.ProvidePlugin = function( ...args ) {
 			return stubs.providePlugin( ...args );
+		};
+
+		stubs.webpack.DefinePlugin = function( ...args ) {
+			return stubs.definePlugin( ...args );
 		};
 
 		mockery.registerMock( 'path', stubs.path );
@@ -60,12 +65,12 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		expect( getWebpackConfigServer ).to.be.a( 'function' );
 	} );
 
-	it( 'processes the "script.js" file', () => {
+	it( 'processes the "ckeditor.js" file', () => {
 		const config = getWebpackConfigServer( { cwd } );
 
-		expect( config.entry ).to.equal( '/process/cwd/sample/script.js' );
+		expect( config.entry ).to.equal( '/process/cwd/sample/ckeditor.js' );
 		expect( config.output ).to.deep.equal( {
-			filename: 'script.dist.js',
+			filename: 'ckeditor.dist.js',
 			path: '/process/cwd/sample'
 		} );
 	} );
