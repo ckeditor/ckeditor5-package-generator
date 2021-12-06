@@ -38,7 +38,7 @@ describe( 'lib/utils/get-theme-path', () => {
 	} );
 
 	afterEach( () => {
-		mockery.deregisterAll();
+		sinon.restore();
 		mockery.disable();
 	} );
 

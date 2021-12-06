@@ -45,7 +45,7 @@ describe( 'lib/utils/get-karma-config', () => {
 	} );
 
 	afterEach( () => {
-		mockery.deregisterAll();
+		sinon.restore();
 		mockery.disable();
 	} );
 
@@ -58,6 +58,32 @@ describe( 'lib/utils/get-karma-config', () => {
 
 		expect( config.frameworks ).to.be.an( 'array' );
 		expect( config.frameworks ).to.contain( 'webpack' );
+	} );
+
+	it( 'uses no sandbox version of Chrome when executing on CI', () => {
+		const envCI = process.env.CI;
+		process.env.CI = true;
+
+		const config = getKarmaConfig( { cwd } );
+
+		expect( config.browsers ).to.deep.equal( [ 'CHROME_TRAVIS_CI' ] );
+
+		process.env.CI = envCI;
+	} );
+
+	it( 'enables watching source files when passed the watch option', () => {
+		const config = getKarmaConfig( { cwd, verbose: true } );
+
+		expect( config.webpackMiddleware ).to.deep.equal( {
+			noInfo: false
+		} );
+	} );
+
+	it( 'enables printing webpack logs when passed the verbose option', () => {
+		const config = getKarmaConfig( { cwd, watch: true } );
+
+		expect( config.autoWatch ).to.equal( true );
+		expect( config.singleRun ).to.equal( false );
 	} );
 
 	describe( 'webpack configuration', () => {

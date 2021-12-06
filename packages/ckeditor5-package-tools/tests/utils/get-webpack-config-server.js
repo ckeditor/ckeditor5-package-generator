@@ -37,7 +37,8 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 			getThemePath: sinon.stub(),
 			webpack: sinon.stub(),
 			providePlugin: sinon.stub(),
-			definePlugin: sinon.stub()
+			definePlugin: sinon.stub(),
+			devWebpackPlugin: sinon.stub()
 		};
 
 		stubs.webpack.ProvidePlugin = function( ...args ) {
@@ -51,13 +52,14 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		mockery.registerMock( 'path', stubs.path );
 		mockery.registerMock( 'webpack', stubs.webpack );
 		mockery.registerMock( '@ckeditor/ckeditor5-dev-utils', stubs.devUtils );
+		mockery.registerMock( '@ckeditor/ckeditor5-dev-webpack-plugin', stubs.devWebpackPlugin );
 		mockery.registerMock( './get-theme-path', stubs.getThemePath );
 
 		getWebpackConfigServer = require( '../../lib/utils/get-webpack-config-server' );
 	} );
 
 	afterEach( () => {
-		mockery.deregisterAll();
+		sinon.restore();
 		mockery.disable();
 	} );
 
@@ -100,6 +102,32 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 				directory: '/process/cwd/sample'
 			},
 			compress: true
+		} );
+	} );
+
+	describe( 'sample language', () => {
+		it( 'passes the specified language directly to source file', () => {
+			getWebpackConfigServer( { cwd, language: 'en' } );
+
+			expect( stubs.definePlugin.calledOnce ).to.equal( true );
+			expect( stubs.definePlugin.firstCall.firstArg ).to.deep.equal( {
+				EDITOR_LANGUAGE: '"en"'
+			} );
+		} );
+
+		it( 'enables producing translations for non-English editors', () => {
+			getWebpackConfigServer( { cwd, language: 'pl' } );
+
+			expect( stubs.definePlugin.calledOnce ).to.equal( true );
+			expect( stubs.definePlugin.firstCall.firstArg ).to.deep.equal( {
+				EDITOR_LANGUAGE: '"pl"'
+			} );
+
+			expect( stubs.devWebpackPlugin.calledOnce ).to.equal( true );
+			expect( stubs.devWebpackPlugin.firstCall.firstArg ).to.deep.equal( {
+				language: 'pl',
+				sourceFilesPattern: /src[/\\].+\.js$/
+			} );
 		} );
 	} );
 

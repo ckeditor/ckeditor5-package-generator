@@ -29,9 +29,11 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 				name: 'CKEditor5.dll',
 				content: {}
 			},
+			fs: {
+				existsSync: sinon.stub()
+			},
 			path: {
-				join: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) ),
-				resolve: sinon.stub().callsFake( file => `/process/cwd/${ file }` )
+				join: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) )
 			},
 			devUtils: {
 				styles: {
@@ -41,7 +43,8 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 			getThemePath: sinon.stub(),
 			webpack: sinon.stub(),
 			dllReferencePlugin: sinon.stub(),
-			providePlugin: sinon.stub()
+			providePlugin: sinon.stub(),
+			devWebpackPlugin: sinon.stub()
 		};
 
 		stubs.webpack.DllReferencePlugin = function( ...args ) {
@@ -51,8 +54,13 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 			return stubs.providePlugin( ...args );
 		};
 
+		stubs.fs.existsSync.returns( false );
+
+		mockery.registerMock( 'fs', stubs.fs );
+		mockery.registerMock( 'path', stubs.path );
 		mockery.registerMock( 'webpack', stubs.webpack );
 		mockery.registerMock( '@ckeditor/ckeditor5-dev-utils', stubs.devUtils );
+		mockery.registerMock( '@ckeditor/ckeditor5-dev-webpack-plugin', stubs.devWebpackPlugin );
 		mockery.registerMock( './get-theme-path', stubs.getThemePath );
 
 		mockery.registerMock( '/process/cwd/node_modules/ckeditor5/build/ckeditor5-dll.manifest.json', stubs.ckeditor5manifest );
@@ -62,7 +70,7 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 	} );
 
 	afterEach( () => {
-		mockery.deregisterAll();
+		sinon.restore();
 		mockery.disable();
 	} );
 
@@ -91,6 +99,23 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 		const config = getWebpackConfigDll( { cwd, watch: true } );
 
 		expect( config.watch ).to.equal( true );
+	} );
+
+	it( 'produces translation files based on "*.po" files', () => {
+		stubs.fs.existsSync.returns( true );
+
+		getWebpackConfigDll( { cwd } );
+
+		expect( stubs.fs.existsSync.calledOnce ).to.equal( true );
+		expect( stubs.fs.existsSync.firstCall.firstArg ).to.equal( '/process/cwd/lang/translations/en.po' );
+
+		expect( stubs.devWebpackPlugin.calledOnce ).to.equal( true );
+		expect( stubs.devWebpackPlugin.firstCall.firstArg ).to.deep.equal( {
+			additionalLanguages: 'all',
+			language: 'en',
+			skipPluralFormFunction: true,
+			sourceFilesPattern: /^src[/\\].+\.js$/
+		} );
 	} );
 
 	describe( 'verifying exposed DLL names', () => {
