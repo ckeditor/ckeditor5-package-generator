@@ -121,7 +121,7 @@ function startDevelopmentServer( cwd ) {
 		// Hence, we can assume that the server is live at this stage.
 		sampleServer.stdout.on( 'data', data => {
 			const content = data.toString().slice( 0, -1 );
-			const endMatch = /\+ \d+ hidden modules/.test( content );
+			const endMatch = /webpack \d+\.\d+\.\d+ compiled successfully in \d+ ms/.test( content );
 
 			if ( endMatch ) {
 				return resolve( {

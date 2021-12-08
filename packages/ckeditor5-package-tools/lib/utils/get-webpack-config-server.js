@@ -11,11 +11,16 @@ const path = require( 'path' );
 const webpack = require( 'webpack' );
 const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
 const { getPostCssConfig } = require( '@ckeditor/ckeditor5-dev-utils' ).styles;
+const getThemePath = require( './get-theme-path' );
 
 module.exports = options => {
 	const webpackPlugins = [
 		new webpack.DefinePlugin( {
 			EDITOR_LANGUAGE: JSON.stringify( options.language )
+		} ),
+		new webpack.ProvidePlugin( {
+			process: 'process/browser',
+			Buffer: [ 'buffer', 'Buffer' ]
 		} )
 	];
 
@@ -38,7 +43,7 @@ module.exports = options => {
 		entry: path.join( options.cwd, 'sample', 'ckeditor.js' ),
 
 		output: {
-			filename: 'script.dist.js',
+			filename: 'ckeditor.dist.js',
 			path: path.join( options.cwd, 'sample' )
 		},
 
@@ -59,7 +64,7 @@ module.exports = options => {
 			rules: [
 				{
 					test: /\.svg$/,
-					use: [ 'raw-loader' ]
+					use: 'raw-loader'
 				},
 				{
 					test: /\.css$/,
@@ -76,14 +81,14 @@ module.exports = options => {
 						'css-loader',
 						{
 							loader: 'postcss-loader',
-							options: getPostCssConfig( {
-								themeImporter: {
-									themePath: require.resolve(
-										path.join( options.cwd, 'node_modules', '@ckeditor', 'ckeditor5-theme-lark' )
-									)
-								},
-								minify: true
-							} )
+							options: {
+								postcssOptions: getPostCssConfig( {
+									themeImporter: {
+										themePath: getThemePath( options.cwd )
+									},
+									minify: true
+								} )
+							}
 						}
 					]
 				}

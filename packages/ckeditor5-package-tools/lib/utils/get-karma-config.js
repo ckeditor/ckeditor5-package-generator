@@ -9,6 +9,7 @@
 
 const path = require( 'path' );
 const { getPostCssConfig } = require( '@ckeditor/ckeditor5-dev-utils' ).styles;
+const getThemePath = require( './get-theme-path' );
 
 /**
  * @param {Object} options
@@ -20,7 +21,7 @@ module.exports = options => {
 	const karmaConfig = {
 		basePath: options.cwd,
 
-		frameworks: [ 'mocha', 'sinon-chai' ],
+		frameworks: [ 'mocha', 'sinon-chai', 'webpack' ],
 
 		files: [ options.entryFile ],
 
@@ -133,7 +134,7 @@ function getWebpackConfiguration( options ) {
 			rules: [
 				{
 					test: /\.svg$/,
-					use: [ 'raw-loader' ]
+					use: 'raw-loader'
 				},
 				{
 					test: /\.css$/,
@@ -150,20 +151,20 @@ function getWebpackConfiguration( options ) {
 						'css-loader',
 						{
 							loader: 'postcss-loader',
-							options: getPostCssConfig( {
-								themeImporter: {
-									themePath: require.resolve(
-										path.join( options.cwd, 'node_modules', '@ckeditor', 'ckeditor5-theme-lark' )
-									)
-								},
-								minify: true
-							} )
+							options: {
+								postcssOptions: getPostCssConfig( {
+									themeImporter: {
+										themePath: getThemePath( options.cwd )
+									},
+									minify: true
+								} )
+							}
 						}
 					]
 				},
 				{
 					test: /\.(txt|html|rtf)$/,
-					use: [ 'raw-loader' ]
+					use: 'raw-loader'
 				}
 			]
 		},
@@ -176,7 +177,8 @@ function getWebpackConfiguration( options ) {
 	};
 
 	if ( options.sourceMap ) {
-		config.devtool = 'inline-source-map';
+		// Available list: https://webpack.js.org/configuration/devtool/.
+		config.devtool = 'eval-cheap-module-source-map';
 	}
 
 	if ( options.coverage ) {
@@ -185,7 +187,7 @@ function getWebpackConfiguration( options ) {
 				test: /\.js$/,
 				loader: 'istanbul-instrumenter-loader',
 				include: path.join( options.cwd, 'src' ),
-				query: {
+				options: {
 					esModules: true
 				}
 			}

@@ -54,10 +54,9 @@ describe( 'lib/utils/generate-entry-file', () => {
 	} );
 
 	afterEach( () => {
-		mockery.deregisterAll();
-		mockery.disable();
 		sinon.restore();
 		clock.restore();
+		mockery.disable();
 	} );
 
 	it( 'should be a function', () => {

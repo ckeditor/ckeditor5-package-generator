@@ -14,6 +14,7 @@ const webpack = require( 'webpack' );
 const TerserPlugin = require( 'terser-webpack-plugin' );
 const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
 const { getPostCssConfig } = require( '@ckeditor/ckeditor5-dev-utils' ).styles;
+const getThemePath = require( './get-theme-path' );
 
 module.exports = options => {
 	const packageJson = require( path.join( options.cwd, 'package.json' ) );
@@ -35,6 +36,10 @@ module.exports = options => {
 			manifest: require( ckeditor5manifestPath ),
 			scope: 'ckeditor5/src',
 			name: 'CKEditor5.dll'
+		} ),
+		new webpack.ProvidePlugin( {
+			process: 'process/browser',
+			Buffer: [ 'buffer', 'Buffer' ]
 		} )
 	];
 
@@ -102,12 +107,14 @@ module.exports = options => {
 						'css-loader',
 						{
 							loader: 'postcss-loader',
-							options: getPostCssConfig( {
-								themeImporter: {
-									themePath: getThemePath( options.cwd )
-								},
-								minify: true
-							} )
+							options: {
+								postcssOptions: getPostCssConfig( {
+									themeImporter: {
+										themePath: getThemePath( options.cwd )
+									},
+									minify: true
+								} )
+							}
 						}
 					]
 				}
@@ -115,19 +122,3 @@ module.exports = options => {
 		}
 	};
 };
-
-/**
- * Returns an absolute path to the main file of the `@ckeditor/ckeditor5-theme-lark` package.
- *
- * The function does the same as what does `require.resolve()`. However, there is no option for mocking it in tests,
- * hence the value is obtained manually.
- *
- * @param {String} cwd
- * @return {String}
- */
-function getThemePath( cwd ) {
-	const packagePath = path.join( cwd, 'node_modules', '@ckeditor', 'ckeditor5-theme-lark' );
-	const packageJson = require( path.join( packagePath, 'package.json' ) );
-
-	return path.join( packagePath, packageJson.main );
-}
