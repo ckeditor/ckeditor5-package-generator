@@ -5,9 +5,13 @@ The `ckeditor5-package-generator` is a tool for developers, and it creates a wor
 
 ## Table of contents
 
+* [Requirements](#requirements)
 * [Creating a package](#creating-a-package)
-* [Developing the package](#developing-the-package)
   * [Modifiers](#modifiers)
+
+## Requirements
+
+Due to `Node.js 12` end of long-term support in [April 2022](https://nodejs.org/en/about/releases/) minimal version of `Node.js` required by CKEditor 5 Package Generator is `14`. And while not necessary, it is also nice to have latest version of `yarn 1.x` installed globally.
 
 ## Creating a package
 
