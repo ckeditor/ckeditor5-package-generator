@@ -2,6 +2,17 @@
   "name": "@ckeditor/ckeditor5-package-generator",
   "version": "1.0.0-beta.2",
   "private": true,
+  "keywords": [
+    "ckeditor",
+    "ckeditor5",
+    "ckeditor 5",
+    "package",
+    "plugin",
+    "generator",
+    "maker",
+    "wizard",
+    "bootstrapper"
+  ],
   "author": "CKSource (http://cksource.com/)",
   "license": "MIT",
   "homepage": "https://ckeditor.com/ckeditor-5",
