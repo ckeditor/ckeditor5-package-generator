@@ -60,6 +60,17 @@ describe( 'lib/utils/get-karma-config', () => {
 		expect( config.frameworks ).to.contain( 'webpack' );
 	} );
 
+	it( 'uses sandboxed version of Chrome when executing on local environment', () => {
+		const envCI = process.env.CI;
+		process.env.CI = false;
+
+		const config = getKarmaConfig( { cwd } );
+
+		expect( config.browsers ).to.deep.equal( [ 'CHROME_LOCAL' ] );
+
+		process.env.CI = envCI;
+	} );
+
 	it( 'uses no sandbox version of Chrome when executing on CI', () => {
 		const envCI = process.env.CI;
 		process.env.CI = true;

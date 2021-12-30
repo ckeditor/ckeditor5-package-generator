@@ -14,5 +14,8 @@ before_install:
 install:
   - yarn install
 script:
-  - yarn run test
+  - yarn run coverage
   - node scripts/ci/travis-check.js
+after_success:
+  - yarn add coveralls --ignore-workspace-root-check
+  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js

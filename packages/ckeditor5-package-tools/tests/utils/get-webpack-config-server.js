@@ -105,6 +105,18 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		} );
 	} );
 
+	it( 'defines the development mode by default for an HTTP server', () => {
+		const config = getWebpackConfigServer( { cwd } );
+
+		expect( config.mode ).to.equal( 'development' );
+	} );
+
+	it( 'defines the production mode for an HTTP server', () => {
+		const config = getWebpackConfigServer( { cwd, production: true } );
+
+		expect( config.mode ).to.equal( 'production' );
+	} );
+
 	describe( 'sample language', () => {
 		it( 'passes the specified language directly to source file', () => {
 			getWebpackConfigServer( { cwd, language: 'en' } );

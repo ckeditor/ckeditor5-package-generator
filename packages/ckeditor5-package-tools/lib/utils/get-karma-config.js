@@ -45,7 +45,7 @@ module.exports = options => {
 		logLevel: 'INFO',
 
 		browsers: [
-			process.env.CI ? 'CHROME_TRAVIS_CI' : 'CHROME_LOCAL'
+			process.env.CI === 'true' ? 'CHROME_TRAVIS_CI' : 'CHROME_LOCAL'
 		],
 
 		customLaunchers: {
