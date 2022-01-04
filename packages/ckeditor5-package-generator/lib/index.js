@@ -23,7 +23,7 @@ const TEMPLATE_PATH = path.join( __dirname, 'templates' );
 
 const getDependenciesVersions = require( './utils/get-dependencies-versions' );
 const validatePackageName = require( './utils/validate-package-name' );
-const createSpinner = require( './utils/create-spinner' );
+const { tools } = require( '@ckeditor/ckeditor5-dev-utils' );
 
 // Files that need to be filled with data.
 const TEMPLATES_TO_FILL = [
@@ -155,7 +155,7 @@ async function init( packageName, options ) {
 	fs.writeFileSync( path.join( directoryPath, '.gitignore' ), GITIGNORE_ENTRIES.join( EOL ) );
 
 	// (5.)
-	const installSpinner = createSpinner( 'Installing dependencies... ' + chalk.gray.italic( 'It takes a while.' ), {
+	const installSpinner = tools.createSpinner( 'Installing dependencies... ' + chalk.gray.italic( 'It takes a while.' ), {
 		isDisabled: options.verbose
 	} );
 
