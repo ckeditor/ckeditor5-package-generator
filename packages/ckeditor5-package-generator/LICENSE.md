@@ -1,7 +1,7 @@
 Software License Agreement
 ==========================
 
-Copyright (c) 2020-2021, [CKSource](http://cksource.com) Frederico Knabben. All rights reserved.
+Copyright (c) 2020-2022, [CKSource](http://cksource.com) Frederico Knabben. All rights reserved.
 
 Licensed under the terms of [MIT license](https://opensource.org/licenses/MIT).
 
