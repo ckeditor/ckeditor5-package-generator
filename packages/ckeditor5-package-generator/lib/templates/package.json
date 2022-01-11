@@ -49,7 +49,7 @@
     "@ckeditor/ckeditor5-upload": ">=<%= packageVersions.ckeditor5 %>",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": ">=<%= packageVersions.eslintConfigCkeditor5 %>",
-    "http-server": "^13.0.2",
+    "http-server": "^14.1.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.6",
     "stylelint": "^13.13.1",
