@@ -1,6 +1,26 @@
 Changelog
 =========
 
+## [1.0.0-beta.4](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2022-01-28)
+
+### Bug fixes
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Added the missing `webpack` dependency to the `package.json` file. It fixes the _Cannot find module 'webpack'_ error. The `@ckeditor/ckeditor5-dev-utils` dependency defines peer dependencies, which must be installed manually in the generator package. Closes [#89](https://github.com/ckeditor/ckeditor5-package-generator/issues/89). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/1321fe75e34aeeaf33dd4beb5704f7788493f46b))
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Other releases:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools): v1.0.0-beta.3 => v1.0.0-beta.4
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator): v1.0.0-beta.3 => v1.0.0-beta.4
+</details>
+
+
 ## [1.0.0-beta.3](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2022-01-11)
 
 ### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
