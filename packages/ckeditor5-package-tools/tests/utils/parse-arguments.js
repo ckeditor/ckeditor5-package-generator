@@ -34,6 +34,9 @@ describe( 'lib/utils/parse-arguments', () => {
 		expect( options.watch ).to.equal( false );
 		expect( options.open ).to.equal( true );
 		expect( options.language ).to.equal( 'en' );
+		expect( options.organization ).to.equal( null );
+		expect( options.project ).to.equal( null );
+		expect( options.transifex ).to.equal( undefined );
 	} );
 
 	it( 'assigns the current work directory as the "#cwd" property', () => {
@@ -130,5 +133,17 @@ describe( 'lib/utils/parse-arguments', () => {
 		const options = parseArguments( [ 'task-to-execute', '--language', 'pl' ] );
 
 		expect( options.language ).to.equal( 'pl' );
+	} );
+
+	it( 'allows specifying the organization option', () => {
+		const options = parseArguments( [ 'task-to-execute', '--organization', 'bar' ] );
+
+		expect( options.organization ).to.equal( 'bar' );
+	} );
+
+	it( 'allows specifying the project option', () => {
+		const options = parseArguments( [ 'task-to-execute', '--project', 'foo' ] );
+
+		expect( options.project ).to.equal( 'foo' );
 	} );
 } );

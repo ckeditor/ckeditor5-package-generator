@@ -8,8 +8,16 @@
 const path = require( 'path' );
 
 module.exports = async options => {
-	if ( !options.transifex ) {
-		throw new Error( 'The URL to the Transifex API is required. Use --transifex [API end-point] to provide the value.' );
+	if ( !options.organization ) {
+		throw new Error( 'The URL to the Transifex API is required. Use --organization [organization name] to provide the value.' );
+	}
+
+	if ( !options.project ) {
+		throw new Error( 'The URL to the Transifex API is required. Use --project [project name] to provide the value.' );
+	}
+
+	if ( options.transifex ) {
+		throw new Error( 'The -- transifex [API end-point] option is no longer supported. Use `--organization` and `--project` instead.' );
 	}
 
 	const getToken = require( '@ckeditor/ckeditor5-dev-env/lib/translations/gettoken' );
@@ -18,8 +26,9 @@ module.exports = async options => {
 		// Token used for authentication with the Transifex service.
 		token: await getToken(),
 
-		// End-point API URL to the Transifex service.
-		url: options.transifex,
+		// Transifex project details.
+		organizationName: options.organization,
+		projectName: options.project,
 
 		// Where to look for the saved translation files.
 		translationsDirectory: path.join( options.cwd, 'tmp', '.transifex' )

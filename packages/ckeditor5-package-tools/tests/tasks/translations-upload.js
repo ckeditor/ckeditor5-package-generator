@@ -52,7 +52,8 @@ describe( 'lib/tasks/translations-upload', () => {
 
 		const results = await translationsUpload( {
 			cwd: '/workspace',
-			transifex: 'https://api.example.com'
+			organization: 'foo',
+			project: 'bar'
 		} );
 
 		expect( results ).to.equal( 'OK' );
@@ -61,18 +62,47 @@ describe( 'lib/tasks/translations-upload', () => {
 		expect( stubs.devEnv.uploadPotFiles.firstCall.firstArg ).to.deep.equal( {
 			token: 'secretToken',
 			translationsDirectory: '/workspace/tmp/.transifex',
-			url: 'https://api.example.com'
+			organizationName: 'foo',
+			projectName: 'bar'
 		} );
 	} );
 
-	it( 'throws an error if the "transifex" option is not specified', async () => {
+	it( 'throws an error if the "organization" option is not specified', async () => {
 		try {
 			await translationsUpload( {
 				cwd: '/workspace'
 			} );
 		} catch ( err ) {
 			expect( err.message ).to.equal(
-				'The URL to the Transifex API is required. Use --transifex [API end-point] to provide the value.'
+				'The URL to the Transifex API is required. Use --organization [organization name] to provide the value.'
+			);
+		}
+	} );
+
+	it( 'throws an error if the "project" option is not specified', async () => {
+		try {
+			await translationsUpload( {
+				cwd: '/workspace',
+				organization: 'foo'
+			} );
+		} catch ( err ) {
+			expect( err.message ).to.equal(
+				'The URL to the Transifex API is required. Use --project [project name] to provide the value.'
+			);
+		}
+	} );
+
+	it( 'throws an error if the "transifex" option is specified', async () => {
+		try {
+			await translationsUpload( {
+				cwd: '/workspace',
+				organization: 'foo',
+				project: 'bar',
+				transifex: 'https://api.example.com'
+			} );
+		} catch ( err ) {
+			expect( err.message ).to.equal(
+				'The -- transifex [API end-point] option is no longer supported. Use `--organization` and `--project` instead.'
 			);
 		}
 	} );
