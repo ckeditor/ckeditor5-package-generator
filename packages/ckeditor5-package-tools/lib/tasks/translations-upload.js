@@ -22,6 +22,9 @@ module.exports = async options => {
 
 	const getToken = require( '@ckeditor/ckeditor5-dev-env/lib/translations/gettoken' );
 
+	const pkgJson = require( path.join( options.cwd, 'package.json' ) );
+	const packageName = pkgJson.name.split( '/' ).pop();
+
 	return require( '@ckeditor/ckeditor5-dev-env' ).uploadPotFiles( {
 		// Token used for authentication with the Transifex service.
 		token: await getToken(),
@@ -30,7 +33,12 @@ module.exports = async options => {
 		organizationName: options.organization,
 		projectName: options.project,
 
-		// Where to look for the saved translation files.
-		translationsDirectory: path.join( options.cwd, 'tmp', '.transifex' )
+		// List of packages that will be processed.
+		packages: new Map( [
+			[ packageName, path.join( 'tmp', '.transifex', packageName ) ]
+		] ),
+
+		// An absolute path to the package.
+		cwd: options.cwd
 	} );
 };

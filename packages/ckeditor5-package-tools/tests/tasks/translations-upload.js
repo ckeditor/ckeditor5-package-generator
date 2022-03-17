@@ -31,6 +31,9 @@ describe( 'lib/tasks/translations-upload', () => {
 
 		mockery.registerMock( 'path', stubs.path );
 		mockery.registerMock( 'glob', stubs.glob );
+		mockery.registerMock( '/workspace/package.json', {
+			name: '@ckeditor/ckeditor5-foo'
+		} );
 		mockery.registerMock( '@ckeditor/ckeditor5-dev-env', stubs.devEnv );
 		mockery.registerMock( '@ckeditor/ckeditor5-dev-env/lib/translations/gettoken', stubs.getToken );
 
@@ -61,8 +64,11 @@ describe( 'lib/tasks/translations-upload', () => {
 		expect( stubs.devEnv.uploadPotFiles.calledOnce ).to.equal( true );
 		expect( stubs.devEnv.uploadPotFiles.firstCall.firstArg ).to.deep.equal( {
 			token: 'secretToken',
-			translationsDirectory: '/workspace/tmp/.transifex',
+			cwd: '/workspace',
 			organizationName: 'foo',
+			packages: new Map( [
+				[ 'ckeditor5-foo', 'tmp/.transifex/ckeditor5-foo' ]
+			] ),
 			projectName: 'bar'
 		} );
 	} );
