@@ -80,7 +80,7 @@ describe( 'lib/tasks/translations-upload', () => {
 			} );
 		} catch ( err ) {
 			expect( err.message ).to.equal(
-				'The URL to the Transifex API is required. Use --organization [organization name] to provide the value.'
+				'The organization name is required. Use --organization [organization name] to provide the value.'
 			);
 		}
 	} );
@@ -93,7 +93,7 @@ describe( 'lib/tasks/translations-upload', () => {
 			} );
 		} catch ( err ) {
 			expect( err.message ).to.equal(
-				'The URL to the Transifex API is required. Use --project [project name] to provide the value.'
+				'The project name is required. Use --project [project name] to provide the value.'
 			);
 		}
 	} );
@@ -108,7 +108,7 @@ describe( 'lib/tasks/translations-upload', () => {
 			} );
 		} catch ( err ) {
 			expect( err.message ).to.equal(
-				'The -- transifex [API end-point] option is no longer supported. Use `--organization` and `--project` instead.'
+				'The --transifex [API end-point] option is no longer supported. Use `--organization` and `--project` instead.'
 			);
 		}
 	} );

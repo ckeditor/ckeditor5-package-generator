@@ -9,15 +9,15 @@ const path = require( 'path' );
 
 module.exports = async options => {
 	if ( !options.organization ) {
-		throw new Error( 'The URL to the Transifex API is required. Use --organization [organization name] to provide the value.' );
+		throw new Error( 'The organization name is required. Use --organization [organization name] to provide the value.' );
 	}
 
 	if ( !options.project ) {
-		throw new Error( 'The URL to the Transifex API is required. Use --project [project name] to provide the value.' );
+		throw new Error( 'The project name is required. Use --project [project name] to provide the value.' );
 	}
 
 	if ( options.transifex ) {
-		throw new Error( 'The -- transifex [API end-point] option is no longer supported. Use `--organization` and `--project` instead.' );
+		throw new Error( 'The --transifex [API end-point] option is no longer supported. Use `--organization` and `--project` instead.' );
 	}
 
 	const getToken = require( '@ckeditor/ckeditor5-dev-env/lib/translations/gettoken' );

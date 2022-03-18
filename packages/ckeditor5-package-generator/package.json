@@ -10,7 +10,7 @@
     "node": ">=14.0.0"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-dev-utils": "^27.3.0",
+    "@ckeditor/ckeditor5-dev-utils": "^29.0.0",
     "chalk": "^4.1.2",
     "commander": "^8.1.0",
     "glob": "^7.1.7",
