@@ -9,6 +9,11 @@ const minimist = require( 'minimist' );
 
 module.exports = args => {
 	const config = {
+		string: [
+			'organization',
+			'project'
+		],
+
 		boolean: [
 			'coverage',
 			'open',
@@ -30,10 +35,11 @@ module.exports = args => {
 			open: true,
 			language: 'en',
 			verbose: false,
+			organization: null,
 			production: false,
+			project: null,
 			watch: false,
-			'source-map': false,
-			transifex: null
+			'source-map': false
 		}
 	};
 

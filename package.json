@@ -17,8 +17,8 @@
   "license": "MIT",
   "homepage": "https://ckeditor.com/ckeditor-5",
   "devDependencies": {
-    "@ckeditor/ckeditor5-dev-docs": "^27.4.0",
-    "@ckeditor/ckeditor5-dev-env": "^27.4.0",
+    "@ckeditor/ckeditor5-dev-docs": "^29.0.0",
+    "@ckeditor/ckeditor5-dev-env": "^29.0.0",
     "chalk": "^4.1.2",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": "^4.0.0",
