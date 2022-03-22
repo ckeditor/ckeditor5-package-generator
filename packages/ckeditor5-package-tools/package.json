@@ -31,7 +31,7 @@
     "minimist": "^1.2.5",
     "mocha": "^7.2.0",
     "process": "^0.11.10",
-    "postcss": "^7.0.39",
+    "postcss": "^8.4.12",
     "postcss-loader": "^4.3.0",
     "raw-loader": "^4.0.2",
     "sinon": "^9.2.4",
