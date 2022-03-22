@@ -37,7 +37,10 @@ describe( 'lib/tasks/test', () => {
 					}
 				},
 				karmaServerOn: sinon.stub(),
-				karmaServerStart: sinon.stub()
+				karmaServerStart: sinon.stub(),
+				config: {
+					parseConfig: sinon.stub()
+				}
 			},
 			fs: {
 				writeFileSync: sinon.stub(),
@@ -101,6 +104,7 @@ describe( 'lib/tasks/test', () => {
 		};
 
 		stubs.getKarmaConfig.returns( karmaConfig );
+		stubs.karma.config.parseConfig.returns( karmaConfig );
 
 		setTimeout( () => {
 			// Call the karma callback when finished executing tests.
@@ -140,6 +144,31 @@ describe( 'lib/tasks/test', () => {
 				},
 				err => {
 					expect( err.message ).to.equal( 'Karma finished with "1" code.' );
+
+					done();
+				}
+			);
+	} );
+
+	it( 'should reject a promise when karma config parser throws an error', done => {
+		const options = {
+			cwd: '/cwd'
+		};
+
+		const karmaConfig = {
+			basePath: '/cwd'
+		};
+
+		stubs.getKarmaConfig.returns( karmaConfig );
+		stubs.karma.config.parseConfig.throws( new Error( 'Example error from Karma config parser.' ) );
+
+		testTask( options )
+			.then(
+				() => {
+					throw new Error( 'Expected to be rejected.' );
+				},
+				err => {
+					expect( err.message ).to.equal( 'Example error from Karma config parser.' );
 
 					done();
 				}

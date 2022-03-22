@@ -55,7 +55,8 @@ describe( 'lib/tasks/translations-download', () => {
 
 		const results = await translationsDownload( {
 			cwd: '/workspace',
-			transifex: 'https://api.example.com'
+			organization: 'foo',
+			project: 'bar'
 		} );
 
 		expect( results ).to.equal( 'OK' );
@@ -63,7 +64,8 @@ describe( 'lib/tasks/translations-download', () => {
 		expect( stubs.devEnv.downloadTranslations.calledOnce ).to.equal( true );
 		expect( stubs.devEnv.downloadTranslations.firstCall.firstArg ).to.deep.equal( {
 			token: 'secretToken',
-			url: 'https://api.example.com',
+			organizationName: 'foo',
+			projectName: 'bar',
 			cwd: '/workspace',
 			packages: new Map( [
 				[ 'ckeditor5-foo', '.' ]
@@ -72,14 +74,42 @@ describe( 'lib/tasks/translations-download', () => {
 		} );
 	} );
 
-	it( 'throws an error if the "transifex" option is not specified', async () => {
+	it( 'throws an error if the "organization" option is not specified', async () => {
 		try {
 			await translationsDownload( {
 				cwd: '/workspace'
 			} );
 		} catch ( err ) {
 			expect( err.message ).to.equal(
-				'The URL to the Transifex API is required. Use --transifex [API end-point] to provide the value.'
+				'The organization name is required. Use --organization [organization name] to provide the value.'
+			);
+		}
+	} );
+
+	it( 'throws an error if the "project" option is not specified', async () => {
+		try {
+			await translationsDownload( {
+				cwd: '/workspace',
+				organization: 'foo'
+			} );
+		} catch ( err ) {
+			expect( err.message ).to.equal(
+				'The project name is required. Use --project [project name] to provide the value.'
+			);
+		}
+	} );
+
+	it( 'throws an error if the "transifex" option is specified', async () => {
+		try {
+			await translationsDownload( {
+				cwd: '/workspace',
+				organization: 'foo',
+				project: 'bar',
+				transifex: 'https://api.example.com'
+			} );
+		} catch ( err ) {
+			expect( err.message ).to.equal(
+				'The --transifex [API end-point] option is no longer supported. Use `--organization` and `--project` instead.'
 			);
 		}
 	} );

@@ -7,7 +7,7 @@
 
 const path = require( 'path' );
 const chalk = require( 'chalk' );
-const { Server: KarmaServer } = require( 'karma' );
+const karma = require( 'karma' );
 
 const generateEntryFile = require( '../utils/generate-entry-file' );
 const getKarmaConfig = require( '../utils/get-karma-config' );
@@ -23,9 +23,13 @@ module.exports = options => {
 
 function runKarma( options ) {
 	return new Promise( ( resolve, reject ) => {
-		const config = getKarmaConfig( options );
+		const KarmaServer = karma.Server;
+		const parseConfig = karma.config.parseConfig;
 
-		const server = new KarmaServer( config, exitCode => {
+		const config = getKarmaConfig( options );
+		const parsedConfig = parseConfig( null, config, { throwErrors: true } );
+
+		const server = new KarmaServer( parsedConfig, exitCode => {
 			if ( exitCode === 0 ) {
 				resolve();
 			} else {
