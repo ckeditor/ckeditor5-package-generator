@@ -20,8 +20,7 @@ export default class MyPlugin extends Plugin {
 			view.set( {
 				label: t( 'My plugin' ),
 				icon: ckeditor5Icon,
-				tooltip: true,
-				isToggleable: true
+				tooltip: true
 			} );
 
 			// Insert a text into the editor after clicking the button.
