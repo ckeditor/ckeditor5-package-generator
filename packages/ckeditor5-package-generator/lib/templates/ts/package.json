@@ -1,0 +1,90 @@
+{
+  "name": "<%= name %>",
+  "version": "0.0.1",
+  "description": "A plugin for CKEditor 5.",
+  "keywords": [
+    "ckeditor",
+    "ckeditor5",
+    "ckeditor 5",
+    "ckeditor5-feature",
+    "ckeditor5-plugin",
+    "ckeditor5-dll",
+    "ckeditor5-package-generator"
+  ],
+  "main": "src/index.ts",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=5.7.1"
+  },
+  "files": [
+    "lang",
+    "src",
+    "theme",
+    "build",
+    "ckeditor5-metadata.json"
+  ],
+  "dependencies": {
+    "ckeditor5": ">=<%= packageVersions.ckeditor5 %>"
+  },
+  "devDependencies": {
+    "@ckeditor/ckeditor5-autoformat": ">=<%= packageVersions.ckeditor5 %>",
+    "@ckeditor/ckeditor5-basic-styles": ">=<%= packageVersions.ckeditor5 %>",
+    "@ckeditor/ckeditor5-block-quote": ">=<%= packageVersions.ckeditor5 %>",
+    "@ckeditor/ckeditor5-code-block": ">=<%= packageVersions.ckeditor5 %>",
+    "@ckeditor/ckeditor5-core": ">=<%= packageVersions.ckeditor5 %>",
+    "@ckeditor/ckeditor5-editor-classic": ">=<%= packageVersions.ckeditor5 %>",
+    "@ckeditor/ckeditor5-essentials": ">=<%= packageVersions.ckeditor5 %>",
+    "@ckeditor/ckeditor5-heading": ">=<%= packageVersions.ckeditor5 %>",
+    "@ckeditor/ckeditor5-image": ">=<%= packageVersions.ckeditor5 %>",
+    "@ckeditor/ckeditor5-indent": ">=<%= packageVersions.ckeditor5 %>",
+    "@ckeditor/ckeditor5-inspector": ">=<%= packageVersions.ckeditor5Inspector %>",
+    "@ckeditor/ckeditor5-link": ">=<%= packageVersions.ckeditor5 %>",
+    "@ckeditor/ckeditor5-list": ">=<%= packageVersions.ckeditor5 %>",
+    "@ckeditor/ckeditor5-media-embed": ">=<%= packageVersions.ckeditor5 %>",
+    "@ckeditor/ckeditor5-package-tools": "<%= packageVersions.packageTools %>",
+    "@ckeditor/ckeditor5-paragraph": ">=<%= packageVersions.ckeditor5 %>",
+    "@ckeditor/ckeditor5-table": ">=<%= packageVersions.ckeditor5 %>",
+    "@ckeditor/ckeditor5-theme-lark": ">=<%= packageVersions.ckeditor5 %>",
+    "@ckeditor/ckeditor5-upload": ">=<%= packageVersions.ckeditor5 %>",
+    "@types/ckeditor__ckeditor5-core": "^33.0.3",
+    "@types/node": "^17.0.23",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
+    "eslint": "^7.32.0",
+    "eslint-config-ckeditor5": ">=<%= packageVersions.eslintConfigCkeditor5 %>",
+    "http-server": "^14.1.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.6",
+    "stylelint": "^13.13.1",
+    "stylelint-config-ckeditor5": ">=<%= packageVersions.stylelintConfigCkeditor5 %>",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  },
+  "scripts": {
+    "dll:build": "echo \"TODO: DLL in #103\"",
+    "dll:serve": "http-server ./ -o sample/dll.html",
+    "lint": "eslint \"**/*.js\" --quiet --ignore-pattern \"build/\"",
+    "start": "echo \"TODO: DLL in #105\"",
+    "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
+    "test": "echo \"TODO: DLL in #104\"",
+    "prepare": "<%= program %> run dll:build",
+    "prepublishOnly": "<%= program %> run dll:build",
+    "translations:collect": "ckeditor5-package-tools translations:collect",
+    "translations:download": "ckeditor5-package-tools translations:download",
+    "translations:upload": "ckeditor5-package-tools translations:upload"
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "eslint --quiet"
+    ],
+    "**/*.css": [
+      "stylelint --quiet --allow-empty-input"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}

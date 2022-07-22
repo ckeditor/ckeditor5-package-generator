@@ -17,6 +17,7 @@ const chalk = require( 'chalk' );
 const template = require( 'lodash.template' );
 const glob = require( 'glob' );
 const mkdirp = require( 'mkdirp' );
+const { prompt } = require( 'inquirer' );
 
 const packageJson = require( '../package.json' );
 const TEMPLATE_PATH = path.join( __dirname, 'templates' );
@@ -24,6 +25,11 @@ const TEMPLATE_PATH = path.join( __dirname, 'templates' );
 const getDependenciesVersions = require( './utils/get-dependencies-versions' );
 const validatePackageName = require( './utils/validate-package-name' );
 const { tools } = require( '@ckeditor/ckeditor5-dev-utils' );
+
+const PROGRAMMING_LANGUAGES = {
+	JavaScript: 'js',
+	TypeScript: 'ts'
+};
 
 // Files that need to be filled with data.
 const TEMPLATES_TO_FILL = [
@@ -66,13 +72,14 @@ new Command( packageJson.name )
  */
 async function init( packageName, options ) {
 	// 1. Validate the package name.
-	// 2. Create a directory.
-	// 3. Collecting the latest version of CKEditor 5 dependencies.
-	// 4. Copy files.
-	// 5. Call npm/yarn install.
-	// 6. Initialize the git repository.
-	// 7. Install git hooks.
-	// 8. Display an instruction what to do next.
+	// 2. Ask user to choose programming language.
+	// 3. Create a directory.
+	// 4. Collecting the latest version of CKEditor 5 dependencies.
+	// 5. Copy files.
+	// 6. Call npm/yarn install.
+	// 7. Initialize the git repository.
+	// 8. Install git hooks.
+	// 9. Display an instruction what to do next.
 	//
 	// * Should we validate Node.js version?
 	// * Should we force using Yarn?
@@ -113,10 +120,22 @@ async function init( packageName, options ) {
 	}
 
 	// (2.)
+	let { programmingLanguage } = await prompt( [ {
+		prefix: '📍',
+		name: 'programmingLanguage',
+		message: 'Choose your programming language:',
+		type: 'list',
+		choices: Object.keys( PROGRAMMING_LANGUAGES )
+	} ] );
+
+	// Full name to shorthand: "JavaScript" => "js"
+	programmingLanguage = PROGRAMMING_LANGUAGES[ programmingLanguage ];
+
+	// (3.)
 	console.log( `📍 Creating the directory "${ chalk.cyan( directoryPath ) }".` );
 	mkdirp.sync( directoryPath );
 
-	// (3.)
+	// (4.)
 	console.log( '📍 Collecting the latest CKEditor 5 packages versions...' );
 	const packageVersions = getDependenciesVersions( {
 		devMode: options.dev
@@ -124,20 +143,29 @@ async function init( packageName, options ) {
 
 	const dllConfiguration = getDllConfiguration( packageName );
 
-	const templatesToCopy = glob.sync( '**/*', {
-		cwd: TEMPLATE_PATH,
-		dot: true,
-		nodir: true
-	} );
-
-	// (4.)
+	// (5.)
 	console.log( '📍 Copying files...' );
+
+	const templateGlobs = [
+		'common/**/*',
+		`${ programmingLanguage }/**/*`
+	];
+
+	const templatesToCopy = templateGlobs.flatMap( globPattern => {
+		return glob.sync( globPattern, {
+			cwd: TEMPLATE_PATH,
+			dot: true,
+			nodir: true
+		} );
+	} );
 
 	for ( const templatePath of templatesToCopy ) {
 		log( `* Copying "${ chalk.gray( templatePath ) }"...` );
 		let data;
 
-		if ( TEMPLATES_TO_FILL.includes( templatePath ) ) {
+		const shouldFillTemplate = TEMPLATES_TO_FILL.some( TEMPLATE_TO_FILL => templatePath.endsWith( TEMPLATE_TO_FILL ) );
+
+		if ( shouldFillTemplate ) {
 			data = {
 				name: packageName,
 				now: new Date(),
@@ -154,7 +182,7 @@ async function init( packageName, options ) {
 	// Create the `.gitignore` file. See #50.
 	fs.writeFileSync( path.join( directoryPath, '.gitignore' ), GITIGNORE_ENTRIES.join( EOL ) );
 
-	// (5.)
+	// (6.)
 	const installSpinner = tools.createSpinner( 'Installing dependencies... ' + chalk.gray.italic( 'It takes a while.' ), {
 		isDisabled: options.verbose
 	} );
@@ -168,17 +196,17 @@ async function init( packageName, options ) {
 
 	installSpinner.finish();
 
-	// (6.)
+	// (7.)
 	console.log( '📍 Initializing Git repository...' );
 	initializeGitRepository( directoryPath );
 
-	// (7.)
+	// (8.)
 	console.log( '📍 Installing Git hooks...' );
 	await installGitHooks( directoryPath, {
 		verbose: options.verbose
 	} );
 
-	// (8.)
+	// (9.)
 	console.log();
 	console.log( chalk.green( 'Done!' ) );
 	console.log();
@@ -210,7 +238,11 @@ function copyTemplate( templateFile, packagePath, data ) {
 		content = template( content )( data );
 	}
 
-	const destinationPath = path.join( packagePath, templateFile );
+	const destinationPath = path.join(
+		packagePath,
+		// Remove sub-directory inside templates to merge results into one directory.
+		templateFile.replace( /^(?:common|js|ts)\\/, '' )
+	);
 
 	// Make sure that the destination directory exists.
 	mkdirp.sync( path.dirname( destinationPath ) );
