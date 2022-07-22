@@ -5,7 +5,34 @@
 
 'use strict';
 
+const chalk = require( 'chalk' );
+
 const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
+
+/**
+ * If the package name is not valid, prints the error and exits the process.
+ *
+ * @param {Logger} logger
+ * @param {string} packageName
+ */
+module.exports = function validatePackageName( logger, packageName ) {
+	logger.process( 'Verifying the specified package name.' );
+
+	const validationError = validator( packageName );
+
+	if ( !validationError ) {
+		return;
+	}
+
+	logger.error( '❗ Found an error while verifying the provided package name.', { startWithNewLine: true } );
+	logger.error( validationError );
+
+	logger.info( 'Expected pattern:            ' + chalk.green( '@[scope]/ckeditor5-[feature-name]' ), { startWithNewLine: true } );
+	logger.info( 'The provided package name:   ' + chalk.red( packageName || '' ) );
+	logger.info( 'Allowed characters list:     ' + chalk.blue( '0-9 a-z - . _' ) );
+
+	process.exit( 1 );
+};
 
 /**
  * Checks if the package name is valid for the npm package, and if it follows the "@scope/ckeditor5-name" format.
@@ -15,7 +42,7 @@ const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
  * @param {String|undefined} packageName
  * @returns {String|null}
  */
-module.exports = function validatePackageName( packageName ) {
+function validator( packageName ) {
 	if ( !packageName ) {
 		return 'The package name cannot be an empty string - pass the name as the first argument to the script.';
 	}
@@ -48,4 +75,4 @@ module.exports = function validatePackageName( packageName ) {
 	}
 
 	return null;
-};
+}
