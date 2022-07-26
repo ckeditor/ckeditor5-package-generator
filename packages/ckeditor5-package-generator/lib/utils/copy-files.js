@@ -11,7 +11,6 @@ const glob = require( 'glob' );
 const mkdirp = require( 'mkdirp' );
 const path = require( 'path' );
 const template = require( 'lodash.template' );
-const { EOL } = require( 'os' );
 
 const TEMPLATE_PATH = path.join( __dirname, '..', 'templates' );
 
@@ -77,7 +76,9 @@ module.exports = function copyFiles( logger, options ) {
 	}
 
 	// Create the `.gitignore` file. See #50.
-	fs.writeFileSync( path.join( options.directoryPath, '.gitignore' ), GITIGNORE_ENTRIES.join( EOL ) + EOL );
+	const gitignorePath = path.join( options.directoryPath, '.gitignore' );
+	const gitignoreContent = GITIGNORE_ENTRIES.join( '\n' ) + '\n';
+	fs.writeFileSync( gitignorePath, gitignoreContent );
 };
 
 /**
@@ -86,9 +87,6 @@ module.exports = function copyFiles( logger, options ) {
  * @param {Object} [data] The data to fill in the template file.
  */
 function copyTemplate( templateFile, packagePath, data ) {
-	// Adjust the directory separator based on OS.
-	templateFile = templateFile.split( '/' ).join( path.sep );
-
 	let content = fs.readFileSync( path.join( TEMPLATE_PATH, templateFile ), 'utf-8' );
 
 	if ( data ) {

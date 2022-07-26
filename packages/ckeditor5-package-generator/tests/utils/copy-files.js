@@ -74,9 +74,6 @@ describe( 'lib/utils/copy-files', () => {
 				// This replace() removes the ( __dirname, '..' ) part from the path.
 				join: sinon.stub().callsFake( ( ...args ) => args.join( '/' ).replace( /^.+\.\.\//, '' ) ),
 				dirname: sinon.stub()
-			},
-			os: {
-				EOL: '\n'
 			}
 		};
 
@@ -113,7 +110,6 @@ describe( 'lib/utils/copy-files', () => {
 		mockery.registerMock( 'glob', stubs.glob );
 		mockery.registerMock( 'mkdirp', stubs.mkdirp );
 		mockery.registerMock( 'path', stubs.path );
-		mockery.registerMock( 'os', stubs.os );
 
 		options = {
 			programmingLanguage: 'js',
