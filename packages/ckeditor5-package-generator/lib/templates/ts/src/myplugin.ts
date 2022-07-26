@@ -1,15 +1,17 @@
 import { Plugin } from 'ckeditor5/src/core';
 import { ButtonView } from 'ckeditor5/src/ui';
 
+import type { EditorWithUI } from 'ckeditor__ckeditor5-core/src/editor/editorwithui';
+
 import ckeditor5Icon from '../theme/icons/ckeditor.svg';
 
 export default class MyPlugin extends Plugin {
-	public static get pluginName(): string {
+	public static override get pluginName(): string {
 		return 'MyPlugin';
 	}
 
-	public init(): void {
-		const editor = this.editor;
+	public override init(): void {
+		const editor = this.editor as EditorWithUI;
 		const t = editor.t;
 		const model = editor.model;
 
