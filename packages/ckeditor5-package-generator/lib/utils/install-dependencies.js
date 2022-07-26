@@ -20,10 +20,7 @@ module.exports = async function installDependencies( directoryPath, options ) {
 
 	installSpinner.start();
 
-	await installPackages( directoryPath, {
-		useNpm: options.useNpm,
-		verbose: options.verbose
-	} );
+	await installPackages( directoryPath, options );
 
 	installSpinner.finish();
 };

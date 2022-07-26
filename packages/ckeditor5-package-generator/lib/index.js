@@ -12,6 +12,8 @@ const fs = require( 'fs' );
 const path = require( 'path' );
 const { Command } = require( 'commander' );
 
+const Logger = require( './utils/logger' );
+
 const chooseProgrammingLanguage = require( './utils/choose-programming-language' );
 const copyFiles = require( './utils/copy-files' );
 const createDirectory = require( './utils/create-directory' );
@@ -21,8 +23,6 @@ const initializeGitRepository = require( './utils/initialize-git-repository' );
 const installDependencies = require( './utils/install-dependencies' );
 const installGitHooks = require( './utils/install-git-hooks' );
 const validatePackageName = require( './utils/validate-package-name' );
-
-const Logger = require( './utils/logger' );
 
 const packageJson = require( '../package.json' );
 
@@ -64,7 +64,7 @@ async function init( packageName, options ) {
 	const packageVersions = getDependenciesVersions( logger, { devMode: options.dev } );
 	const dllConfiguration = getDllConfiguration( packageName );
 
-	await copyFiles( logger, {
+	copyFiles( logger, {
 		programmingLanguage,
 		packageName,
 		program,

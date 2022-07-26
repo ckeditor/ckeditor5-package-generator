@@ -39,7 +39,7 @@ const GITIGNORE_ENTRIES = [
  * @param {Logger} logger
  * @param {Options} options
  */
-module.exports = async function copyFiles( logger, options ) {
+module.exports = function copyFiles( logger, options ) {
 	logger.process( 'Copying files...' );
 
 	const templateGlobs = [
@@ -99,7 +99,7 @@ function copyTemplate( templateFile, packagePath, data ) {
 	const destinationPath = path.join(
 		packagePath,
 		// Remove sub-directory inside templates to merge results into one directory.
-		templateFile.replace( /^(?:common|js|ts)\\/, '' )
+		templateFile.replace( /^(?:common|js|ts)(?:\\|\/)/, '' )
 	);
 
 	// Make sure that the destination directory exists.

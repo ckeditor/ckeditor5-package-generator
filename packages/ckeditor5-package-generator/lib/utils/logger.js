@@ -55,7 +55,7 @@ module.exports = class Logger {
 	 */
 	_genericLog( message, options = {} ) {
 		if ( options.startWithNewLine ) {
-			console.log( '' );
+			console.log();
 		}
 
 		console.log( message );

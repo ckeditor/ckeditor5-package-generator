@@ -24,7 +24,7 @@ module.exports = function validatePackageName( logger, packageName ) {
 		return;
 	}
 
-	logger.error( '❗ Found an error while verifying the provided package name.', { startWithNewLine: true } );
+	logger.error( '❗ Found an error while verifying the provided package name:', { startWithNewLine: true } );
 	logger.error( validationError );
 
 	logger.info( 'Expected pattern:            ' + chalk.green( '@[scope]/ckeditor5-[feature-name]' ), { startWithNewLine: true } );
