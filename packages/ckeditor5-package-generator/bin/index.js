@@ -25,7 +25,7 @@ new Command( packageJson.name )
 		return fs.existsSync( path.join( rootRepositoryPath, '.git' ) );
 	}, false )
 	.option( '--use-npm', 'whether use npm to install packages', false )
-	.option( '--lang <lang>', 'programming language to use', lang => lang )
+	.option( '--lang <lang>', 'programming language to use' )
 	.allowUnknownOption()
 	.action( ( packageName, options ) => init( packageName, options ) )
 	.parse( process.argv );
