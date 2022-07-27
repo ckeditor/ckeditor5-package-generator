@@ -5,7 +5,7 @@
   "author": "CKSource (http://cksource.com/)",
   "license": "MIT",
   "homepage": "https://ckeditor.com/ckeditor-5",
-  "main": "bin/index.js",
+  "main": "lib/index.js",
   "engines": {
     "node": ">=14.0.0"
   },
