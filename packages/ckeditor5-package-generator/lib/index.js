@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /**
  * @license Copyright (c) 2020-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md.
@@ -8,9 +6,6 @@
 'use strict';
 
 const chalk = require( 'chalk' );
-const fs = require( 'fs' );
-const path = require( 'path' );
-const { Command } = require( 'commander' );
 
 const Logger = require( './utils/logger' );
 
@@ -24,29 +19,11 @@ const installDependencies = require( './utils/install-dependencies' );
 const installGitHooks = require( './utils/install-git-hooks' );
 const validatePackageName = require( './utils/validate-package-name' );
 
-const packageJson = require( '../package.json' );
-
-new Command( packageJson.name )
-	.argument( '[packageName]', 'name of the package (@scope/ckeditor5-*)' )
-	.option( '-v, --verbose', 'output additional logs', false )
-	.option( '--dev', 'execution of the script in the development mode', () => {
-		// An absolute path to the repository that tracks the package.
-		const rootRepositoryPath = path.join( __dirname, '..', '..', '..' );
-
-		// The assumption here is that if the `--dev` flag was used, the entire repository is cloned.
-		// Otherwise, the executable was downloaded from npm, and it can't be executed in dev-mode.
-		return fs.existsSync( path.join( rootRepositoryPath, '.git' ) );
-	} )
-	.option( '--use-npm', 'whether use npm to install packages', false )
-	.allowUnknownOption()
-	.action( ( packageName, options ) => init( packageName, options ) )
-	.parse( process.argv );
-
 /**
  * @param {String|undefined} packageName
  * @param {CKeditor5PackageGeneratorOptions} options
  */
-async function init( packageName, options ) {
+module.exports = async function init( packageName, options ) {
 	// * Should we validate Node.js version?
 	// * Should we force using Yarn?
 	// * Should Yarn be used if found?
@@ -60,7 +37,7 @@ async function init( packageName, options ) {
 
 	validatePackageName( logger, packageName );
 	const { directoryName, directoryPath } = createDirectory( logger, packageName );
-	const programmingLanguage = await chooseProgrammingLanguage();
+	const programmingLanguage = await chooseProgrammingLanguage( logger, options );
 	const packageVersions = getDependenciesVersions( logger, { devMode: options.dev } );
 	const dllConfiguration = getDllConfiguration( packageName );
 
@@ -91,7 +68,7 @@ async function init( packageName, options ) {
 		'Example: ' + chalk.gray( program + ' run start' ),
 		''
 	].join( '\n' ), { startWithNewLine: true } );
-}
+};
 
 /**
  * @typedef {Object} CKeditor5PackageGeneratorOptions

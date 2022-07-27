@@ -8,7 +8,9 @@ const sinon = require( 'sinon' );
 const { expect } = require( 'chai' );
 
 describe( 'lib/index', () => {
-	let originalArgv, stubs, Logger;
+	let options, stubs, index;
+
+	const packageName = '@scope/ckeditor5-feature';
 
 	beforeEach( () => {
 		mockery.enable( {
@@ -17,9 +19,11 @@ describe( 'lib/index', () => {
 			warnOnUnregistered: false
 		} );
 
-		originalArgv = process.argv;
-
-		process.argv = [ 'node', 'path/to/index.js' ];
+		options = {
+			verbose: false,
+			useNpm: false,
+			dev: false
+		};
 
 		stubs = {
 			chalk: {
@@ -27,13 +31,6 @@ describe( 'lib/index', () => {
 				green: sinon.stub().callsFake( str => str ),
 				cyan: sinon.stub().callsFake( str => str ),
 				gray: sinon.stub().callsFake( str => str )
-			},
-			fs: {
-				existsSync: sinon.stub().returns( true )
-			},
-			path: {
-				// This replace() removes the ( __dirname, '..' ) part from the path.
-				join: sinon.stub().callsFake( ( ...args ) => args.join( '/' ).replace( /^.+\.\.\//, '' ) )
 			},
 			chooseProgrammingLanguage: sinon.stub(),
 			copyFiles: sinon.stub(),
@@ -65,16 +62,14 @@ describe( 'lib/index', () => {
 		stubs.installGitHooks.resolves();
 		stubs.initializeGitRepository.returns();
 
-		Logger = class Logger {
+		class Logger {
 			constructor( verbose ) {
 				this.verbose = verbose;
 				this.info = stubs.logger.info;
 			}
-		};
+		}
 
 		mockery.registerMock( 'chalk', stubs.chalk );
-		mockery.registerMock( 'fs', stubs.fs );
-		mockery.registerMock( 'path', stubs.path );
 
 		mockery.registerMock( './utils/logger', Logger );
 
@@ -88,61 +83,47 @@ describe( 'lib/index', () => {
 		mockery.registerMock( './utils/install-git-hooks', stubs.installGitHooks );
 		mockery.registerMock( './utils/validate-package-name', stubs.validatePackageName );
 
-		mockery.registerMock( '../package.json', { name: 'package.json name' } );
+		index = require( '../lib/index' );
 	} );
 
 	afterEach( () => {
 		mockery.deregisterAll();
 		mockery.disable();
 		sinon.restore();
+	} );
 
-		process.argv = originalArgv;
+	it( 'should be a function', () => {
+		expect( index ).to.be.a( 'function' );
 	} );
 
 	it( 'passes correct arguments to the validatePackageName()', async () => {
-		process.argv = [ 'node', 'path/to/index.js', '@scope/ckeditor5-feature' ];
-
-		await require( '../lib/index' );
+		await index( packageName, options );
 
 		expect( stubs.validatePackageName.callCount ).to.equal( 1 );
 		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
 		expect( stubs.validatePackageName.getCall( 0 ).args[ 1 ] ).to.equal( '@scope/ckeditor5-feature' );
 	} );
 
-	it( 'passes undefined to validatePackageName() when the package name is not provided as the argument', async () => {
-		process.argv = [ 'node', 'path/to/index.js' ];
-
-		await require( '../lib/index' );
+	it( 'passes undefined to validatePackageName() when the package name is undefined', async () => {
+		await index( undefined, options );
 
 		expect( stubs.validatePackageName.callCount ).to.equal( 1 );
 		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
 		expect( stubs.validatePackageName.getCall( 0 ).args[ 1 ] ).to.equal( undefined );
 	} );
 
-	it( 'creates logger in non-verbose mode by default', async () => {
-		process.argv = [ 'node', 'path/to/index.js' ];
-
-		await require( '../lib/index' );
+	it( 'creates logger with verbose option set to false', async () => {
+		await index( packageName, options );
 
 		expect( stubs.validatePackageName.callCount ).to.equal( 1 );
 		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
 		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ] ).to.deep.equal( { verbose: false, info: stubs.logger.info } );
 	} );
 
-	it( 'creates logger in verbose mode when using -v option', async () => {
-		process.argv = [ 'node', 'path/to/index.js', '-v' ];
+	it( 'creates logger with verbose option set to true', async () => {
+		options.verbose = true;
 
-		await require( '../lib/index' );
-
-		expect( stubs.validatePackageName.callCount ).to.equal( 1 );
-		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
-		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ] ).to.deep.equal( { verbose: true, info: stubs.logger.info } );
-	} );
-
-	it( 'creates logger in verbose mode when using --verbose option', async () => {
-		process.argv = [ 'node', 'path/to/index.js', '--verbose' ];
-
-		await require( '../lib/index' );
+		await index( packageName, options );
 
 		expect( stubs.validatePackageName.callCount ).to.equal( 1 );
 		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
@@ -150,29 +131,25 @@ describe( 'lib/index', () => {
 	} );
 
 	it( 'passes correct arguments to the createDirectory()', async () => {
-		process.argv = [ 'node', 'path/to/index.js', '@scope/ckeditor5-feature' ];
-
-		await require( '../lib/index' );
+		await index( packageName, options );
 
 		expect( stubs.createDirectory.callCount ).to.equal( 1 );
 		expect( stubs.createDirectory.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
 		expect( stubs.createDirectory.getCall( 0 ).args[ 1 ] ).to.equal( '@scope/ckeditor5-feature' );
 	} );
 
-	it( 'passes correct arguments to the getDependenciesVersions()', async () => {
-		process.argv = [ 'node', 'path/to/index.js', '@scope/ckeditor5-feature' ];
-
-		await require( '../lib/index' );
+	it( 'passes correct arguments to the getDependenciesVersions() with dev option set to false', async () => {
+		await index( packageName, options );
 
 		expect( stubs.getDependenciesVersions.callCount ).to.equal( 1 );
 		expect( stubs.getDependenciesVersions.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
-		expect( stubs.getDependenciesVersions.getCall( 0 ).args[ 1 ] ).to.deep.equal( { devMode: undefined } );
+		expect( stubs.getDependenciesVersions.getCall( 0 ).args[ 1 ] ).to.deep.equal( { devMode: false } );
 	} );
 
-	it( 'uses dev mode when calling getDependenciesVersions() when using --dev', async () => {
-		process.argv = [ 'node', 'path/to/index.js', '@scope/ckeditor5-feature', '--dev' ];
+	it( 'passes correct arguments to the getDependenciesVersions() with dev option set to true', async () => {
+		options.dev = true;
 
-		await require( '../lib/index' );
+		await index( packageName, options );
 
 		expect( stubs.getDependenciesVersions.callCount ).to.equal( 1 );
 		expect( stubs.getDependenciesVersions.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
@@ -180,18 +157,14 @@ describe( 'lib/index', () => {
 	} );
 
 	it( 'passes correct arguments to the getDllConfiguration()', async () => {
-		process.argv = [ 'node', 'path/to/index.js', '@scope/ckeditor5-feature' ];
-
-		await require( '../lib/index' );
+		await index( packageName, options );
 
 		expect( stubs.getDllConfiguration.callCount ).to.equal( 1 );
 		expect( stubs.getDllConfiguration.getCall( 0 ).args[ 0 ] ).to.equal( '@scope/ckeditor5-feature' );
 	} );
 
 	it( 'passes correct arguments to the copyFiles()', async () => {
-		process.argv = [ 'node', 'path/to/index.js', '@scope/ckeditor5-feature' ];
-
-		await require( '../lib/index' );
+		await index( packageName, options );
 
 		expect( stubs.copyFiles.callCount ).to.equal( 1 );
 		expect( stubs.copyFiles.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
@@ -210,10 +183,10 @@ describe( 'lib/index', () => {
 		} );
 	} );
 
-	it( 'passes correct program argument to the copyFiles() when using --use-npm', async () => {
-		process.argv = [ 'node', 'path/to/index.js', '@scope/ckeditor5-feature', '--use-npm' ];
+	it( 'passes correct program argument to the copyFiles() when useNpm options is set to true', async () => {
+		options.useNpm = true;
 
-		await require( '../lib/index' );
+		await index( packageName, options );
 
 		expect( stubs.copyFiles.callCount ).to.equal( 1 );
 		expect( stubs.copyFiles.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
@@ -233,65 +206,56 @@ describe( 'lib/index', () => {
 	} );
 
 	it( 'passes correct arguments to the installDependencies()', async () => {
-		process.argv = [ 'node', 'path/to/index.js', '@scope/ckeditor5-feature' ];
-
-		await require( '../lib/index' );
+		await index( packageName, options );
 
 		expect( stubs.installDependencies.callCount ).to.equal( 1 );
 		expect( stubs.installDependencies.getCall( 0 ).args[ 0 ] ).to.equal( 'directoryPath' );
 		expect( stubs.installDependencies.getCall( 0 ).args[ 1 ] ).to.deep.equal( {
+			verbose: false,
 			useNpm: false,
-			verbose: false
+			dev: false
 		} );
 	} );
 
-	// TODO: fix
-	// For whatever reason, nothing after installDependencies() registers the call, despite the code executing.
+	it( 'passes correct arguments to the initializeGitRepository()', async () => {
+		await index( packageName, options );
 
-	// it( 'passes correct arguments to the initializeGitRepository()', async () => {
-	// 	process.argv = [ 'node', 'path/to/index.js', '@scope/ckeditor5-feature' ];
+		expect( stubs.initializeGitRepository.callCount ).to.equal( 1 );
+		expect( stubs.initializeGitRepository.getCall( 0 ).args[ 0 ] ).to.equal( 'directoryPath' );
+		expect( stubs.initializeGitRepository.getCall( 0 ).args[ 1 ].constructor.name ).to.equal( 'Logger' );
+	} );
 
-	// 	await require( '../lib/index' );
+	it( 'passes correct arguments to the installGitHooks()', async () => {
+		await index( packageName, options );
 
-	// 	expect( stubs.initializeGitRepository.callCount ).to.equal( 1 );
-	// 	expect( stubs.initializeGitRepository.getCall( 0 ).args[ 0 ] ).to.equal( 'directoryPath' );
-	// 	expect( stubs.initializeGitRepository.getCall( 0 ).args[ 1 ].constructor.name ).to.equal( 'Logger' );
-	// } );
+		expect( stubs.installGitHooks.callCount ).to.equal( 1 );
+		expect( stubs.installGitHooks.getCall( 0 ).args[ 0 ] ).to.equal( 'directoryPath' );
+		expect( stubs.installGitHooks.getCall( 0 ).args[ 1 ].constructor.name ).to.equal( 'Logger' );
+		expect( stubs.installGitHooks.getCall( 0 ).args[ 2 ] ).to.deep.equal( {
+			verbose: false,
+			useNpm: false,
+			dev: false
+		} );
+	} );
 
-	// it( 'passes correct arguments to the installGitHooks()', async () => {
-	// 	process.argv = [ 'node', 'path/to/index.js', '@scope/ckeditor5-feature' ];
+	it( 'logs info when the script finishes', async () => {
+		await index( packageName, options );
 
-	// 	await require( '../lib/index' );
-
-	// 	expect( stubs.installGitHooks.callCount ).to.equal( 1 );
-	// 	expect( stubs.installGitHooks.getCall( 0 ).args[ 0 ] ).to.equal( 'directoryPath' );
-	// 	expect( stubs.installGitHooks.getCall( 0 ).args[ 1 ].constructor.name ).to.equal( 'Logger' );
-	// 	expect( stubs.installGitHooks.getCall( 0 ).args[ 2 ] ).to.deep.equal( {
-	// 		useNpm: false,
-	// 		verbose: false
-	// 	} );
-	// } );
-
-	// it( 'logs info when the script finishes', async () => {
-	// 	process.argv = [ 'node', 'path/to/index.js', '@scope/ckeditor5-feature' ];
-
-	// 	await require( '../lib/index' );
-
-	// 	expect( stubs.logger.info.callCount ).to.equal( 1 );
-	// 	expect( stubs.logger.info.getCall( 0 ).args[ 0 ].split( '\n' ) ).to.equal( [
-	// 		'Done!',
-	// 		'',
-	// 		'Execute the "cd ckeditor5-feature" command to change the current working directory',
-	// 		'to the newly created package. Then, the package offers a few predefined scripts:',
-	// 		'',
-	// 		'  * start - for creating the HTTP server with the editor sample,',
-	// 		'  * test - for executing unit tests of an example plugin,',
-	// 		'  * lint - for running a tool for static analyzing JavaScript files,',
-	// 		'  * stylelint - for running a tool for static analyzing CSS files.',
-	// 		'',
-	// 		'Example: yarn run start',
-	// 		''
-	// 	] );
-	// 	expect( stubs.logger.info.getCall( 0 ).args[ 1 ] ).to.deep.equal( { startWithNewLine: true } );
-	// } );
+		expect( stubs.logger.info.callCount ).to.equal( 1 );
+		expect( stubs.logger.info.getCall( 0 ).args[ 0 ] ).to.equal( [
+			'Done!',
+			'',
+			'Execute the "cd directoryName" command to change the current working directory',
+			'to the newly created package. Then, the package offers a few predefined scripts:',
+			'',
+			'  * start - for creating the HTTP server with the editor sample,',
+			'  * test - for executing unit tests of an example plugin,',
+			'  * lint - for running a tool for static analyzing JavaScript files,',
+			'  * stylelint - for running a tool for static analyzing CSS files.',
+			'',
+			'Example: yarn run start',
+			''
+		].join( '\n' ) );
+		expect( stubs.logger.info.getCall( 0 ).args[ 1 ] ).to.deep.equal( { startWithNewLine: true } );
+	} );
 } );

@@ -22,7 +22,9 @@ const NEW_PACKAGE_DIRECTORY = path.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-
 let foundError = false;
 
 logProcess( 'Creating new package: "@ckeditor/ckeditor5-test-package"...' );
-executeCommand( REPOSITORY_DIRECTORY, 'node', [ 'packages/ckeditor5-package-generator', '@ckeditor/ckeditor5-test-package', '--dev' ] );
+executeCommand( REPOSITORY_DIRECTORY, 'node',
+	[ 'packages/ckeditor5-package-generator', '@ckeditor/ckeditor5-test-package', '--dev', '--lang', 'js' ]
+);
 
 logProcess( 'Moving the package to temporary directory...' );
 executeCommand( REPOSITORY_DIRECTORY, 'mv', [ 'ckeditor5-test-package', '..' ] );
