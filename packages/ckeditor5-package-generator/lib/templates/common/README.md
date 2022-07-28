@@ -1,5 +1,5 @@
-<%= name %>
-<% print( '='.repeat( name.length ) ) %>
+<%= packageName %>
+<% print( '='.repeat( packageName.length ) ) %>
 
 This package was created by the [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator) package.
 
@@ -72,7 +72,7 @@ Examples:
 
 ### `lint`
 
-Runs ESLint, which analyzes the code (all `*.js` files) to quickly find problems.
+Runs ESLint, which analyzes the code (all `*.<%= programmingLanguage %>` files) to quickly find problems.
 
 Examples:
 
@@ -163,6 +163,6 @@ Examples:
 
 ## License
 
-The `<%= name %>` package is available under [MIT license](https://opensource.org/licenses/MIT).
+The `<%= packageName %>` package is available under [MIT license](https://opensource.org/licenses/MIT).
 
 However, it is the default license of packages created by the [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator) package and it can be changed.

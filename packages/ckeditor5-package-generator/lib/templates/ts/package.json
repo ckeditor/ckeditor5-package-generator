@@ -1,5 +1,5 @@
 {
-  "name": "<%= name %>",
+  "name": "<%= packageName %>",
   "version": "0.0.1",
   "description": "A plugin for CKEditor 5.",
   "keywords": [
@@ -11,7 +11,7 @@
     "ckeditor5-dll",
     "ckeditor5-package-generator"
   ],
-  "main": "src/index.js",
+  "main": "src/index.ts",
   "license": "MIT",
   "engines": {
     "node": ">=14.0.0",
@@ -47,21 +47,28 @@
     "@ckeditor/ckeditor5-table": ">=<%= packageVersions.ckeditor5 %>",
     "@ckeditor/ckeditor5-theme-lark": ">=<%= packageVersions.ckeditor5 %>",
     "@ckeditor/ckeditor5-upload": ">=<%= packageVersions.ckeditor5 %>",
+    "@types/ckeditor__ckeditor5-core": "^33.0.3",
+    "@types/ckeditor__ckeditor5-ui": "^32.0.2",
+    "@types/node": "^17.0.23",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": ">=<%= packageVersions.eslintConfigCkeditor5 %>",
     "http-server": "^14.1.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.6",
     "stylelint": "^13.13.1",
-    "stylelint-config-ckeditor5": ">=<%= packageVersions.stylelintConfigCkeditor5 %>"
+    "stylelint-config-ckeditor5": ">=<%= packageVersions.stylelintConfigCkeditor5 %>",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
   },
   "scripts": {
-    "dll:build": "ckeditor5-package-tools dll:build",
+    "dll:build": "echo \"TODO: DLL in #103\"",
     "dll:serve": "http-server ./ -o sample/dll.html",
-    "lint": "eslint \"**/*.js\" --quiet --ignore-pattern \"build/\"",
-    "start": "ckeditor5-package-tools start",
+    "lint": "eslint \"**/*.ts\" --quiet --ignore-pattern \"build/\"",
+    "start": "echo \"TODO: DLL in #105\"",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
-    "test": "ckeditor5-package-tools test",
+    "test": "echo \"TODO: DLL in #104\"",
     "prepare": "<%= program %> run dll:build",
     "prepublishOnly": "<%= program %> run dll:build",
     "translations:collect": "ckeditor5-package-tools translations:collect",
@@ -69,7 +76,7 @@
     "translations:upload": "ckeditor5-package-tools translations:upload"
   },
   "lint-staged": {
-    "**/*.js": [
+    "**/*.{js,ts}": [
       "eslint --quiet"
     ],
     "**/*.css": [

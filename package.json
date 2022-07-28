@@ -34,7 +34,7 @@
   },
   "scripts": {
     "changelog": "node scripts/release/changelog.js",
-    "coverage": "nyc --check-coverage --branches=100 --functions=100 --lines=100 --statements=100 --reporter=lcov --reporter=text-summary npm run test",
+    "coverage": "nyc npm run test",
     "lint": "eslint --quiet \"**/*.js\"",
     "precommit": "lint-staged",
     "release:bump-version": "node scripts/release/bump-versions.js",
@@ -44,6 +44,25 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/ckeditor/ckeditor5-package-generator.git"
+  },
+  "nyc": {
+    "reporter": [
+      "text-summary",
+      "lcov"
+    ],
+    "include": [
+      "packages/**/lib"
+    ],
+    "exclude": [
+      "packages/ckeditor5-package-generator/lib/templates"
+    ],
+    "cache": false,
+    "all": true,
+    "check-coverage": true,
+    "lines": 100,
+    "branches": 100,
+    "functions": 100,
+    "statements": 100
   },
   "lint-staged": {
     "**/*.js": [

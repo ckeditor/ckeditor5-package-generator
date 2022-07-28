@@ -21,48 +21,67 @@ const NEW_PACKAGE_DIRECTORY = path.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-
 // A flag that determines whether any of the executed commands resulted in an error.
 let foundError = false;
 
-logProcess( 'Creating new package: "@ckeditor/ckeditor5-test-package"...' );
-executeCommand( REPOSITORY_DIRECTORY, 'node', [ 'packages/ckeditor5-package-generator', '@ckeditor/ckeditor5-test-package', '--dev' ] );
+testBuild( 'js' )
+	.then( () => testBuild( 'ts' ) )
+	.then( () => process.exit( foundError ? 1 : 0 ) );
 
-logProcess( 'Moving the package to temporary directory...' );
-executeCommand( REPOSITORY_DIRECTORY, 'mv', [ 'ckeditor5-test-package', '..' ] );
+/**
+ * Build and run scripts for a given language.
+ *
+ * @param {string} lang
+ */
+async function testBuild( lang ) {
+	logProcess( `Testing build for language: [${ lang }].` );
 
-logProcess( 'Executing tests...' );
-executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'test' ] );
+	logProcess( 'Creating new package: "@ckeditor/ckeditor5-test-package"...' );
+	executeCommand( REPOSITORY_DIRECTORY, 'node',
+		[ 'packages/ckeditor5-package-generator/bin/index.js', '@ckeditor/ckeditor5-test-package', '--dev', '--verbose', '--lang', lang ]
+	);
 
-logProcess( 'Executing linters...' );
-executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'lint' ] );
-executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'stylelint' ] );
+	logProcess( 'Moving the package to temporary directory...' );
+	executeCommand( REPOSITORY_DIRECTORY, 'mv', [ 'ckeditor5-test-package', '..' ] );
 
-logProcess( 'Verifying translations...' );
-executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'translations:collect' ] );
+	if ( lang === 'ts' ) {
+		logProcess( 'TODO: re-enable this part of the build when TS is fully complete.' );
 
-logProcess( 'Starting the development servers and verifying the sample builds...' );
-Promise.all( [
-	startDevelopmentServer( NEW_PACKAGE_DIRECTORY ),
-	startDevelopmentServerForDllBuild( NEW_PACKAGE_DIRECTORY )
-] )
-	.then( optionsList => {
-		optionsList.forEach( options => {
-			executeCommand( REPOSITORY_DIRECTORY, 'node', [ path.join( 'scripts', 'ci', 'verify-sample.js' ), options.url ] );
+		return;
+	}
+
+	logProcess( 'Executing tests...' );
+	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'test' ] );
+
+	logProcess( 'Executing linters...' );
+	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'lint' ] );
+	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'stylelint' ] );
+
+	logProcess( 'Verifying translations...' );
+	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'translations:collect' ] );
+
+	logProcess( 'Starting the development servers and verifying the sample builds...' );
+	await Promise.all( [
+		startDevelopmentServer( NEW_PACKAGE_DIRECTORY ),
+		startDevelopmentServerForDllBuild( NEW_PACKAGE_DIRECTORY )
+	] )
+		.then( optionsList => {
+			optionsList.forEach( options => {
+				executeCommand( REPOSITORY_DIRECTORY, 'node', [ path.join( 'scripts', 'ci', 'verify-sample.js' ), options.url ] );
+			} );
+
+			return optionsList;
+		} )
+		.then( optionsList => {
+			logProcess( 'Stopping the development servers...' );
+			return Promise.all( optionsList.map( options => killProcess( options.server ) ) );
+		} )
+		.then( () => {
+			logProcess( 'Removing the created package...' );
+			fs.rmdirSync( NEW_PACKAGE_DIRECTORY, { recursive: true } );
+
+			if ( foundError ) {
+				console.log( '\n' + chalk.red( 'Found errors during the verification. Please, review the log above.' ) );
+			}
 		} );
-
-		return optionsList;
-	} )
-	.then( optionsList => {
-		logProcess( 'Stopping the development servers...' );
-		return Promise.all( optionsList.map( options => killProcess( options.server ) ) );
-	} )
-	.then( () => {
-		logProcess( 'Removing the created package...' );
-		fs.rmdirSync( NEW_PACKAGE_DIRECTORY, { recursive: true } );
-
-		if ( foundError ) {
-			console.log( '\n' + chalk.red( 'Found errors during the verification. Please, review the log above.' ) );
-		}
-
-		process.exit( foundError ? 1 : 0 );
-	} );
+}
 
 /**
  * Executes the specified program with its modifiers in the specified `cwd` directory.

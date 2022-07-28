@@ -4,7 +4,7 @@
 			"name": "My plugin",
 			"className": "MyPlugin",
 			"description": "Adds text to the editor.",
-			"path": "src/myplugin.js",
+			"path": "src/myplugin.<%= programmingLanguage %>",
 			"uiComponents": [
 				{
 					"name": "myButton",
