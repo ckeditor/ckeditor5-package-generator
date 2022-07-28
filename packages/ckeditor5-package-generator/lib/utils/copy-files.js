@@ -14,14 +14,6 @@ const template = require( 'lodash.template' );
 
 const TEMPLATE_PATH = path.join( __dirname, '..', 'templates' );
 
-// Files that need to be filled with data.
-const TEMPLATES_TO_FILL = [
-	'sample/dll.html',
-	'package.json',
-	'LICENSE.md',
-	'README.md'
-];
-
 // Npm does not publish the `.gitignore` file even if it's somewhere inside the package.
 // Hence, the package generator will create it manually. See: #50.
 const GITIGNORE_ENTRIES = [
@@ -57,20 +49,11 @@ module.exports = function copyFiles( logger, options ) {
 	for ( const templatePath of templatesToCopy ) {
 		logger.verboseInfo( `* Copying "${ chalk.gray( templatePath ) }"...` );
 
-		let data;
-
-		const shouldFillTemplate = TEMPLATES_TO_FILL.some( TEMPLATE_TO_FILL => templatePath.endsWith( TEMPLATE_TO_FILL ) );
-
-		if ( shouldFillTemplate ) {
-			data = {
-				name: options.packageName,
-				now: new Date(),
-				program: options.program,
-				packageVersions: options.packageVersions,
-				dll: options.dllConfiguration,
-				cliSeparator: options.program === 'npm' ? '-- ' : ''
-			};
-		}
+		const data = {
+			cliSeparator: options.program === 'npm' ? '-- ' : '',
+			now: new Date(),
+			...options
+		};
 
 		copyTemplate( templatePath, options.directoryPath, data );
 	}
@@ -82,17 +65,15 @@ module.exports = function copyFiles( logger, options ) {
 };
 
 /**
+ * Copies all files into the package directory. If any file has any template placeholders, they are filled.
+ *
  * @param {String} templateFile The relative path to the "templates/" directory of the file to copy.
  * @param {String} packagePath The destination directory where the new package is created.
  * @param {Object} [data] The data to fill in the template file.
  */
 function copyTemplate( templateFile, packagePath, data ) {
-	let content = fs.readFileSync( path.join( TEMPLATE_PATH, templateFile ), 'utf-8' );
-
-	if ( data ) {
-		// `template()` returns a function that requires data to fill the template.
-		content = template( content )( data );
-	}
+	const rawFile = fs.readFileSync( path.join( TEMPLATE_PATH, templateFile ), 'utf-8' );
+	const filledFile = template( rawFile )( data );
 
 	const destinationPath = path.join(
 		packagePath,
@@ -102,7 +83,7 @@ function copyTemplate( templateFile, packagePath, data ) {
 
 	// Make sure that the destination directory exists.
 	mkdirp.sync( path.dirname( destinationPath ) );
-	fs.writeFileSync( destinationPath, content );
+	fs.writeFileSync( destinationPath, filledFile );
 }
 
 /**

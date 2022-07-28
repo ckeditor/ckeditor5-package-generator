@@ -1,5 +1,5 @@
 {
-  "name": "<%= name %>",
+  "name": "<%= packageName %>",
   "version": "0.0.1",
   "description": "A plugin for CKEditor 5.",
   "keywords": [
@@ -65,7 +65,7 @@
   "scripts": {
     "dll:build": "echo \"TODO: DLL in #103\"",
     "dll:serve": "http-server ./ -o sample/dll.html",
-    "lint": "eslint \"**/*.js\" --quiet --ignore-pattern \"build/\"",
+    "lint": "eslint \"**/*.ts\" --quiet --ignore-pattern \"build/\"",
     "start": "echo \"TODO: DLL in #105\"",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
     "test": "echo \"TODO: DLL in #104\"",
@@ -76,7 +76,7 @@
     "translations:upload": "ckeditor5-package-tools translations:upload"
   },
   "lint-staged": {
-    "**/*.js": [
+    "**/*.{js,ts}": [
       "eslint --quiet"
     ],
     "**/*.css": [

@@ -24,14 +24,6 @@ const validatePackageName = require( './utils/validate-package-name' );
  * @param {CKeditor5PackageGeneratorOptions} options
  */
 module.exports = async function init( packageName, options ) {
-	// * Should we validate Node.js version?
-	// * Should we force using Yarn?
-	// * Should Yarn be used if found?
-	// * Should the developer be able to use npm?
-	// * Should the Git repository be created by default?
-	//
-	// TODO: Implement the `--info` flag for reporting issues.
-	// Use: https://www.npmjs.com/package/envinfo.
 	const logger = new Logger( options.verbose );
 	const program = options.useNpm ? 'npm' : 'yarn';
 

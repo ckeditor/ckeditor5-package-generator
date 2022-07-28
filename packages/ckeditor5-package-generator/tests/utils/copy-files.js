@@ -13,7 +13,7 @@ describe( 'lib/utils/copy-files', () => {
 		copyFiles;
 
 	const packageJson = {
-		'name': '<%= name %>',
+		'name': '<%= packageName %>',
 		'license': 'MIT',
 		'dependencies': {
 			'ckeditor5': '>=<%= packageVersions.ckeditor5 %>'
