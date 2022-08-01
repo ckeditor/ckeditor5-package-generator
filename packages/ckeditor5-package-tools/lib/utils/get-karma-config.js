@@ -131,7 +131,8 @@ function getWebpackConfiguration( options ) {
 		mode: 'development',
 
 		resolve: {
-			extensions: [ '.ts', '.js', '.json' ]
+			// Add support for TypeScript files and fallback to default extensions list.
+			extensions: [ '.ts', '...' ]
 		},
 
 		module: {

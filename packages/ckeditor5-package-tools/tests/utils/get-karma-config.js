@@ -263,13 +263,35 @@ describe( 'lib/utils/get-karma-config', () => {
 				} );
 			} );
 
-			describe( '*.js (code coverage)', () => {
+			describe( '*.ts', () => {
+				let loader;
+
+				beforeEach( () => {
+					loader = webpackConfig.module.rules.find( loader => loader.test.toString().includes( 'ts' ) );
+
+					expect( loader ).is.an( 'object' );
+				} );
+
+				it( 'uses "ts-loader" for providing files', () => {
+					expect( loader.use ).to.equal( 'ts-loader' );
+				} );
+
+				it( 'loads paths that end with the ".ts" suffix', () => {
+					expect( '/Users/ckeditor/ckeditor5-foo/assets/ckeditor.ts' ).to.match( loader.test );
+					expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\assets\\ckeditor.ts' ).to.match( loader.test );
+
+					expect( '/Users/ckeditor/ckeditor5-foo/assets/ckeditor.js' ).to.not.match( loader.test );
+					expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\assets\\ckeditor.js' ).to.not.match( loader.test );
+				} );
+			} );
+
+			describe( '*.js and *.ts (code coverage)', () => {
 				let loader;
 
 				beforeEach( () => {
 					webpackConfig = getKarmaConfig( { cwd, coverage: true } ).webpack;
 
-					loader = webpackConfig.module.rules.find( loader => loader.test.toString().includes( 'js' ) );
+					loader = webpackConfig.module.rules.find( loader => loader.test.toString().includes( '[jt]s' ) );
 
 					expect( loader ).is.an( 'object' );
 				} );
@@ -282,9 +304,12 @@ describe( 'lib/utils/get-karma-config', () => {
 					} );
 				} );
 
-				it( 'loads paths that end with the ".js" suffix', () => {
+				it( 'loads paths that end with the ".js" or ".ts" suffix', () => {
 					expect( '/Users/ckeditor/ckeditor5-foo/src/ckeditor.js' ).to.match( loader.test );
 					expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\src\\ckeditor.js' ).to.match( loader.test );
+
+					expect( '/Users/ckeditor/ckeditor5-foo/src/ckeditor.ts' ).to.match( loader.test );
+					expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\src\\ckeditor.ts' ).to.match( loader.test );
 
 					expect( '/Users/ckeditor/ckeditor5-foo/theme/icons/ckeditor.css' ).to.not.match( loader.test );
 					expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\theme\\icons\\ckeditor.css' ).to.not.match( loader.test );
@@ -296,6 +321,12 @@ describe( 'lib/utils/get-karma-config', () => {
 			const config = getKarmaConfig( { cwd, sourceMap: true } );
 
 			expect( config.webpack.devtool ).to.equal( 'eval-cheap-module-source-map' );
+		} );
+
+		it( 'allows resolving "*.ts" files', () => {
+			const config = getKarmaConfig( { cwd } );
+
+			expect( config.webpack.resolve.extensions ).to.deep.equal( [ '.ts', '...' ] );
 		} );
 	} );
 } );
