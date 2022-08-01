@@ -72,13 +72,13 @@ describe( 'lib/utils/generate-entry-file', () => {
 		expect( stubs.mkdirp.sync.firstCall.args[ 0 ] ).to.equal( '/Users/ckeditor/ckeditor5-foo/tmp' );
 	} );
 
-	it( 'should find only *.js files in the "tests/" directory', () => {
+	it( 'should find *.js and *.ts files in the "tests/" directory', () => {
 		stubs.glob.sync.returns( [] );
 
 		generateEntryFile( '/Users/ckeditor/ckeditor5-foo/tmp/tests-entry-point.js' );
 
 		expect( stubs.glob.sync.calledOnce ).to.equal( true );
-		expect( stubs.glob.sync.firstCall.args[ 0 ] ).to.equal( 'tests/**/*.js' );
+		expect( stubs.glob.sync.firstCall.args[ 0 ] ).to.equal( 'tests/**/*.[jt]s' );
 		expect( stubs.glob.sync.firstCall.args[ 1 ] ).to.deep.equal( { nodir: true } );
 	} );
 
@@ -96,10 +96,11 @@ describe( 'lib/utils/generate-entry-file', () => {
 		expect( console.info.firstCall.args[ 1 ] ).to.equal( '/Users/ckeditor/ckeditor5-foo/tmp/tests-entry-point.js' );
 	} );
 
-	it( 'should create an entry file with absolute paths to found tests', () => {
+	it( 'should create an entry file with absolute paths to found *.js and *.ts tests', () => {
 		stubs.glob.sync.returns( [
 			'tests/1.js',
-			'tests/foo/2.js'
+			'tests/foo/2.js',
+			'tests/bar/3.ts'
 		] );
 
 		generateEntryFile( '/Users/ckeditor/ckeditor5-foo/tmp/tests-entry-point.js' );
@@ -108,8 +109,8 @@ describe( 'lib/utils/generate-entry-file', () => {
 		expect( stubs.fs.writeFileSync.firstCall.args[ 0 ] ).to.equal( '/Users/ckeditor/ckeditor5-foo/tmp/tests-entry-point.js' );
 		expect( stubs.fs.writeFileSync.firstCall.args[ 1 ] ).to.equal(
 			'import \'/process/cwd/tests/1.js\';\n' +
-			'import \'/process/cwd/tests/foo/2.js\';' +
-			'\n'
+			'import \'/process/cwd/tests/foo/2.js\';\n' +
+			'import \'/process/cwd/tests/bar/3.ts\';\n'
 		);
 	} );
 

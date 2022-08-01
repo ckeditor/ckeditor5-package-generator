@@ -41,18 +41,18 @@ async function testBuild( lang ) {
 	logProcess( 'Moving the package to temporary directory...' );
 	executeCommand( REPOSITORY_DIRECTORY, 'mv', [ 'ckeditor5-test-package', '..' ] );
 
-	if ( lang === 'ts' ) {
-		logProcess( 'TODO: re-enable this part of the build when TS is fully complete.' );
-
-		return;
-	}
-
 	logProcess( 'Executing tests...' );
 	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'test' ] );
 
 	logProcess( 'Executing linters...' );
 	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'lint' ] );
 	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'stylelint' ] );
+
+	if ( lang === 'ts' ) {
+		logProcess( 'TODO: re-enable this part of the build when TS is fully complete.' );
+
+		return;
+	}
 
 	logProcess( 'Verifying translations...' );
 	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'translations:collect' ] );

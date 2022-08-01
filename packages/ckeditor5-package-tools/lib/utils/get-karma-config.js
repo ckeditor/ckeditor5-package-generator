@@ -130,6 +130,11 @@ function getWebpackConfiguration( options ) {
 	const config = {
 		mode: 'development',
 
+		resolve: {
+			// Add support for TypeScript files and fallback to default extensions list.
+			extensions: [ '.ts', '...' ]
+		},
+
 		module: {
 			rules: [
 				{
@@ -165,6 +170,10 @@ function getWebpackConfiguration( options ) {
 				{
 					test: /\.(txt|html|rtf)$/,
 					use: 'raw-loader'
+				},
+				{
+					test: /\.ts$/,
+					use: 'ts-loader'
 				}
 			]
 		},
@@ -184,7 +193,7 @@ function getWebpackConfiguration( options ) {
 	if ( options.coverage ) {
 		config.module.rules.unshift(
 			{
-				test: /\.js$/,
+				test: /\.[jt]s$/,
 				loader: 'istanbul-instrumenter-loader',
 				include: path.join( options.cwd, 'src' ),
 				options: {
