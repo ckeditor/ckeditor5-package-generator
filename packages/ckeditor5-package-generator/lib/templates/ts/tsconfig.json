@@ -10,9 +10,15 @@
 		"target": "es2020",
 		"sourceMap": true,
 		"allowJs": true,
-		"moduleResolution": "node"
+		"moduleResolution": "node",
+		"typeRoots": [
+			"typings",
+			"node_modules/@types"
+		]
 	},
 	"include": [
-		"src"
-	]
+		"src",
+		"tests",
+		"typings"
+	],
 }

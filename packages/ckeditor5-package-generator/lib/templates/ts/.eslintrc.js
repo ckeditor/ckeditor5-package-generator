@@ -18,7 +18,7 @@ module.exports = {
 	},
 	overrides: [
 		{
-			files: [ 'tests/**/*.js', 'sample/**/*.js' ],
+			files: [ 'tests/**/*.[jt]s', 'sample/**/*.[jt]s' ],
 			rules: {
 				// To write complex tests, you may need to import files that are not exported in DLL files by default.
 				// Hence, imports CKEditor 5 packages in test files are not checked.
