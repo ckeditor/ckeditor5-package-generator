@@ -31,8 +31,6 @@ import Code from '@ckeditor/ckeditor5-basic-styles/src/code';
 
 import MyPlugin from '../src/myplugin';
 
-/* global document, window */
-
 ClassicEditor
 	.create( document.getElementById( 'editor' )!, {
 		plugins: [
