@@ -25,6 +25,9 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 			packageJson: {
 				name: '@ckeditor/ckeditor5-foo'
 			},
+			fs: {
+				readdirSync: sinon.stub()
+			},
 			path: {
 				join: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) ),
 				resolve: sinon.stub().callsFake( file => `/process/cwd/${ file }` )
@@ -41,6 +44,12 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 			devWebpackPlugin: sinon.stub()
 		};
 
+		stubs.fs.readdirSync.withArgs( '/process/cwd/sample' ).returns( [
+			'ckeditor.js',
+			'dll.html',
+			'index.html'
+		] );
+
 		stubs.webpack.ProvidePlugin = function( ...args ) {
 			return stubs.providePlugin( ...args );
 		};
@@ -49,6 +58,7 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 			return stubs.definePlugin( ...args );
 		};
 
+		mockery.registerMock( 'fs', stubs.fs );
 		mockery.registerMock( 'path', stubs.path );
 		mockery.registerMock( 'webpack', stubs.webpack );
 		mockery.registerMock( '@ckeditor/ckeditor5-dev-utils', stubs.devUtils );
@@ -71,6 +81,22 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		const config = getWebpackConfigServer( { cwd } );
 
 		expect( config.entry ).to.equal( '/process/cwd/sample/ckeditor.js' );
+		expect( config.output ).to.deep.equal( {
+			filename: 'ckeditor.dist.js',
+			path: '/process/cwd/sample'
+		} );
+	} );
+
+	it( 'processes the "ckeditor.ts" file', () => {
+		stubs.fs.readdirSync.withArgs( '/process/cwd/sample' ).returns( [
+			'ckeditor.ts',
+			'dll.html',
+			'index.html'
+		] );
+
+		const config = getWebpackConfigServer( { cwd } );
+
+		expect( config.entry ).to.equal( '/process/cwd/sample/ckeditor.ts' );
 		expect( config.output ).to.deep.equal( {
 			filename: 'ckeditor.dist.js',
 			path: '/process/cwd/sample'
@@ -138,7 +164,7 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 			expect( stubs.devWebpackPlugin.calledOnce ).to.equal( true );
 			expect( stubs.devWebpackPlugin.firstCall.firstArg ).to.deep.equal( {
 				language: 'pl',
-				sourceFilesPattern: /src[/\\].+\.js$/
+				sourceFilesPattern: /src[/\\].+\.[jt]s$/
 			} );
 		} );
 	} );
@@ -239,6 +265,28 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 
 				expect( '/Users/ckeditor/ckeditor5-foo/theme/icons/ckeditor.html' ).to.not.match( loader.test );
 				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\theme\\icons\\ckeditor.html' ).to.not.match( loader.test );
+			} );
+		} );
+
+		describe( '*.ts', () => {
+			let loader;
+
+			beforeEach( () => {
+				loader = webpackConfig.module.rules.find( loader => loader.test.toString().includes( 'ts' ) );
+
+				expect( loader ).is.an( 'object' );
+			} );
+
+			it( 'uses "ts-loader" for providing files', () => {
+				expect( loader.use ).to.equal( 'ts-loader' );
+			} );
+
+			it( 'loads paths that end with the ".svg" suffix', () => {
+				expect( '/Users/ckeditor/ckeditor5-foo/sample/ckeditor.ts' ).to.match( loader.test );
+				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\sample\\ckeditor.ts' ).to.match( loader.test );
+
+				expect( '/Users/ckeditor/ckeditor5-foo/sample/ckeditor.js' ).to.not.match( loader.test );
+				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\sample\\ckeditor.tj' ).to.not.match( loader.test );
 			} );
 		} );
 	} );
