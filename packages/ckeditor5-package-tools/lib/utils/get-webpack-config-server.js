@@ -7,6 +7,7 @@
 
 /* eslint-env node */
 
+const fs = require( 'fs' );
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
@@ -28,10 +29,13 @@ module.exports = options => {
 		webpackPlugins.push(
 			new CKEditorWebpackPlugin( {
 				language: options.language,
-				sourceFilesPattern: /src[/\\].+\.js$/
+				sourceFilesPattern: /src[/\\].+\.[jt]s$/
 			} )
 		);
 	}
+
+	const entryFileName = fs.readdirSync( path.join( options.cwd, 'sample' ) )
+		.find( filePath => /^ckeditor\.[jt]s$/.test( filePath ) );
 
 	return {
 		mode: options.production ? 'production' : 'development',
@@ -40,7 +44,7 @@ module.exports = options => {
 			hints: false
 		},
 
-		entry: path.join( options.cwd, 'sample', 'ckeditor.js' ),
+		entry: path.join( options.cwd, 'sample', entryFileName ),
 
 		output: {
 			filename: 'ckeditor.dist.js',
@@ -58,6 +62,11 @@ module.exports = options => {
 				directory: path.join( options.cwd, 'sample' )
 			},
 			compress: true
+		},
+
+		resolve: {
+			// Add support for TypeScript files and fallback to default extensions list.
+			extensions: [ '.ts', '...' ]
 		},
 
 		module: {
@@ -91,6 +100,10 @@ module.exports = options => {
 							}
 						}
 					]
+				},
+				{
+					test: /\.ts$/,
+					use: 'ts-loader'
 				}
 			]
 		}

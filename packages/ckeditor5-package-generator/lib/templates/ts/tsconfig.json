@@ -17,6 +17,7 @@
 		]
 	},
 	"include": [
+		"sample",
 		"src",
 		"tests",
 		"typings"
