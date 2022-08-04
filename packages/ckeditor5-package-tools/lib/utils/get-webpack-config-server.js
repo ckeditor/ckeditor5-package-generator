@@ -11,7 +11,7 @@ const fs = require( 'fs' );
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
-const commonWebpackConfig = require( './common-webpack-config' );
+const { loaderDefinitions } = require( './webpack-utils' );
 
 module.exports = options => {
 	const webpackPlugins = [
@@ -63,6 +63,17 @@ module.exports = options => {
 			compress: true
 		},
 
-		...commonWebpackConfig( options.cwd )
+		resolve: {
+			// Triple dots syntax allows extending default extension list instead of overwriting it.
+			extensions: [ '.ts', '...' ]
+		},
+
+		module: {
+			rules: [
+				loaderDefinitions.raw(),
+				loaderDefinitions.styles( options.cwd ),
+				loaderDefinitions.typescript()
+			]
+		}
 	};
 };

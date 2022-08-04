@@ -29,26 +29,23 @@ describe( 'lib/utils/get-karma-config', () => {
 				join: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) ),
 				resolve: sinon.stub().callsFake( file => `/process/cwd/${ file }` )
 			},
-			commonWebpackConfig: sinon.stub()
+			webpackUtils: {
+				loaderDefinitions: {
+					raw: sinon.stub(),
+					styles: sinon.stub(),
+					coverage: sinon.stub(),
+					typescript: sinon.stub()
+				}
+			}
 		};
 
-		stubs.commonWebpackConfig.callsFake( cwd => ( {
-			resolve: {
-				extensions: [ '.foo', '...' ]
-			},
-			module: {
-				rules: [
-					{
-						test: /\.foo$/,
-						use: 'foo-loader',
-						options: cwd
-					}
-				]
-			}
-		} ) );
+		stubs.webpackUtils.loaderDefinitions.raw.returns( 'raw-loader' );
+		stubs.webpackUtils.loaderDefinitions.typescript.returns( 'typescript-loader' );
+		stubs.webpackUtils.loaderDefinitions.styles.withArgs( cwd ).returns( 'styles-loader' );
+		stubs.webpackUtils.loaderDefinitions.coverage.withArgs( cwd ).returns( 'coverage-loader' );
 
 		mockery.registerMock( 'path', stubs.path );
-		mockery.registerMock( './common-webpack-config', stubs.commonWebpackConfig );
+		mockery.registerMock( './webpack-utils', stubs.webpackUtils );
 
 		getKarmaConfig = require( '../../lib/utils/get-karma-config' );
 	} );
@@ -107,17 +104,31 @@ describe( 'lib/utils/get-karma-config', () => {
 	} );
 
 	describe( 'webpack configuration', () => {
-		it( 'contains common webpack config parts', () => {
+		it( 'uses correct loaders', () => {
 			const config = getKarmaConfig( { cwd } );
 
-			expect( config.webpack.resolve.extensions ).to.deep.equal( [ '.foo', '...' ] );
 			expect( config.webpack.module.rules ).to.deep.equal( [
-				{
-					test: /\.foo$/,
-					use: 'foo-loader',
-					options: cwd
-				}
+				'raw-loader',
+				'styles-loader',
+				'typescript-loader'
 			] );
+		} );
+
+		it( 'uses correct loaders (code coverage)', () => {
+			const config = getKarmaConfig( { cwd, coverage: true } );
+
+			expect( config.webpack.module.rules ).to.deep.equal( [
+				'coverage-loader',
+				'raw-loader',
+				'styles-loader',
+				'typescript-loader'
+			] );
+		} );
+
+		it( 'resolves correct file extensions', () => {
+			const config = getKarmaConfig( { cwd } );
+
+			expect( config.webpack.resolve.extensions ).to.deep.equal( [ '.ts', '...' ] );
 		} );
 
 		it( 'has mode set to "development"', () => {
@@ -136,37 +147,6 @@ describe( 'lib/utils/get-karma-config', () => {
 			const config = getKarmaConfig( { cwd, sourceMap: true } );
 
 			expect( config.webpack.devtool ).to.equal( 'eval-cheap-module-source-map' );
-		} );
-
-		describe( '*.js and *.ts (code coverage)', () => {
-			let loader;
-
-			beforeEach( () => {
-				const webpackConfig = getKarmaConfig( { cwd, coverage: true } ).webpack;
-
-				loader = webpackConfig.module.rules.find( loader => loader.test.toString().includes( '[jt]s' ) );
-
-				expect( loader ).is.an( 'object' );
-			} );
-
-			it( 'uses "istanbul-instrumenter-loader" for providing files', () => {
-				expect( loader.loader ).to.equal( 'istanbul-instrumenter-loader' );
-				expect( loader.include ).to.equal( '/process/cwd/src' );
-				expect( loader.options ).to.deep.equal( {
-					esModules: true
-				} );
-			} );
-
-			it( 'loads paths that end with the ".js" or ".ts" suffix', () => {
-				expect( '/Users/ckeditor/ckeditor5-foo/src/ckeditor.js' ).to.match( loader.test );
-				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\src\\ckeditor.js' ).to.match( loader.test );
-
-				expect( '/Users/ckeditor/ckeditor5-foo/src/ckeditor.ts' ).to.match( loader.test );
-				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\src\\ckeditor.ts' ).to.match( loader.test );
-
-				expect( '/Users/ckeditor/ckeditor5-foo/theme/icons/ckeditor.css' ).to.not.match( loader.test );
-				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\theme\\icons\\ckeditor.css' ).to.not.match( loader.test );
-			} );
 		} );
 	} );
 } );

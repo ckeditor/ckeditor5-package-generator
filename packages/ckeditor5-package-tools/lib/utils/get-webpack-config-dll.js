@@ -13,7 +13,7 @@ const fs = require( 'fs' );
 const webpack = require( 'webpack' );
 const TerserPlugin = require( 'terser-webpack-plugin' );
 const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
-const commonWebpackConfig = require( './common-webpack-config' );
+const { loaderDefinitions } = require( './webpack-utils' );
 
 module.exports = options => {
 	const packageJson = require( path.join( options.cwd, 'package.json' ) );
@@ -88,6 +88,17 @@ module.exports = options => {
 
 		plugins: webpackPlugins,
 
-		...commonWebpackConfig( options.cwd )
+		resolve: {
+			// Triple dots syntax allows extending default extension list instead of overwriting it.
+			extensions: [ '.ts', '...' ]
+		},
+
+		module: {
+			rules: [
+				loaderDefinitions.raw(),
+				loaderDefinitions.styles( options.cwd ),
+				loaderDefinitions.typescript()
+			]
+		}
 	};
 };

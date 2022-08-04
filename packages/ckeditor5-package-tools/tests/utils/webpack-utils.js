@@ -9,10 +9,11 @@ const mockery = require( 'mockery' );
 const sinon = require( 'sinon' );
 const expect = require( 'chai' ).expect;
 
-describe( 'lib/utils/common-webpack-config', () => {
-	let commonWebpackConfig, stubs;
+describe( 'lib/utils/webpack-utils', () => {
+	let webpackUtils, stubs;
 
 	const cwd = '/process/cwd';
+	const themePath = cwd + '/node_modules/@ckeditor/ckeditor5-theme/theme/theme.css';
 
 	beforeEach( () => {
 		mockery.enable( {
@@ -22,21 +23,25 @@ describe( 'lib/utils/common-webpack-config', () => {
 		} );
 
 		stubs = {
+			path: {
+				join: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) )
+			},
+			getThemePath: sinon.stub(),
 			devUtils: {
 				styles: {
 					getPostCssConfig: sinon.stub()
 				}
-			},
-			getThemePath: sinon.stub()
+			}
 		};
 
 		stubs.devUtils.styles.getPostCssConfig.returns( { foo: true } );
-		stubs.getThemePath.returns( cwd + '/node_modules/@ckeditor/ckeditor5-theme/theme/theme.css' );
+		stubs.getThemePath.returns( themePath );
 
-		mockery.registerMock( '@ckeditor/ckeditor5-dev-utils', stubs.devUtils );
+		mockery.registerMock( 'path', stubs.path );
 		mockery.registerMock( './get-theme-path', stubs.getThemePath );
+		mockery.registerMock( '@ckeditor/ckeditor5-dev-utils', stubs.devUtils );
 
-		commonWebpackConfig = require( '../../lib/utils/common-webpack-config' );
+		webpackUtils = require( '../../lib/utils/webpack-utils' );
 	} );
 
 	afterEach( () => {
@@ -44,22 +49,12 @@ describe( 'lib/utils/common-webpack-config', () => {
 		mockery.disable();
 	} );
 
-	it( 'should be a function', () => {
-		expect( commonWebpackConfig ).to.be.a( 'function' );
-	} );
-
-	it( 'allows resolving "*.ts" files', () => {
-		expect( commonWebpackConfig( cwd ).resolve.extensions ).to.deep.equal( [ '.ts', '...' ] );
-	} );
-
-	describe( 'loaders', () => {
-		describe( '*.svg', () => {
+	describe( 'loaderDefinitions', () => {
+		describe( 'raw()', () => {
 			let loader;
 
 			beforeEach( () => {
-				loader = commonWebpackConfig( cwd ).module.rules.find( loader => loader.test.toString().includes( 'svg' ) );
-
-				expect( loader ).is.an( 'object' );
+				loader = webpackUtils.loaderDefinitions.raw();
 			} );
 
 			it( 'uses "raw-loader" for providing files', () => {
@@ -73,20 +68,6 @@ describe( 'lib/utils/common-webpack-config', () => {
 				expect( '/Users/ckeditor/ckeditor5-foo/theme/icons/ckeditor.css' ).to.not.match( loader.test );
 				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\theme\\icons\\ckeditor.css' ).to.not.match( loader.test );
 			} );
-		} );
-
-		describe( '*.txt', () => {
-			let loader;
-
-			beforeEach( () => {
-				loader = commonWebpackConfig( cwd ).module.rules.find( loader => loader.test.toString().includes( 'txt' ) );
-
-				expect( loader ).is.an( 'object' );
-			} );
-
-			it( 'uses "raw-loader" for providing files', () => {
-				expect( loader.use ).to.equal( 'raw-loader' );
-			} );
 
 			it( 'loads paths that end with the ".txt" suffix', () => {
 				expect( '/Users/ckeditor/ckeditor5-foo/assets/ckeditor.txt' ).to.match( loader.test );
@@ -95,20 +76,6 @@ describe( 'lib/utils/common-webpack-config', () => {
 				expect( '/Users/ckeditor/ckeditor5-foo/theme/icons/ckeditor.css' ).to.not.match( loader.test );
 				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\theme\\icons\\ckeditor.css' ).to.not.match( loader.test );
 			} );
-		} );
-
-		describe( '*.html', () => {
-			let loader;
-
-			beforeEach( () => {
-				loader = commonWebpackConfig( cwd ).module.rules.find( loader => loader.test.toString().includes( 'html' ) );
-
-				expect( loader ).is.an( 'object' );
-			} );
-
-			it( 'uses "raw-loader" for providing files', () => {
-				expect( loader.use ).to.equal( 'raw-loader' );
-			} );
 
 			it( 'loads paths that end with the ".html" suffix', () => {
 				expect( '/Users/ckeditor/ckeditor5-foo/assets/ckeditor.html' ).to.match( loader.test );
@@ -116,20 +83,6 @@ describe( 'lib/utils/common-webpack-config', () => {
 
 				expect( '/Users/ckeditor/ckeditor5-foo/theme/icons/ckeditor.css' ).to.not.match( loader.test );
 				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\theme\\icons\\ckeditor.css' ).to.not.match( loader.test );
-			} );
-		} );
-
-		describe( '*.rtf', () => {
-			let loader;
-
-			beforeEach( () => {
-				loader = commonWebpackConfig( cwd ).module.rules.find( loader => loader.test.toString().includes( 'rtf' ) );
-
-				expect( loader ).is.an( 'object' );
-			} );
-
-			it( 'uses "raw-loader" for providing files', () => {
-				expect( loader.use ).to.equal( 'raw-loader' );
 			} );
 
 			it( 'loads paths that end with the ".rtf" suffix', () => {
@@ -141,13 +94,11 @@ describe( 'lib/utils/common-webpack-config', () => {
 			} );
 		} );
 
-		describe( '*.ts', () => {
+		describe( 'typescript()', () => {
 			let loader;
 
 			beforeEach( () => {
-				loader = commonWebpackConfig( cwd ).module.rules.find( loader => loader.test.toString().includes( 'ts' ) );
-
-				expect( loader ).is.an( 'object' );
+				loader = webpackUtils.loaderDefinitions.typescript();
 			} );
 
 			it( 'uses "ts-loader" for providing files', () => {
@@ -163,11 +114,47 @@ describe( 'lib/utils/common-webpack-config', () => {
 			} );
 		} );
 
-		describe( '*.css', () => {
+		describe( 'coverage()', () => {
 			let loader;
 
 			beforeEach( () => {
-				loader = commonWebpackConfig( cwd ).module.rules.find( loader => loader.test.toString().includes( 'css' ) );
+				loader = webpackUtils.loaderDefinitions.coverage( cwd );
+			} );
+
+			it( 'uses "ts-loader" for providing files', () => {
+				expect( loader.loader ).to.equal( 'istanbul-instrumenter-loader' );
+			} );
+
+			it( 'loads correct files', () => {
+				expect( loader.include ).to.equal( '/process/cwd/src' );
+			} );
+
+			it( 'has correct options set', () => {
+				expect( loader.options ).to.deep.equal( { esModules: true } );
+			} );
+
+			it( 'loads paths that end with the ".js" suffix', () => {
+				expect( '/Users/ckeditor/ckeditor5-foo/assets/ckeditor.js' ).to.match( loader.test );
+				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\assets\\ckeditor.js' ).to.match( loader.test );
+
+				expect( '/Users/ckeditor/ckeditor5-foo/assets/ckeditor.jsx' ).to.not.match( loader.test );
+				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\assets\\ckeditor.jsx' ).to.not.match( loader.test );
+			} );
+
+			it( 'loads paths that end with the ".ts" suffix', () => {
+				expect( '/Users/ckeditor/ckeditor5-foo/assets/ckeditor.ts' ).to.match( loader.test );
+				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\assets\\ckeditor.ts' ).to.match( loader.test );
+
+				expect( '/Users/ckeditor/ckeditor5-foo/assets/ckeditor.jsx' ).to.not.match( loader.test );
+				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\assets\\ckeditor.jsx' ).to.not.match( loader.test );
+			} );
+		} );
+
+		describe( 'styles()', () => {
+			let loader;
+
+			beforeEach( () => {
+				loader = webpackUtils.loaderDefinitions.styles( cwd );
 
 				expect( loader ).is.an( 'object' );
 				expect( loader.use ).is.an( 'array' );
@@ -182,12 +169,10 @@ describe( 'lib/utils/common-webpack-config', () => {
 				expect( stubs.devUtils.styles.getPostCssConfig.calledOnce ).to.equal( true );
 				expect( stubs.devUtils.styles.getPostCssConfig.firstCall.firstArg ).to.deep.equal( {
 					minify: true,
-					themeImporter: {
-						themePath: '/process/cwd/node_modules/@ckeditor/ckeditor5-theme/theme/theme.css'
-					}
+					themeImporter: { themePath }
 				} );
 
-				const postcssLoader = loader.use.slice( -1 ).pop();
+				const postcssLoader = loader.use[ 2 ];
 
 				expect( postcssLoader ).to.be.an( 'object' );
 
@@ -201,13 +186,13 @@ describe( 'lib/utils/common-webpack-config', () => {
 			} );
 
 			it( 'uses "css-loader" to resolve imports from JS files', () => {
-				const cssLoader = loader.use.slice( 1, -1 ).pop();
+				const cssLoader = loader.use[ 1 ];
 
 				expect( cssLoader ).to.equal( 'css-loader' );
 			} );
 
 			it( 'uses "style-loader" for injecting processed styles on a page', () => {
-				const styleLoader = loader.use.slice( 0 ).shift();
+				const styleLoader = loader.use[ 0 ];
 
 				expect( styleLoader ).to.haveOwnProperty( 'loader' );
 				expect( styleLoader.loader ).to.equal( 'style-loader' );

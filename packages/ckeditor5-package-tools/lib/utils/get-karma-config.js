@@ -8,7 +8,7 @@
 /* eslint-env node */
 
 const path = require( 'path' );
-const commonWebpackConfig = require( './common-webpack-config' );
+const { loaderDefinitions } = require( './webpack-utils' );
 
 /**
  * @param {Object} options
@@ -129,13 +129,24 @@ function getWebpackConfiguration( options ) {
 	const config = {
 		mode: 'development',
 
+		resolve: {
+			// Triple dots syntax allows extending default extension list instead of overwriting it.
+			extensions: [ '.ts', '...' ]
+		},
+
+		module: {
+			rules: [
+				loaderDefinitions.raw(),
+				loaderDefinitions.styles( options.cwd ),
+				loaderDefinitions.typescript()
+			]
+		},
+
 		resolveLoader: {
 			modules: [
 				'node_modules'
 			]
-		},
-
-		...commonWebpackConfig( options.cwd )
+		}
 	};
 
 	if ( options.sourceMap ) {
@@ -144,16 +155,7 @@ function getWebpackConfiguration( options ) {
 	}
 
 	if ( options.coverage ) {
-		config.module.rules.unshift(
-			{
-				test: /\.[jt]s$/,
-				loader: 'istanbul-instrumenter-loader',
-				include: path.join( options.cwd, 'src' ),
-				options: {
-					esModules: true
-				}
-			}
-		);
+		config.module.rules.unshift( loaderDefinitions.coverage( options.cwd ) );
 	}
 
 	return config;

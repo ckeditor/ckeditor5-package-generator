@@ -32,27 +32,22 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 				join: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) ),
 				resolve: sinon.stub().callsFake( file => `/process/cwd/${ file }` )
 			},
-			commonWebpackConfig: sinon.stub(),
 			webpack: sinon.stub(),
 			providePlugin: sinon.stub(),
 			definePlugin: sinon.stub(),
-			devWebpackPlugin: sinon.stub()
+			devWebpackPlugin: sinon.stub(),
+			webpackUtils: {
+				loaderDefinitions: {
+					raw: sinon.stub(),
+					styles: sinon.stub(),
+					typescript: sinon.stub()
+				}
+			}
 		};
 
-		stubs.commonWebpackConfig.callsFake( cwd => ( {
-			resolve: {
-				extensions: [ '.foo', '...' ]
-			},
-			module: {
-				rules: [
-					{
-						test: /\.foo$/,
-						use: 'foo-loader',
-						options: cwd
-					}
-				]
-			}
-		} ) );
+		stubs.webpackUtils.loaderDefinitions.raw.returns( 'raw-loader' );
+		stubs.webpackUtils.loaderDefinitions.typescript.returns( 'typescript-loader' );
+		stubs.webpackUtils.loaderDefinitions.styles.withArgs( cwd ).returns( 'styles-loader' );
 
 		stubs.fs.readdirSync.withArgs( '/process/cwd/sample' ).returns( [
 			'ckeditor.js',
@@ -71,7 +66,7 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		mockery.registerMock( 'fs', stubs.fs );
 		mockery.registerMock( 'path', stubs.path );
 		mockery.registerMock( 'webpack', stubs.webpack );
-		mockery.registerMock( './common-webpack-config', stubs.commonWebpackConfig );
+		mockery.registerMock( './webpack-utils', stubs.webpackUtils );
 		mockery.registerMock( '@ckeditor/ckeditor5-dev-webpack-plugin', stubs.devWebpackPlugin );
 
 		getWebpackConfigServer = require( '../../lib/utils/get-webpack-config-server' );
@@ -86,17 +81,20 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		expect( getWebpackConfigServer ).to.be.a( 'function' );
 	} );
 
-	it( 'contains common webpack config parts', () => {
+	it( 'uses correct loaders', () => {
 		const config = getWebpackConfigServer( { cwd } );
 
-		expect( config.resolve.extensions ).to.deep.equal( [ '.foo', '...' ] );
 		expect( config.module.rules ).to.deep.equal( [
-			{
-				test: /\.foo$/,
-				use: 'foo-loader',
-				options: cwd
-			}
+			'raw-loader',
+			'styles-loader',
+			'typescript-loader'
 		] );
+	} );
+
+	it( 'resolves correct file extensions', () => {
+		const config = getWebpackConfigServer( { cwd } );
+
+		expect( config.resolve.extensions ).to.deep.equal( [ '.ts', '...' ] );
 	} );
 
 	it( 'processes the "ckeditor.js" file', () => {
