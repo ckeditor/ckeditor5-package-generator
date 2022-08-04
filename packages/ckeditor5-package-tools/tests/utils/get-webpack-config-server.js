@@ -286,7 +286,7 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\sample\\ckeditor.ts' ).to.match( loader.test );
 
 				expect( '/Users/ckeditor/ckeditor5-foo/sample/ckeditor.js' ).to.not.match( loader.test );
-				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\sample\\ckeditor.tj' ).to.not.match( loader.test );
+				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\sample\\ckeditor.js' ).to.not.match( loader.test );
 			} );
 		} );
 	} );

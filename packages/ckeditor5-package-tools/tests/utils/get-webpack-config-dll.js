@@ -30,7 +30,8 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 				content: {}
 			},
 			fs: {
-				existsSync: sinon.stub()
+				existsSync: sinon.stub(),
+				readdirSync: sinon.stub()
 			},
 			path: {
 				join: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) )
@@ -55,6 +56,10 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 		};
 
 		stubs.fs.existsSync.returns( false );
+		stubs.fs.readdirSync.withArgs( '/process/cwd/src' ).returns( [
+			'index.js',
+			'myplugin.js'
+		] );
 
 		mockery.registerMock( 'fs', stubs.fs );
 		mockery.registerMock( 'path', stubs.path );
@@ -76,6 +81,35 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 
 	it( 'should be a function', () => {
 		expect( getWebpackConfigDll ).to.be.a( 'function' );
+	} );
+
+	it( 'processes the "index.js" file', () => {
+		const config = getWebpackConfigDll( { cwd } );
+
+		expect( config.entry ).to.equal( '/process/cwd/src/index.js' );
+		expect( config.output ).to.deep.equal( {
+			path: '/process/cwd/build',
+			filename: 'foo.js',
+			libraryTarget: 'window',
+			library: [ 'CKEditor5', 'foo' ]
+		} );
+	} );
+
+	it( 'processes the "index.ts" file', () => {
+		stubs.fs.readdirSync.withArgs( '/process/cwd/src' ).returns( [
+			'index.ts',
+			'myplugin.ts'
+		] );
+
+		const config = getWebpackConfigDll( { cwd } );
+
+		expect( config.entry ).to.equal( '/process/cwd/src/index.ts' );
+		expect( config.output ).to.deep.equal( {
+			path: '/process/cwd/build',
+			filename: 'foo.js',
+			libraryTarget: 'window',
+			library: [ 'CKEditor5', 'foo' ]
+		} );
 	} );
 
 	it( 'loads "process" polyfill for webpack 5', () => {
@@ -114,7 +148,7 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 			additionalLanguages: 'all',
 			language: 'en',
 			skipPluralFormFunction: true,
-			sourceFilesPattern: /^src[/\\].+\.js$/
+			sourceFilesPattern: /^src[/\\].+\.[jt]s$/
 		} );
 	} );
 
@@ -156,7 +190,7 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 			} );
 
 			it( 'uses "raw-loader" for providing files', () => {
-				expect( loader.use ).to.deep.equal( [ 'raw-loader' ] );
+				expect( loader.use ).to.equal( 'raw-loader' );
 			} );
 
 			it( 'loads paths that end with the ".svg" suffix', () => {
@@ -232,6 +266,28 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 
 				expect( '/Users/ckeditor/ckeditor5-foo/theme/icons/ckeditor.html' ).to.not.match( loader.test );
 				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\theme\\icons\\ckeditor.html' ).to.not.match( loader.test );
+			} );
+		} );
+
+		describe( '*.ts', () => {
+			let loader;
+
+			beforeEach( () => {
+				loader = webpackConfig.module.rules.find( loader => loader.test.toString().includes( 'ts' ) );
+
+				expect( loader ).is.an( 'object' );
+			} );
+
+			it( 'uses "ts-loader" for providing files', () => {
+				expect( loader.use ).to.equal( 'ts-loader' );
+			} );
+
+			it( 'loads paths that end with the ".svg" suffix', () => {
+				expect( '/Users/ckeditor/ckeditor5-foo/sample/ckeditor.ts' ).to.match( loader.test );
+				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\sample\\ckeditor.ts' ).to.match( loader.test );
+
+				expect( '/Users/ckeditor/ckeditor5-foo/sample/ckeditor.js' ).to.not.match( loader.test );
+				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\sample\\ckeditor.js' ).to.not.match( loader.test );
 			} );
 		} );
 	} );

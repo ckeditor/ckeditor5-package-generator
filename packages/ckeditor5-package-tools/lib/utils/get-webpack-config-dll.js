@@ -50,11 +50,14 @@ module.exports = options => {
 			new CKEditorWebpackPlugin( {
 				language: 'en',
 				additionalLanguages: 'all',
-				sourceFilesPattern: /^src[/\\].+\.js$/,
+				sourceFilesPattern: /^src[/\\].+\.[jt]s$/,
 				skipPluralFormFunction: true
 			} )
 		);
 	}
+
+	const entryFileName = fs.readdirSync( path.join( options.cwd, 'src' ) )
+		.find( filePath => /^index\.[jt]s$/.test( filePath ) );
 
 	return {
 		mode: 'production',
@@ -63,7 +66,7 @@ module.exports = options => {
 			hints: false
 		},
 
-		entry: path.join( options.cwd, 'src', 'index.js' ),
+		entry: path.join( options.cwd, 'src', entryFileName ),
 
 		output: {
 			filename: dllName + '.js',
@@ -86,11 +89,16 @@ module.exports = options => {
 
 		plugins: webpackPlugins,
 
+		resolve: {
+			// Add support for TypeScript files and fallback to default extensions list.
+			extensions: [ '.ts', '...' ]
+		},
+
 		module: {
 			rules: [
 				{
 					test: /\.svg$/,
-					use: [ 'raw-loader' ]
+					use: 'raw-loader'
 				},
 				{
 					test: /\.css$/,
@@ -117,6 +125,10 @@ module.exports = options => {
 							}
 						}
 					]
+				},
+				{
+					test: /\.ts$/,
+					use: 'ts-loader'
 				}
 			]
 		}

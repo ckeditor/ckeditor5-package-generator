@@ -80,7 +80,7 @@
     "typescript": "^4.7.4"
   },
   "scripts": {
-    "dll:build": "echo \"TODO: DLL in #103\"",
+    "dll:build": "ckeditor5-package-tools dll:build",
     "dll:serve": "http-server ./ -o sample/dll.html",
     "lint": "eslint \"**/*.{js,ts}\" --quiet --ignore-pattern \"build/\"",
     "start": "ckeditor5-package-tools start",
