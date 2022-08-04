@@ -8,8 +8,7 @@
 /* eslint-env node */
 
 const path = require( 'path' );
-const { getPostCssConfig } = require( '@ckeditor/ckeditor5-dev-utils' ).styles;
-const getThemePath = require( './get-theme-path' );
+const commonWebpackConfig = require( './common-webpack-config' );
 
 /**
  * @param {Object} options
@@ -130,59 +129,13 @@ function getWebpackConfiguration( options ) {
 	const config = {
 		mode: 'development',
 
-		resolve: {
-			// Add support for TypeScript files and fallback to default extensions list.
-			extensions: [ '.ts', '...' ]
-		},
-
-		module: {
-			rules: [
-				{
-					test: /\.svg$/,
-					use: 'raw-loader'
-				},
-				{
-					test: /\.css$/,
-					use: [
-						{
-							loader: 'style-loader',
-							options: {
-								injectType: 'singletonStyleTag',
-								attributes: {
-									'data-cke': true
-								}
-							}
-						},
-						'css-loader',
-						{
-							loader: 'postcss-loader',
-							options: {
-								postcssOptions: getPostCssConfig( {
-									themeImporter: {
-										themePath: getThemePath( options.cwd )
-									},
-									minify: true
-								} )
-							}
-						}
-					]
-				},
-				{
-					test: /\.(txt|html|rtf)$/,
-					use: 'raw-loader'
-				},
-				{
-					test: /\.ts$/,
-					use: 'ts-loader'
-				}
-			]
-		},
-
 		resolveLoader: {
 			modules: [
 				'node_modules'
 			]
-		}
+		},
+
+		...commonWebpackConfig( options.cwd )
 	};
 
 	if ( options.sourceMap ) {

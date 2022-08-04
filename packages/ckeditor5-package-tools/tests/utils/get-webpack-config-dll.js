@@ -36,17 +36,27 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 			path: {
 				join: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) )
 			},
-			devUtils: {
-				styles: {
-					getPostCssConfig: sinon.stub()
-				}
-			},
-			getThemePath: sinon.stub(),
+			commonWebpackConfig: sinon.stub(),
 			webpack: sinon.stub(),
 			dllReferencePlugin: sinon.stub(),
 			providePlugin: sinon.stub(),
 			devWebpackPlugin: sinon.stub()
 		};
+
+		stubs.commonWebpackConfig.callsFake( cwd => ( {
+			resolve: {
+				extensions: [ '.foo', '...' ]
+			},
+			module: {
+				rules: [
+					{
+						test: /\.foo$/,
+						use: 'foo-loader',
+						options: cwd
+					}
+				]
+			}
+		} ) );
 
 		stubs.webpack.DllReferencePlugin = function( ...args ) {
 			return stubs.dllReferencePlugin( ...args );
@@ -64,9 +74,8 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 		mockery.registerMock( 'fs', stubs.fs );
 		mockery.registerMock( 'path', stubs.path );
 		mockery.registerMock( 'webpack', stubs.webpack );
-		mockery.registerMock( '@ckeditor/ckeditor5-dev-utils', stubs.devUtils );
+		mockery.registerMock( './common-webpack-config', stubs.commonWebpackConfig );
 		mockery.registerMock( '@ckeditor/ckeditor5-dev-webpack-plugin', stubs.devWebpackPlugin );
-		mockery.registerMock( './get-theme-path', stubs.getThemePath );
 
 		mockery.registerMock( '/process/cwd/node_modules/ckeditor5/build/ckeditor5-dll.manifest.json', stubs.ckeditor5manifest );
 		mockery.registerMock( '/process/cwd/package.json', stubs.packageJson );
@@ -81,6 +90,19 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 
 	it( 'should be a function', () => {
 		expect( getWebpackConfigDll ).to.be.a( 'function' );
+	} );
+
+	it( 'contains common webpack config parts', () => {
+		const config = getWebpackConfigDll( { cwd } );
+
+		expect( config.resolve.extensions ).to.deep.equal( [ '.foo', '...' ] );
+		expect( config.module.rules ).to.deep.equal( [
+			{
+				test: /\.foo$/,
+				use: 'foo-loader',
+				options: cwd
+			}
+		] );
 	} );
 
 	it( 'processes the "index.js" file', () => {
@@ -167,128 +189,6 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 
 			expect( webpackConfig.output.filename ).to.equal( 'foo-bar.js' );
 			expect( webpackConfig.output.library ).to.deep.equal( [ 'CKEditor5', 'fooBar' ] );
-		} );
-	} );
-
-	describe( 'loaders', () => {
-		let webpackConfig;
-
-		beforeEach( () => {
-			stubs.getThemePath.returns( '/process/cwd/node_modules/@ckeditor/ckeditor5-theme/theme/theme.css' );
-			stubs.devUtils.styles.getPostCssConfig.returns( { foo: true } );
-
-			webpackConfig = getWebpackConfigDll( { cwd } );
-		} );
-
-		describe( '*.svg', () => {
-			let loader;
-
-			beforeEach( () => {
-				loader = webpackConfig.module.rules.find( loader => loader.test.toString().includes( 'svg' ) );
-
-				expect( loader ).is.an( 'object' );
-			} );
-
-			it( 'uses "raw-loader" for providing files', () => {
-				expect( loader.use ).to.equal( 'raw-loader' );
-			} );
-
-			it( 'loads paths that end with the ".svg" suffix', () => {
-				expect( '/Users/ckeditor/ckeditor5-foo/theme/icons/ckeditor.svg' ).to.match( loader.test );
-				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\theme\\icons\\ckeditor.svg' ).to.match( loader.test );
-
-				expect( '/Users/ckeditor/ckeditor5-foo/theme/icons/ckeditor.css' ).to.not.match( loader.test );
-				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\theme\\icons\\ckeditor.css' ).to.not.match( loader.test );
-			} );
-		} );
-
-		describe( '*.css', () => {
-			let loader;
-
-			beforeEach( () => {
-				loader = webpackConfig.module.rules.find( loader => loader.test.toString().includes( 'css' ) );
-
-				expect( loader ).is.an( 'object' );
-				expect( loader.use ).is.an( 'array' );
-				expect( loader.use ).to.lengthOf( 3 );
-			} );
-
-			// Webpack processes loaders from the bottom, to the top. Hence, "postcss-loader" will be called as the first one.
-			it( 'uses "postcss-loader" for processing CKEditor 5 assets', () => {
-				expect( stubs.getThemePath.calledOnce ).to.equal( true );
-				expect( stubs.getThemePath.firstCall.args[ 0 ] ).to.equal( '/process/cwd' );
-
-				expect( stubs.devUtils.styles.getPostCssConfig.calledOnce ).to.equal( true );
-				expect( stubs.devUtils.styles.getPostCssConfig.firstCall.firstArg ).to.deep.equal( {
-					minify: true,
-					themeImporter: {
-						themePath: '/process/cwd/node_modules/@ckeditor/ckeditor5-theme/theme/theme.css'
-					}
-				} );
-
-				const postcssLoader = loader.use.slice( -1 ).pop();
-
-				expect( postcssLoader ).to.be.an( 'object' );
-
-				expect( postcssLoader ).to.haveOwnProperty( 'loader' );
-				expect( postcssLoader.loader ).to.equal( 'postcss-loader' );
-
-				expect( postcssLoader ).to.haveOwnProperty( 'options' );
-				expect( postcssLoader.options ).to.deep.equal( {
-					postcssOptions: { foo: true }
-				} );
-			} );
-
-			it( 'uses "css-loader" to resolve imports from JS files', () => {
-				const cssLoader = loader.use.slice( 1, -1 ).pop();
-
-				expect( cssLoader ).to.equal( 'css-loader' );
-			} );
-
-			it( 'uses "style-loader" for injecting processed styles on a page', () => {
-				const styleLoader = loader.use.slice( 0 ).shift();
-
-				expect( styleLoader ).to.haveOwnProperty( 'loader' );
-				expect( styleLoader.loader ).to.equal( 'style-loader' );
-
-				expect( styleLoader ).to.haveOwnProperty( 'options' );
-				expect( styleLoader.options ).to.deep.equal( {
-					injectType: 'singletonStyleTag',
-					attributes: {
-						'data-cke': true
-					}
-				} );
-			} );
-
-			it( 'loads paths that end with the ".css" suffix', () => {
-				expect( '/Users/ckeditor/ckeditor5-foo/theme/icons/ckeditor.css' ).to.match( loader.test );
-				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\theme\\icons\\ckeditor.css' ).to.match( loader.test );
-
-				expect( '/Users/ckeditor/ckeditor5-foo/theme/icons/ckeditor.html' ).to.not.match( loader.test );
-				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\theme\\icons\\ckeditor.html' ).to.not.match( loader.test );
-			} );
-		} );
-
-		describe( '*.ts', () => {
-			let loader;
-
-			beforeEach( () => {
-				loader = webpackConfig.module.rules.find( loader => loader.test.toString().includes( 'ts' ) );
-
-				expect( loader ).is.an( 'object' );
-			} );
-
-			it( 'uses "ts-loader" for providing files', () => {
-				expect( loader.use ).to.equal( 'ts-loader' );
-			} );
-
-			it( 'loads paths that end with the ".svg" suffix', () => {
-				expect( '/Users/ckeditor/ckeditor5-foo/sample/ckeditor.ts' ).to.match( loader.test );
-				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\sample\\ckeditor.ts' ).to.match( loader.test );
-
-				expect( '/Users/ckeditor/ckeditor5-foo/sample/ckeditor.js' ).to.not.match( loader.test );
-				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\sample\\ckeditor.js' ).to.not.match( loader.test );
-			} );
 		} );
 	} );
 } );

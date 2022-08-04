@@ -11,8 +11,7 @@ const fs = require( 'fs' );
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
-const { getPostCssConfig } = require( '@ckeditor/ckeditor5-dev-utils' ).styles;
-const getThemePath = require( './get-theme-path' );
+const commonWebpackConfig = require( './common-webpack-config' );
 
 module.exports = options => {
 	const webpackPlugins = [
@@ -64,48 +63,6 @@ module.exports = options => {
 			compress: true
 		},
 
-		resolve: {
-			// Add support for TypeScript files and fallback to default extensions list.
-			extensions: [ '.ts', '...' ]
-		},
-
-		module: {
-			rules: [
-				{
-					test: /\.svg$/,
-					use: 'raw-loader'
-				},
-				{
-					test: /\.css$/,
-					use: [
-						{
-							loader: 'style-loader',
-							options: {
-								injectType: 'singletonStyleTag',
-								attributes: {
-									'data-cke': true
-								}
-							}
-						},
-						'css-loader',
-						{
-							loader: 'postcss-loader',
-							options: {
-								postcssOptions: getPostCssConfig( {
-									themeImporter: {
-										themePath: getThemePath( options.cwd )
-									},
-									minify: true
-								} )
-							}
-						}
-					]
-				},
-				{
-					test: /\.ts$/,
-					use: 'ts-loader'
-				}
-			]
-		}
+		...commonWebpackConfig( options.cwd )
 	};
 };
