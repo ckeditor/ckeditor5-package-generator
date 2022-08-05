@@ -10,7 +10,7 @@ const glob = require( 'glob' );
 
 module.exports = options => {
 	// Glob handles posix paths.
-	const sourceFilesGlob = path.join( options.cwd, 'src', '**', '*.js' ).split( /[\\/]/g ).join( '/' );
+	const sourceFilesGlob = path.join( options.cwd, 'src', '**', '*.[jt]s' ).split( /[\\/]/g ).join( '/' );
 
 	return require( '@ckeditor/ckeditor5-dev-env' ).createPotFiles( {
 		// An array containing absolute paths the package sources.
