@@ -48,14 +48,10 @@ async function testBuild( lang ) {
 	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'lint' ] );
 	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'stylelint' ] );
 
-	if ( lang === 'ts' ) {
-		logProcess( 'TODO: re-enable this part of the build when TS is fully complete.' );
-
-		return;
+	if ( lang !== 'ts' ) {
+		logProcess( 'Verifying translations...' );
+		executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'translations:collect' ] );
 	}
-
-	logProcess( 'Verifying translations...' );
-	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'translations:collect' ] );
 
 	logProcess( 'Starting the development servers and verifying the sample builds...' );
 	await Promise.all( [
