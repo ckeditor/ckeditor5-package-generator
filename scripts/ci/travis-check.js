@@ -21,9 +21,17 @@ const NEW_PACKAGE_DIRECTORY = path.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-
 // A flag that determines whether any of the executed commands resulted in an error.
 let foundError = false;
 
-testBuild( 'js' )
-	.then( () => testBuild( 'ts' ) )
-	.then( () => process.exit( foundError ? 1 : 0 ) );
+start();
+
+/**
+ * Runs checks and exits with an appropriate exit code.
+ */
+async function start() {
+	await testBuild( 'js' );
+	await testBuild( 'ts' );
+
+	process.exit( foundError ? 1 : 0 );
+}
 
 /**
  * Build and run scripts for a given language.
@@ -48,10 +56,8 @@ async function testBuild( lang ) {
 	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'lint' ] );
 	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'stylelint' ] );
 
-	if ( lang !== 'ts' ) {
-		logProcess( 'Verifying translations...' );
-		executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'translations:collect' ] );
-	}
+	logProcess( 'Verifying translations...' );
+	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'translations:collect' ] );
 
 	logProcess( 'Starting the development servers and verifying the sample builds...' );
 	await Promise.all( [

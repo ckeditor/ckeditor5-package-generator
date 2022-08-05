@@ -47,7 +47,7 @@ describe( 'lib/tasks/translations-collect', () => {
 		expect( translationsCollect ).to.be.a( 'function' );
 	} );
 
-	it( 'creates translation files', () => {
+	it( 'creates translation files (JavaScript)', () => {
 		const sourceFiles = [
 			'/workspace/ckeditor5-foo/src/index.js',
 			'/workspace/ckeditor5-foo/src/myplugin.js'
@@ -63,7 +63,44 @@ describe( 'lib/tasks/translations-collect', () => {
 		expect( results ).to.equal( 'OK' );
 
 		expect( stubs.glob.sync.calledOnce ).to.equal( true );
-		expect( stubs.glob.sync.firstCall.firstArg ).to.equal( '/workspace/src/**/*.js' );
+		expect( stubs.glob.sync.firstCall.firstArg ).to.equal( '/workspace/src/**/*.[jt]s' );
+
+		expect( stubs.devEnv.createPotFiles.calledOnce ).to.equal( true );
+		expect( stubs.devEnv.createPotFiles.firstCall.firstArg ).to.deep.equal( {
+			// Verify results returned by `glob.sync()`.
+			sourceFiles,
+			// Verify a path to the `@ckeditor/ckeditor5-core` package.
+			corePackagePath: 'node_modules/@ckeditor/ckeditor5-core',
+			// Verify ignoring unused contexts from the `@ckeditor/ckeditor5-core` package.
+			ignoreUnusedCorePackageContexts: true,
+			// Verify a path where to look for packages.
+			packagePaths: [
+				'/workspace'
+			],
+			// Verify the license header in translation files.
+			skipLicenseHeader: true,
+			// Verify a path where translations will be stored.
+			translationsDirectory: '/workspace/tmp/.transifex'
+		} );
+	} );
+
+	it( 'creates translation files (TypeScript)', () => {
+		const sourceFiles = [
+			'/workspace/ckeditor5-foo/src/index.ts',
+			'/workspace/ckeditor5-foo/src/myplugin.ts'
+		];
+
+		stubs.glob.sync.returns( sourceFiles );
+		stubs.devEnv.createPotFiles.returns( 'OK' );
+
+		const results = translationsCollect( {
+			cwd: '/workspace'
+		} );
+
+		expect( results ).to.equal( 'OK' );
+
+		expect( stubs.glob.sync.calledOnce ).to.equal( true );
+		expect( stubs.glob.sync.firstCall.firstArg ).to.equal( '/workspace/src/**/*.[jt]s' );
 
 		expect( stubs.devEnv.createPotFiles.calledOnce ).to.equal( true );
 		expect( stubs.devEnv.createPotFiles.firstCall.firstArg ).to.deep.equal( {
@@ -94,6 +131,6 @@ describe( 'lib/tasks/translations-collect', () => {
 		expect( results ).to.equal( 'OK' );
 
 		expect( stubs.glob.sync.calledOnce ).to.equal( true );
-		expect( stubs.glob.sync.firstCall.firstArg ).to.equal( 'C:/workspace/src/**/*.js' );
+		expect( stubs.glob.sync.firstCall.firstArg ).to.equal( 'C:/workspace/src/**/*.[jt]s' );
 	} );
 } );
