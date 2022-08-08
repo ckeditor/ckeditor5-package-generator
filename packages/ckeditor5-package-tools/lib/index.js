@@ -28,5 +28,9 @@ module.exports = {
 
 	'translations:download'( options ) {
 		return require( '../lib/tasks/translations-download' )( options );
+	},
+
+	'updatePkgJsonMain'( options ) {
+		return require( '../lib/tasks/update-pkg-json-main' )( options );
 	}
 };

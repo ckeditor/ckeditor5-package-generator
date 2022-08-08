@@ -143,7 +143,7 @@ describe( 'lib/utils/copy-files', () => {
 		expect( stubs.logger.process.firstCall.firstArg ).to.equal( 'Copying files...' );
 	} );
 
-	it( 'creates the ".gitignore" file', () => {
+	it( 'creates the ".gitignore" file for javascript', () => {
 		copyFiles( stubs.logger, options );
 
 		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
@@ -154,6 +154,27 @@ describe( 'lib/utils/copy-files', () => {
 			'node_modules/',
 			'tmp/',
 			'sample/ckeditor.dist.js',
+			''
+		].join( '\n' ) );
+	} );
+
+	it( 'creates the ".gitignore" file for typescript', () => {
+		options.programmingLanguage = 'ts';
+
+		copyFiles( stubs.logger, options );
+
+		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
+		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 0 ] ).to.equal( 'directory/path/foo/.gitignore' );
+		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 1 ] ).to.equal( [
+			'build/',
+			'coverage/',
+			'node_modules/',
+			'tmp/',
+			'sample/ckeditor.dist.js',
+			'',
+			'# Ignore compiled TypeScript files.',
+			'src/**/*.js',
+			'src/**/*.d.ts',
 			''
 		].join( '\n' ) );
 	} );

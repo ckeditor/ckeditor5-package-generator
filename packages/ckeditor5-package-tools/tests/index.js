@@ -28,7 +28,8 @@ describe( 'lib/index', () => {
 				dllBuild: sinon.stub(),
 				translationsCollect: sinon.stub(),
 				translationsDownload: sinon.stub(),
-				translationsUpload: sinon.stub()
+				translationsUpload: sinon.stub(),
+				updatePkgJsonMain: sinon.stub()
 			}
 		};
 
@@ -38,6 +39,7 @@ describe( 'lib/index', () => {
 		mockery.registerMock( '../lib/tasks/translations-collect', stubs.tasks.translationsCollect );
 		mockery.registerMock( '../lib/tasks/translations-download', stubs.tasks.translationsDownload );
 		mockery.registerMock( '../lib/tasks/translations-upload', stubs.tasks.translationsUpload );
+		mockery.registerMock( '../lib/tasks/update-pkg-json-main', stubs.tasks.updatePkgJsonMain );
 
 		tasks = require( '../lib' );
 	} );
@@ -162,6 +164,25 @@ describe( 'lib/index', () => {
 			tasks[ 'translations:upload' ]( options );
 
 			expect( stubs.tasks.translationsUpload.firstCall.args[ 0 ] ).to.deep.equal( options );
+		} );
+	} );
+
+	describe( '#updatePkgJsonMain', () => {
+		it( 'is available', () => {
+			expect( tasks.updatePkgJsonMain ).is.a( 'function' );
+		} );
+
+		it( 'executes the proper function from the "tasks/" directory', () => {
+			tasks.updatePkgJsonMain();
+
+			expect( stubs.tasks.updatePkgJsonMain.calledOnce ).to.equal( true );
+		} );
+
+		it( 'passes arguments directly to the function', () => {
+			const options = { foo: 1, bar: true };
+			tasks.updatePkgJsonMain( options );
+
+			expect( stubs.tasks.updatePkgJsonMain.firstCall.args[ 0 ] ).to.deep.equal( options );
 		} );
 	} );
 } );

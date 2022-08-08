@@ -24,6 +24,12 @@ const GITIGNORE_ENTRIES = [
 	'sample/ckeditor.dist.js'
 ];
 
+const GITIGNORE_ENTRIES_TS = [
+	'# Ignore compiled TypeScript files.',
+	'src/**/*.js',
+	'src/**/*.d.ts'
+];
+
 /**
  * If the package name is not valid, prints the error and exits the process.
  *
@@ -58,10 +64,7 @@ module.exports = function copyFiles( logger, options ) {
 		copyTemplate( templatePath, options.directoryPath, data );
 	}
 
-	// Create the `.gitignore` file. See #50.
-	const gitignorePath = path.join( options.directoryPath, '.gitignore' );
-	const gitignoreContent = GITIGNORE_ENTRIES.join( '\n' ) + '\n';
-	fs.writeFileSync( gitignorePath, gitignoreContent );
+	createGitignore( options );
 };
 
 /**
@@ -84,6 +87,28 @@ function copyTemplate( templateFile, packagePath, data ) {
 	// Make sure that the destination directory exists.
 	mkdirp.sync( path.dirname( destinationPath ) );
 	fs.writeFileSync( destinationPath, filledFile );
+}
+
+/**
+ * Creates the `.gitignore` file.
+ * See https://github.com/ckeditor/ckeditor5-package-generator/issues/50.
+ *
+ * @param {Options} options
+ */
+function createGitignore( options ) {
+	const gitignorePath = path.join( options.directoryPath, '.gitignore' );
+
+	const gitignoreComponents = [ GITIGNORE_ENTRIES ];
+
+	if ( options.programmingLanguage === 'ts' ) {
+		gitignoreComponents.push( GITIGNORE_ENTRIES_TS );
+	}
+
+	const gitignoreContent = gitignoreComponents
+		.map( components => [ ...components, '' ].join( '\n' ) )
+		.join( '\n' );
+
+	fs.writeFileSync( gitignorePath, gitignoreContent );
 }
 
 /**
