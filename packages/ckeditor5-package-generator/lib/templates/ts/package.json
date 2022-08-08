@@ -81,7 +81,8 @@
     "typescript": "^4.7.4"
   },
   "scripts": {
-    "build": "tsc -p ./tsconfig.release.json",
+    "ts:build": "tsc -p ./tsconfig.release.json",
+    "ts:clear": "npx rimraf \"src/**/*.@(js|d.ts)\"",
     "dll:build": "ckeditor5-package-tools dll:build",
     "dll:serve": "http-server ./ -o sample/dll.html",
     "lint": "eslint \"**/*.{js,ts}\" --quiet --ignore-pattern \"build/\"",
@@ -89,8 +90,8 @@
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
     "test": "ckeditor5-package-tools test",
     "prepare": "<%= program %> run dll:build",
-    "prepublishOnly": "<%= program %> run dll:build && <%= program %> run build && ckeditor5-package-tools updatePkgJsonMain js",
-    "postpublish": "npx rimraf \"src/**/*.@(js|d.ts)\" && ckeditor5-package-tools updatePkgJsonMain ts",
+    "prepublishOnly": "<%= program %> run dll:build && <%= program %> run ts:build && ckeditor5-package-tools export-package-as-javascript",
+    "postpublish": "<%= program %> run ts:clear && ckeditor5-package-tools export-package-as-typescript",
     "translations:collect": "ckeditor5-package-tools translations:collect",
     "translations:download": "ckeditor5-package-tools translations:download",
     "translations:upload": "ckeditor5-package-tools translations:upload"

@@ -30,7 +30,11 @@ module.exports = {
 		return require( '../lib/tasks/translations-download' )( options );
 	},
 
-	'updatePkgJsonMain'( options ) {
-		return require( '../lib/tasks/update-pkg-json-main' )( options );
+	'export-package-as-javascript'( options ) {
+		return require( '../lib/tasks/export-package-as-javascript' )( options );
+	},
+
+	'export-package-as-typescript'( options ) {
+		return require( '../lib/tasks/export-package-as-typescript' )( options );
 	}
 };

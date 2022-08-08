@@ -143,7 +143,7 @@ describe( 'lib/utils/copy-files', () => {
 		expect( stubs.logger.process.firstCall.firstArg ).to.equal( 'Copying files...' );
 	} );
 
-	it( 'creates the ".gitignore" file for javascript', () => {
+	it( 'creates the ".gitignore" file for JavaScript', () => {
 		copyFiles( stubs.logger, options );
 
 		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
@@ -158,7 +158,7 @@ describe( 'lib/utils/copy-files', () => {
 		].join( '\n' ) );
 	} );
 
-	it( 'creates the ".gitignore" file for typescript', () => {
+	it( 'creates the ".gitignore" file for TypeScript', () => {
 		options.programmingLanguage = 'ts';
 
 		copyFiles( stubs.logger, options );
@@ -179,7 +179,7 @@ describe( 'lib/utils/copy-files', () => {
 		].join( '\n' ) );
 	} );
 
-	it( 'creates files for javascript', () => {
+	it( 'creates files for JavaScript', () => {
 		copyFiles( stubs.logger, options );
 
 		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
@@ -225,7 +225,7 @@ describe( 'lib/utils/copy-files', () => {
 		].join( '\n' ) );
 	} );
 
-	it( 'creates files for typescript', () => {
+	it( 'creates files for TypeScript', () => {
 		options.programmingLanguage = 'ts';
 
 		copyFiles( stubs.logger, options );
