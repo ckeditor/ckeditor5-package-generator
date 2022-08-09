@@ -28,5 +28,13 @@ module.exports = {
 
 	'translations:download'( options ) {
 		return require( '../lib/tasks/translations-download' )( options );
+	},
+
+	'export-package-as-javascript'( options ) {
+		return require( '../lib/tasks/export-package-as-javascript' )( options );
+	},
+
+	'export-package-as-typescript'( options ) {
+		return require( '../lib/tasks/export-package-as-typescript' )( options );
 	}
 };

@@ -143,7 +143,7 @@ describe( 'lib/utils/copy-files', () => {
 		expect( stubs.logger.process.firstCall.firstArg ).to.equal( 'Copying files...' );
 	} );
 
-	it( 'creates the ".gitignore" file', () => {
+	it( 'creates the ".gitignore" file for JavaScript', () => {
 		copyFiles( stubs.logger, options );
 
 		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
@@ -158,7 +158,28 @@ describe( 'lib/utils/copy-files', () => {
 		].join( '\n' ) );
 	} );
 
-	it( 'creates files for javascript', () => {
+	it( 'creates the ".gitignore" file for TypeScript', () => {
+		options.programmingLanguage = 'ts';
+
+		copyFiles( stubs.logger, options );
+
+		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
+		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 0 ] ).to.equal( 'directory/path/foo/.gitignore' );
+		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 1 ] ).to.equal( [
+			'build/',
+			'coverage/',
+			'node_modules/',
+			'tmp/',
+			'sample/ckeditor.dist.js',
+			'',
+			'# Ignore compiled TypeScript files.',
+			'src/**/*.js',
+			'src/**/*.d.ts',
+			''
+		].join( '\n' ) );
+	} );
+
+	it( 'creates files for JavaScript', () => {
 		copyFiles( stubs.logger, options );
 
 		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
@@ -204,7 +225,7 @@ describe( 'lib/utils/copy-files', () => {
 		].join( '\n' ) );
 	} );
 
-	it( 'creates files for typescript', () => {
+	it( 'creates files for TypeScript', () => {
 		options.programmingLanguage = 'ts';
 
 		copyFiles( stubs.logger, options );

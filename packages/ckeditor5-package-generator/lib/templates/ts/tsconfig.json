@@ -17,9 +17,9 @@
 		]
 	},
 	"include": [
-		"sample",
-		"src",
-		"tests",
-		"typings"
+		"./sample",
+		"./src",
+		"./tests",
+		"./typings"
 	],
 }
