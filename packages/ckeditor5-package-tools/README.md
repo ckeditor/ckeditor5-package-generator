@@ -27,7 +27,7 @@ There are two ways to integrate these scripts, either with [npm scripts](https:/
 
 ### Integration with npm scripts
 
-Available scripts can be called via npm scripts in `package.json` file, eg:
+Available scripts can be called via npm scripts in the `package.json` file, e.g.:
 
 ```json
 {
@@ -35,7 +35,7 @@ Available scripts can be called via npm scripts in `package.json` file, eg:
 }
 ```
 
-In case of `translations:download` and `translations:upload`, additional argument is required:
+The `translations:download` and `translations:upload` tasks require the `--transifex` modifier:
 
 ```json
 {
@@ -45,7 +45,7 @@ In case of `translations:download` and `translations:upload`, additional argumen
 
 ### Integration with Node.js scripts
 
-Available scripts can be called manually in node scripts, eg:
+Available scripts can be called manually as Node scripts, e.g.:
 
 ```js
 const packageTools = require( '@ckeditor/ckeditor5-package-tools' );
