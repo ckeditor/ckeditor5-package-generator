@@ -27,115 +27,35 @@ There are two ways to integrate these scripts, either with [npm scripts](https:/
 
 ### Integration with npm scripts
 
-Add the following tasks in `package.json`, in the `#scripts` section:
+Available scripts can be called via npm scripts in `package.json` file, eg:
 
 ```json
 {
-  "dll:build": "ckeditor5-package-tools dll:build",
-  "start": "ckeditor5-package-tools start",
-  "test": "ckeditor5-package-tools test",
-  "translations:collect": "ckeditor5-package-tools translations:collect",
-  "translations:download": "ckeditor5-package-tools translations:download --transifex [API URL]",
-  "translations:upload": "ckeditor5-package-tools translations:upload --transifex [API URL]"
+  "dll:build": "ckeditor5-package-tools dll:build"
 }
 ```
 
-Additionally, for TypeScript packages, following automatic tasks for releasing the package can be used:
+In case of `translations:download` and `translations:upload`, additional argument is required:
 
 ```json
 {
-  "prepublishOnly": "ckeditor5-package-tools export-package-as-javascript",
-  "postpublish": "ckeditor5-package-tools export-package-as-typescript"
+  "translations:download": "ckeditor5-package-tools translations:download --transifex [API URL]"
 }
 ```
 
 ### Integration with Node.js scripts
 
-The "test" task.
+Available scripts can be called manually in node scripts, eg:
 
 ```js
-'use strict';
-
-const packageTools = require( '@ckeditor/ckeditor5-package-tools' );
-
-packageTools.test( /* Ckeditor5PackageToolsOptions */ );
-```
-
-The "start" task:
-
-```js
-'use strict';
-
-const packageTools = require( '@ckeditor/ckeditor5-package-tools' );
-
-packageTools.start( /* Ckeditor5PackageToolsOptions */ );
-```
-
-The "dll:build" task:
-
-```js
-'use strict';
-
 const packageTools = require( '@ckeditor/ckeditor5-package-tools' );
 
 packageTools[ 'dll:build' ]( /* Ckeditor5PackageToolsOptions */ );
 ```
 
-The "translations:collect" task:
+All available scripts require the `Ckeditor5PackageToolsOptions` object. Its interface is described in the [`lib/utils/parse-arguments.js`](https://github.com/ckeditor/ckeditor5-package-generator/blob/master/packages/ckeditor5-package-tools/lib/utils/parse-arguments.js) file.
 
-```js
-'use strict';
-
-const packageTools = require( '@ckeditor/ckeditor5-package-tools' );
-
-packageTools[ 'translations:collect' ]( /* Ckeditor5PackageToolsOptions */ );
-```
-
-The "translations:download" task:
-
-```js
-'use strict';
-
-const packageTools = require( '@ckeditor/ckeditor5-package-tools' );
-
-packageTools[ 'translations:download' ]( /* Ckeditor5PackageToolsOptions */ );
-```
-
-This task requires the `transifex` option to be passed in the `Ckeditor5PackageToolsOptions` object.
-
-The "translations:upload" task:
-
-```js
-'use strict';
-
-const packageTools = require( '@ckeditor/ckeditor5-package-tools' );
-
-packageTools[ 'translations:upload' ]( /* Ckeditor5PackageToolsOptions */ );
-```
-
-This task requires the `transifex` option to be passed in the `Ckeditor5PackageToolsOptions` object.
-
-The `Ckeditor5PackageToolsOptions` object interface is described in the [`lib/utils/parse-arguments.js`](https://github.com/ckeditor/ckeditor5-package-generator/blob/master/packages/ckeditor5-package-tools/lib/utils/parse-arguments.js) file.
-
-The "export-package-as-javascript" task:
-
-```js
-'use strict';
-
-const packageTools = require( '@ckeditor/ckeditor5-package-tools' );
-
-packageTools[ 'export-package-as-javascript' ]( /* Ckeditor5PackageToolsOptions */ );
-```
-
-The "export-package-as-typescript" task:
-
-```js
-'use strict';
-
-const packageTools = require( '@ckeditor/ckeditor5-package-tools' );
-
-packageTools[ 'export-package-as-typescript' ]( /* Ckeditor5PackageToolsOptions */ );
-```
+Additionally, `translations:download` and `translations:upload` tasks require the `transifex` option to be passed in the `Ckeditor5PackageToolsOptions` object.
 
 ## Contribute
 
