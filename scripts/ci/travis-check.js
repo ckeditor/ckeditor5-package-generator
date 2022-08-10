@@ -18,6 +18,48 @@ const stripAnsiEscapeCodes = require( 'strip-ansi' );
 const REPOSITORY_DIRECTORY = path.join( __dirname, '..', '..' );
 const NEW_PACKAGE_DIRECTORY = path.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-test-package' );
 
+const EXPECTED_PUBLISH_FILES = {
+	js: [
+		'src/index.js',
+		'src/myplugin.js',
+
+		'lang/contexts.json',
+		'theme/icons/ckeditor.svg',
+		'build/test-package.js',
+
+		'package.json',
+		'LICENSE.md',
+		'README.md',
+		'ckeditor5-metadata.json'
+	],
+	ts: [
+		'src/index.js',
+		'src/myplugin.js',
+		'src/index.d.ts',
+		'src/myplugin.d.ts',
+
+		'lang/contexts.json',
+		'theme/icons/ckeditor.svg',
+		'build/test-package.js',
+
+		'package.json',
+		'LICENSE.md',
+		'README.md',
+		'ckeditor5-metadata.json'
+	]
+};
+
+const EXPECTED_SRC_DIR_FILES = {
+	js: [
+		'index.js',
+		'myplugin.js'
+	],
+	ts: [
+		'index.ts',
+		'myplugin.ts'
+	]
+};
+
 // A flag that determines whether any of the executed commands resulted in an error.
 let foundError = false;
 
@@ -29,6 +71,10 @@ start();
 async function start() {
 	await testBuild( 'js' );
 	await testBuild( 'ts' );
+
+	if ( foundError ) {
+		console.log( '\n' + chalk.red( 'Found errors during the verification. Please, review the log above.' ) );
+	}
 
 	process.exit( foundError ? 1 : 0 );
 }
@@ -59,6 +105,14 @@ async function testBuild( lang ) {
 	logProcess( 'Verifying translations...' );
 	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'translations:collect' ] );
 
+	logProcess( 'Verifying release process...' );
+	const { stderr } = executeCommand( NEW_PACKAGE_DIRECTORY, 'npm', [ 'publish', '--dry-run' ], 'pipe' );
+	console.log( stderr );
+	checkFileList( stderr, lang );
+
+	logProcess( 'Verifying post release cleanup...' );
+	verifyPublishCleanup( lang );
+
 	logProcess( 'Starting the development servers and verifying the sample builds...' );
 	await Promise.all( [
 		startDevelopmentServer( NEW_PACKAGE_DIRECTORY ),
@@ -78,10 +132,6 @@ async function testBuild( lang ) {
 		.then( () => {
 			logProcess( 'Removing the created package...' );
 			fs.rmdirSync( NEW_PACKAGE_DIRECTORY, { recursive: true } );
-
-			if ( foundError ) {
-				console.log( '\n' + chalk.red( 'Found errors during the verification. Please, review the log above.' ) );
-			}
 		} );
 }
 
@@ -91,9 +141,10 @@ async function testBuild( lang ) {
  * @param {String} cwd
  * @param {String} command Program to execute.
  * @param {Array.<String>} modifiers Program's modifiers.
+ * @param {String} stderr Optional alternative output stream for stderr.
  * @return {Object}
  */
-function executeCommand( cwd, command, modifiers ) {
+function executeCommand( cwd, command, modifiers, stderr ) {
 	const fullCommand = [ command, ...modifiers ].join( ' ' );
 	console.log( chalk.italic.gray( `Executing: "${ fullCommand }".` ) );
 
@@ -101,8 +152,11 @@ function executeCommand( cwd, command, modifiers ) {
 		cwd,
 		encoding: 'utf8',
 		shell: true,
-		stdio: 'inherit',
-		stderr: 'inherit'
+		stdio: [
+			'inherit',
+			'inherit',
+			stderr || 'inherit'
+		]
 	} );
 
 	if ( newProcess.status ) {
@@ -226,4 +280,109 @@ function killProcess( childProcess ) {
  */
 function logProcess( message ) {
 	console.log( '\n🔹 ' + chalk.cyan( message ) );
+}
+
+/**
+ * Checks whether output of "npm publish" contains correct files.
+ *
+ * @param {String} output
+ * @param {string} lang
+ */
+function checkFileList( output, lang ) {
+	const match = output.match( /Tarball Contents.+\n(?<lines>[\s\S]+)\n.+Tarball Details/ );
+
+	if ( !match ) {
+		console.log( chalk.red( 'Command "npm publish" finished with an unexpected output.' ) );
+
+		foundError = true;
+
+		return;
+	}
+
+	const files = match.groups.lines.split( '\n' ).map( string => string.trim().split( ' ' ).pop() );
+
+	const missingFiles = compareArrays( EXPECTED_PUBLISH_FILES[ lang ], files );
+	const excessFiles = compareArrays( files, EXPECTED_PUBLISH_FILES[ lang ] );
+
+	if ( !missingFiles.length && !excessFiles.length ) {
+		console.log( chalk.green( 'Files staged for publishing verified successfully.' ) );
+
+		return;
+	}
+
+	foundError = true;
+
+	if ( missingFiles.length ) {
+		console.log( chalk.red( 'Files missing from publish:' ) );
+		console.log( chalk.red( missingFiles.map( file => `- ${ file }` ).join( '\n' ) ) );
+	}
+
+	if ( excessFiles.length ) {
+		console.log( chalk.red( 'Excess files included in publish:' ) );
+		console.log( chalk.red( excessFiles.map( file => `- ${ file }` ).join( '\n' ) ) );
+	}
+}
+
+/**
+ * Returns array of items which are present in array A but missing from array B.
+ *
+ * @param {Array} arrA
+ * @param {Array} arrB
+ * @returns {Array}
+ */
+function compareArrays( arrA, arrB ) {
+	return arrA.reduce( ( diff, item ) => {
+		if ( !arrB.includes( item ) ) {
+			diff.push( item );
+		}
+
+		return diff;
+	}, [] );
+}
+
+/**
+ * Checks whether after publishing, the repository is in a correct state:
+ *
+ * - "main" field in "package.json" should point to the correct language.
+ * - There should be no leftover build files in "src" directory.
+ *
+ * @param {String} lang
+ */
+function verifyPublishCleanup( lang ) {
+	// "package.json" check.
+	const pkgJsonPath = path.join( NEW_PACKAGE_DIRECTORY, 'package.json' );
+	const pkgJsonRaw = fs.readFileSync( pkgJsonPath, 'utf-8' );
+	const pkgJsonContent = JSON.parse( pkgJsonRaw );
+
+	const hasCorrectEntryPoint = pkgJsonContent.main === `src/index.${ lang }`;
+
+	if ( !hasCorrectEntryPoint ) {
+		console.log( chalk.red( '"package.json" has incorrect value in "main" field:' ) );
+		console.log( chalk.red( pkgJsonContent.main ) );
+
+		foundError = true;
+	}
+
+	// "src" directory check.
+	const srcDirPath = path.join( NEW_PACKAGE_DIRECTORY, 'src' );
+	const srcDirContent = fs.readdirSync( srcDirPath );
+
+	const excessFiles = [];
+
+	for ( const file of srcDirContent ) {
+		if ( !EXPECTED_SRC_DIR_FILES[ lang ].includes( file ) ) {
+			excessFiles.push( file );
+		}
+	}
+
+	if ( excessFiles.length ) {
+		console.log( chalk.red( 'Excess files after publishing in "src" directory:' ) );
+		console.log( chalk.red( excessFiles.map( file => `- ${ file }` ).join( '\n' ) ) );
+
+		foundError = true;
+	}
+
+	if ( hasCorrectEntryPoint && !excessFiles.length ) {
+		console.log( chalk.green( 'Post release cleanup successful.' ) );
+	}
 }
