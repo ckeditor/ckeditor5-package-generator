@@ -88,25 +88,26 @@ async function testBuild( lang ) {
 	logProcess( `Testing build for language: [${ lang }].` );
 
 	logProcess( 'Creating new package: "@ckeditor/ckeditor5-test-package"...' );
-	executeCommand( REPOSITORY_DIRECTORY, 'node',
-		[ 'packages/ckeditor5-package-generator/bin/index.js', '@ckeditor/ckeditor5-test-package', '--dev', '--verbose', '--lang', lang ]
-	);
+	executeCommand( [
+		'node', 'packages/ckeditor5-package-generator/bin/index.js', '@ckeditor/ckeditor5-test-package',
+		'--dev', '--verbose', '--lang', lang
+	], { cwd: REPOSITORY_DIRECTORY } );
 
 	logProcess( 'Moving the package to temporary directory...' );
-	executeCommand( REPOSITORY_DIRECTORY, 'mv', [ 'ckeditor5-test-package', '..' ] );
+	executeCommand( [ 'mv', 'ckeditor5-test-package', '..' ], { cwd: REPOSITORY_DIRECTORY } );
 
 	logProcess( 'Executing tests...' );
-	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'test' ] );
+	executeCommand( [ 'yarn', 'run', 'test' ], { cwd: NEW_PACKAGE_DIRECTORY } );
 
 	logProcess( 'Executing linters...' );
-	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'lint' ] );
-	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'stylelint' ] );
+	executeCommand( [ 'yarn', 'run', 'lint' ], { cwd: NEW_PACKAGE_DIRECTORY } );
+	executeCommand( [ 'yarn', 'run', 'stylelint' ], { cwd: NEW_PACKAGE_DIRECTORY } );
 
 	logProcess( 'Verifying translations...' );
-	executeCommand( NEW_PACKAGE_DIRECTORY, 'yarn', [ 'run', 'translations:collect' ] );
+	executeCommand( [ 'yarn', 'run', 'translations:collect' ], { cwd: NEW_PACKAGE_DIRECTORY } );
 
 	logProcess( 'Verifying release process...' );
-	const { stderr } = executeCommand( NEW_PACKAGE_DIRECTORY, 'npm', [ 'publish', '--dry-run' ], 'pipe' );
+	const { stderr } = executeCommand( [ 'npm', 'publish', '--dry-run' ], { cwd: NEW_PACKAGE_DIRECTORY, pipeStderr: true } );
 	console.log( stderr );
 	checkFileList( stderr, lang );
 
@@ -120,7 +121,7 @@ async function testBuild( lang ) {
 	] )
 		.then( optionsList => {
 			optionsList.forEach( options => {
-				executeCommand( REPOSITORY_DIRECTORY, 'node', [ path.join( 'scripts', 'ci', 'verify-sample.js' ), options.url ] );
+				executeCommand( [ 'node', path.join( 'scripts', 'ci', 'verify-sample.js' ), options.url ], { cwd: REPOSITORY_DIRECTORY } );
 			} );
 
 			return optionsList;
@@ -138,24 +139,23 @@ async function testBuild( lang ) {
 /**
  * Executes the specified program with its modifiers in the specified `cwd` directory.
  *
- * @param {String} cwd
- * @param {String} command Program to execute.
- * @param {Array.<String>} modifiers Program's modifiers.
- * @param {String} stderr Optional alternative output stream for stderr.
- * @return {Object}
+ * @param {Array.<String>} command Program to execute along with all its arguments.
+ * @param {Object} options
+ * @param {String} options.cwd
+ * @param {Boolean} [options.pipeStderr=false] Stores error output in returned object instead of logging it to the console.
+ * @returns {Object} Process
  */
-function executeCommand( cwd, command, modifiers, stderr ) {
-	const fullCommand = [ command, ...modifiers ].join( ' ' );
-	console.log( chalk.italic.gray( `Executing: "${ fullCommand }".` ) );
+function executeCommand( command, options ) {
+	console.log( chalk.italic.gray( `Executing: "${ command.join( ' ' ) }".` ) );
 
-	const newProcess = spawnSync( command, modifiers, {
-		cwd,
+	const newProcess = spawnSync( command.shift(), command, {
+		cwd: options.cwd,
 		encoding: 'utf8',
 		shell: true,
 		stdio: [
 			'inherit',
 			'inherit',
-			stderr || 'inherit'
+			options.pipeStderr ? 'pipe' : 'inherit'
 		]
 	} );
 
@@ -301,8 +301,8 @@ function checkFileList( output, lang ) {
 
 	const files = match.groups.lines.split( '\n' ).map( string => string.trim().split( ' ' ).pop() );
 
-	const missingFiles = compareArrays( EXPECTED_PUBLISH_FILES[ lang ], files );
-	const excessFiles = compareArrays( files, EXPECTED_PUBLISH_FILES[ lang ] );
+	const missingFiles	= EXPECTED_PUBLISH_FILES[ lang ].filter( item => !files.includes( item ) );
+	const excessFiles	= files.filter( item => !EXPECTED_PUBLISH_FILES[ lang ].includes( item ) );
 
 	if ( !missingFiles.length && !excessFiles.length ) {
 		console.log( chalk.green( 'Files staged for publishing verified successfully.' ) );
@@ -324,26 +324,9 @@ function checkFileList( output, lang ) {
 }
 
 /**
- * Returns array of items which are present in array A but missing from array B.
- *
- * @param {Array} arrA
- * @param {Array} arrB
- * @returns {Array}
- */
-function compareArrays( arrA, arrB ) {
-	return arrA.reduce( ( diff, item ) => {
-		if ( !arrB.includes( item ) ) {
-			diff.push( item );
-		}
-
-		return diff;
-	}, [] );
-}
-
-/**
  * Checks whether after publishing, the repository is in a correct state:
  *
- * - "main" field in "package.json" should point to the correct language.
+ * - "main" field in "package.json" should point to the language corresponding to the package's language (.js or .ts).
  * - There should be no leftover build files in "src" directory.
  *
  * @param {String} lang
@@ -365,15 +348,8 @@ function verifyPublishCleanup( lang ) {
 
 	// "src" directory check.
 	const srcDirPath = path.join( NEW_PACKAGE_DIRECTORY, 'src' );
-	const srcDirContent = fs.readdirSync( srcDirPath );
-
-	const excessFiles = [];
-
-	for ( const file of srcDirContent ) {
-		if ( !EXPECTED_SRC_DIR_FILES[ lang ].includes( file ) ) {
-			excessFiles.push( file );
-		}
-	}
+	const excessFiles = fs.readdirSync( srcDirPath )
+		.filter( file => !EXPECTED_SRC_DIR_FILES[ lang ].includes( file ) );
 
 	if ( excessFiles.length ) {
 		console.log( chalk.red( 'Excess files after publishing in "src" directory:' ) );

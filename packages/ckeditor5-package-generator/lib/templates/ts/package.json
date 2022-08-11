@@ -90,7 +90,7 @@
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
     "test": "ckeditor5-package-tools test",
     "prepare": "<%= program %> run dll:build",
-    "prepublishOnly": "<%= program %> run dll:build && <%= program %> run ts:build && ckeditor5-package-tools export-package-as-javascript",
+    "prepublishOnly": "<%= program %> run ts:build && ckeditor5-package-tools export-package-as-javascript",
     "postpublish": "<%= program %> run ts:clear && ckeditor5-package-tools export-package-as-typescript",
     "translations:collect": "ckeditor5-package-tools translations:collect",
     "translations:download": "ckeditor5-package-tools translations:download",
