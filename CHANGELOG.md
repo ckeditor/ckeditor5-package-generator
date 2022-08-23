@@ -1,6 +1,31 @@
 Changelog
 =========
 
+## [1.0.0-beta.6](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2022-08-23)
+
+### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: The program interacts with a user via CLI when asking about a programming language. If the generator is a part of the sub-process of other tasks, it might be blocked. Hence, use the `--lang (ts|js)` option to avoid blocking a process.
+
+### Features
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: The package generator allows choosing a programming language that a developer will use to write a custom feature for CKEditor 5. It can be TypeScript or JavaScript. Closes [#101](https://github.com/ckeditor/ckeditor5-package-generator/issues/101). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/e6689f662e9034c31281af367e7361f09cfebe60))
+* **[tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: Added support for loading TypeScript when running automated tests, a manual sample, or preparing a DLL build. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/e6689f662e9034c31281af367e7361f09cfebe60))
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Releases containing new features:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools): v1.0.0-beta.5 => v1.0.0-beta.6
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator): v1.0.0-beta.5 => v1.0.0-beta.6
+</details>
+
+
 ## [1.0.0-beta.5](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2022-04-12)
 
 ### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
