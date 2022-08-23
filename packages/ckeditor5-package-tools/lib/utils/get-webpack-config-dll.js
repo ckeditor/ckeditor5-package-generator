@@ -13,8 +13,7 @@ const fs = require( 'fs' );
 const webpack = require( 'webpack' );
 const TerserPlugin = require( 'terser-webpack-plugin' );
 const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
-const { getPostCssConfig } = require( '@ckeditor/ckeditor5-dev-utils' ).styles;
-const getThemePath = require( './get-theme-path' );
+const { loaderDefinitions } = require( './webpack-utils' );
 
 module.exports = options => {
 	const packageJson = require( path.join( options.cwd, 'package.json' ) );
@@ -50,11 +49,14 @@ module.exports = options => {
 			new CKEditorWebpackPlugin( {
 				language: 'en',
 				additionalLanguages: 'all',
-				sourceFilesPattern: /^src[/\\].+\.js$/,
+				sourceFilesPattern: /^src[/\\].+\.[jt]s$/,
 				skipPluralFormFunction: true
 			} )
 		);
 	}
+
+	const entryFileName = fs.readdirSync( path.join( options.cwd, 'src' ) )
+		.find( filePath => /^index\.[jt]s$/.test( filePath ) );
 
 	return {
 		mode: 'production',
@@ -63,7 +65,7 @@ module.exports = options => {
 			hints: false
 		},
 
-		entry: path.join( options.cwd, 'src', 'index.js' ),
+		entry: path.join( options.cwd, 'src', entryFileName ),
 
 		output: {
 			filename: dllName + '.js',
@@ -86,38 +88,16 @@ module.exports = options => {
 
 		plugins: webpackPlugins,
 
+		resolve: {
+			// Triple dots syntax allows extending default extension list instead of overwriting it.
+			extensions: [ '.ts', '...' ]
+		},
+
 		module: {
 			rules: [
-				{
-					test: /\.svg$/,
-					use: [ 'raw-loader' ]
-				},
-				{
-					test: /\.css$/,
-					use: [
-						{
-							loader: 'style-loader',
-							options: {
-								injectType: 'singletonStyleTag',
-								attributes: {
-									'data-cke': true
-								}
-							}
-						},
-						'css-loader',
-						{
-							loader: 'postcss-loader',
-							options: {
-								postcssOptions: getPostCssConfig( {
-									themeImporter: {
-										themePath: getThemePath( options.cwd )
-									},
-									minify: true
-								} )
-							}
-						}
-					]
-				}
+				loaderDefinitions.raw(),
+				loaderDefinitions.styles( options.cwd ),
+				loaderDefinitions.typescript()
 			]
 		}
 	};

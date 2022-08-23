@@ -22,7 +22,7 @@ module.exports = entryFilePath => {
 	// Creates a directory for saving the entry point file.
 	mkdirp.sync( path.dirname( entryFilePath ) );
 
-	let filesImports = glob.sync( 'tests/**/*.js', { nodir: true } )
+	let filesImports = glob.sync( 'tests/**/*.[jt]s', { nodir: true } )
 		.map( file => `import '${ normalizePath( path.resolve( file ) ) }';` )
 		.join( '\n' );
 

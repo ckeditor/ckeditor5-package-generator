@@ -8,8 +8,7 @@
 /* eslint-env node */
 
 const path = require( 'path' );
-const { getPostCssConfig } = require( '@ckeditor/ckeditor5-dev-utils' ).styles;
-const getThemePath = require( './get-theme-path' );
+const { loaderDefinitions } = require( './webpack-utils' );
 
 /**
  * @param {Object} options
@@ -130,42 +129,16 @@ function getWebpackConfiguration( options ) {
 	const config = {
 		mode: 'development',
 
+		resolve: {
+			// Triple dots syntax allows extending default extension list instead of overwriting it.
+			extensions: [ '.ts', '...' ]
+		},
+
 		module: {
 			rules: [
-				{
-					test: /\.svg$/,
-					use: 'raw-loader'
-				},
-				{
-					test: /\.css$/,
-					use: [
-						{
-							loader: 'style-loader',
-							options: {
-								injectType: 'singletonStyleTag',
-								attributes: {
-									'data-cke': true
-								}
-							}
-						},
-						'css-loader',
-						{
-							loader: 'postcss-loader',
-							options: {
-								postcssOptions: getPostCssConfig( {
-									themeImporter: {
-										themePath: getThemePath( options.cwd )
-									},
-									minify: true
-								} )
-							}
-						}
-					]
-				},
-				{
-					test: /\.(txt|html|rtf)$/,
-					use: 'raw-loader'
-				}
+				loaderDefinitions.raw(),
+				loaderDefinitions.styles( options.cwd ),
+				loaderDefinitions.typescript()
 			]
 		},
 
@@ -182,16 +155,7 @@ function getWebpackConfiguration( options ) {
 	}
 
 	if ( options.coverage ) {
-		config.module.rules.unshift(
-			{
-				test: /\.js$/,
-				loader: 'istanbul-instrumenter-loader',
-				include: path.join( options.cwd, 'src' ),
-				options: {
-					esModules: true
-				}
-			}
-		);
+		config.module.rules.unshift( loaderDefinitions.coverage( options.cwd ) );
 	}
 
 	return config;

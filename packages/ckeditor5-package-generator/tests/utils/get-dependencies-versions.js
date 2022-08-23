@@ -11,7 +11,7 @@ const mockery = require( 'mockery' );
 const path = require( 'path' );
 
 describe( 'lib/utils/get-dependencies-versions', () => {
-	let getDependenciesVersions, getPackageVersion;
+	let stubs, getDependenciesVersions;
 
 	beforeEach( () => {
 		mockery.enable( {
@@ -20,14 +20,19 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 			warnOnUnregistered: false
 		} );
 
-		getPackageVersion = sinon.stub();
+		stubs = {
+			getPackageVersion: sinon.stub(),
+			logger: {
+				process: sinon.stub()
+			}
+		};
 
-		mockery.registerMock( './get-package-version', getPackageVersion );
-		getPackageVersion.withArgs( 'ckeditor5' ).returns( '30.0.0' );
-		getPackageVersion.withArgs( '@ckeditor/ckeditor5-package-tools' ).returns( '1.0.0' );
-		getPackageVersion.withArgs( '@ckeditor/ckeditor5-inspector' ).returns( '4.0.0' );
-		getPackageVersion.withArgs( 'eslint-config-ckeditor5' ).returns( '5.0.0' );
-		getPackageVersion.withArgs( 'stylelint-config-ckeditor5' ).returns( '3.0.0' );
+		mockery.registerMock( './get-package-version', stubs.getPackageVersion );
+		stubs.getPackageVersion.withArgs( 'ckeditor5' ).returns( '30.0.0' );
+		stubs.getPackageVersion.withArgs( '@ckeditor/ckeditor5-package-tools' ).returns( '1.0.0' );
+		stubs.getPackageVersion.withArgs( '@ckeditor/ckeditor5-inspector' ).returns( '4.0.0' );
+		stubs.getPackageVersion.withArgs( 'eslint-config-ckeditor5' ).returns( '5.0.0' );
+		stubs.getPackageVersion.withArgs( 'stylelint-config-ckeditor5' ).returns( '3.0.0' );
 
 		getDependenciesVersions = require( '../../lib/utils/get-dependencies-versions' );
 	} );
@@ -41,33 +46,40 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 		expect( getDependenciesVersions ).to.be.an( 'function' );
 	} );
 
+	it( 'logs the process', () => {
+		getDependenciesVersions( stubs.logger, { devMode: false } );
+
+		expect( stubs.logger.process.calledOnce ).to.equal( true );
+		expect( stubs.logger.process.firstCall.firstArg ).to.equal( 'Collecting the latest CKEditor 5 packages versions...' );
+	} );
+
 	it( 'returns an object with a version of the "ckeditor5" package', () => {
-		const returnedValue = getDependenciesVersions( { devMode: false } );
+		const returnedValue = getDependenciesVersions( stubs.logger, { devMode: false } );
 		expect( returnedValue.ckeditor5 ).to.equal( '30.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "eslint-config-ckeditor5', () => {
-		const returnedValue = getDependenciesVersions( { devMode: false } );
+		const returnedValue = getDependenciesVersions( stubs.logger, { devMode: false } );
 		expect( returnedValue.eslintConfigCkeditor5 ).to.equal( '5.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "stylelint-config-ckeditor5" package', () => {
-		const returnedValue = getDependenciesVersions( { devMode: false } );
+		const returnedValue = getDependenciesVersions( stubs.logger, { devMode: false } );
 		expect( returnedValue.stylelintConfigCkeditor5 ).to.equal( '3.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "@ckeditor/ckeditor5-package-tools" package', () => {
-		const returnedValue = getDependenciesVersions( { devMode: false } );
+		const returnedValue = getDependenciesVersions( stubs.logger, { devMode: false } );
 		expect( returnedValue.ckeditor5Inspector ).to.equal( '4.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "@ckeditor/ckeditor5-package-tools" package if "devMode" is disabled', () => {
-		const returnedValue = getDependenciesVersions( { devMode: false } );
+		const returnedValue = getDependenciesVersions( stubs.logger, { devMode: false } );
 		expect( returnedValue.packageTools ).to.equal( '^1.0.0' );
 	} );
 
 	it( 'it returns an absolute path to the "@ckeditor/ckeditor5-package-tools" package if "devMode" is enabled', () => {
-		const returnedValue = getDependenciesVersions( { devMode: true, useNpm: true } );
+		const returnedValue = getDependenciesVersions( stubs.logger, { devMode: true, useNpm: true } );
 
 		const PROJECT_ROOT_DIRECTORY = path.join( __dirname, '..', '..', '..' );
 		let packageTools = 'file:' + path.resolve( PROJECT_ROOT_DIRECTORY, 'ckeditor5-package-tools' );

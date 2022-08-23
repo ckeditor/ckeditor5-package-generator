@@ -22,11 +22,14 @@ const getPackageVersion = require( './get-package-version' );
  *   * `true` - an absolute path to the locally cloned package.
  *   * `false` - the latest version published on npm.
  *
+ * @param {Logger} logger
  * @param {Object} options
  * @param {Boolean} options.devMode Whether the current process is executed in the developer mode.
  * @returns {Object}
  */
-module.exports = function getDependenciesVersions( { devMode } ) {
+module.exports = function getDependenciesVersions( logger, { devMode } ) {
+	logger.process( 'Collecting the latest CKEditor 5 packages versions...' );
+
 	return {
 		ckeditor5: getPackageVersion( 'ckeditor5' ),
 		ckeditor5Inspector: getPackageVersion( '@ckeditor/ckeditor5-inspector' ),

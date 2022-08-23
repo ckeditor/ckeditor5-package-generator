@@ -28,7 +28,9 @@ describe( 'lib/index', () => {
 				dllBuild: sinon.stub(),
 				translationsCollect: sinon.stub(),
 				translationsDownload: sinon.stub(),
-				translationsUpload: sinon.stub()
+				translationsUpload: sinon.stub(),
+				exportPackageAsJavascript: sinon.stub(),
+				exportPackageAsTypescript: sinon.stub()
 			}
 		};
 
@@ -38,6 +40,8 @@ describe( 'lib/index', () => {
 		mockery.registerMock( '../lib/tasks/translations-collect', stubs.tasks.translationsCollect );
 		mockery.registerMock( '../lib/tasks/translations-download', stubs.tasks.translationsDownload );
 		mockery.registerMock( '../lib/tasks/translations-upload', stubs.tasks.translationsUpload );
+		mockery.registerMock( '../lib/tasks/export-package-as-javascript', stubs.tasks.exportPackageAsJavascript );
+		mockery.registerMock( '../lib/tasks/export-package-as-typescript', stubs.tasks.exportPackageAsTypescript );
 
 		tasks = require( '../lib' );
 	} );
@@ -162,6 +166,44 @@ describe( 'lib/index', () => {
 			tasks[ 'translations:upload' ]( options );
 
 			expect( stubs.tasks.translationsUpload.firstCall.args[ 0 ] ).to.deep.equal( options );
+		} );
+	} );
+
+	describe( '#export-package-as-javascript', () => {
+		it( 'is available', () => {
+			expect( tasks[ 'export-package-as-javascript' ] ).is.a( 'function' );
+		} );
+
+		it( 'executes the proper function from the "tasks/" directory', () => {
+			tasks[ 'export-package-as-javascript' ]();
+
+			expect( stubs.tasks.exportPackageAsJavascript.calledOnce ).to.equal( true );
+		} );
+
+		it( 'passes arguments directly to the function', () => {
+			const options = { foo: 1, bar: true };
+			tasks[ 'export-package-as-javascript' ]( options );
+
+			expect( stubs.tasks.exportPackageAsJavascript.firstCall.args[ 0 ] ).to.deep.equal( options );
+		} );
+	} );
+
+	describe( '#export-package-as-typescript', () => {
+		it( 'is available', () => {
+			expect( tasks[ 'export-package-as-typescript' ] ).is.a( 'function' );
+		} );
+
+		it( 'executes the proper function from the "tasks/" directory', () => {
+			tasks[ 'export-package-as-typescript' ]();
+
+			expect( stubs.tasks.exportPackageAsTypescript.calledOnce ).to.equal( true );
+		} );
+
+		it( 'passes arguments directly to the function', () => {
+			const options = { foo: 1, bar: true };
+			tasks[ 'export-package-as-typescript' ]( options );
+
+			expect( stubs.tasks.exportPackageAsTypescript.firstCall.args[ 0 ] ).to.deep.equal( options );
 		} );
 	} );
 } );
