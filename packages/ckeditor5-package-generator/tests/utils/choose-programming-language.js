@@ -50,7 +50,7 @@ describe( 'lib/utils/choose-programming-language', () => {
 			name: 'programmingLanguage',
 			message: 'Choose your programming language:',
 			type: 'list',
-			choices: [ 'JavaScript', 'TypeScript' ]
+			choices: [ 'JavaScript', 'TypeScript (experimental)' ]
 		} ] );
 	} );
 
