@@ -7,10 +7,10 @@
 
 const { prompt } = require( 'inquirer' );
 
-const PROGRAMMING_LANGUAGES = {
-	JavaScript: { value: 'js', displayName: 'JavaScript' },
-	TypeScript: { value: 'ts', displayName: 'TypeScript (experimental)' }
-};
+const PROGRAMMING_LANGUAGES = [
+	{ value: 'js', displayName: 'JavaScript' },
+	{ value: 'ts', displayName: 'TypeScript (experimental)' }
+];
 
 /**
  * Chooses programming language. If --lang option us used, and it has valid value, that is returned.
@@ -22,7 +22,7 @@ const PROGRAMMING_LANGUAGES = {
  */
 module.exports = async function chooseProgrammingLanguage( logger, options ) {
 	if ( options.lang ) {
-		const langShorthands = Object.values( PROGRAMMING_LANGUAGES ).map( ( { value } ) => value );
+		const langShorthands = PROGRAMMING_LANGUAGES.map( ( { value } ) => value );
 
 		if ( langShorthands.includes( options.lang ) ) {
 			return options.lang;
@@ -36,9 +36,9 @@ module.exports = async function chooseProgrammingLanguage( logger, options ) {
 		name: 'programmingLanguage',
 		message: 'Choose your programming language:',
 		type: 'list',
-		choices: Object.values( PROGRAMMING_LANGUAGES ).map( ( { displayName } ) => displayName )
+		choices: PROGRAMMING_LANGUAGES.map( ( { displayName } ) => displayName )
 	} ] );
 
 	// Full name to shorthand: "JavaScript" => "js"
-	return PROGRAMMING_LANGUAGES[ programmingLanguage ].value;
+	return PROGRAMMING_LANGUAGES.find( p => p.displayName === programmingLanguage ).value;
 };
