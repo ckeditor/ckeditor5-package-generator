@@ -50,7 +50,7 @@ describe( 'lib/utils/choose-programming-language', () => {
 			name: 'programmingLanguage',
 			message: 'Choose your programming language:',
 			type: 'list',
-			choices: [ 'JavaScript', 'TypeScript' ]
+			choices: [ 'JavaScript', 'TypeScript (experimental)' ]
 		} ] );
 	} );
 
@@ -61,7 +61,7 @@ describe( 'lib/utils/choose-programming-language', () => {
 	} );
 
 	it( 'returns correct value when user picks TypeScript', async () => {
-		stubs.inquirer.prompt.resolves( { programmingLanguage: 'TypeScript' } );
+		stubs.inquirer.prompt.resolves( { programmingLanguage: 'TypeScript (experimental)' } );
 
 		const result = await chooseProgrammingLanguage( stubs.logger, {} );
 
@@ -77,7 +77,7 @@ describe( 'lib/utils/choose-programming-language', () => {
 	} );
 
 	it( 'falls back to user input when lang option has invalid value', async () => {
-		stubs.inquirer.prompt.resolves( { programmingLanguage: 'TypeScript' } );
+		stubs.inquirer.prompt.resolves( { programmingLanguage: 'TypeScript (experimental)' } );
 
 		const result = await chooseProgrammingLanguage( stubs.logger, { lang: 'python' } );
 
