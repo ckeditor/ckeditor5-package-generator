@@ -90,7 +90,7 @@ async function testBuild( lang ) {
 	logProcess( 'Creating new package: "@ckeditor/ckeditor5-test-package"...' );
 	executeCommand( [
 		'node', 'packages/ckeditor5-package-generator/bin/index.js', '@ckeditor/ckeditor5-test-package',
-		'--dev', '--verbose', '--lang', lang
+		'--dev', '--use-yarn', '--verbose', '--lang', lang
 	], { cwd: REPOSITORY_DIRECTORY } );
 
 	logProcess( 'Moving the package to temporary directory...' );
