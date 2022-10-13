@@ -18,6 +18,7 @@ const initializeGitRepository = require( './utils/initialize-git-repository' );
 const installDependencies = require( './utils/install-dependencies' );
 const installGitHooks = require( './utils/install-git-hooks' );
 const validatePackageName = require( './utils/validate-package-name' );
+const choosePackageManager = require( './utils/choose-package-manager' );
 
 /**
  * @param {String|undefined} packageName
@@ -25,18 +26,18 @@ const validatePackageName = require( './utils/validate-package-name' );
  */
 module.exports = async function init( packageName, options ) {
 	const logger = new Logger( options.verbose );
-	const program = options.useNpm ? 'npm' : 'yarn';
 
 	validatePackageName( logger, packageName );
 	const { directoryName, directoryPath } = createDirectory( logger, packageName );
+	const packageManager = await choosePackageManager( options );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, options );
 	const packageVersions = getDependenciesVersions( logger, { devMode: options.dev } );
 	const dllConfiguration = getDllConfiguration( packageName );
 
 	copyFiles( logger, {
+		program: packageManager,
 		programmingLanguage,
 		packageName,
-		program,
 		directoryPath,
 		packageVersions,
 		dllConfiguration
@@ -57,7 +58,7 @@ module.exports = async function init( packageName, options ) {
 		'  * ' + chalk.underline( 'lint' ) + ' - for running a tool for static analyzing JavaScript files,',
 		'  * ' + chalk.underline( 'stylelint' ) + ' - for running a tool for static analyzing CSS files.',
 		'',
-		'Example: ' + chalk.gray( program + ' run start' ),
+		'Example: ' + chalk.gray( packageManager + ' run start' ),
 		''
 	].join( '\n' ), { startWithNewLine: true } );
 };
@@ -67,7 +68,9 @@ module.exports = async function init( packageName, options ) {
  *
  * @property {Boolean} [verbose=false]
  *
- * @property {Boolean} [useNpm=false]
+ * @property {Boolean} [useNpm]
+ *
+ * @property {Boolean} [useYarn]
  *
  * @property {Boolean} [dev=false]
  */

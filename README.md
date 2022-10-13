@@ -70,14 +70,15 @@ The tool will create a new directory called `ckeditor5-package` with an example 
 To use a local version of the `@ckeditor/ckeditor5-package-tools` package, use the `--dev` option when executing the command.
 
 ```bash
-node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--dev] [--verbose] [--use-npm]
+node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--dev] [--verbose] [--use-npm] [--use-yarn]
 ```
 
 #### Options
 
 * `--verbose` - (alias: `-v`) whether to prints additional logs about the current executed task.
 * `--dev` - whether to execute in the development mode. It means that the `@ckeditor/ckeditor5-package-tools` will not be installed from npm, but from the local file system.
-* `--use-npm` - whether to use `npm` instead of `yarn` when installing dependencies in a newly created package.
+* `--use-npm` - whether to use `npm` to install dependencies in a newly created package.
+* `--use-yarn` - whether to use `yarn` to install dependencies in a newly created package. If `yarn` is installed globally it is used by default.
 
 #### Developing the package
 

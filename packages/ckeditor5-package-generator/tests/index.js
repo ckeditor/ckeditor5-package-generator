@@ -41,6 +41,7 @@ describe( 'lib/index', () => {
 			installDependencies: sinon.stub(),
 			installGitHooks: sinon.stub(),
 			validatePackageName: sinon.stub(),
+			choosePackageManager: sinon.stub(),
 			logger: {
 				info: sinon.stub()
 			}
@@ -61,6 +62,7 @@ describe( 'lib/index', () => {
 		stubs.installDependencies.resolves();
 		stubs.installGitHooks.resolves();
 		stubs.initializeGitRepository.returns();
+		stubs.choosePackageManager.resolves( 'yarn' );
 
 		class Logger {
 			constructor( verbose ) {
@@ -82,6 +84,7 @@ describe( 'lib/index', () => {
 		mockery.registerMock( './utils/install-dependencies', stubs.installDependencies );
 		mockery.registerMock( './utils/install-git-hooks', stubs.installGitHooks );
 		mockery.registerMock( './utils/validate-package-name', stubs.validatePackageName );
+		mockery.registerMock( './utils/choose-package-manager', stubs.choosePackageManager );
 
 		index = require( '../lib/index' );
 	} );
@@ -183,28 +186,6 @@ describe( 'lib/index', () => {
 		} );
 	} );
 
-	it( 'passes correct program argument to the copyFiles() when useNpm options is set to true', async () => {
-		options.useNpm = true;
-
-		await index( packageName, options );
-
-		expect( stubs.copyFiles.callCount ).to.equal( 1 );
-		expect( stubs.copyFiles.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
-		expect( stubs.copyFiles.getCall( 0 ).args[ 1 ] ).to.deep.equal( {
-			programmingLanguage: 'js',
-			packageName: '@scope/ckeditor5-feature',
-			program: 'npm',
-			directoryPath: 'directoryPath',
-			packageVersions: {
-				ckeditor5: '30.0.0'
-			},
-			dllConfiguration: {
-				fileName: 'feature.js',
-				library: 'feature'
-			}
-		} );
-	} );
-
 	it( 'passes correct arguments to the installDependencies()', async () => {
 		await index( packageName, options );
 
@@ -257,5 +238,22 @@ describe( 'lib/index', () => {
 			''
 		].join( '\n' ) );
 		expect( stubs.logger.info.getCall( 0 ).args[ 1 ] ).to.deep.equal( { startWithNewLine: true } );
+	} );
+
+	it( 'passes package manager from choosePackageManager to copyFiles', async () => {
+		stubs.choosePackageManager.resolves( 'testPackageManager' );
+
+		await index( packageName, options );
+
+		expect( stubs.copyFiles.calledWithMatch( {}, { program: 'testPackageManager' } ) ).to.equal( true );
+	} );
+
+	it( 'passes options to choosePackageManager', async () => {
+		options.useNpm = true;
+		options.useYarn = true;
+
+		await index( packageName, options );
+
+		expect( stubs.choosePackageManager.calledWithMatch( { useNpm: true, useYarn: true } ) ).to.equal( true );
 	} );
 } );
