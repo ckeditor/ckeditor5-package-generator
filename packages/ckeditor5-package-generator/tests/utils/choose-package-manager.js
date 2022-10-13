@@ -36,25 +36,40 @@ describe( 'lib/utils/choose-package-manager', () => {
 		sinon.restore();
 	} );
 
-	it( 'should return npm when npm argument is true ', async () => {
+	it( 'should return npm when npm argument is true and yarn is installed', async () => {
+		stubs.isYarnInstalled.returns( true );
+
 		const result = await choosePackageManager( { useNpm: true } );
 
 		expect( result ).to.equal( 'npm' );
 	} );
 
-	it( 'should return npm when npm and yarn arguments are true ', async () => {
+	it( 'should return npm when arguments are true and yarn is installed', async () => {
+		stubs.isYarnInstalled.returns( true );
+
 		const result = await choosePackageManager( { useNpm: true, useYarn: true } );
 
 		expect( result ).to.equal( 'npm' );
 	} );
 
-	it( 'should return yarn when yarn argument is true ', async () => {
+	it( 'should return yarn when yarn argument is true and yarn is installed', async () => {
+		stubs.isYarnInstalled.returns( true );
+
 		const result = await choosePackageManager( { useYarn: true } );
 
 		expect( result ).to.equal( 'yarn' );
 	} );
 
-	it( 'should return yarn when isYarnInstalled returns true and arguments are false', async () => {
+	it( 'should return npm when yarn is not installed even when useYarn argument is true', async () => {
+		stubs.isYarnInstalled.returns( false );
+
+		const result = await choosePackageManager( { useYarn: true } );
+
+		expect( result ).to.equal( 'npm' );
+	} );
+
+	it( 'should return yarn when prompt returns yarn, yarn is installed and arguments are false', async () => {
+		stubs.inquirer.prompt.resolves( { packageManager: 'yarn' } );
 		stubs.isYarnInstalled.returns( true );
 
 		const result = await choosePackageManager();
@@ -62,16 +77,7 @@ describe( 'lib/utils/choose-package-manager', () => {
 		expect( result ).to.equal( 'yarn' );
 	} );
 
-	it( 'should return yarn when prompt returns yarn and isYarnInstalled and arguments are false', async () => {
-		stubs.inquirer.prompt.resolves( { packageManager: 'yarn' } );
-		stubs.isYarnInstalled.returns( false );
-
-		const result = await choosePackageManager();
-
-		expect( result ).to.equal( 'yarn' );
-	} );
-
-	it( 'should return npm when prompt returns npm and isYarnInstalled and arguments are false', async () => {
+	it( 'should return npm when prompt returns npm, yarn is installed and arguments are false', async () => {
 		stubs.inquirer.prompt.resolves( { packageManager: 'npm' } );
 		stubs.isYarnInstalled.returns( false );
 

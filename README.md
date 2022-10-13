@@ -78,7 +78,7 @@ node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--d
 * `--verbose` - (alias: `-v`) whether to prints additional logs about the current executed task.
 * `--dev` - whether to execute in the development mode. It means that the `@ckeditor/ckeditor5-package-tools` will not be installed from npm, but from the local file system.
 * `--use-npm` - whether to use `npm` to install dependencies in a newly created package.
-* `--use-yarn` - whether to use `yarn` to install dependencies in a newly created package. If `yarn` is installed globally it is used by default.
+* `--use-yarn` - whether to use `yarn` to install dependencies in a newly created package. This option is ignored if `yarn` is not installed.
 
 #### Developing the package
 

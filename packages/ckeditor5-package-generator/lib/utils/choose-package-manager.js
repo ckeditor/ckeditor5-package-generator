@@ -22,11 +22,15 @@ const YARN = 'yarn';
  * @returns {NPM|YARN}
  */
 module.exports = async function choosePackageManager( { useNpm = false, useYarn = false } = {} ) {
+	if ( !isYarnInstalled() ) {
+		return NPM;
+	}
+
 	if ( useNpm ) {
 		return NPM;
 	}
 
-	if ( useYarn || isYarnInstalled() ) {
+	if ( useYarn ) {
 		return YARN;
 	}
 
@@ -35,7 +39,7 @@ module.exports = async function choosePackageManager( { useNpm = false, useYarn 
 		name: 'packageManager',
 		message: 'Choose the package manager:',
 		type: 'list',
-		choices: [ NPM, YARN ]
+		choices: [ YARN, NPM ]
 	} ] );
 
 	return packageManager;
