@@ -191,11 +191,8 @@ describe( 'lib/index', () => {
 
 		expect( stubs.installDependencies.callCount ).to.equal( 1 );
 		expect( stubs.installDependencies.getCall( 0 ).args[ 0 ] ).to.equal( 'directoryPath' );
-		expect( stubs.installDependencies.getCall( 0 ).args[ 1 ] ).to.deep.equal( {
-			verbose: false,
-			useNpm: false,
-			dev: false
-		} );
+		expect( stubs.installDependencies.getCall( 0 ).args[ 1 ] ).to.equal( false );
+		expect( stubs.installDependencies.getCall( 0 ).args[ 2 ] ).to.equal( 'yarn' );
 	} );
 
 	it( 'passes correct arguments to the initializeGitRepository()', async () => {
@@ -254,6 +251,6 @@ describe( 'lib/index', () => {
 
 		await index( packageName, options );
 
-		expect( stubs.choosePackageManager.calledWithMatch( { useNpm: true, useYarn: true } ) ).to.equal( true );
+		expect( stubs.choosePackageManager.calledWithMatch( { isNpmFlagUsed: true, isYarnFlagUsed: true } ) ).to.equal( true );
 	} );
 } );

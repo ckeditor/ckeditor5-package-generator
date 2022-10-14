@@ -7,7 +7,7 @@ const { expect } = require( 'chai' );
 const mockery = require( 'mockery' );
 const sinon = require( 'sinon' );
 
-describe( 'lib/utils/choose-package-manager', () => {
+describe( 'lib/utils/is-yarn-installed', () => {
 	let stubs, isYarnInstalled;
 
 	beforeEach( () => {

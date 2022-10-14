@@ -11,6 +11,6 @@ const { execSync } = require( 'child_process' );
  * @returns {Boolean}
  */
 module.exports = function isYarnInstalled() {
-	const result = execSync( 'yarn -v || echo false', { stdio: [ null, 'pipe', 'ihnerit' ] } );
+	const result = execSync( 'yarn -v || echo false', { stdio: [ null, 'pipe', null ] } );
 	return result.toString().trim() !== 'false';
 };

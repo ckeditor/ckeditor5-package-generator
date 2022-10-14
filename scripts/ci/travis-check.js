@@ -69,8 +69,8 @@ start();
  * Runs checks and exits with an appropriate exit code.
  */
 async function start() {
-	await testBuild( 'js' );
-	await testBuild( 'ts' );
+	await testBuild( 'js', 'npm' );
+	await testBuild( 'ts', 'yarn' );
 
 	if ( foundError ) {
 		console.log( '\n' + chalk.red( 'Found errors during the verification. Please, review the log above.' ) );
@@ -80,21 +80,21 @@ async function start() {
 }
 
 /**
- * Build and run scripts for a given language.
+ * Build and run scripts for a given language and packageManager.
  *
  * @param {string} lang
+ * @param {'npm'|'yarn'} packageManager
  */
-async function testBuild( lang ) {
-	logProcess( `Testing build for language: [${ lang }].` );
+async function testBuild( lang, packageManager ) {
+	const packageManagerFlag = packageManager === 'npm' ? '--use-npm' : '--use-yarn';
+
+	logProcess( `Testing build for language: [${ lang }] and package manager: [${ packageManager }].` );
 
 	logProcess( 'Creating new package: "@ckeditor/ckeditor5-test-package"...' );
 	executeCommand( [
-		'node', 'packages/ckeditor5-package-generator/bin/index.js', '@ckeditor/ckeditor5-test-package',
-		'--dev', '--use-yarn', '--verbose', '--lang', lang
-	], { cwd: REPOSITORY_DIRECTORY } );
-
-	logProcess( 'Moving the package to temporary directory...' );
-	executeCommand( [ 'mv', 'ckeditor5-test-package', '..' ], { cwd: REPOSITORY_DIRECTORY } );
+		'node', 'ckeditor5-package-generator/packages/ckeditor5-package-generator/bin/index.js', '@ckeditor/ckeditor5-test-package',
+		'--dev', packageManagerFlag, '--verbose', '--lang', lang
+	], { cwd: path.join( REPOSITORY_DIRECTORY, '..' ) } );
 
 	logProcess( 'Executing tests...' );
 	executeCommand( [ 'yarn', 'run', 'test' ], { cwd: NEW_PACKAGE_DIRECTORY } );
@@ -132,7 +132,7 @@ async function testBuild( lang ) {
 		} )
 		.then( () => {
 			logProcess( 'Removing the created package...' );
-			fs.rmdirSync( NEW_PACKAGE_DIRECTORY, { recursive: true } );
+			fs.rmSync( NEW_PACKAGE_DIRECTORY, { recursive: true } );
 		} );
 }
 

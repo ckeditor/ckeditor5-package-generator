@@ -8,7 +8,7 @@ const sinon = require( 'sinon' );
 const { expect } = require( 'chai' );
 
 describe( 'lib/utils/install-dependencies', () => {
-	let options, stubs, installDependencies;
+	let verbose, stubs, installDependencies;
 
 	const directoryPath = 'directory/path/foo';
 
@@ -19,7 +19,7 @@ describe( 'lib/utils/install-dependencies', () => {
 			warnOnUnregistered: false
 		} );
 
-		options = { verbose: false, useNpm: false };
+		verbose = false;
 
 		stubs = {
 			devUtils: {
@@ -63,7 +63,7 @@ describe( 'lib/utils/install-dependencies', () => {
 	} );
 
 	it( 'creates and removes the spinner', async () => {
-		await runTest( directoryPath, options, 0 );
+		await runTest( directoryPath, verbose, 0 );
 
 		expect( stubs.devUtils.tools.createSpinner.callCount ).to.equal( 1 );
 		expect( stubs.spinner.start.callCount ).to.equal( 1 );
@@ -71,12 +71,12 @@ describe( 'lib/utils/install-dependencies', () => {
 
 		expect( stubs.devUtils.tools.createSpinner.getCall( 0 ).args ).to.deep.equal( [
 			'Installing dependencies... It takes a while.',
-			{ isDisabled: options.verbose }
+			{ isDisabled: false }
 		] );
 	} );
 
 	it( 'installs dependencies using yarn', async () => {
-		await runTest( directoryPath, options, 0 );
+		await runTest( directoryPath, verbose, 0 );
 
 		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
@@ -95,9 +95,7 @@ describe( 'lib/utils/install-dependencies', () => {
 	} );
 
 	it( 'installs dependencies using yarn in verbose mode', async () => {
-		options.verbose = true;
-
-		await runTest( directoryPath, options, 0 );
+		await runTest( directoryPath, true, 0 );
 
 		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
@@ -117,9 +115,7 @@ describe( 'lib/utils/install-dependencies', () => {
 	} );
 
 	it( 'installs dependencies using npm', async () => {
-		options.useNpm = true;
-
-		await runTest( directoryPath, options, 0 );
+		await runTest( directoryPath, verbose, 0, 'npm' );
 
 		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
@@ -139,10 +135,7 @@ describe( 'lib/utils/install-dependencies', () => {
 	} );
 
 	it( 'installs dependencies using npm in verbose mode', async () => {
-		options.useNpm = true;
-		options.verbose = true;
-
-		await runTest( directoryPath, options, 0 );
+		await runTest( directoryPath, true, 0, 'npm' );
 
 		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
@@ -162,8 +155,14 @@ describe( 'lib/utils/install-dependencies', () => {
 		] );
 	} );
 
+	it( 'uses --install-links flag using npm in dev mode', async () => {
+		await runTest( directoryPath, true, 0, 'npm', true );
+
+		expect( stubs.childProcess.spawn.getCall( 0 ).args[ 1 ].includes( '--install-links' ) ).to.equal( true );
+	} );
+
 	it( 'throws an error when install task closes with error exit code', () => {
-		return runTest( directoryPath, options, 1 )
+		return runTest( directoryPath, verbose, 1 )
 			.then( () => {
 				throw new Error( 'Expected to throw.' );
 			} )
@@ -183,9 +182,10 @@ describe( 'lib/utils/install-dependencies', () => {
 	 * @param {String} directoryPath
 	 * @param {Object} options
 	 * @param {Number} exitCode
+	 * @param {'npm'|'yarn'} packageManager
 	 */
-	async function runTest( directoryPath, options, exitCode ) {
-		const promise = installDependencies( directoryPath, options );
+	async function runTest( directoryPath, options, exitCode, packageManager = 'yarn', isDevModeFlagUsed = false ) {
+		const promise = installDependencies( directoryPath, options, packageManager, isDevModeFlagUsed );
 		const installTaskCloseCallback = stubs.installTask.on.getCall( 0 ).args[ 1 ];
 		await installTaskCloseCallback( exitCode );
 

@@ -24,8 +24,8 @@ new Command( packageJson.name )
 		// Otherwise, the executable was downloaded from npm, and it can't be executed in dev-mode.
 		return fs.existsSync( path.join( rootRepositoryPath, '.git' ) );
 	}, false )
-	.option( '--use-npm', 'whether use npm to install packages' )
-	.option( '--use-yarn', 'whether use yarn to install packages' )
+	.option( '--use-npm', 'whether use npm to install packages', false )
+	.option( '--use-yarn', 'whether use yarn to install packages', false )
 	.option( '--lang <lang>', 'programming language to use' )
 	.allowUnknownOption()
 	.action( ( packageName, options ) => init( packageName, options ) )

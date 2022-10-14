@@ -29,7 +29,10 @@ module.exports = async function init( packageName, options ) {
 
 	validatePackageName( logger, packageName );
 	const { directoryName, directoryPath } = createDirectory( logger, packageName );
-	const packageManager = await choosePackageManager( options );
+	const packageManager = await choosePackageManager( {
+		isNpmFlagUsed: options.useNpm,
+		isYarnFlagUsed: options.useYarn
+	} );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, options );
 	const packageVersions = getDependenciesVersions( logger, { devMode: options.dev } );
 	const dllConfiguration = getDllConfiguration( packageName );
@@ -43,7 +46,7 @@ module.exports = async function init( packageName, options ) {
 		dllConfiguration
 	} );
 
-	await installDependencies( directoryPath, options );
+	await installDependencies( directoryPath, options.verbose, packageManager, options.dev );
 	initializeGitRepository( directoryPath, logger );
 	await installGitHooks( directoryPath, logger, options );
 
@@ -68,9 +71,9 @@ module.exports = async function init( packageName, options ) {
  *
  * @property {Boolean} [verbose=false]
  *
- * @property {Boolean} [useNpm]
+ * @property {Boolean} [useNpm=false]
  *
- * @property {Boolean} [useYarn]
+ * @property {Boolean} [useYarn=false]
  *
  * @property {Boolean} [dev=false]
  */

@@ -8,39 +8,48 @@
 const { prompt } = require( 'inquirer' );
 const isYarnInstalled = require( './is-yarn-installed' );
 
-const NPM = 'npm';
-const YARN = 'yarn';
+/**
+ * @param {{isNpmFlagUsed: Boolean, isYarnFlagUsed: Boolean}} args
+ * @returns {'npm'|'yarn'}
+ */
+module.exports = async function choosePackageManager( { isNpmFlagUsed, isYarnFlagUsed } ) {
+	const yarnInstalled = isYarnInstalled();
+
+	if ( isYarnFlagUsed && !yarnInstalled ) {
+		throw new Error( 'Detected --use-yarn option but yarn is not installed.' );
+	}
+
+	if ( isNpmFlagUsed && isYarnFlagUsed ) {
+		return await askUserToChoosePackageManager();
+	}
+
+	if ( !yarnInstalled ) {
+		return 'npm';
+	}
+
+	if ( isNpmFlagUsed ) {
+		return 'npm';
+	}
+
+	if ( isYarnFlagUsed ) {
+		return 'yarn';
+	}
+
+	return await askUserToChoosePackageManager();
+};
 
 /**
- * @typedef {Object} ChoosePackageManagerArgs
- * @property {Boolean} useNpm
- * @property {Boolean} useYarn
+ * @returns {'npm'|'yarn'}
  */
-
-/**
- * @param {ChoosePackageManagerArgs} args
- * @returns {NPM|YARN}
- */
-module.exports = async function choosePackageManager( { useNpm = false, useYarn = false } = {} ) {
-	if ( !isYarnInstalled() ) {
-		return NPM;
-	}
-
-	if ( useNpm ) {
-		return NPM;
-	}
-
-	if ( useYarn ) {
-		return YARN;
-	}
-
+async function askUserToChoosePackageManager() {
 	const { packageManager } = await prompt( [ {
 		prefix: '📍',
 		name: 'packageManager',
 		message: 'Choose the package manager:',
 		type: 'list',
-		choices: [ YARN, NPM ]
+		choices: [ 'yarn', 'npm' ]
 	} ] );
 
 	return packageManager;
-};
+}
+
