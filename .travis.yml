@@ -1,10 +1,11 @@
+dist: jammy
 addons:
   chrome: stable
 language: node_js
 services:
   - xvfb
 node_js:
-  - '14'
+  - node
 cache:
   yarn: true
 cache:
