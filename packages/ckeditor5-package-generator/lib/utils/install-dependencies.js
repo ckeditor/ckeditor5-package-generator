@@ -11,26 +11,30 @@ const { spawn } = require( 'child_process' );
 
 /**
  * @param {String} directoryPath
- * @param {CKeditor5PackageGeneratorOptions} options
+ * @param {Boolean} verbose
+ * @param {'npm'|'yarn'} packageManager
+ * @param {Boolean} isDevModeFlagUsed
  */
-module.exports = async function installDependencies( directoryPath, options ) {
+module.exports = async function installDependencies( directoryPath, verbose, packageManager, isDevModeFlagUsed ) {
 	const installSpinner = tools.createSpinner( 'Installing dependencies... ' + chalk.gray.italic( 'It takes a while.' ), {
-		isDisabled: options.verbose
+		isDisabled: verbose
 	} );
 
 	installSpinner.start();
 
-	await installPackages( directoryPath, options );
+	await installPackages( directoryPath, verbose, packageManager, isDevModeFlagUsed );
 
 	installSpinner.finish();
 };
 
 /**
  * @param {String} directoryPath
- * @param {CKeditor5PackageGeneratorOptions} options
+ * @param {Boolean} verbose
+ * @param {'npm'|'yarn'} packageManager
+ * @param {Boolean} isDevModeFlagUsed
  * @returns {Promise}
  */
-function installPackages( directoryPath, options ) {
+function installPackages( directoryPath, verbose, packageManager, isDevModeFlagUsed ) {
 	return new Promise( ( resolve, reject ) => {
 		const spawnOptions = {
 			encoding: 'utf8',
@@ -41,16 +45,21 @@ function installPackages( directoryPath, options ) {
 
 		let installTask;
 
-		if ( options.verbose ) {
+		if ( verbose ) {
 			spawnOptions.stdio = 'inherit';
 		}
 
-		if ( options.useNpm ) {
+		if ( packageManager === 'npm' ) {
 			const npmArguments = [
 				'install',
 				'--prefix',
 				directoryPath
 			];
+
+			// Flag required for npm 8 to install linked packages' dependencies
+			if ( isDevModeFlagUsed ) {
+				npmArguments.push( '--install-links' );
+			}
 
 			installTask = spawn( 'npm', npmArguments, spawnOptions );
 		} else {
