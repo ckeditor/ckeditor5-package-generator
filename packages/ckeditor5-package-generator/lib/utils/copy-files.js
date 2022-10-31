@@ -78,11 +78,11 @@ function copyTemplate( templateFile, packagePath, data ) {
 	const rawFile = fs.readFileSync( path.join( TEMPLATE_PATH, templateFile ), 'utf-8' );
 	const filledFile = template( rawFile )( data );
 
-	const destinationPath = path.join(
-		packagePath,
+	const destinationPath = path.join( packagePath, templateFile )
 		// Remove sub-directory inside templates to merge results into one directory.
-		templateFile.replace( /^(?:common|js|ts)(?:\\|\/)/, '' )
-	);
+		.replace( /(?:common|js|ts)(?:\\|\/)/, '' )
+		// Replace placeholder filenames with the class name.
+		.replace( /_PLACEHOLDER_/, data.packageName.lowerCase );
 
 	// Make sure that the destination directory exists.
 	mkdirp.sync( path.dirname( destinationPath ) );
@@ -116,13 +116,11 @@ function createGitignore( options ) {
  *
  * @property {string} programmingLanguage
  *
- * @property {string} packageName
+ * @property {PackageName} packageName
  *
  * @property {string} program
  *
  * @property {string} directoryPath
  *
  * @property {Object} packageVersions
- *
- * @property {Object} dllConfiguration
  */

@@ -12,14 +12,16 @@ const isYarnInstalled = require( './is-yarn-installed' );
  * @param {{isNpmFlagUsed: Boolean, isYarnFlagUsed: Boolean}} args
  * @returns {'npm'|'yarn'}
  */
-module.exports = async function choosePackageManager( { isNpmFlagUsed, isYarnFlagUsed } ) {
+module.exports = async function choosePackageManager( options ) {
 	const yarnInstalled = isYarnInstalled();
+	const isYarnFlagUsed = options.useYarn;
+	const isNpmFlagUsed = options.useNpm;
 
-	if ( isYarnFlagUsed && !yarnInstalled ) {
+	if ( isYarnFlagUsed && !isYarnInstalled ) {
 		throw new Error( 'Detected --use-yarn option but yarn is not installed.' );
 	}
 
-	if ( isNpmFlagUsed && isYarnFlagUsed ) {
+	if ( isNpmFlagUsed && yarnInstalled ) {
 		return await askUserToChoosePackageManager();
 	}
 

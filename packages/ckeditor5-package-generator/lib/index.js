@@ -9,41 +9,35 @@ const chalk = require( 'chalk' );
 
 const Logger = require( './utils/logger' );
 
+const choosePackageManager = require( './utils/choose-package-manager' );
 const chooseProgrammingLanguage = require( './utils/choose-programming-language' );
 const copyFiles = require( './utils/copy-files' );
 const createDirectory = require( './utils/create-directory' );
 const getDependenciesVersions = require( './utils/get-dependencies-versions' );
-const getDllConfiguration = require( './utils/get-dll-configuration' );
+const getPackageName = require( './utils/get-package-name' );
 const initializeGitRepository = require( './utils/initialize-git-repository' );
 const installDependencies = require( './utils/install-dependencies' );
 const installGitHooks = require( './utils/install-git-hooks' );
-const validatePackageName = require( './utils/validate-package-name' );
-const choosePackageManager = require( './utils/choose-package-manager' );
 
 /**
- * @param {String|undefined} packageName
+ * @param {String|undefined} fullPackageName
  * @param {CKeditor5PackageGeneratorOptions} options
  */
-module.exports = async function init( packageName, options ) {
+module.exports = async function init( fullPackageName, options ) {
 	const logger = new Logger( options.verbose );
 
-	validatePackageName( logger, packageName );
-	const { directoryName, directoryPath } = createDirectory( logger, packageName );
-	const packageManager = await choosePackageManager( {
-		isNpmFlagUsed: options.useNpm,
-		isYarnFlagUsed: options.useYarn
-	} );
+	const packageName = getPackageName( logger, fullPackageName, options );
+	const { directoryName, directoryPath } = createDirectory( logger, fullPackageName );
+	const packageManager = await choosePackageManager( options );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, options );
 	const packageVersions = getDependenciesVersions( logger, { devMode: options.dev } );
-	const dllConfiguration = getDllConfiguration( packageName );
 
 	copyFiles( logger, {
 		program: packageManager,
 		programmingLanguage,
 		packageName,
 		directoryPath,
-		packageVersions,
-		dllConfiguration
+		packageVersions
 	} );
 
 	await installDependencies( directoryPath, options.verbose, packageManager, options.dev );
@@ -76,4 +70,6 @@ module.exports = async function init( packageName, options ) {
  * @property {Boolean} [useYarn=false]
  *
  * @property {Boolean} [dev=false]
+ *
+ * @property {String} [name]
  */

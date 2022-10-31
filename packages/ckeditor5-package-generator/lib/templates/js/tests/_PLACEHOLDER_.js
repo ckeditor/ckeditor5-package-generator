@@ -1,22 +1,18 @@
-import { expect } from 'chai';
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Heading from '@ckeditor/ckeditor5-heading/src/heading';
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-import MyPlugin from '../src/myplugin';
+import <%= packageName.pascalCase %> from '../src/<%= packageName.lowerCase %>';
 
-import type { EditorWithUI } from 'ckeditor__ckeditor5-core/src/editor/editorwithui';
-import type { DataApi } from 'ckeditor__ckeditor5-core/src/editor/utils/dataapimixin';
+/* global document */
 
-interface Editor extends EditorWithUI, DataApi {}
-
-describe( 'MyPlugin', () => {
+describe( '<%= packageName.pascalCase %>', () => {
 	it( 'should be named', () => {
-		expect( MyPlugin.pluginName ).to.equal( 'MyPlugin' );
+		expect( <%= packageName.pascalCase %>.pluginName ).to.equal( '<%= packageName.pascalCase %>' );
 	} );
 
 	describe( 'init()', () => {
-		let domElement: HTMLElement, editor: Editor;
+		let domElement, editor;
 
 		beforeEach( async () => {
 			domElement = document.createElement( 'div' );
@@ -27,7 +23,7 @@ describe( 'MyPlugin', () => {
 					Paragraph,
 					Heading,
 					Essentials,
-					MyPlugin
+					<%= packageName.pascalCase %>
 				],
 				toolbar: [
 					'myButton'
@@ -40,10 +36,10 @@ describe( 'MyPlugin', () => {
 			return editor.destroy();
 		} );
 
-		it( 'should load MyPlugin', () => {
-			const myPlugin = editor.plugins.get( 'MyPlugin' );
+		it( 'should load <%= packageName.pascalCase %>', () => {
+			const myPlugin = editor.plugins.get( '<%= packageName.pascalCase %>' );
 
-			expect( myPlugin ).to.be.an.instanceof( MyPlugin );
+			expect( myPlugin ).to.be.an.instanceof( <%= packageName.pascalCase %> );
 		} );
 
 		it( 'should add an icon to the toolbar', () => {

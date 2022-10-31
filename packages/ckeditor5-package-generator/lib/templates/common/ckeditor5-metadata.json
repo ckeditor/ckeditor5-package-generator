@@ -1,10 +1,10 @@
 {
 	"plugins": [
 		{
-			"name": "My plugin",
-			"className": "MyPlugin",
+			"name": "<%= packageName.spacedOut %>",
+			"className": "<%= packageName.pascalCase %>",
 			"description": "Adds text to the editor.",
-			"path": "src/myplugin.<%= programmingLanguage %>",
+			"path": "src/<%= packageName.lowerCase %>.<%= programmingLanguage %>",
 			"uiComponents": [
 				{
 					"name": "myButton",

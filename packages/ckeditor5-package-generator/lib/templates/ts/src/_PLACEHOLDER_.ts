@@ -5,9 +5,9 @@ import type { EditorWithUI } from 'ckeditor__ckeditor5-core/src/editor/editorwit
 
 import ckeditor5Icon from '../theme/icons/ckeditor.svg';
 
-export default class MyPlugin extends Plugin {
+export default class <%= packageName.pascalCase %> extends Plugin {
 	public static override get pluginName(): string {
-		return 'MyPlugin';
+		return '<%= packageName.pascalCase %>';
 	}
 
 	public override init(): void {
@@ -15,12 +15,12 @@ export default class MyPlugin extends Plugin {
 		const t = editor.t;
 		const model = editor.model;
 
-		// Add the "myPlugin" button to feature components.
+		// Add the "<%= packageName.camelCase %>" button to feature components.
 		editor.ui.componentFactory.add( 'myButton', locale => {
 			const view = new ButtonView( locale );
 
 			view.set( {
-				label: t( 'My plugin' ),
+				label: t( '<%= packageName.spacedOut %>' ),
 				icon: ckeditor5Icon,
 				tooltip: true
 			} );
