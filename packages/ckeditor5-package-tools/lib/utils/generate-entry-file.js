@@ -43,7 +43,6 @@ module.exports = entryFilePath => {
 	fs.utimesSync( entryFilePath, time, time );
 };
 
-// TODO: Consider creating the common utils between all packages in the repository.
 /**
  * @param {String} file
  * @returns {String}
