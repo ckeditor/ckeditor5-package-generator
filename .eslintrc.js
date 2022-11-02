@@ -10,6 +10,9 @@ module.exports = {
 	env: {
 		node: true
 	},
+	ignorePatterns: [
+		'templates'
+	],
 	rules: {
 		'no-console': 'off',
 		'ckeditor5-rules/license-header': [ 'error', { headerLines: [

@@ -72,7 +72,7 @@ module.exports = function copyFiles( logger, options ) {
  *
  * @param {String} templateFile The relative path to the "templates/" directory of the file to copy.
  * @param {String} packagePath The destination directory where the new package is created.
- * @param {Object} [data] The data to fill in the template file.
+ * @param {Object} data The data to fill in the template file.
  */
 function copyTemplate( templateFile, packagePath, data ) {
 	const rawFile = fs.readFileSync( path.join( TEMPLATE_PATH, templateFile ), 'utf-8' );

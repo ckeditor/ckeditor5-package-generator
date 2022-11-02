@@ -17,11 +17,11 @@ module.exports = async function choosePackageManager( options ) {
 	const isYarnFlagUsed = options.useYarn;
 	const isNpmFlagUsed = options.useNpm;
 
-	if ( isYarnFlagUsed && !isYarnInstalled ) {
+	if ( isYarnFlagUsed && !yarnInstalled ) {
 		throw new Error( 'Detected --use-yarn option but yarn is not installed.' );
 	}
 
-	if ( isNpmFlagUsed && yarnInstalled ) {
+	if ( isNpmFlagUsed && isYarnFlagUsed && yarnInstalled ) {
 		return await askUserToChoosePackageManager();
 	}
 

@@ -21,7 +21,9 @@ describe( 'lib/index', () => {
 
 		options = {
 			verbose: false,
+			useYarn: false,
 			useNpm: false,
+			name: 'FooBar',
 			dev: false
 		};
 
@@ -36,17 +38,24 @@ describe( 'lib/index', () => {
 			copyFiles: sinon.stub(),
 			createDirectory: sinon.stub(),
 			getDependenciesVersions: sinon.stub(),
-			getDllConfiguration: sinon.stub(),
 			initializeGitRepository: sinon.stub(),
 			installDependencies: sinon.stub(),
 			installGitHooks: sinon.stub(),
-			validatePackageName: sinon.stub(),
+			getPackageName: sinon.stub(),
 			choosePackageManager: sinon.stub(),
 			logger: {
 				info: sinon.stub()
 			}
 		};
 
+		stubs.getPackageName.returns( {
+			fullScoped: '@foo/ckeditor5-bar-baz',
+			pascalCase: 'BarBaz',
+			camelCase: 'barBaz',
+			kebabCase: 'bar-baz',
+			lowerCase: 'barbaz',
+			spacedOut: 'Bar baz'
+		} );
 		stubs.createDirectory.returns( {
 			directoryName: 'directoryName',
 			directoryPath: 'directoryPath'
@@ -54,10 +63,6 @@ describe( 'lib/index', () => {
 		stubs.chooseProgrammingLanguage.resolves( 'js' );
 		stubs.getDependenciesVersions.returns( {
 			ckeditor5: '30.0.0'
-		} );
-		stubs.getDllConfiguration.returns( {
-			library: 'feature',
-			fileName: 'feature.js'
 		} );
 		stubs.installDependencies.resolves();
 		stubs.installGitHooks.resolves();
@@ -79,11 +84,10 @@ describe( 'lib/index', () => {
 		mockery.registerMock( './utils/copy-files', stubs.copyFiles );
 		mockery.registerMock( './utils/create-directory', stubs.createDirectory );
 		mockery.registerMock( './utils/get-dependencies-versions', stubs.getDependenciesVersions );
-		mockery.registerMock( './utils/get-dll-configuration', stubs.getDllConfiguration );
 		mockery.registerMock( './utils/initialize-git-repository', stubs.initializeGitRepository );
 		mockery.registerMock( './utils/install-dependencies', stubs.installDependencies );
 		mockery.registerMock( './utils/install-git-hooks', stubs.installGitHooks );
-		mockery.registerMock( './utils/validate-package-name', stubs.validatePackageName );
+		mockery.registerMock( './utils/get-package-name', stubs.getPackageName );
 		mockery.registerMock( './utils/choose-package-manager', stubs.choosePackageManager );
 
 		index = require( '../lib/index' );
@@ -99,28 +103,28 @@ describe( 'lib/index', () => {
 		expect( index ).to.be.a( 'function' );
 	} );
 
-	it( 'passes correct arguments to the validatePackageName()', async () => {
+	it( 'passes correct arguments to the getPackageName()', async () => {
 		await index( packageName, options );
 
-		expect( stubs.validatePackageName.callCount ).to.equal( 1 );
-		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
-		expect( stubs.validatePackageName.getCall( 0 ).args[ 1 ] ).to.equal( '@scope/ckeditor5-feature' );
+		expect( stubs.getPackageName.callCount ).to.equal( 1 );
+		expect( stubs.getPackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
+		expect( stubs.getPackageName.getCall( 0 ).args[ 1 ] ).to.equal( '@scope/ckeditor5-feature' );
 	} );
 
-	it( 'passes undefined to validatePackageName() when the package name is undefined', async () => {
+	it( 'passes undefined to getPackageName() when the package name is undefined', async () => {
 		await index( undefined, options );
 
-		expect( stubs.validatePackageName.callCount ).to.equal( 1 );
-		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
-		expect( stubs.validatePackageName.getCall( 0 ).args[ 1 ] ).to.equal( undefined );
+		expect( stubs.getPackageName.callCount ).to.equal( 1 );
+		expect( stubs.getPackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
+		expect( stubs.getPackageName.getCall( 0 ).args[ 1 ] ).to.equal( undefined );
 	} );
 
 	it( 'creates logger with verbose option set to false', async () => {
 		await index( packageName, options );
 
-		expect( stubs.validatePackageName.callCount ).to.equal( 1 );
-		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
-		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ] ).to.deep.equal( { verbose: false, info: stubs.logger.info } );
+		expect( stubs.getPackageName.callCount ).to.equal( 1 );
+		expect( stubs.getPackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
+		expect( stubs.getPackageName.getCall( 0 ).args[ 0 ] ).to.deep.equal( { verbose: false, info: stubs.logger.info } );
 	} );
 
 	it( 'creates logger with verbose option set to true', async () => {
@@ -128,9 +132,9 @@ describe( 'lib/index', () => {
 
 		await index( packageName, options );
 
-		expect( stubs.validatePackageName.callCount ).to.equal( 1 );
-		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
-		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ] ).to.deep.equal( { verbose: true, info: stubs.logger.info } );
+		expect( stubs.getPackageName.callCount ).to.equal( 1 );
+		expect( stubs.getPackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
+		expect( stubs.getPackageName.getCall( 0 ).args[ 0 ] ).to.deep.equal( { verbose: true, info: stubs.logger.info } );
 	} );
 
 	it( 'passes correct arguments to the createDirectory()', async () => {
@@ -159,13 +163,6 @@ describe( 'lib/index', () => {
 		expect( stubs.getDependenciesVersions.getCall( 0 ).args[ 1 ] ).to.deep.equal( { devMode: true } );
 	} );
 
-	it( 'passes correct arguments to the getDllConfiguration()', async () => {
-		await index( packageName, options );
-
-		expect( stubs.getDllConfiguration.callCount ).to.equal( 1 );
-		expect( stubs.getDllConfiguration.getCall( 0 ).args[ 0 ] ).to.equal( '@scope/ckeditor5-feature' );
-	} );
-
 	it( 'passes correct arguments to the copyFiles()', async () => {
 		await index( packageName, options );
 
@@ -173,15 +170,18 @@ describe( 'lib/index', () => {
 		expect( stubs.copyFiles.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
 		expect( stubs.copyFiles.getCall( 0 ).args[ 1 ] ).to.deep.equal( {
 			programmingLanguage: 'js',
-			packageName: '@scope/ckeditor5-feature',
+			packageName: {
+				fullScoped: '@foo/ckeditor5-bar-baz',
+				pascalCase: 'BarBaz',
+				camelCase: 'barBaz',
+				kebabCase: 'bar-baz',
+				lowerCase: 'barbaz',
+				spacedOut: 'Bar baz'
+			},
 			program: 'yarn',
 			directoryPath: 'directoryPath',
 			packageVersions: {
 				ckeditor5: '30.0.0'
-			},
-			dllConfiguration: {
-				fileName: 'feature.js',
-				library: 'feature'
 			}
 		} );
 	} );
@@ -209,11 +209,7 @@ describe( 'lib/index', () => {
 		expect( stubs.installGitHooks.callCount ).to.equal( 1 );
 		expect( stubs.installGitHooks.getCall( 0 ).args[ 0 ] ).to.equal( 'directoryPath' );
 		expect( stubs.installGitHooks.getCall( 0 ).args[ 1 ].constructor.name ).to.equal( 'Logger' );
-		expect( stubs.installGitHooks.getCall( 0 ).args[ 2 ] ).to.deep.equal( {
-			verbose: false,
-			useNpm: false,
-			dev: false
-		} );
+		expect( stubs.installGitHooks.getCall( 0 ).args[ 2 ] ).to.deep.equal( options );
 	} );
 
 	it( 'logs info when the script finishes', async () => {
@@ -251,6 +247,6 @@ describe( 'lib/index', () => {
 
 		await index( packageName, options );
 
-		expect( stubs.choosePackageManager.calledWithMatch( { isNpmFlagUsed: true, isYarnFlagUsed: true } ) ).to.equal( true );
+		expect( stubs.choosePackageManager.getCall( 0 ).args[ 0 ] ).to.deep.equal( options );
 	} );
 } );

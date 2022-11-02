@@ -65,20 +65,21 @@ This repository follows the mono-repository structure. It contains multiple npm 
 
 To create a new package, call the `ckeditor5-package-generator` executable file. It requires a single argument which is the package name. It must follow the schema: `@scope/ckeditor5-package`, where [@scope](https://docs.npmjs.com/about-scopes) is an owner of the package, and `ckeditor5-package` is the package name. It must start with the `ckeditor5-` prefix.
 
-The tool will create a new directory called `ckeditor5-package` with an example plugin called `MyPlugin` and tools for developing the package.
+The tool will create a new directory called `ckeditor5-package` with an example plugin using the provided package name and tools for its development.
 
 To use a local version of the `@ckeditor/ckeditor5-package-tools` package, use the `--dev` option when executing the command.
 
 ```bash
-node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--dev] [--verbose] [--use-npm] [--use-yarn]
+node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--dev] [--verbose] [--use-npm] [--use-yarn] [--name]
 ```
 
 #### Options
 
-* `--verbose` - (alias: `-v`) whether to prints additional logs about the current executed task.
-* `--dev` - whether to execute in the development mode. It means that the `@ckeditor/ckeditor5-package-tools` will not be installed from npm, but from the local file system.
-* `--use-npm` - whether to use `npm` to install dependencies in a newly created package.
-* `--use-yarn` - whether to use `yarn` to install dependencies in a newly created package.
+* `--verbose` &ndash; (alias: `-v`) whether to prints additional logs about the current executed task.
+* `--dev` &ndash; whether to execute in the development mode. It means that the `@ckeditor/ckeditor5-package-tools` will not be installed from npm, but from the local file system.
+* `--use-npm` &ndash; whether to use `npm` to install dependencies in a newly created package.
+* `--use-yarn` &ndash; whether to use `yarn` to install dependencies in a newly created package.
+* `--name` &ndash; allows class name to be different from the package name.
 
 #### Developing the package
 

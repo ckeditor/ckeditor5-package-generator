@@ -18,7 +18,7 @@ Due to the upcoming end of long-term support for `Node.js 12` in [April 2022](ht
 To create a new package, execute the following command:
 
 ```bash
-npx ckeditor5-package-generator <packageName> [--verbose] [--use-npm] [--use-yarn]
+npx ckeditor5-package-generator <packageName> [--dev] [--verbose] [--use-npm] [--use-yarn] [--name]
 ```
 
 The `<packageName>` argument is required and must follow these rules:
@@ -31,5 +31,7 @@ As a result of executing the command, a new directory with a package will be cre
 ### Modifiers
 
 * `--verbose` &ndash; (alias: `-v`) whether to prints additional logs about the current executed task.
+* `--dev` &ndash; whether to execute in the development mode. It means that the `@ckeditor/ckeditor5-package-tools` will not be installed from npm, but from the local file system.
 * `--use-npm` &ndash; whether to use `npm` to install dependencies in a newly created package.
 * `--use-yarn` &ndash; whether to use `yarn` to install dependencies in a newly created package.
+* `--name` &ndash; allows class name to be different from the package name.

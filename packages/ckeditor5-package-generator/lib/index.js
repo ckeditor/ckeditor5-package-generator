@@ -71,5 +71,5 @@ module.exports = async function init( fullPackageName, options ) {
  *
  * @property {Boolean} [dev=false]
  *
- * @property {String} [name]
+ * @property {String} name
  */

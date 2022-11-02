@@ -21,7 +21,7 @@ const NEW_PACKAGE_DIRECTORY = path.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-
 const EXPECTED_PUBLISH_FILES = {
 	js: [
 		'src/index.js',
-		'src/myplugin.js',
+		'src/testpackage.js',
 
 		'lang/contexts.json',
 		'theme/icons/ckeditor.svg',
@@ -34,9 +34,9 @@ const EXPECTED_PUBLISH_FILES = {
 	],
 	ts: [
 		'src/index.js',
-		'src/myplugin.js',
+		'src/testpackage.js',
 		'src/index.d.ts',
-		'src/myplugin.d.ts',
+		'src/testpackage.d.ts',
 
 		'lang/contexts.json',
 		'theme/icons/ckeditor.svg',
@@ -52,11 +52,11 @@ const EXPECTED_PUBLISH_FILES = {
 const EXPECTED_SRC_DIR_FILES = {
 	js: [
 		'index.js',
-		'myplugin.js'
+		'testpackage.js'
 	],
 	ts: [
 		'index.ts',
-		'myplugin.ts'
+		'testpackage.ts'
 	]
 };
 

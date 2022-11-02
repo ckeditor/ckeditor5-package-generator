@@ -8,17 +8,17 @@
 const chalk = require( 'chalk' );
 
 const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
-const WORD_REGEXP = /[A-Za-z][a-z]+/g;
+const WORD_REGEXP = /[A-Za-z](?:[a-z]+)?/g;
 
 /**
  * This function verifies the provided package name. If it is not valid, it logs a message and exits the process.
  * If it is valid, returns an object with the name in the following formats:
  *
  *   fullScoped: @scope/ckeditor5-super-feature-name
- *    lowerCase: superfeaturename
  *   pascalCase: SuperFeatureName
  *    camelCase: superFeatureName
  *    kebabCase: super-feature-name
+ *    lowerCase: superfeaturename
  *    spacedOut: Super feature name
  *
  * @param {Logger} logger
@@ -71,10 +71,10 @@ module.exports = function getPackageName( logger, fullPackageName, options ) {
 
 	return {
 		fullScoped,
-		lowerCase: baseName.toLowerCase(),
 		pascalCase: toPascalCase( baseName ),
 		camelCase: toCamelCase( baseName ),
 		kebabCase: toKebabCase( baseName ),
+		lowerCase: toLowerCase( baseName ),
 		spacedOut: toSpacedOut( baseName )
 	};
 };
@@ -119,16 +119,6 @@ function hasInvalidChars( string ) {
  * @param {String} string
  * @returns {String}
  */
-function toSpacedOut( string ) {
-	const words = string.match( WORD_REGEXP ).map( word => word.toLowerCase() );
-	words[ 0 ] = uppercaseFirstChar( words[ 0 ] );
-	return words.join( ' ' );
-}
-
-/**
- * @param {String} string
- * @returns {String}
- */
 function toPascalCase( string ) {
 	return string.match( WORD_REGEXP ).map( uppercaseFirstChar ).join( '' );
 }
@@ -147,7 +137,25 @@ function toCamelCase( string ) {
  * @returns {String}
  */
 function toKebabCase( string ) {
-	return string.match( WORD_REGEXP ).join( '-' );
+	return string.match( WORD_REGEXP ).join( '-' ).toLowerCase();
+}
+
+/**
+ * @param {String} string
+ * @returns {String}
+ */
+function toLowerCase( string ) {
+	return string.match( WORD_REGEXP ).join( '' ).toLowerCase();
+}
+
+/**
+ * @param {String} string
+ * @returns {String}
+ */
+function toSpacedOut( string ) {
+	const words = string.match( WORD_REGEXP ).map( word => word.toLowerCase() );
+	words[ 0 ] = uppercaseFirstChar( words[ 0 ] );
+	return words.join( ' ' );
 }
 
 /**
@@ -163,13 +171,13 @@ function uppercaseFirstChar( string ) {
  *
  * @property {String} fullScoped @scope/ckeditor5-super-feature-name
  *
- * @property {String} lowerCase superfeaturename
- *
  * @property {String} pascalCase SuperFeatureName
  *
  * @property {String} camelCase superFeatureName
  *
  * @property {String} kebabCase super-feature-name
+ *
+ * @property {String} lowerCase superfeaturename
  *
  * @property {String} spacedOut Super feature name
  */
