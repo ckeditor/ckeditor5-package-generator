@@ -39,7 +39,9 @@
     "precommit": "lint-staged",
     "release:bump-version": "node scripts/release/bump-versions.js",
     "release:publish": "node scripts/release/publish.js",
-    "test": "mocha 'packages/*/tests/**/*.js'"
+    "test": "mocha 'packages/*/tests/**/*.js'",
+    "clean": "npx rimraf package-lock.json yarn.lock ./**/node_modules",
+    "reinstall": "yarn run clean && yarn install"
   },
   "repository": {
     "type": "git",
