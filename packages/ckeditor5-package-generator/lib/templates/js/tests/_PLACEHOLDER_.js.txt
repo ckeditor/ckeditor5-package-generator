@@ -26,7 +26,7 @@ describe( '<%= packageName.pascalCase %>', () => {
 					<%= packageName.pascalCase %>
 				],
 				toolbar: [
-					'myButton'
+					'<%= packageName.camelCase %>Button'
 				]
 			} );
 		} );
@@ -43,11 +43,11 @@ describe( '<%= packageName.pascalCase %>', () => {
 		} );
 
 		it( 'should add an icon to the toolbar', () => {
-			expect( editor.ui.componentFactory.has( 'myButton' ) ).to.equal( true );
+			expect( editor.ui.componentFactory.has( '<%= packageName.camelCase %>Button' ) ).to.equal( true );
 		} );
 
 		it( 'should add a text into the editor after clicking the icon', () => {
-			const icon = editor.ui.componentFactory.create( 'myButton' );
+			const icon = editor.ui.componentFactory.create( '<%= packageName.camelCase %>Button' );
 
 			expect( editor.getData() ).to.equal( '' );
 

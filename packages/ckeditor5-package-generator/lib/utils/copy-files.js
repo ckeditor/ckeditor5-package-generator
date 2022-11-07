@@ -14,27 +14,16 @@ const template = require( 'lodash.template' );
 
 const TEMPLATE_PATH = path.join( __dirname, '..', 'templates' );
 
-// Npm does not publish the `.gitignore` file even if it's somewhere inside the package.
-// Hence, the package generator will create it manually. See: #50.
-const GITIGNORE_ENTRIES = [
-	'build/',
-	'coverage/',
-	'node_modules/',
-	'tmp/',
-	'sample/ckeditor.dist.js'
-];
-
-const GITIGNORE_ENTRIES_TS = [
-	'# Ignore compiled TypeScript files.',
-	'src/**/*.js',
-	'src/**/*.d.ts'
-];
-
 /**
  * If the package name is not valid, prints the error and exits the process.
  *
  * @param {Logger} logger
  * @param {Options} options
+ * @param {string} options.programmingLanguage
+ * @param {string} options.packageManager
+ * @param {string} options.directoryPath
+ * @param {Object} options.packageVersions
+ * @param {PackageName} options.packageName
  */
 module.exports = function copyFiles( logger, options ) {
 	logger.process( 'Copying files...' );
@@ -56,15 +45,13 @@ module.exports = function copyFiles( logger, options ) {
 		logger.verboseInfo( `* Copying "${ chalk.gray( templatePath ) }"...` );
 
 		const data = {
-			cliSeparator: options.program === 'npm' ? '-- ' : '',
+			cliSeparator: options.packageManager === 'npm' ? '-- ' : '',
 			now: new Date(),
 			...options
 		};
 
 		copyTemplate( templatePath, options.directoryPath, data );
 	}
-
-	createGitignore( options );
 };
 
 /**
@@ -81,6 +68,8 @@ function copyTemplate( templateFile, packagePath, data ) {
 	const destinationPath = path.join( packagePath, templateFile )
 		// Remove sub-directory inside templates to merge results into one directory.
 		.replace( /(?:common|js|ts)(?:\\|\/)/, '' )
+		// We use the ".txt" file extension to circumvent syntax errors in templates and npm not publishing the ".gitignore" file.
+		.replace( /\.txt$/, '' )
 		// Replace placeholder filenames with the class name.
 		.replace( /_PLACEHOLDER_/, data.packageName.lowerCase );
 
@@ -88,39 +77,3 @@ function copyTemplate( templateFile, packagePath, data ) {
 	mkdirp.sync( path.dirname( destinationPath ) );
 	fs.writeFileSync( destinationPath, filledFile );
 }
-
-/**
- * Creates the `.gitignore` file.
- * See https://github.com/ckeditor/ckeditor5-package-generator/issues/50.
- *
- * @param {Options} options
- */
-function createGitignore( options ) {
-	const gitignorePath = path.join( options.directoryPath, '.gitignore' );
-
-	const gitignoreComponents = [ GITIGNORE_ENTRIES ];
-
-	if ( options.programmingLanguage === 'ts' ) {
-		gitignoreComponents.push( GITIGNORE_ENTRIES_TS );
-	}
-
-	const gitignoreContent = gitignoreComponents
-		.map( components => [ ...components, '' ].join( '\n' ) )
-		.join( '\n' );
-
-	fs.writeFileSync( gitignorePath, gitignoreContent );
-}
-
-/**
- * @typedef {Object} Options
- *
- * @property {string} programmingLanguage
- *
- * @property {PackageName} packageName
- *
- * @property {string} program
- *
- * @property {string} directoryPath
- *
- * @property {Object} packageVersions
- */

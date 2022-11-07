@@ -7,7 +7,7 @@
 			"path": "src/<%= packageName.lowerCase %>.<%= programmingLanguage %>",
 			"uiComponents": [
 				{
-					"name": "myButton",
+					"name": "<%= packageName.camelCase %>Button",
 					"type": "Button",
 					"iconPath": "theme/icons/ckeditor.svg"
 				}

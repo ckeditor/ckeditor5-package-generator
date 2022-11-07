@@ -47,39 +47,39 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 	} );
 
 	it( 'logs the process', () => {
-		getDependenciesVersions( stubs.logger, { devMode: false } );
+		getDependenciesVersions( stubs.logger, { dev: false } );
 
 		expect( stubs.logger.process.calledOnce ).to.equal( true );
 		expect( stubs.logger.process.firstCall.firstArg ).to.equal( 'Collecting the latest CKEditor 5 packages versions...' );
 	} );
 
 	it( 'returns an object with a version of the "ckeditor5" package', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, { devMode: false } );
+		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.ckeditor5 ).to.equal( '30.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "eslint-config-ckeditor5', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, { devMode: false } );
+		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.eslintConfigCkeditor5 ).to.equal( '5.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "stylelint-config-ckeditor5" package', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, { devMode: false } );
+		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.stylelintConfigCkeditor5 ).to.equal( '3.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "@ckeditor/ckeditor5-package-tools" package', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, { devMode: false } );
+		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.ckeditor5Inspector ).to.equal( '4.0.0' );
 	} );
 
-	it( 'returns an object with a version of the "@ckeditor/ckeditor5-package-tools" package if "devMode" is disabled', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, { devMode: false } );
+	it( 'returns an object with a version of the "@ckeditor/ckeditor5-package-tools" package if the "dev" option is disabled', () => {
+		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.packageTools ).to.equal( '^1.0.0' );
 	} );
 
-	it( 'it returns an absolute path to the "@ckeditor/ckeditor5-package-tools" package if "devMode" is enabled', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, { devMode: true, useNpm: true } );
+	it( 'it returns an absolute path to the "@ckeditor/ckeditor5-package-tools" package if the "dev" option is enabled', () => {
+		const returnedValue = getDependenciesVersions( stubs.logger, { dev: true, useNpm: true } );
 
 		const PROJECT_ROOT_DIRECTORY = path.join( __dirname, '..', '..', '..' );
 		let packageTools = 'file:' + path.resolve( PROJECT_ROOT_DIRECTORY, 'ckeditor5-package-tools' );

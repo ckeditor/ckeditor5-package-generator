@@ -24,6 +24,7 @@ describe( 'lib/index', () => {
 			useYarn: false,
 			useNpm: false,
 			name: 'FooBar',
+			lang: 'js',
 			dev: false
 		};
 
@@ -34,18 +35,20 @@ describe( 'lib/index', () => {
 				cyan: sinon.stub().callsFake( str => str ),
 				gray: sinon.stub().callsFake( str => str )
 			},
+			logger: {
+				info: sinon.stub()
+			},
+			choosePackageManager: sinon.stub(),
 			chooseProgrammingLanguage: sinon.stub(),
 			copyFiles: sinon.stub(),
 			createDirectory: sinon.stub(),
 			getDependenciesVersions: sinon.stub(),
+			getPackageName: sinon.stub(),
 			initializeGitRepository: sinon.stub(),
 			installDependencies: sinon.stub(),
 			installGitHooks: sinon.stub(),
-			getPackageName: sinon.stub(),
-			choosePackageManager: sinon.stub(),
-			logger: {
-				info: sinon.stub()
-			}
+			validateClassName: sinon.stub(),
+			validatePackageName: sinon.stub()
 		};
 
 		stubs.getPackageName.returns( {
@@ -60,14 +63,14 @@ describe( 'lib/index', () => {
 			directoryName: 'directoryName',
 			directoryPath: 'directoryPath'
 		} );
+		stubs.choosePackageManager.resolves( 'yarn' );
 		stubs.chooseProgrammingLanguage.resolves( 'js' );
 		stubs.getDependenciesVersions.returns( {
 			ckeditor5: '30.0.0'
 		} );
 		stubs.installDependencies.resolves();
-		stubs.installGitHooks.resolves();
 		stubs.initializeGitRepository.returns();
-		stubs.choosePackageManager.resolves( 'yarn' );
+		stubs.installGitHooks.resolves();
 
 		class Logger {
 			constructor( verbose ) {
@@ -77,18 +80,19 @@ describe( 'lib/index', () => {
 		}
 
 		mockery.registerMock( 'chalk', stubs.chalk );
-
 		mockery.registerMock( './utils/logger', Logger );
 
+		mockery.registerMock( './utils/choose-package-manager', stubs.choosePackageManager );
 		mockery.registerMock( './utils/choose-programming-language', stubs.chooseProgrammingLanguage );
 		mockery.registerMock( './utils/copy-files', stubs.copyFiles );
 		mockery.registerMock( './utils/create-directory', stubs.createDirectory );
 		mockery.registerMock( './utils/get-dependencies-versions', stubs.getDependenciesVersions );
+		mockery.registerMock( './utils/get-package-name', stubs.getPackageName );
 		mockery.registerMock( './utils/initialize-git-repository', stubs.initializeGitRepository );
 		mockery.registerMock( './utils/install-dependencies', stubs.installDependencies );
 		mockery.registerMock( './utils/install-git-hooks', stubs.installGitHooks );
-		mockery.registerMock( './utils/get-package-name', stubs.getPackageName );
-		mockery.registerMock( './utils/choose-package-manager', stubs.choosePackageManager );
+		mockery.registerMock( './utils/validate-class-name', stubs.validateClassName );
+		mockery.registerMock( './utils/validate-package-name', stubs.validatePackageName );
 
 		index = require( '../lib/index' );
 	} );
@@ -103,28 +107,12 @@ describe( 'lib/index', () => {
 		expect( index ).to.be.a( 'function' );
 	} );
 
-	it( 'passes correct arguments to the getPackageName()', async () => {
-		await index( packageName, options );
-
-		expect( stubs.getPackageName.callCount ).to.equal( 1 );
-		expect( stubs.getPackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
-		expect( stubs.getPackageName.getCall( 0 ).args[ 1 ] ).to.equal( '@scope/ckeditor5-feature' );
-	} );
-
-	it( 'passes undefined to getPackageName() when the package name is undefined', async () => {
-		await index( undefined, options );
-
-		expect( stubs.getPackageName.callCount ).to.equal( 1 );
-		expect( stubs.getPackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
-		expect( stubs.getPackageName.getCall( 0 ).args[ 1 ] ).to.equal( undefined );
-	} );
-
 	it( 'creates logger with verbose option set to false', async () => {
 		await index( packageName, options );
 
-		expect( stubs.getPackageName.callCount ).to.equal( 1 );
-		expect( stubs.getPackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
-		expect( stubs.getPackageName.getCall( 0 ).args[ 0 ] ).to.deep.equal( { verbose: false, info: stubs.logger.info } );
+		expect( stubs.validatePackageName.callCount ).to.equal( 1 );
+		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
+		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ] ).to.deep.equal( { verbose: false, info: stubs.logger.info } );
 	} );
 
 	it( 'creates logger with verbose option set to true', async () => {
@@ -132,41 +120,86 @@ describe( 'lib/index', () => {
 
 		await index( packageName, options );
 
+		expect( stubs.validatePackageName.callCount ).to.equal( 1 );
+		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
+		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ] ).to.deep.equal( { verbose: true, info: stubs.logger.info } );
+	} );
+
+	it( 'passes correct arguments to the validatePackageName()', async () => {
+		await index( packageName, options );
+
+		expect( stubs.validatePackageName.callCount ).to.equal( 1 );
+		expect( stubs.validatePackageName.getCall( 0 ).args.length ).to.equal( 2 );
+
+		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
+		expect( stubs.validatePackageName.getCall( 0 ).args[ 1 ] ).to.equal( '@scope/ckeditor5-feature' );
+	} );
+
+	it( 'passes correct arguments to the validateClassName()', async () => {
+		await index( packageName, options );
+
+		expect( stubs.validateClassName.callCount ).to.equal( 1 );
+		expect( stubs.validateClassName.getCall( 0 ).args.length ).to.equal( 2 );
+
+		expect( stubs.validateClassName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
+		expect( stubs.validateClassName.getCall( 0 ).args[ 1 ] ).to.deep.equal( options );
+	} );
+
+	it( 'passes correct arguments to the getPackageName()', async () => {
+		await index( packageName, options );
+
 		expect( stubs.getPackageName.callCount ).to.equal( 1 );
-		expect( stubs.getPackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
-		expect( stubs.getPackageName.getCall( 0 ).args[ 0 ] ).to.deep.equal( { verbose: true, info: stubs.logger.info } );
+		expect( stubs.getPackageName.getCall( 0 ).args.length ).to.equal( 2 );
+
+		expect( stubs.getPackageName.getCall( 0 ).args[ 0 ] ).to.equal( '@scope/ckeditor5-feature' );
+		expect( stubs.getPackageName.getCall( 0 ).args[ 1 ] ).to.deep.equal( options );
 	} );
 
 	it( 'passes correct arguments to the createDirectory()', async () => {
 		await index( packageName, options );
 
 		expect( stubs.createDirectory.callCount ).to.equal( 1 );
+		expect( stubs.createDirectory.getCall( 0 ).args.length ).to.equal( 2 );
+
 		expect( stubs.createDirectory.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
 		expect( stubs.createDirectory.getCall( 0 ).args[ 1 ] ).to.equal( '@scope/ckeditor5-feature' );
 	} );
 
-	it( 'passes correct arguments to the getDependenciesVersions() with dev option set to false', async () => {
+	it( 'passes correct arguments to the choosePackageManager()', async () => {
 		await index( packageName, options );
 
-		expect( stubs.getDependenciesVersions.callCount ).to.equal( 1 );
-		expect( stubs.getDependenciesVersions.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
-		expect( stubs.getDependenciesVersions.getCall( 0 ).args[ 1 ] ).to.deep.equal( { devMode: false } );
+		expect( stubs.choosePackageManager.callCount ).to.equal( 1 );
+		expect( stubs.choosePackageManager.getCall( 0 ).args.length ).to.equal( 1 );
+
+		expect( stubs.choosePackageManager.getCall( 0 ).args[ 0 ] ).to.deep.equal( options );
 	} );
 
-	it( 'passes correct arguments to the getDependenciesVersions() with dev option set to true', async () => {
-		options.dev = true;
+	it( 'passes correct arguments to the chooseProgrammingLanguage()', async () => {
+		await index( packageName, options );
 
+		expect( stubs.chooseProgrammingLanguage.callCount ).to.equal( 1 );
+		expect( stubs.chooseProgrammingLanguage.getCall( 0 ).args.length ).to.equal( 2 );
+
+		expect( stubs.chooseProgrammingLanguage.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
+		expect( stubs.chooseProgrammingLanguage.getCall( 0 ).args[ 1 ] ).to.deep.equal( options );
+	} );
+
+	it( 'passes correct arguments to the getDependenciesVersions()', async () => {
 		await index( packageName, options );
 
 		expect( stubs.getDependenciesVersions.callCount ).to.equal( 1 );
+		expect( stubs.getDependenciesVersions.getCall( 0 ).args.length ).to.equal( 2 );
+
 		expect( stubs.getDependenciesVersions.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
-		expect( stubs.getDependenciesVersions.getCall( 0 ).args[ 1 ] ).to.deep.equal( { devMode: true } );
+		expect( stubs.getDependenciesVersions.getCall( 0 ).args[ 1 ] ).to.deep.equal( options );
 	} );
 
 	it( 'passes correct arguments to the copyFiles()', async () => {
 		await index( packageName, options );
 
 		expect( stubs.copyFiles.callCount ).to.equal( 1 );
+		expect( stubs.copyFiles.getCall( 0 ).args.length ).to.equal( 2 );
+
 		expect( stubs.copyFiles.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
 		expect( stubs.copyFiles.getCall( 0 ).args[ 1 ] ).to.deep.equal( {
 			programmingLanguage: 'js',
@@ -178,7 +211,7 @@ describe( 'lib/index', () => {
 				lowerCase: 'barbaz',
 				spacedOut: 'Bar baz'
 			},
-			program: 'yarn',
+			packageManager: 'yarn',
 			directoryPath: 'directoryPath',
 			packageVersions: {
 				ckeditor5: '30.0.0'
@@ -190,15 +223,19 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( stubs.installDependencies.callCount ).to.equal( 1 );
+		expect( stubs.installDependencies.getCall( 0 ).args.length ).to.equal( 3 );
+
 		expect( stubs.installDependencies.getCall( 0 ).args[ 0 ] ).to.equal( 'directoryPath' );
-		expect( stubs.installDependencies.getCall( 0 ).args[ 1 ] ).to.equal( false );
-		expect( stubs.installDependencies.getCall( 0 ).args[ 2 ] ).to.equal( 'yarn' );
+		expect( stubs.installDependencies.getCall( 0 ).args[ 1 ] ).to.equal( 'yarn' );
+		expect( stubs.installDependencies.getCall( 0 ).args[ 2 ] ).to.deep.equal( options );
 	} );
 
 	it( 'passes correct arguments to the initializeGitRepository()', async () => {
 		await index( packageName, options );
 
 		expect( stubs.initializeGitRepository.callCount ).to.equal( 1 );
+		expect( stubs.initializeGitRepository.getCall( 0 ).args.length ).to.equal( 2 );
+
 		expect( stubs.initializeGitRepository.getCall( 0 ).args[ 0 ] ).to.equal( 'directoryPath' );
 		expect( stubs.initializeGitRepository.getCall( 0 ).args[ 1 ].constructor.name ).to.equal( 'Logger' );
 	} );
@@ -207,6 +244,8 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( stubs.installGitHooks.callCount ).to.equal( 1 );
+		expect( stubs.installGitHooks.getCall( 0 ).args.length ).to.equal( 3 );
+
 		expect( stubs.installGitHooks.getCall( 0 ).args[ 0 ] ).to.equal( 'directoryPath' );
 		expect( stubs.installGitHooks.getCall( 0 ).args[ 1 ].constructor.name ).to.equal( 'Logger' );
 		expect( stubs.installGitHooks.getCall( 0 ).args[ 2 ] ).to.deep.equal( options );
@@ -231,22 +270,5 @@ describe( 'lib/index', () => {
 			''
 		].join( '\n' ) );
 		expect( stubs.logger.info.getCall( 0 ).args[ 1 ] ).to.deep.equal( { startWithNewLine: true } );
-	} );
-
-	it( 'passes package manager from choosePackageManager to copyFiles', async () => {
-		stubs.choosePackageManager.resolves( 'testPackageManager' );
-
-		await index( packageName, options );
-
-		expect( stubs.copyFiles.calledWithMatch( {}, { program: 'testPackageManager' } ) ).to.equal( true );
-	} );
-
-	it( 'passes options to choosePackageManager', async () => {
-		options.useNpm = true;
-		options.useYarn = true;
-
-		await index( packageName, options );
-
-		expect( stubs.choosePackageManager.getCall( 0 ).args[ 0 ] ).to.deep.equal( options );
 	} );
 } );

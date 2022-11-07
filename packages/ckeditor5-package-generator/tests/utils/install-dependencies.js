@@ -8,9 +8,7 @@ const sinon = require( 'sinon' );
 const { expect } = require( 'chai' );
 
 describe( 'lib/utils/install-dependencies', () => {
-	let verbose, stubs, installDependencies;
-
-	const directoryPath = 'directory/path/foo';
+	let defaultDirectoryPath, defaultOptions, stubs, installDependencies;
 
 	beforeEach( () => {
 		mockery.enable( {
@@ -19,7 +17,12 @@ describe( 'lib/utils/install-dependencies', () => {
 			warnOnUnregistered: false
 		} );
 
-		verbose = false;
+		defaultDirectoryPath = 'directory/path/foo';
+
+		defaultOptions = {
+			verbose: false,
+			dev: false
+		};
 
 		stubs = {
 			devUtils: {
@@ -63,7 +66,7 @@ describe( 'lib/utils/install-dependencies', () => {
 	} );
 
 	it( 'creates and removes the spinner', async () => {
-		await runTest( directoryPath, verbose, 0 );
+		await runTest( {} );
 
 		expect( stubs.devUtils.tools.createSpinner.callCount ).to.equal( 1 );
 		expect( stubs.spinner.start.callCount ).to.equal( 1 );
@@ -76,38 +79,40 @@ describe( 'lib/utils/install-dependencies', () => {
 	} );
 
 	it( 'installs dependencies using yarn', async () => {
-		await runTest( directoryPath, verbose, 0 );
+		await runTest( {} );
 
 		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
 			'yarnpkg',
 			[
 				'--cwd',
-				directoryPath
+				defaultDirectoryPath
 			],
 			{
 				encoding: 'utf8',
 				shell: true,
-				cwd: directoryPath,
+				cwd: defaultDirectoryPath,
 				stderr: 'inherit'
 			}
 		] );
 	} );
 
 	it( 'installs dependencies using yarn in verbose mode', async () => {
-		await runTest( directoryPath, true, 0 );
+		await runTest( {
+			options: { verbose: true, dev: false }
+		} );
 
 		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
 			'yarnpkg',
 			[
 				'--cwd',
-				directoryPath
+				defaultDirectoryPath
 			],
 			{
 				encoding: 'utf8',
 				shell: true,
-				cwd: directoryPath,
+				cwd: defaultDirectoryPath,
 				stderr: 'inherit',
 				stdio: 'inherit'
 			}
@@ -115,7 +120,9 @@ describe( 'lib/utils/install-dependencies', () => {
 	} );
 
 	it( 'installs dependencies using npm', async () => {
-		await runTest( directoryPath, verbose, 0, 'npm' );
+		await runTest( {
+			packageManager: 'npm'
+		} );
 
 		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
@@ -123,19 +130,22 @@ describe( 'lib/utils/install-dependencies', () => {
 			[
 				'install',
 				'--prefix',
-				directoryPath
+				defaultDirectoryPath
 			],
 			{
 				encoding: 'utf8',
 				shell: true,
-				cwd: directoryPath,
+				cwd: defaultDirectoryPath,
 				stderr: 'inherit'
 			}
 		] );
 	} );
 
 	it( 'installs dependencies using npm in verbose mode', async () => {
-		await runTest( directoryPath, true, 0, 'npm' );
+		await runTest( {
+			packageManager: 'npm',
+			options: { verbose: true, dev: false }
+		} );
 
 		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
@@ -143,12 +153,12 @@ describe( 'lib/utils/install-dependencies', () => {
 			[
 				'install',
 				'--prefix',
-				directoryPath
+				defaultDirectoryPath
 			],
 			{
 				encoding: 'utf8',
 				shell: true,
-				cwd: directoryPath,
+				cwd: defaultDirectoryPath,
 				stderr: 'inherit',
 				stdio: 'inherit'
 			}
@@ -156,13 +166,18 @@ describe( 'lib/utils/install-dependencies', () => {
 	} );
 
 	it( 'uses --install-links flag using npm in dev mode', async () => {
-		await runTest( directoryPath, true, 0, 'npm', true );
+		await runTest( {
+			packageManager: 'npm',
+			options: { verbose: true, dev: true }
+		} );
 
 		expect( stubs.childProcess.spawn.getCall( 0 ).args[ 1 ].includes( '--install-links' ) ).to.equal( true );
 	} );
 
 	it( 'throws an error when install task closes with error exit code', () => {
-		return runTest( directoryPath, verbose, 1 )
+		return runTest( {
+			exitCode: 1
+		} )
 			.then( () => {
 				throw new Error( 'Expected to throw.' );
 			} )
@@ -179,13 +194,10 @@ describe( 'lib/utils/install-dependencies', () => {
 	 * It is needed to run the test properly, as that block
 	 * is a callback that executes resolve() and reject().
 	 *
-	 * @param {String} directoryPath
 	 * @param {Object} options
-	 * @param {Number} exitCode
-	 * @param {'npm'|'yarn'} packageManager
 	 */
-	async function runTest( directoryPath, options, exitCode, packageManager = 'yarn', isDevModeFlagUsed = false ) {
-		const promise = installDependencies( directoryPath, options, packageManager, isDevModeFlagUsed );
+	async function runTest( { packageManager = 'yarn', options = defaultOptions, exitCode = 0 } ) {
+		const promise = installDependencies( defaultDirectoryPath, packageManager, options );
 		const installTaskCloseCallback = stubs.installTask.on.getCall( 0 ).args[ 1 ];
 		await installTaskCloseCallback( exitCode );
 

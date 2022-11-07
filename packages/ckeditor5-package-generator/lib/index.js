@@ -18,6 +18,8 @@ const getPackageName = require( './utils/get-package-name' );
 const initializeGitRepository = require( './utils/initialize-git-repository' );
 const installDependencies = require( './utils/install-dependencies' );
 const installGitHooks = require( './utils/install-git-hooks' );
+const validateClassName = require( './utils/validate-class-name' );
+const validatePackageName = require( './utils/validate-package-name' );
 
 /**
  * @param {String|undefined} fullPackageName
@@ -26,21 +28,23 @@ const installGitHooks = require( './utils/install-git-hooks' );
 module.exports = async function init( fullPackageName, options ) {
 	const logger = new Logger( options.verbose );
 
-	const packageName = getPackageName( logger, fullPackageName, options );
+	validatePackageName( logger, fullPackageName );
+	validateClassName( logger, options );
+	const packageName = getPackageName( fullPackageName, options );
 	const { directoryName, directoryPath } = createDirectory( logger, fullPackageName );
 	const packageManager = await choosePackageManager( options );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, options );
-	const packageVersions = getDependenciesVersions( logger, { devMode: options.dev } );
+	const packageVersions = getDependenciesVersions( logger, options );
 
 	copyFiles( logger, {
-		program: packageManager,
+		packageManager,
 		programmingLanguage,
 		packageName,
 		directoryPath,
 		packageVersions
 	} );
 
-	await installDependencies( directoryPath, options.verbose, packageManager, options.dev );
+	await installDependencies( directoryPath, packageManager, options );
 	initializeGitRepository( directoryPath, logger );
 	await installGitHooks( directoryPath, logger, options );
 
@@ -70,6 +74,8 @@ module.exports = async function init( fullPackageName, options ) {
  * @property {Boolean} [useYarn=false]
  *
  * @property {Boolean} [dev=false]
+ *
+ * @property {String} lang
  *
  * @property {String} name
  */

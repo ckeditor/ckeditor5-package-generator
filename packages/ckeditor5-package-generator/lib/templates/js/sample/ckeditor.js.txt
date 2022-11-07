@@ -54,8 +54,7 @@ ClassicEditor
 			Base64UploadAdapter
 		],
 		toolbar: [
-			// `myButton` is an example button provided by the `<%= packageName.pascalCase %>` class.
-			'myButton',
+			'<%= packageName.camelCase %>Button',
 			'|',
 			'heading',
 			'|',

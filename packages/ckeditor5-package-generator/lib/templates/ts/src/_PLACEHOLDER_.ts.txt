@@ -16,7 +16,7 @@ export default class <%= packageName.pascalCase %> extends Plugin {
 		const model = editor.model;
 
 		// Add the "<%= packageName.camelCase %>" button to feature components.
-		editor.ui.componentFactory.add( 'myButton', locale => {
+		editor.ui.componentFactory.add( '<%= packageName.camelCase %>Button', locale => {
 			const view = new ButtonView( locale );
 
 			view.set( {
