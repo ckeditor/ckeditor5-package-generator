@@ -26,7 +26,7 @@ To read about the CKEditor 5 framework, visit the [CKEditor5 documentation](http
 
 Npm scripts are a convenient way to provide commands in a project. They are defined in the `package.json` file and shared with other people contributing to the project. It ensures that developers use the same command with the same options (flags).
 
-All the scripts can be executed by running `<%= program %> run <script>`. Pre and post commands with matching names will be run for those as well.
+All the scripts can be executed by running `<%= packageManager %> run <script>`. Pre and post commands with matching names will be run for those as well.
 
 The following scripts are available in the package.
 
@@ -42,13 +42,13 @@ Examples:
 
 ```bash
 # Starts the server and open the browser.
-<%= program %> run start
+<%= packageManager %> run start
 
 # Disable auto-opening the browser.
-<%= program %> run start <%= cliSeparator %>--no-open
+<%= packageManager %> run start <%= cliSeparator %>--no-open
 
 # Create the editor with the interface in German.
-<%= program %> run start <%= cliSeparator %>--language=de
+<%= packageManager %> run start <%= cliSeparator %>--language=de
 ```
 
 ### `test`
@@ -64,10 +64,10 @@ Examples:
 
 ```bash
 # Execute tests.
-<%= program %> run test
+<%= packageManager %> run test
 
 # Generate code coverage report after each change in the sources.
-<%= program %> run test <%= cliSeparator %>--coverage --test
+<%= packageManager %> run test <%= cliSeparator %>--coverage --test
 ```
 
 ### `lint`
@@ -78,7 +78,7 @@ Examples:
 
 ```bash
 # Execute eslint.
-<%= program %> run lint
+<%= packageManager %> run lint
 ```
 
 ### `stylelint`
@@ -89,7 +89,7 @@ Examples:
 
 ```bash
 # Execute stylelint.
-<%= program %> run stylelint
+<%= packageManager %> run stylelint
 ```
 
 ### `dll:build`
@@ -100,10 +100,10 @@ Examples:
 
 ```bash
 # Build the DLL file that is ready to publish.
-<%= program %> run dll:build
+<%= packageManager %> run dll:build
 
 # Build the DLL file and listen to changes in its sources.
-<%= program %> run dll:build <%= cliSeparator %>--watch
+<%= packageManager %> run dll:build <%= cliSeparator %>--watch
 ```
 
 ### `dll:serve`
@@ -114,7 +114,7 @@ Examples:
 
 ```bash
 # Starts the HTTP server and opens the browser.
-<%= program %> run dll:serve
+<%= packageManager %> run dll:serve
 ```
 
 ### `translations:collect`
@@ -130,7 +130,7 @@ The task may end with an error if one of the following conditions is met:
 Examples:
 
 ```bash
-<%= program %> run translations:collect
+<%= packageManager %> run translations:collect
 ```
 
 ### `translations:download`
@@ -144,7 +144,7 @@ To avoid passing the `--transifex` option every time when calls the command, you
 Examples:
 
 ```bash
-<%= program %> run translations:download <%= cliSeparator %>--transifex [API URL]
+<%= packageManager %> run translations:download <%= cliSeparator %>--transifex [API URL]
 ```
 
 ### `translations:upload`
@@ -158,7 +158,7 @@ To avoid passing the `--transifex` option every time when you call the command, 
 Examples:
 
 ```bash
-<%= program %> run translations:upload <%= cliSeparator %>--transifex [API URL]
+<%= packageManager %> run translations:upload <%= cliSeparator %>--transifex [API URL]
 ```
 
 ## License

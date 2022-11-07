@@ -29,7 +29,7 @@
     <p>If the editor is not initialized correctly and the browser console displays an error such as the following:</p>
     <pre><code>Uncaught TypeError: Cannot read properties of undefined (reading '<%= packageName.pascalCase %>') at dll.html:85</code></pre>
     <p>it means that the DLL build of the <code><%= packageName.fullScoped %></code> package has not been created.</p>
-    <p>Please call the <code><%= program %> run dll:build</code> command in the CLI, and after it finishes, refresh the page.</p>
+    <p>Please call the <code><%= packageManager %> run dll:build</code> command in the CLI, and after it finishes, refresh the page.</p>
 
     <h3>Anatomy of the DLL build</h3>
     <p>The source of the DLL build is located in the <code>src/index.<%= programmingLanguage %></code> file. It may export as many things as the package offers.</p>
@@ -47,10 +47,10 @@
     <h3>Publishing the package</h3>
     <p>
         By default, the <code>build/</code> directory is specified in the <a href="https://docs.npmjs.com/cli/v7/configuring-npm/package-json#files"><code>#files</code></a>
-        array in the <a href="../package.json"><code>package.json</code></a> file. It means all its contents will be published when calling the <code><%= program %> publish</code> command.
+        array in the <a href="../package.json"><code>package.json</code></a> file. It means all its contents will be published when calling the <code><%= packageManager %> publish</code> command.
     </p>
     <p>
-        Unfortunately, it is easy to forget to refresh the DLL build before making a new release. Hence, we created the <a href="https://docs.npmjs.com/cli/v7/using-npm/scripts#pre--post-scripts">prescript</a> that would refresh the build automatically when calling the <code><%= program %> publish</code> command.
+        Unfortunately, it is easy to forget to refresh the DLL build before making a new release. Hence, we created the <a href="https://docs.npmjs.com/cli/v7/using-npm/scripts#pre--post-scripts">prescript</a> that would refresh the build automatically when calling the <code><%= packageManager %> publish</code> command.
     </p>
 
     <h3>Reporting issues</h3>

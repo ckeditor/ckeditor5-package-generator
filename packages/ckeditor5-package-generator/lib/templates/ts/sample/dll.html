@@ -29,7 +29,7 @@
     <p>If the editor is not initialized correctly and the browser console displays an error such as the following:</p>
     <pre><code>Uncaught TypeError: Cannot read properties of undefined (reading '<%= packageName.pascalCase %>') at dll.html:85</code></pre>
     <p>it means that the DLL build of the <code><%= packageName.fullScoped %></code> package has not been created.</p>
-    <p>Please call the <code><%= program %> run dll:build</code> command in the CLI, and after it finishes, refresh the page.</p>
+    <p>Please call the <code><%= packageManager %> run dll:build</code> command in the CLI, and after it finishes, refresh the page.</p>
 
     <h3>Anatomy of the DLL build</h3>
     <p>The source of the DLL build is located in the <code>src/index.<%= programmingLanguage %></code> file. It may export as many things as the package offers.</p>
