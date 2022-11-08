@@ -19,7 +19,8 @@ const TEMPLATE_PATH = path.join( __dirname, '..', 'templates' );
  *
  * @param {Logger} logger
  * @param {Object} options
- * @param {PackageNameFormats} options.packageNameFormats
+ * @param {String} packageName
+ * @param {FormattedNames} options.formattedNames
  * @param {String} options.directoryPath
  * @param {String} options.packageManager
  * @param {String} options.programmingLanguage
@@ -71,7 +72,7 @@ function copyTemplate( templateFile, packagePath, data ) {
 		// We use the ".txt" file extension to circumvent syntax errors in templates and npm not publishing the ".gitignore" file.
 		.replace( /\.txt$/, '' )
 		// Replace placeholder filenames with the class name.
-		.replace( /_PLACEHOLDER_/, data.packageNameFormats.lowerCase );
+		.replace( /_PLACEHOLDER_/, data.formattedNames.plugin.lowerCaseMerged );
 
 	// Make sure that the destination directory exists.
 	mkdirp.sync( path.dirname( destinationPath ) );

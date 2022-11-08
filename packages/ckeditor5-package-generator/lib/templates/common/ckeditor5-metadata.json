@@ -1,13 +1,13 @@
 {
 	"plugins": [
 		{
-			"name": "<%= packageNameFormats.spacedOut %>",
-			"className": "<%= packageNameFormats.pascalCase %>",
+			"name": "<%= formattedNames.plugin.spacedOut %>",
+			"className": "<%= formattedNames.plugin.pascalCase %>",
 			"description": "Adds text to the editor.",
-			"path": "src/<%= packageNameFormats.lowerCase %>.<%= programmingLanguage %>",
+			"path": "src/<%= formattedNames.plugin.lowerCaseMerged %>.<%= programmingLanguage %>",
 			"uiComponents": [
 				{
-					"name": "<%= packageNameFormats.camelCase %>Button",
+					"name": "<%= formattedNames.plugin.camelCase %>Button",
 					"type": "Button",
 					"iconPath": "theme/icons/ckeditor.svg"
 				}

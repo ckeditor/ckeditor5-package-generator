@@ -8,51 +8,42 @@
 const PARTS_REGEXP = /[0-9]+|[A-Za-z][a-z]*/g;
 
 /**
- * This function returns an object with the name package name in the following formats:
- *
- *   fullScoped: @scope/ckeditor5-super-feature-name
- *  featureName: super-feature-name
- *   pascalCase: SuperFeatureName
- *    camelCase: superFeatureName
- *    kebabCase: super-feature-name
- *    lowerCase: superfeaturename
- *    spacedOut: Super feature name
- *
- * Or with custom plugin name added via `--plugin-name` option:
- *
- *   fullScoped: @scope/ckeditor5-super-feature-name
- *  featureName: super-feature-name
- *   pascalCase: SuperPluginName
- *    camelCase: superPluginName
- *    kebabCase: super-plugin-name
- *    lowerCase: superpluginname
- *    spacedOut: Super plugin name
+ * This function returns an object with two properties: "package" and "plugin". Values of those properties
+ * are object that contain the names formatted in different formats. If "pluginName" was not provided,
+ * values for "plugin" will be the same as the "package" ones.
  *
  * @param {String} packageName
  * @param {String|undefined} pluginName
- * @returns {PackageNameFormats}
+ * @returns {FormattedNames}
  */
 module.exports = function getPackageNameFormats( packageName, pluginName ) {
-	let parts;
-
-	const featureName = packageName.split( 'ckeditor5-' )[ 1 ];
-
-	if ( pluginName ) {
-		parts = pluginName.match( PARTS_REGEXP ).map( part => part.toLowerCase() );
-	} else {
-		parts = featureName.match( PARTS_REGEXP );
-	}
-
 	return {
-		fullScoped: packageName,
-		featureName,
-		pascalCase: toPascalCase( parts ),
-		camelCase: toCamelCase( parts ),
-		kebabCase: parts.join( '-' ),
-		lowerCase: parts.join( '' ),
-		spacedOut: toSpacedOut( parts )
+		package: format( packageName ),
+		plugin: format( pluginName || packageName )
 	};
 };
+
+/**
+ * @param {String} name
+ * @returns {FormattedName}
+ */
+function format( name ) {
+	// Removing the scope and prefix in case of the package name.
+	const raw = name.split( 'ckeditor5-' ).pop();
+
+	// Separating the name into its components.
+	const parts = raw.match( PARTS_REGEXP )
+		// Unifying letter size in case of the plugin name.
+		.map( part => part.toLowerCase() );
+
+	return {
+		raw,
+		spacedOut: toSpacedOut( parts ),
+		camelCase: toCamelCase( parts ),
+		pascalCase: toPascalCase( parts ),
+		lowerCaseMerged: parts.join( '' )
+	};
+}
 
 /**
  * @param {Array<String>} parts
@@ -88,19 +79,23 @@ function uppercaseFirstChar( string ) {
 }
 
 /**
- * @typedef {Object} PackageNameFormats
+ * @typedef {Object} FormattedNames
  *
- * @property {String} fullScoped @scope/ckeditor5-super-feature-name
+ * @property {FormattedName} package
  *
- * @property {String} featureName: super-feature-name
+ * @property {FormattedName} plugin
+ */
+
+/**
+ * @typedef {Object} FormattedName
  *
- * @property {String} pascalCase SuperPluginName
+ * @property {String} raw: super-feature-name
+ *
+ * @property {String} spacedOut Super plugin name
  *
  * @property {String} camelCase superPluginName
  *
- * @property {String} kebabCase super-plugin-name
+ * @property {String} pascalCase SuperPluginName
  *
- * @property {String} lowerCase superpluginname
- *
- * @property {String} spacedOut Super plugin name
+ * @property {String} lowerCaseMerged superpluginname
  */

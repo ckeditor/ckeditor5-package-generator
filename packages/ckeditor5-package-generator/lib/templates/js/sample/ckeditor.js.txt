@@ -23,14 +23,14 @@ import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
 import Code from '@ckeditor/ckeditor5-basic-styles/src/code';
 
-import <%= packageNameFormats.pascalCase %> from '../src/<%= packageNameFormats.lowerCase %>';
+import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>';
 
 /* global document, window */
 
 ClassicEditor
 	.create( document.querySelector( '#editor' ), {
 		plugins: [
-			<%= packageNameFormats.pascalCase %>,
+			<%= formattedNames.plugin.pascalCase %>,
 			Essentials,
 			Autoformat,
 			BlockQuote,
@@ -54,7 +54,7 @@ ClassicEditor
 			Base64UploadAdapter
 		],
 		toolbar: [
-			'<%= packageNameFormats.camelCase %>Button',
+			'<%= formattedNames.plugin.camelCase %>Button',
 			'|',
 			'heading',
 			'|',

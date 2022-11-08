@@ -32,14 +32,15 @@ module.exports = async function init( packageName, options ) {
 
 	validatePackageName( logger, packageName );
 	validatePluginName( logger, pluginName );
-	const packageNameFormats = getPackageNameFormats( packageName, pluginName );
+	const formattedNames = getPackageNameFormats( packageName, pluginName );
 	const { directoryName, directoryPath } = createDirectory( logger, packageName );
 	const packageManager = await choosePackageManager( useNpm, useYarn );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
 	const packageVersions = getDependenciesVersions( logger, dev );
 
 	copyFiles( logger, {
-		packageNameFormats,
+		packageName,
+		formattedNames,
 		directoryPath,
 		packageManager,
 		programmingLanguage,

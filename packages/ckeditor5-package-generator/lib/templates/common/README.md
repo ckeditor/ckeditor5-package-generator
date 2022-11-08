@@ -1,5 +1,5 @@
-<%= packageNameFormats.fullScoped %>
-<% print( '='.repeat( packageNameFormats.fullScoped.length ) ) %>
+<%= packageName %>
+<% print( '='.repeat( packageName.length ) ) %>
 
 This package was created by the [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator) package.
 
@@ -163,6 +163,6 @@ Examples:
 
 ## License
 
-The `<%= packageNameFormats.fullScoped %>` package is available under [MIT license](https://opensource.org/licenses/MIT).
+The `<%= packageName %>` package is available under [MIT license](https://opensource.org/licenses/MIT).
 
 However, it is the default license of packages created by the [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator) package and it can be changed.

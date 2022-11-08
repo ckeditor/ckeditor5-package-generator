@@ -1,6 +1,6 @@
 import ckeditor from './../theme/icons/ckeditor.svg';
 
-export { default as <%= packageNameFormats.pascalCase %> } from './<%= packageNameFormats.lowerCase %>';
+export { default as <%= formattedNames.plugin.pascalCase %> } from './<%= formattedNames.plugin.lowerCaseMerged %>';
 
 export const icons = {
 	ckeditor

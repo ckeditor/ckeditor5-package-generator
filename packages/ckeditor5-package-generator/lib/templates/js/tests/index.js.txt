@@ -1,11 +1,11 @@
-import { <%= packageNameFormats.pascalCase %> as <%= packageNameFormats.pascalCase %>Dll, icons } from '../src';
-import <%= packageNameFormats.pascalCase %> from '../src/<%= packageNameFormats.lowerCase %>';
+import { <%= formattedNames.plugin.pascalCase %> as <%= formattedNames.plugin.pascalCase %>Dll, icons } from '../src';
+import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>';
 
 import ckeditor from './../theme/icons/ckeditor.svg';
 
-describe( 'CKEditor5 <%= packageNameFormats.pascalCase %> DLL', () => {
-	it( 'exports <%= packageNameFormats.pascalCase %>', () => {
-		expect( <%= packageNameFormats.pascalCase %>Dll ).to.equal( <%= packageNameFormats.pascalCase %> );
+describe( 'CKEditor5 <%= formattedNames.plugin.pascalCase %> DLL', () => {
+	it( 'exports <%= formattedNames.plugin.pascalCase %>', () => {
+		expect( <%= formattedNames.plugin.pascalCase %>Dll ).to.equal( <%= formattedNames.plugin.pascalCase %> );
 	} );
 
 	describe( 'icons', () => {

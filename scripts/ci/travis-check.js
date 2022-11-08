@@ -114,6 +114,11 @@ async function testBuild( lang, packageManager, customPluginName ) {
 	logProcess( 'Creating new package: "@ckeditor/ckeditor5-test-package"...' );
 	executeCommand( packageBuildCommand, { cwd: path.join( REPOSITORY_DIRECTORY, '..' ) } );
 
+	executeCommand( [ 'ls', 'build', '-a' ], { cwd: NEW_PACKAGE_DIRECTORY } );
+
+	const dllHtml = fs.readFileSync( path.join( NEW_PACKAGE_DIRECTORY, 'sample', 'dll.html' ), 'utf-8' );
+	console.log( dllHtml );
+
 	logProcess( 'Executing tests...' );
 	executeCommand( [ 'yarn', 'run', 'test' ], { cwd: NEW_PACKAGE_DIRECTORY } );
 

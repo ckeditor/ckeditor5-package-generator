@@ -52,12 +52,20 @@ describe( 'lib/index', () => {
 		};
 
 		stubs.getPackageNameFormats.returns( {
-			fullScoped: '@foo/ckeditor5-bar-baz',
-			pascalCase: 'BarBaz',
-			camelCase: 'barBaz',
-			kebabCase: 'bar-baz',
-			lowerCase: 'barbaz',
-			spacedOut: 'Bar baz'
+			package: {
+				raw: 'xyz',
+				spacedOut: 'Xyz',
+				camelCase: 'xyz',
+				pascalCase: 'Xyz',
+				lowerCaseMerged: 'xyz'
+			},
+			plugin: {
+				raw: 'BarBaz',
+				spacedOut: 'Bar baz',
+				camelCase: 'barBaz',
+				pascalCase: 'BarBaz',
+				lowerCaseMerged: 'barbaz'
+			}
 		} );
 		stubs.createDirectory.returns( {
 			directoryName: 'directoryName',
@@ -203,14 +211,23 @@ describe( 'lib/index', () => {
 
 		expect( stubs.copyFiles.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
 		expect( stubs.copyFiles.getCall( 0 ).args[ 1 ] ).to.deep.equal( {
+			packageName: '@scope/ckeditor5-feature',
 			programmingLanguage: 'js',
-			packageNameFormats: {
-				fullScoped: '@foo/ckeditor5-bar-baz',
-				pascalCase: 'BarBaz',
-				camelCase: 'barBaz',
-				kebabCase: 'bar-baz',
-				lowerCase: 'barbaz',
-				spacedOut: 'Bar baz'
+			formattedNames: {
+				package: {
+					raw: 'xyz',
+					spacedOut: 'Xyz',
+					camelCase: 'xyz',
+					pascalCase: 'Xyz',
+					lowerCaseMerged: 'xyz'
+				},
+				plugin: {
+					raw: 'BarBaz',
+					spacedOut: 'Bar baz',
+					camelCase: 'barBaz',
+					pascalCase: 'BarBaz',
+					lowerCaseMerged: 'barbaz'
+				}
 			},
 			packageManager: 'yarn',
 			directoryPath: 'directoryPath',

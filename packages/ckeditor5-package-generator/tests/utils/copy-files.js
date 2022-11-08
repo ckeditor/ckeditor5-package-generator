@@ -8,12 +8,10 @@ const sinon = require( 'sinon' );
 const { expect } = require( 'chai' );
 
 describe( 'lib/utils/copy-files', () => {
-	let stubs,
-		options,
-		copyFiles;
+	let stubs, options, copyFiles;
 
 	const packageJson = {
-		'name': '<%= packageNameFormats.fullScoped %>',
+		'name': '<%= packageName %>',
 		'license': 'MIT',
 		'dependencies': {
 			'ckeditor5': '>=<%= packageVersions.ckeditor5 %>'
@@ -114,10 +112,23 @@ describe( 'lib/utils/copy-files', () => {
 		mockery.registerMock( 'path', stubs.path );
 
 		options = {
+			packageName: '@foo/ckeditor5-featurename',
 			programmingLanguage: 'js',
-			packageNameFormats: {
-				fullScoped: '@foo/ckeditor5-featurename',
-				lowerCase: 'featurename'
+			formattedNames: {
+				package: {
+					raw: 'featurename',
+					spacedOut: 'Featurename',
+					camelCase: 'featurename',
+					pascalCase: 'Featurename',
+					lowerCaseMerged: 'featurename'
+				},
+				plugin: {
+					raw: 'BarBaz',
+					spacedOut: 'Bar baz',
+					camelCase: 'barBaz',
+					pascalCase: 'BarBaz',
+					lowerCaseMerged: 'barbaz'
+				}
 			},
 			packageManager: 'yarn',
 			directoryPath: 'directory/path/foo',
@@ -252,7 +263,7 @@ describe( 'lib/utils/copy-files', () => {
 		copyFiles( stubs.logger, options );
 
 		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
-		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 0 ] ).to.equal( 'directory/path/foo/src/featurename.js' );
+		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 0 ] ).to.equal( 'directory/path/foo/src/barbaz.js' );
 		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 1 ] ).to.equal( [
 			'/* PLACEHOLDER JS CODE */'
 		].join( '\n' ) );
