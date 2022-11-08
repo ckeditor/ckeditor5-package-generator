@@ -24,6 +24,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 
 			expect( result ).to.deep.equal( {
 				fullScoped: '@foo/ckeditor5-bar',
+				featureName: 'bar',
 				pascalCase: 'Bar',
 				camelCase: 'bar',
 				kebabCase: 'bar',
@@ -37,6 +38,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 
 			expect( result ).to.deep.equal( {
 				fullScoped: '@foo/ckeditor5-bar.baz',
+				featureName: 'bar.baz',
 				pascalCase: 'BarBaz',
 				camelCase: 'barBaz',
 				kebabCase: 'bar-baz',
@@ -50,6 +52,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 
 			expect( result ).to.deep.equal( {
 				fullScoped: '@foo/ckeditor5-bar-baz',
+				featureName: 'bar-baz',
 				pascalCase: 'BarBaz',
 				camelCase: 'barBaz',
 				kebabCase: 'bar-baz',
@@ -63,6 +66,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 
 			expect( result ).to.deep.equal( {
 				fullScoped: '@foo/ckeditor5-bar_baz',
+				featureName: 'bar_baz',
 				pascalCase: 'BarBaz',
 				camelCase: 'barBaz',
 				kebabCase: 'bar-baz',
@@ -76,6 +80,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 
 			expect( result ).to.deep.equal( {
 				fullScoped: '@foo/ckeditor5-bar99baz',
+				featureName: 'bar99baz',
 				pascalCase: 'Bar99Baz',
 				camelCase: 'bar99Baz',
 				kebabCase: 'bar-99-baz',
@@ -89,6 +94,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 
 			expect( result ).to.deep.equal( {
 				fullScoped: '@foo/ckeditor5-bar-1.2baz__33baw',
+				featureName: 'bar-1.2baz__33baw',
 				pascalCase: 'Bar12Baz33Baw',
 				camelCase: 'bar12Baz33Baw',
 				kebabCase: 'bar-1-2-baz-33-baw',
@@ -104,6 +110,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 
 			expect( result ).to.deep.equal( {
 				fullScoped: '@foo/ckeditor5-xyz',
+				featureName: 'xyz',
 				pascalCase: 'Bar',
 				camelCase: 'bar',
 				kebabCase: 'bar',
@@ -117,6 +124,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 
 			expect( result ).to.deep.equal( {
 				fullScoped: '@foo/ckeditor5-xyz',
+				featureName: 'xyz',
 				pascalCase: 'BarBaz',
 				camelCase: 'barBaz',
 				kebabCase: 'bar-baz',
@@ -130,6 +138,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 
 			expect( result ).to.deep.equal( {
 				fullScoped: '@foo/ckeditor5-xyz',
+				featureName: 'xyz',
 				pascalCase: 'BarBazBaw',
 				camelCase: 'barBazBaw',
 				kebabCase: 'bar-baz-baw',
@@ -143,6 +152,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 
 			expect( result ).to.deep.equal( {
 				fullScoped: '@foo/ckeditor5-xyz',
+				featureName: 'xyz',
 				pascalCase: 'Bar1Baz22Baw',
 				camelCase: 'bar1Baz22Baw',
 				kebabCase: 'bar-1-baz-22-baw',

@@ -11,11 +11,22 @@ const PARTS_REGEXP = /[0-9]+|[A-Za-z][a-z]*/g;
  * This function returns an object with the name package name in the following formats:
  *
  *   fullScoped: @scope/ckeditor5-super-feature-name
+ *  featureName: super-feature-name
  *   pascalCase: SuperFeatureName
  *    camelCase: superFeatureName
  *    kebabCase: super-feature-name
  *    lowerCase: superfeaturename
  *    spacedOut: Super feature name
+ *
+ * Or with custom plugin name added via `--plugin-name` option:
+ *
+ *   fullScoped: @scope/ckeditor5-super-feature-name
+ *  featureName: super-feature-name
+ *   pascalCase: SuperPluginName
+ *    camelCase: superPluginName
+ *    kebabCase: super-plugin-name
+ *    lowerCase: superpluginname
+ *    spacedOut: Super plugin name
  *
  * @param {String} packageName
  * @param {String|undefined} pluginName
@@ -24,14 +35,17 @@ const PARTS_REGEXP = /[0-9]+|[A-Za-z][a-z]*/g;
 module.exports = function getPackageNameFormats( packageName, pluginName ) {
 	let parts;
 
+	const featureName = packageName.split( 'ckeditor5-' )[ 1 ];
+
 	if ( pluginName ) {
 		parts = pluginName.match( PARTS_REGEXP ).map( part => part.toLowerCase() );
 	} else {
-		parts = packageName.split( 'ckeditor5-' )[ 1 ].match( PARTS_REGEXP );
+		parts = featureName.match( PARTS_REGEXP );
 	}
 
 	return {
 		fullScoped: packageName,
+		featureName,
 		pascalCase: toPascalCase( parts ),
 		camelCase: toCamelCase( parts ),
 		kebabCase: parts.join( '-' ),
@@ -78,13 +92,15 @@ function uppercaseFirstChar( string ) {
  *
  * @property {String} fullScoped @scope/ckeditor5-super-feature-name
  *
- * @property {String} pascalCase SuperFeatureName
+ * @property {String} featureName: super-feature-name
  *
- * @property {String} camelCase superFeatureName
+ * @property {String} pascalCase SuperPluginName
  *
- * @property {String} kebabCase super-feature-name
+ * @property {String} camelCase superPluginName
  *
- * @property {String} lowerCase superfeaturename
+ * @property {String} kebabCase super-plugin-name
  *
- * @property {String} spacedOut Super feature name
+ * @property {String} lowerCase superpluginname
+ *
+ * @property {String} spacedOut Super plugin name
  */

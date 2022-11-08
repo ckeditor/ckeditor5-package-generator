@@ -78,15 +78,15 @@
 <script src="../node_modules/@ckeditor/ckeditor5-table/build/table.js"></script>
 
 <!-- The "<%= packageNameFormats.fullScoped %>" package DLL build is served from the `build/` directory -->
-<script src="../build/<%= packageNameFormats.kebabCase %>.js"></script>
+<script src="../build/<%= packageNameFormats.featureName %>.js"></script>
 
 <script>
-	console.log( 'Objects exported by the DLL build:', CKEditor5[ '<%= packageNameFormats.camelCase %>' ] );
+	console.log( 'Objects exported by the DLL build:', CKEditor5[ '<%= packageNameFormats.featureName %>' ] );
 
 	CKEditor5.editorClassic.ClassicEditor
 		.create( document.querySelector( '#editor' ), {
 			plugins: [
-				CKEditor5[ '<%= packageNameFormats.camelCase %>' ].<%= packageNameFormats.pascalCase %>,
+				CKEditor5[ '<%= packageNameFormats.featureName %>' ].<%= packageNameFormats.pascalCase %>,
 				CKEditor5.essentials.Essentials,
 				CKEditor5.autoformat.Autoformat,
 				CKEditor5.blockQuote.BlockQuote,
