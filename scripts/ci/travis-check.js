@@ -70,7 +70,7 @@ start();
  */
 async function start() {
 	await testBuild( 'js', 'npm' );
-	await testBuild( 'ts', 'yarn' );
+	await testBuild( 'ts', 'yarn', 'CustomPluginName400' );
 
 	if ( foundError ) {
 		console.log( '\n' + chalk.red( 'Found errors during the verification. Please, review the log above.' ) );
@@ -82,19 +82,26 @@ async function start() {
 /**
  * Build and run scripts for a given language and packageManager.
  *
- * @param {string} lang
+ * @param {String} lang
  * @param {'npm'|'yarn'} packageManager
+ * @param {String|undefined} customPluginName
  */
-async function testBuild( lang, packageManager ) {
-	const packageManagerFlag = packageManager === 'npm' ? '--use-npm' : '--use-yarn';
+async function testBuild( lang, packageManager, customPluginName ) {
+	let testSetupInfoMessage = `Testing build for language: [${ lang }] and package manager: [${ packageManager }]`;
+	const packageBuildCommand = [
+		'node', 'ckeditor5-package-generator/packages/ckeditor5-package-generator/bin/index.js', '@ckeditor/ckeditor5-test-package',
+		'--dev', '--verbose', '--lang', lang, `--use-${ packageManager }`
+	];
 
-	logProcess( `Testing build for language: [${ lang }] and package manager: [${ packageManager }].` );
+	if ( customPluginName ) {
+		testSetupInfoMessage += ` with custom plugin name: [${ customPluginName }]`;
+		packageBuildCommand.push( '--plugin-name', customPluginName );
+	}
+
+	logProcess( testSetupInfoMessage + '.' );
 
 	logProcess( 'Creating new package: "@ckeditor/ckeditor5-test-package"...' );
-	executeCommand( [
-		'node', 'ckeditor5-package-generator/packages/ckeditor5-package-generator/bin/index.js', '@ckeditor/ckeditor5-test-package',
-		'--dev', packageManagerFlag, '--verbose', '--lang', lang
-	], { cwd: path.join( REPOSITORY_DIRECTORY, '..' ) } );
+	executeCommand( packageBuildCommand, { cwd: path.join( REPOSITORY_DIRECTORY, '..' ) } );
 
 	logProcess( 'Executing tests...' );
 	executeCommand( [ 'yarn', 'run', 'test' ], { cwd: NEW_PACKAGE_DIRECTORY } );
