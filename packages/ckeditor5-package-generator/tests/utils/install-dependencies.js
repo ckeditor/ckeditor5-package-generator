@@ -8,7 +8,7 @@ const sinon = require( 'sinon' );
 const { expect } = require( 'chai' );
 
 describe( 'lib/utils/install-dependencies', () => {
-	let defaultDirectoryPath, defaultOptions, stubs, installDependencies;
+	let defaultDirectoryPath, stubs, installDependencies;
 
 	beforeEach( () => {
 		mockery.enable( {
@@ -18,11 +18,6 @@ describe( 'lib/utils/install-dependencies', () => {
 		} );
 
 		defaultDirectoryPath = 'directory/path/foo';
-
-		defaultOptions = {
-			verbose: false,
-			dev: false
-		};
 
 		stubs = {
 			devUtils: {
@@ -98,9 +93,7 @@ describe( 'lib/utils/install-dependencies', () => {
 	} );
 
 	it( 'installs dependencies using yarn in verbose mode', async () => {
-		await runTest( {
-			options: { verbose: true, dev: false }
-		} );
+		await runTest( { verbose: true } );
 
 		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
@@ -120,9 +113,7 @@ describe( 'lib/utils/install-dependencies', () => {
 	} );
 
 	it( 'installs dependencies using npm', async () => {
-		await runTest( {
-			packageManager: 'npm'
-		} );
+		await runTest( { packageManager: 'npm' } );
 
 		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
@@ -142,10 +133,7 @@ describe( 'lib/utils/install-dependencies', () => {
 	} );
 
 	it( 'installs dependencies using npm in verbose mode', async () => {
-		await runTest( {
-			packageManager: 'npm',
-			options: { verbose: true, dev: false }
-		} );
+		await runTest( { packageManager: 'npm', verbose: true } );
 
 		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
@@ -166,18 +154,13 @@ describe( 'lib/utils/install-dependencies', () => {
 	} );
 
 	it( 'uses --install-links flag using npm in dev mode', async () => {
-		await runTest( {
-			packageManager: 'npm',
-			options: { verbose: true, dev: true }
-		} );
+		await runTest( { packageManager: 'npm', verbose: true, dev: true } );
 
 		expect( stubs.childProcess.spawn.getCall( 0 ).args[ 1 ].includes( '--install-links' ) ).to.equal( true );
 	} );
 
 	it( 'throws an error when install task closes with error exit code', () => {
-		return runTest( {
-			exitCode: 1
-		} )
+		return runTest( { exitCode: 1 } )
 			.then( () => {
 				throw new Error( 'Expected to throw.' );
 			} )
@@ -196,8 +179,8 @@ describe( 'lib/utils/install-dependencies', () => {
 	 *
 	 * @param {Object} options
 	 */
-	async function runTest( { packageManager = 'yarn', options = defaultOptions, exitCode = 0 } ) {
-		const promise = installDependencies( defaultDirectoryPath, packageManager, options );
+	async function runTest( { packageManager = 'yarn', exitCode = 0, verbose = false, dev = false } ) {
+		const promise = installDependencies( defaultDirectoryPath, packageManager, verbose, dev );
 		const installTaskCloseCallback = stubs.installTask.on.getCall( 0 ).args[ 1 ];
 		await installTaskCloseCallback( exitCode );
 

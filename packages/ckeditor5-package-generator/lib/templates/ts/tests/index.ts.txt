@@ -1,12 +1,12 @@
 import { expect } from 'chai';
-import { <%= packageName.pascalCase %> as <%= packageName.pascalCase %>Dll, icons } from '../src';
-import <%= packageName.pascalCase %> from '../src/<%= packageName.lowerCase %>';
+import { <%= packageNameFormats.pascalCase %> as <%= packageNameFormats.pascalCase %>Dll, icons } from '../src';
+import <%= packageNameFormats.pascalCase %> from '../src/<%= packageNameFormats.lowerCase %>';
 
 import ckeditor from './../theme/icons/ckeditor.svg';
 
-describe( 'CKEditor5 <%= packageName.pascalCase %> DLL', () => {
-	it( 'exports <%= packageName.pascalCase %>', () => {
-		expect( <%= packageName.pascalCase %>Dll ).to.equal( <%= packageName.pascalCase %> );
+describe( 'CKEditor5 <%= packageNameFormats.pascalCase %> DLL', () => {
+	it( 'exports <%= packageNameFormats.pascalCase %>', () => {
+		expect( <%= packageNameFormats.pascalCase %>Dll ).to.equal( <%= packageNameFormats.pascalCase %> );
 	} );
 
 	describe( 'icons', () => {

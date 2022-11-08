@@ -9,8 +9,8 @@ const mockery = require( 'mockery' );
 const sinon = require( 'sinon' );
 const { expect } = require( 'chai' );
 
-describe( 'lib/utils/validate-class-name', () => {
-	let stubs, validateClassName;
+describe( 'lib/utils/validate-plugin-name', () => {
+	let stubs, validatePluginName;
 
 	beforeEach( () => {
 		mockery.enable( {
@@ -36,7 +36,7 @@ describe( 'lib/utils/validate-class-name', () => {
 
 		mockery.registerMock( 'chalk', stubs.chalk );
 
-		validateClassName = require( '../../lib/utils/validate-class-name' );
+		validatePluginName = require( '../../lib/utils/validate-plugin-name' );
 	} );
 
 	afterEach( () => {
@@ -45,11 +45,11 @@ describe( 'lib/utils/validate-class-name', () => {
 	} );
 
 	it( 'should be a function', () => {
-		expect( validateClassName ).to.be.an( 'function' );
+		expect( validatePluginName ).to.be.an( 'function' );
 	} );
 
-	it( 'does nothing if the class name is not provided', () => {
-		validateClassName( stubs.logger, {} );
+	it( 'does nothing if the plugin name is not provided', () => {
+		validatePluginName( stubs.logger );
 
 		expect( stubs.logger.process.called ).to.equal( false );
 		expect( stubs.logger.error.called ).to.equal( false );
@@ -57,47 +57,47 @@ describe( 'lib/utils/validate-class-name', () => {
 		expect( stubs.process.exit.called ).to.equal( false );
 	} );
 
-	it( 'logs the process if the class name is provided', () => {
-		validateClassName( stubs.logger, { name: 'Foo' } );
+	it( 'logs the process if the plugin name is provided', () => {
+		validatePluginName( stubs.logger, 'Foo' );
 
 		expect( stubs.logger.process.calledOnce ).to.equal( true );
-		expect( stubs.logger.process.firstCall.firstArg ).to.equal( 'Verifying the specified class name.' );
+		expect( stubs.logger.process.firstCall.firstArg ).to.equal( 'Verifying the specified plugin name.' );
 	} );
 
-	it( 'logs info about correct class name format in case of incorrect name', () => {
-		validateClassName( stubs.logger, { name: '#abc' } );
+	it( 'logs info about correct plugin name format in case of incorrect name', () => {
+		validatePluginName( stubs.logger, '#abc' );
 
 		expect( stubs.logger.error.calledTwice ).to.equal( true );
-		expect( stubs.logger.error.getCall( 0 ).firstArg ).to.equal( '❗ Found an error while verifying the provided class name:' );
+		expect( stubs.logger.error.getCall( 0 ).firstArg ).to.equal( '❗ Found an error while verifying the provided plugin name:' );
 
 		expect( stubs.logger.info.calledTwice ).to.equal( true );
-		expect( stubs.logger.info.getCall( 0 ).firstArg ).to.equal( 'The provided class name:     #abc' );
+		expect( stubs.logger.info.getCall( 0 ).firstArg ).to.equal( 'The provided plugin name:    #abc' );
 		expect( stubs.logger.info.getCall( 1 ).firstArg ).to.equal( 'Allowed characters list:     0-9 A-Z a-z' );
 	} );
 
-	it( 'rejects class names containing non-allowed characters', () => {
-		validateClassName( stubs.logger, { name: '#abc' } );
+	it( 'rejects plugin names containing non-allowed characters', () => {
+		validatePluginName( stubs.logger, '#abc' );
 
 		expect( stubs.process.exit.called ).to.equal( true );
-		expect( stubs.logger.error.getCall( 1 ).firstArg ).to.equal( 'The class name contains non-allowed characters.' );
+		expect( stubs.logger.error.getCall( 1 ).firstArg ).to.equal( 'The plugin name contains non-allowed characters.' );
 	} );
 
-	it( 'rejects class names that do not start with a letter', () => {
-		validateClassName( stubs.logger, { name: '9Abc' } );
+	it( 'rejects plugin names that do not start with a letter', () => {
+		validatePluginName( stubs.logger, '9Abc' );
 
 		expect( stubs.process.exit.called ).to.equal( true );
-		expect( stubs.logger.error.getCall( 1 ).firstArg ).to.equal( 'The class name has to start with a letter.' );
+		expect( stubs.logger.error.getCall( 1 ).firstArg ).to.equal( 'The plugin name can not start with a digit.' );
 	} );
 
-	it( 'accepts class names that only contain letters', () => {
-		validateClassName( stubs.logger, { name: 'FooBar' } );
+	it( 'accepts plugin names that only contain letters', () => {
+		validatePluginName( stubs.logger, 'FooBar' );
 
 		expect( stubs.process.exit.called ).to.equal( false );
 		expect( stubs.logger.error.called ).to.equal( false );
 	} );
 
-	it( 'accepts class names that contain a number', () => {
-		validateClassName( stubs.logger, { name: 'Foo9bar' } );
+	it( 'accepts plugin names that contain a number', () => {
+		validatePluginName( stubs.logger, 'Foo9bar' );
 
 		expect( stubs.process.exit.called ).to.equal( false );
 		expect( stubs.logger.error.called ).to.equal( false );

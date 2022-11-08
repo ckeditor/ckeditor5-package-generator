@@ -14,39 +14,41 @@ const chooseProgrammingLanguage = require( './utils/choose-programming-language'
 const copyFiles = require( './utils/copy-files' );
 const createDirectory = require( './utils/create-directory' );
 const getDependenciesVersions = require( './utils/get-dependencies-versions' );
-const getPackageName = require( './utils/get-package-name' );
+const getPackageNameFormats = require( './utils/get-package-name-formats' );
 const initializeGitRepository = require( './utils/initialize-git-repository' );
 const installDependencies = require( './utils/install-dependencies' );
 const installGitHooks = require( './utils/install-git-hooks' );
-const validateClassName = require( './utils/validate-class-name' );
 const validatePackageName = require( './utils/validate-package-name' );
+const validatePluginName = require( './utils/validate-plugin-name' );
 
 /**
- * @param {String|undefined} fullPackageName
+ * @param {String|undefined} packageName
  * @param {CKeditor5PackageGeneratorOptions} options
  */
-module.exports = async function init( fullPackageName, options ) {
-	const logger = new Logger( options.verbose );
+module.exports = async function init( packageName, options ) {
+	const { dev, verbose, useNpm, useYarn, lang, pluginName } = options;
 
-	validatePackageName( logger, fullPackageName );
-	validateClassName( logger, options );
-	const packageName = getPackageName( fullPackageName, options );
-	const { directoryName, directoryPath } = createDirectory( logger, fullPackageName );
-	const packageManager = await choosePackageManager( options );
-	const programmingLanguage = await chooseProgrammingLanguage( logger, options );
-	const packageVersions = getDependenciesVersions( logger, options );
+	const logger = new Logger( verbose );
+
+	validatePackageName( logger, packageName );
+	validatePluginName( logger, pluginName );
+	const packageNameFormats = getPackageNameFormats( packageName, pluginName );
+	const { directoryName, directoryPath } = createDirectory( logger, packageName );
+	const packageManager = await choosePackageManager( useNpm, useYarn );
+	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
+	const packageVersions = getDependenciesVersions( logger, dev );
 
 	copyFiles( logger, {
+		packageNameFormats,
+		directoryPath,
 		packageManager,
 		programmingLanguage,
-		packageName,
-		directoryPath,
 		packageVersions
 	} );
 
-	await installDependencies( directoryPath, packageManager, options );
+	await installDependencies( directoryPath, packageManager, verbose, dev );
 	initializeGitRepository( directoryPath, logger );
-	await installGitHooks( directoryPath, logger, options );
+	await installGitHooks( directoryPath, logger, verbose );
 
 	logger.info( [
 		chalk.green( 'Done!' ),
@@ -77,5 +79,5 @@ module.exports = async function init( fullPackageName, options ) {
  *
  * @property {String} lang
  *
- * @property {String} name
+ * @property {String} pluginName
  */

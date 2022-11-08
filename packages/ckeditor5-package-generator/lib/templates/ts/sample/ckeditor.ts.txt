@@ -29,12 +29,12 @@ import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
 import Code from '@ckeditor/ckeditor5-basic-styles/src/code';
 
-import <%= packageName.pascalCase %> from '../src/<%= packageName.lowerCase %>';
+import <%= packageNameFormats.pascalCase %> from '../src/<%= packageNameFormats.lowerCase %>';
 
 ClassicEditor
 	.create( document.getElementById( 'editor' )!, {
 		plugins: [
-			<%= packageName.pascalCase %>,
+			<%= packageNameFormats.pascalCase %>,
 			Essentials,
 			Autoformat,
 			BlockQuote,
@@ -58,7 +58,7 @@ ClassicEditor
 			Base64UploadAdapter
 		],
 		toolbar: [
-			'<%= packageName.camelCase %>Button',
+			'<%= packageNameFormats.camelCase %>Button',
 			'|',
 			'heading',
 			'|',

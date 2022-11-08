@@ -42,7 +42,7 @@ describe( 'lib/utils/choose-programming-language', () => {
 	} );
 
 	it( 'calls prompt() with correct arguments', async () => {
-		await chooseProgrammingLanguage( stubs.logger, {} );
+		await chooseProgrammingLanguage( stubs.logger );
 
 		expect( stubs.inquirer.prompt.callCount ).to.equal( 1 );
 		expect( stubs.inquirer.prompt.firstCall.firstArg ).to.deep.equal( [ {
@@ -55,7 +55,7 @@ describe( 'lib/utils/choose-programming-language', () => {
 	} );
 
 	it( 'returns correct value when user picks JavaScript', async () => {
-		const result = await chooseProgrammingLanguage( stubs.logger, {} );
+		const result = await chooseProgrammingLanguage( stubs.logger );
 
 		expect( result ).to.equal( 'js' );
 	} );
@@ -63,13 +63,13 @@ describe( 'lib/utils/choose-programming-language', () => {
 	it( 'returns correct value when user picks TypeScript', async () => {
 		stubs.inquirer.prompt.resolves( { programmingLanguage: 'TypeScript (experimental)' } );
 
-		const result = await chooseProgrammingLanguage( stubs.logger, {} );
+		const result = await chooseProgrammingLanguage( stubs.logger );
 
 		expect( result ).to.equal( 'ts' );
 	} );
 
 	it( 'returns lang option if it has valid value', async () => {
-		const result = await chooseProgrammingLanguage( stubs.logger, { lang: 'ts' } );
+		const result = await chooseProgrammingLanguage( stubs.logger, 'ts' );
 
 		expect( result ).to.equal( 'ts' );
 
@@ -79,7 +79,7 @@ describe( 'lib/utils/choose-programming-language', () => {
 	it( 'falls back to user input when lang option has invalid value', async () => {
 		stubs.inquirer.prompt.resolves( { programmingLanguage: 'TypeScript (experimental)' } );
 
-		const result = await chooseProgrammingLanguage( stubs.logger, { lang: 'python' } );
+		const result = await chooseProgrammingLanguage( stubs.logger, 'python' );
 
 		expect( result ).to.equal( 'ts' );
 

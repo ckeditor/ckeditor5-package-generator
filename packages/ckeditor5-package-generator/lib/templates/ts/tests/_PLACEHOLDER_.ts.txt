@@ -3,16 +3,16 @@ import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Heading from '@ckeditor/ckeditor5-heading/src/heading';
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-import <%= packageName.pascalCase %> from '../src/<%= packageName.lowerCase %>';
+import <%= packageNameFormats.pascalCase %> from '../src/<%= packageNameFormats.lowerCase %>';
 
 import type { EditorWithUI } from 'ckeditor__ckeditor5-core/src/editor/editorwithui';
 import type { DataApi } from 'ckeditor__ckeditor5-core/src/editor/utils/dataapimixin';
 
 interface Editor extends EditorWithUI, DataApi {}
 
-describe( '<%= packageName.pascalCase %>', () => {
+describe( '<%= packageNameFormats.pascalCase %>', () => {
 	it( 'should be named', () => {
-		expect( <%= packageName.pascalCase %>.pluginName ).to.equal( '<%= packageName.pascalCase %>' );
+		expect( <%= packageNameFormats.pascalCase %>.pluginName ).to.equal( '<%= packageNameFormats.pascalCase %>' );
 	} );
 
 	describe( 'init()', () => {
@@ -27,10 +27,10 @@ describe( '<%= packageName.pascalCase %>', () => {
 					Paragraph,
 					Heading,
 					Essentials,
-					<%= packageName.pascalCase %>
+					<%= packageNameFormats.pascalCase %>
 				],
 				toolbar: [
-					'<%= packageName.camelCase %>Button'
+					'<%= packageNameFormats.camelCase %>Button'
 				]
 			} );
 		} );
@@ -40,18 +40,18 @@ describe( '<%= packageName.pascalCase %>', () => {
 			return editor.destroy();
 		} );
 
-		it( 'should load <%= packageName.pascalCase %>', () => {
-			const myPlugin = editor.plugins.get( '<%= packageName.pascalCase %>' );
+		it( 'should load <%= packageNameFormats.pascalCase %>', () => {
+			const myPlugin = editor.plugins.get( '<%= packageNameFormats.pascalCase %>' );
 
-			expect( myPlugin ).to.be.an.instanceof( <%= packageName.pascalCase %> );
+			expect( myPlugin ).to.be.an.instanceof( <%= packageNameFormats.pascalCase %> );
 		} );
 
 		it( 'should add an icon to the toolbar', () => {
-			expect( editor.ui.componentFactory.has( '<%= packageName.camelCase %>Button' ) ).to.equal( true );
+			expect( editor.ui.componentFactory.has( '<%= packageNameFormats.camelCase %>Button' ) ).to.equal( true );
 		} );
 
 		it( 'should add a text into the editor after clicking the icon', () => {
-			const icon = editor.ui.componentFactory.create( '<%= packageName.camelCase %>Button' );
+			const icon = editor.ui.componentFactory.create( '<%= packageNameFormats.camelCase %>Button' );
 
 			expect( editor.getData() ).to.equal( '' );
 

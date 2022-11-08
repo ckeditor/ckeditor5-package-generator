@@ -13,7 +13,7 @@ describe( 'lib/utils/copy-files', () => {
 		copyFiles;
 
 	const packageJson = {
-		'name': '<%= packageName.fullScoped %>',
+		'name': '<%= packageNameFormats.fullScoped %>',
 		'license': 'MIT',
 		'dependencies': {
 			'ckeditor5': '>=<%= packageVersions.ckeditor5 %>'
@@ -115,7 +115,7 @@ describe( 'lib/utils/copy-files', () => {
 
 		options = {
 			programmingLanguage: 'js',
-			packageName: {
+			packageNameFormats: {
 				fullScoped: '@foo/ckeditor5-featurename',
 				lowerCase: 'featurename'
 			},

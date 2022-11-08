@@ -3,9 +3,9 @@ import { ButtonView } from 'ckeditor5/src/ui';
 
 import ckeditor5Icon from '../theme/icons/ckeditor.svg';
 
-export default class <%= packageName.pascalCase %> extends Plugin {
+export default class <%= packageNameFormats.pascalCase %> extends Plugin {
 	static get pluginName() {
-		return '<%= packageName.pascalCase %>';
+		return '<%= packageNameFormats.pascalCase %>';
 	}
 
 	init() {
@@ -13,12 +13,12 @@ export default class <%= packageName.pascalCase %> extends Plugin {
 		const t = editor.t;
 		const model = editor.model;
 
-		// Add the "<%= packageName.camelCase %>" button to feature components.
-		editor.ui.componentFactory.add( '<%= packageName.camelCase %>Button', locale => {
+		// Add the "<%= packageNameFormats.camelCase %>Button" to feature components.
+		editor.ui.componentFactory.add( '<%= packageNameFormats.camelCase %>Button', locale => {
 			const view = new ButtonView( locale );
 
 			view.set( {
-				label: t( '<%= packageName.spacedOut %>' ),
+				label: t( '<%= packageNameFormats.spacedOut %>' ),
 				icon: ckeditor5Icon,
 				tooltip: true
 			} );

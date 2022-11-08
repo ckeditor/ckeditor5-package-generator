@@ -9,13 +9,14 @@ const { prompt } = require( 'inquirer' );
 const isYarnInstalled = require( './is-yarn-installed' );
 
 /**
- * @param {CKeditor5PackageGeneratorOptions} options
+ * @param {Boolean} useNpm
+ * @param {Boolean} useYarn
  * @returns {Promise<'npm'|'yarn'>}
  */
-module.exports = async function choosePackageManager( options ) {
+module.exports = async function choosePackageManager( useNpm, useYarn ) {
 	const yarnInstalled = isYarnInstalled();
 
-	if ( options.useYarn && !yarnInstalled ) {
+	if ( useYarn && !yarnInstalled ) {
 		throw new Error( 'Detected --use-yarn option but yarn is not installed.' );
 	}
 
@@ -23,15 +24,15 @@ module.exports = async function choosePackageManager( options ) {
 		return 'npm';
 	}
 
-	if ( options.useNpm && options.useYarn ) {
+	if ( useNpm && useYarn ) {
 		return await askUserToChoosePackageManager();
 	}
 
-	if ( options.useNpm ) {
+	if ( useNpm ) {
 		return 'npm';
 	}
 
-	if ( options.useYarn ) {
+	if ( useYarn ) {
 		return 'yarn';
 	}
 

@@ -1,5 +1,5 @@
 {
-  "name": "<%= packageName.fullScoped %>",
+  "name": "<%= packageNameFormats.fullScoped %>",
   "version": "0.0.1",
   "description": "A plugin for CKEditor 5.",
   "keywords": [

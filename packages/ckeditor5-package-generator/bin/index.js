@@ -27,7 +27,7 @@ new Command( packageJson.name )
 	.option( '--use-npm', 'whether use npm to install packages', false )
 	.option( '--use-yarn', 'whether use yarn to install packages', false )
 	.option( '--lang <lang>', 'programming language to use' )
-	.option( '--name <name>', 'optional class name' )
+	.option( '--plugin-name <name>', 'optional custom plugin name' )
 	.allowUnknownOption()
 	.action( ( packageName, options ) => init( packageName, options ) )
 	.parse( process.argv );

@@ -18,12 +18,12 @@ const TEMPLATE_PATH = path.join( __dirname, '..', 'templates' );
  * If the package name is not valid, prints the error and exits the process.
  *
  * @param {Logger} logger
- * @param {Options} options
- * @param {string} options.programmingLanguage
- * @param {string} options.packageManager
- * @param {string} options.directoryPath
+ * @param {Object} options
+ * @param {PackageNameFormats} options.packageNameFormats
+ * @param {String} options.directoryPath
+ * @param {String} options.packageManager
+ * @param {String} options.programmingLanguage
  * @param {Object} options.packageVersions
- * @param {PackageName} options.packageName
  */
 module.exports = function copyFiles( logger, options ) {
 	logger.process( 'Copying files...' );
@@ -71,7 +71,7 @@ function copyTemplate( templateFile, packagePath, data ) {
 		// We use the ".txt" file extension to circumvent syntax errors in templates and npm not publishing the ".gitignore" file.
 		.replace( /\.txt$/, '' )
 		// Replace placeholder filenames with the class name.
-		.replace( /_PLACEHOLDER_/, data.packageName.lowerCase );
+		.replace( /_PLACEHOLDER_/, data.packageNameFormats.lowerCase );
 
 	// Make sure that the destination directory exists.
 	mkdirp.sync( path.dirname( destinationPath ) );

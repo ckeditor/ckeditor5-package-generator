@@ -14,10 +14,10 @@ const path = require( 'path' );
  * Checks whether its possible to create a directory, and either creates it or ends the process with an error.
  *
  * @param {Logger} logger
- * @param {string} fullPackageName
+ * @param {String} packageName
  */
-module.exports = function createDirectory( logger, fullPackageName ) {
-	const directoryName = fullPackageName.split( '/' )[ 1 ];
+module.exports = function createDirectory( logger, packageName ) {
+	const directoryName = packageName.split( '/' )[ 1 ];
 	const directoryPath = path.resolve( directoryName );
 
 	logger.process( `Checking whether the "${ chalk.cyan( directoryName ) }" directory can be created.` );

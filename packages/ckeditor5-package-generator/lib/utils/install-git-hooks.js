@@ -12,7 +12,7 @@ const { spawn } = require( 'child_process' );
  * @param {Logger} logger
  * @param {CKeditor5PackageGeneratorOptions} options
  */
-module.exports = function installGitHooks( directoryPath, logger, options ) {
+module.exports = function installGitHooks( directoryPath, logger, verbose ) {
 	logger.process( 'Installing Git hooks...' );
 
 	return new Promise( ( resolve, reject ) => {
@@ -25,7 +25,7 @@ module.exports = function installGitHooks( directoryPath, logger, options ) {
 
 		const spawnArguments = [ 'rebuild', 'husky' ];
 
-		if ( options.verbose ) {
+		if ( verbose ) {
 			spawnOptions.stdio = 'inherit';
 		}
 

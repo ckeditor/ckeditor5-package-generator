@@ -8,8 +8,7 @@
 const PARTS_REGEXP = /[0-9]+|[A-Za-z][a-z]*/g;
 
 /**
- * This function verifies the provided package name. If it is not valid, it logs a message and exits the process.
- * If it is valid, returns an object with the name in the following formats:
+ * This function returns an object with the name package name in the following formats:
  *
  *   fullScoped: @scope/ckeditor5-super-feature-name
  *   pascalCase: SuperFeatureName
@@ -18,21 +17,21 @@ const PARTS_REGEXP = /[0-9]+|[A-Za-z][a-z]*/g;
  *    lowerCase: superfeaturename
  *    spacedOut: Super feature name
  *
- * @param {String} fullPackageName
- * @param {CKeditor5PackageGeneratorOptions} options
- * @returns {PackageName}
+ * @param {String} packageName
+ * @param {String|undefined} pluginName
+ * @returns {PackageNameFormats}
  */
-module.exports = function getPackageName( fullPackageName, options ) {
+module.exports = function getPackageNameFormats( packageName, pluginName ) {
 	let parts;
 
-	if ( options.name ) {
-		parts = options.name.match( PARTS_REGEXP ).map( part => part.toLowerCase() );
+	if ( pluginName ) {
+		parts = pluginName.match( PARTS_REGEXP ).map( part => part.toLowerCase() );
 	} else {
-		parts = fullPackageName.split( 'ckeditor5-' )[ 1 ].match( PARTS_REGEXP );
+		parts = packageName.split( 'ckeditor5-' )[ 1 ].match( PARTS_REGEXP );
 	}
 
 	return {
-		fullScoped: fullPackageName,
+		fullScoped: packageName,
 		pascalCase: toPascalCase( parts ),
 		camelCase: toCamelCase( parts ),
 		kebabCase: parts.join( '-' ),
@@ -75,7 +74,7 @@ function uppercaseFirstChar( string ) {
 }
 
 /**
- * @typedef {Object} PackageName
+ * @typedef {Object} PackageNameFormats
  *
  * @property {String} fullScoped @scope/ckeditor5-super-feature-name
  *
