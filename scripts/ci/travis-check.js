@@ -96,6 +96,17 @@ async function testBuild( lang, packageManager, customPluginName ) {
 	if ( customPluginName ) {
 		testSetupInfoMessage += ` with custom plugin name: [${ customPluginName }]`;
 		packageBuildCommand.push( '--plugin-name', customPluginName );
+
+		const filenameArrays = [
+			...Object.values( EXPECTED_PUBLISH_FILES ),
+			...Object.values( EXPECTED_SRC_DIR_FILES )
+		];
+
+		filenameArrays.forEach( filenameArray => {
+			filenameArray.forEach( ( filename, index, arr ) => {
+				arr[ index ] = filename.replace( 'testpackage', customPluginName.toLowerCase() );
+			} );
+		} );
 	}
 
 	logProcess( testSetupInfoMessage + '.' );
