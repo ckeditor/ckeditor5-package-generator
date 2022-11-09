@@ -59,6 +59,7 @@ function toPascalCase( parts ) {
  */
 function toCamelCase( parts ) {
 	const pascalCase = toPascalCase( parts );
+
 	return pascalCase.charAt( 0 ).toLowerCase() + pascalCase.slice( 1 );
 }
 

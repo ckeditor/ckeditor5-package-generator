@@ -58,21 +58,23 @@ module.exports = function copyFiles( logger, options ) {
 /**
  * Copies all files into the package directory. If any file has any template placeholders, they are filled.
  *
- * @param {String} templateFile The relative path to the "templates/" directory of the file to copy.
+ * @param {String} templatePath The relative path to the "templates/" directory of the file to copy.
  * @param {String} packagePath The destination directory where the new package is created.
  * @param {Object} data The data to fill in the template file.
  */
-function copyTemplate( templateFile, packagePath, data ) {
-	const rawFile = fs.readFileSync( path.join( TEMPLATE_PATH, templateFile ), 'utf-8' );
+function copyTemplate( templatePath, packagePath, data ) {
+	const rawFile = fs.readFileSync( path.join( TEMPLATE_PATH, templatePath ), 'utf-8' );
 	const filledFile = template( rawFile )( data );
 
-	const destinationPath = path.join( packagePath, templateFile )
+	const processedTemplatePath = templatePath
 		// Remove sub-directory inside templates to merge results into one directory.
-		.replace( /(?:common|js|ts)(?:\\|\/)/, '' )
+		.replace( /^(?:common|js|ts)(?:\\|\/)/, '' )
 		// We use the ".txt" file extension to circumvent syntax errors in templates and npm not publishing the ".gitignore" file.
 		.replace( /\.txt$/, '' )
 		// Replace placeholder filenames with the class name.
 		.replace( /_PLACEHOLDER_/, data.formattedNames.plugin.lowerCaseMerged );
+
+	const destinationPath = path.join( packagePath, processedTemplatePath );
 
 	// Make sure that the destination directory exists.
 	mkdirp.sync( path.dirname( destinationPath ) );

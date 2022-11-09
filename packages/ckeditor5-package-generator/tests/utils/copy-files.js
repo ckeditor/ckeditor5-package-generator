@@ -285,6 +285,54 @@ describe( 'lib/utils/copy-files', () => {
 		].join( '\n' ) );
 	} );
 
+	it( 'works correctly with path containing directory called "common"', () => {
+		options.directoryPath = 'directory/common/foo';
+
+		copyFiles( stubs.logger, options );
+
+		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
+		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/common/foo/LICENSE.md' );
+		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/common/foo/lang/contexts.json' );
+		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/common/foo/package.json' );
+		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/common/foo/src/index.js' );
+	} );
+
+	it( 'works correctly with path containing directory called "js"', () => {
+		options.directoryPath = 'directory/js/foo';
+
+		copyFiles( stubs.logger, options );
+
+		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
+		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/js/foo/LICENSE.md' );
+		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/js/foo/lang/contexts.json' );
+		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/js/foo/package.json' );
+		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/js/foo/src/index.js' );
+	} );
+
+	it( 'works correctly with path containing directory called "ts"', () => {
+		options.directoryPath = 'directory/ts/foo';
+
+		copyFiles( stubs.logger, options );
+
+		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
+		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/ts/foo/LICENSE.md' );
+		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/ts/foo/lang/contexts.json' );
+		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/ts/foo/package.json' );
+		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/ts/foo/src/index.js' );
+	} );
+
+	it( 'works correctly with path containing directory called "Projects" (it ends with "ts")', () => {
+		options.directoryPath = 'directory/Projects/foo';
+
+		copyFiles( stubs.logger, options );
+
+		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
+		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/Projects/foo/LICENSE.md' );
+		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/Projects/foo/lang/contexts.json' );
+		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/Projects/foo/package.json' );
+		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/Projects/foo/src/index.js' );
+	} );
+
 	it( 'works with npm instead of yarn', () => {
 		options.packageManager = 'npm';
 

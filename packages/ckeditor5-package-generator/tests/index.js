@@ -115,25 +115,25 @@ describe( 'lib/index', () => {
 		expect( index ).to.be.a( 'function' );
 	} );
 
-	it( 'creates logger with verbose option set to false', async () => {
+	it( 'passes the verbose option when creating the logger ("true" check)', async () => {
 		await index( packageName, options );
 
-		expect( stubs.validatePackageName.callCount ).to.equal( 1 );
-		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
-		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ] ).to.deep.equal( { verbose: true, info: stubs.logger.info } );
+		const logger = stubs.validatePackageName.getCall( 0 ).args[ 0 ];
+		expect( logger.constructor.name ).to.equal( 'Logger' );
+		expect( logger ).to.deep.equal( { verbose: true, info: stubs.logger.info } );
 	} );
 
-	it( 'creates logger with verbose option set to true', async () => {
-		options.verbose = true;
+	it( 'passes the verbose option when creating the logger ("false" check)', async () => {
+		options.verbose = false;
 
 		await index( packageName, options );
 
-		expect( stubs.validatePackageName.callCount ).to.equal( 1 );
-		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
-		expect( stubs.validatePackageName.getCall( 0 ).args[ 0 ] ).to.deep.equal( { verbose: true, info: stubs.logger.info } );
+		const logger = stubs.validatePackageName.getCall( 0 ).args[ 0 ];
+		expect( logger.constructor.name ).to.equal( 'Logger' );
+		expect( logger ).to.deep.equal( { verbose: false, info: stubs.logger.info } );
 	} );
 
-	it( 'passes correct arguments to the validatePackageName()', async () => {
+	it( 'validates the package name', async () => {
 		await index( packageName, options );
 
 		expect( stubs.validatePackageName.callCount ).to.equal( 1 );
@@ -143,7 +143,7 @@ describe( 'lib/index', () => {
 		expect( stubs.validatePackageName.getCall( 0 ).args[ 1 ] ).to.equal( '@scope/ckeditor5-feature' );
 	} );
 
-	it( 'passes correct arguments to the validatePluginName()', async () => {
+	it( 'validates the plugin name', async () => {
 		await index( packageName, options );
 
 		expect( stubs.validatePluginName.callCount ).to.equal( 1 );
@@ -153,7 +153,7 @@ describe( 'lib/index', () => {
 		expect( stubs.validatePluginName.getCall( 0 ).args[ 1 ] ).to.equal( 'FooBar' );
 	} );
 
-	it( 'passes correct arguments to the getPackageNameFormats()', async () => {
+	it( 'gets the package name formats', async () => {
 		await index( packageName, options );
 
 		expect( stubs.getPackageNameFormats.callCount ).to.equal( 1 );
@@ -163,7 +163,7 @@ describe( 'lib/index', () => {
 		expect( stubs.getPackageNameFormats.getCall( 0 ).args[ 1 ] ).to.equal( 'FooBar' );
 	} );
 
-	it( 'passes correct arguments to the createDirectory()', async () => {
+	it( 'creates the directory', async () => {
 		await index( packageName, options );
 
 		expect( stubs.createDirectory.callCount ).to.equal( 1 );
@@ -173,7 +173,7 @@ describe( 'lib/index', () => {
 		expect( stubs.createDirectory.getCall( 0 ).args[ 1 ] ).to.equal( '@scope/ckeditor5-feature' );
 	} );
 
-	it( 'passes correct arguments to the choosePackageManager()', async () => {
+	it( 'chooses the package manager', async () => {
 		await index( packageName, options );
 
 		expect( stubs.choosePackageManager.callCount ).to.equal( 1 );
@@ -183,7 +183,7 @@ describe( 'lib/index', () => {
 		expect( stubs.choosePackageManager.getCall( 0 ).args[ 1 ] ).to.equal( true );
 	} );
 
-	it( 'passes correct arguments to the chooseProgrammingLanguage()', async () => {
+	it( 'chooses the programming language', async () => {
 		await index( packageName, options );
 
 		expect( stubs.chooseProgrammingLanguage.callCount ).to.equal( 1 );
@@ -193,7 +193,7 @@ describe( 'lib/index', () => {
 		expect( stubs.chooseProgrammingLanguage.getCall( 0 ).args[ 1 ] ).to.equal( 'js' );
 	} );
 
-	it( 'passes correct arguments to the getDependenciesVersions()', async () => {
+	it( 'gets the versions of the dependencies', async () => {
 		await index( packageName, options );
 
 		expect( stubs.getDependenciesVersions.callCount ).to.equal( 1 );
@@ -203,7 +203,7 @@ describe( 'lib/index', () => {
 		expect( stubs.getDependenciesVersions.getCall( 0 ).args[ 1 ] ).to.equal( false );
 	} );
 
-	it( 'passes correct arguments to the copyFiles()', async () => {
+	it( 'copies the files', async () => {
 		await index( packageName, options );
 
 		expect( stubs.copyFiles.callCount ).to.equal( 1 );
@@ -237,7 +237,7 @@ describe( 'lib/index', () => {
 		} );
 	} );
 
-	it( 'passes correct arguments to the installDependencies()', async () => {
+	it( 'installs the dependencies', async () => {
 		await index( packageName, options );
 
 		expect( stubs.installDependencies.callCount ).to.equal( 1 );
@@ -249,7 +249,7 @@ describe( 'lib/index', () => {
 		expect( stubs.installDependencies.getCall( 0 ).args[ 3 ] ).to.equal( false );
 	} );
 
-	it( 'passes correct arguments to the initializeGitRepository()', async () => {
+	it( 'initializes the git repository', async () => {
 		await index( packageName, options );
 
 		expect( stubs.initializeGitRepository.callCount ).to.equal( 1 );
@@ -259,7 +259,7 @@ describe( 'lib/index', () => {
 		expect( stubs.initializeGitRepository.getCall( 0 ).args[ 1 ].constructor.name ).to.equal( 'Logger' );
 	} );
 
-	it( 'passes correct arguments to the installGitHooks()', async () => {
+	it( 'installs the git hooks', async () => {
 		await index( packageName, options );
 
 		expect( stubs.installGitHooks.callCount ).to.equal( 1 );
@@ -270,7 +270,7 @@ describe( 'lib/index', () => {
 		expect( stubs.installGitHooks.getCall( 0 ).args[ 2 ] ).to.equal( true );
 	} );
 
-	it( 'logs info when the script finishes', async () => {
+	it( 'logs info before the script finishes', async () => {
 		await index( packageName, options );
 
 		expect( stubs.logger.info.callCount ).to.equal( 1 );
