@@ -8,9 +8,7 @@ const sinon = require( 'sinon' );
 const { expect } = require( 'chai' );
 
 describe( 'lib/utils/install-git-hooks', () => {
-	let options, stubs, installGitHooks;
-
-	const directoryPath = 'directory/path/foo';
+	let defaultDirectoryPath, stubs, installGitHooks;
 
 	beforeEach( () => {
 		mockery.enable( {
@@ -19,9 +17,7 @@ describe( 'lib/utils/install-git-hooks', () => {
 			warnOnUnregistered: false
 		} );
 
-		options = {
-			verbose: false
-		};
+		defaultDirectoryPath = 'directory/path/foo';
 
 		stubs = {
 			childProcess: {
@@ -51,14 +47,14 @@ describe( 'lib/utils/install-git-hooks', () => {
 	} );
 
 	it( 'logs the process', async () => {
-		await runTest( directoryPath, stubs.logger, options, 0 );
+		await runTest( {} );
 
 		expect( stubs.logger.process.callCount ).to.equal( 1 );
 		expect( stubs.logger.process.getCall( 0 ).args[ 0 ] ).to.equal( 'Installing Git hooks...' );
 	} );
 
 	it( 'installs git hooks', async () => {
-		await runTest( directoryPath, stubs.logger, options, 0 );
+		await runTest( {} );
 
 		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
@@ -70,16 +66,14 @@ describe( 'lib/utils/install-git-hooks', () => {
 			{
 				encoding: 'utf8',
 				shell: true,
-				cwd: directoryPath,
+				cwd: defaultDirectoryPath,
 				stderr: 'inherit'
 			}
 		] );
 	} );
 
 	it( 'installs git hooks in verbose mode', async () => {
-		options.verbose = true;
-
-		await runTest( directoryPath, stubs.logger, options, 0 );
+		await runTest( { verbose: true } );
 
 		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
@@ -91,7 +85,7 @@ describe( 'lib/utils/install-git-hooks', () => {
 			{
 				encoding: 'utf8',
 				shell: true,
-				cwd: directoryPath,
+				cwd: defaultDirectoryPath,
 				stderr: 'inherit',
 				stdio: 'inherit'
 			}
@@ -99,7 +93,7 @@ describe( 'lib/utils/install-git-hooks', () => {
 	} );
 
 	it( 'throws an error when install task closes with error exit code', () => {
-		return runTest( directoryPath, stubs.logger, options, 1 )
+		return runTest( { exitCode: 1 } )
 			.then( () => {
 				throw new Error( 'Expected to throw.' );
 			} )
@@ -116,12 +110,10 @@ describe( 'lib/utils/install-git-hooks', () => {
 	 * It is needed to run the test properly, as that block
 	 * is a callback that executes resolve() and reject().
 	 *
-	 * @param {String} directoryPath
 	 * @param {Object} options
-	 * @param {Number} exitCode
 	 */
-	async function runTest( directoryPath, logger, options, exitCode ) {
-		const promise = installGitHooks( directoryPath, logger, options );
+	async function runTest( { verbose = false, exitCode = 0 } ) {
+		const promise = installGitHooks( defaultDirectoryPath, stubs.logger, verbose );
 		const rebuildTaskCloseCallback = stubs.rebuildTask.on.getCall( 0 ).args[ 1 ];
 		await rebuildTaskCloseCallback( exitCode );
 

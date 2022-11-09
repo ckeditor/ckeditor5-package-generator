@@ -41,7 +41,7 @@ describe( 'lib/utils/choose-package-manager', () => {
 	it( 'should return npm when npm argument is true and yarn is installed', async () => {
 		stubs.isYarnInstalled.returns( true );
 
-		const result = await choosePackageManager( { isNpmFlagUsed: true, isYarnFlagUsed: false } );
+		const result = await choosePackageManager( true, false );
 
 		expect( result ).to.equal( 'npm' );
 	} );
@@ -49,25 +49,27 @@ describe( 'lib/utils/choose-package-manager', () => {
 	it( 'should call prompt when arguments are true and yarn is installed', async () => {
 		stubs.isYarnInstalled.returns( true );
 
-		await choosePackageManager( { isNpmFlagUsed: true, isYarnFlagUsed: true } );
+		await choosePackageManager( true, true );
 
 		expect( stubs.inquirer.prompt.called ).to.equal( true );
 	} );
 
-	it( 'should throw error when yarn argument is true and yarn is not installed', async () => {
+	it( 'should throw error when yarn argument is true and yarn is not installed', () => {
 		stubs.isYarnInstalled.returns( false );
 
-		try {
-			await choosePackageManager( { isNpmFlagUsed: false, isYarnFlagUsed: true } );
-		} catch ( e ) {
-			expect( e ).to.exist;
-		}
+		return choosePackageManager( false, true )
+			.then( () => {
+				throw new Error( 'Expected to throw.' );
+			} )
+			.catch( err => {
+				expect( err.message ).to.equal( 'Detected --use-yarn option but yarn is not installed.' );
+			} );
 	} );
 
 	it( 'should return yarn when yarn argument is true and yarn is installed', async () => {
 		stubs.isYarnInstalled.returns( true );
 
-		const result = await choosePackageManager( { isNpmFlagUsed: false, isYarnFlagUsed: true } );
+		const result = await choosePackageManager( false, true );
 
 		expect( result ).to.equal( 'yarn' );
 	} );
@@ -75,7 +77,7 @@ describe( 'lib/utils/choose-package-manager', () => {
 	it( 'should return npm when yarn is not installed and arguments false', async () => {
 		stubs.isYarnInstalled.returns( false );
 
-		const result = await choosePackageManager( { isNpmFlagUsed: false, isYarnFlagUsed: false } );
+		const result = await choosePackageManager( false, false );
 
 		expect( result ).to.equal( 'npm' );
 	} );
@@ -84,7 +86,7 @@ describe( 'lib/utils/choose-package-manager', () => {
 		stubs.inquirer.prompt.resolves( { packageManager: 'yarn' } );
 		stubs.isYarnInstalled.returns( true );
 
-		const result = await choosePackageManager( { isNpmFlagUsed: false, isYarnFlagUsed: false } );
+		const result = await choosePackageManager( false, false );
 
 		expect( result ).to.equal( 'yarn' );
 	} );
@@ -93,7 +95,7 @@ describe( 'lib/utils/choose-package-manager', () => {
 		stubs.inquirer.prompt.resolves( { packageManager: 'npm' } );
 		stubs.isYarnInstalled.returns( true );
 
-		const result = await choosePackageManager( { isYarnFlagUsed: false, isNpmFlagUsed: false } );
+		const result = await choosePackageManager( { useYarn: false, useNpm: false } );
 
 		expect( result ).to.equal( 'npm' );
 	} );
@@ -101,7 +103,7 @@ describe( 'lib/utils/choose-package-manager', () => {
 	it( 'should not call prompt when yarn is not installed', async () => {
 		stubs.isYarnInstalled.returns( false );
 
-		await choosePackageManager( { isYarnFlagUsed: false, isNpmFlagUsed: false } );
+		await choosePackageManager( { useYarn: false, useNpm: false } );
 
 		expect( stubs.inquirer.prompt.called ).to.equal( false );
 	} );
@@ -109,7 +111,7 @@ describe( 'lib/utils/choose-package-manager', () => {
 	it( 'should not call prompt when yarn is installed and npm flag used', async () => {
 		stubs.isYarnInstalled.returns( true );
 
-		await choosePackageManager( { isYarnFlagUsed: false, isNpmFlagUsed: true } );
+		await choosePackageManager( { useYarn: false, useNpm: true } );
 
 		expect( stubs.inquirer.prompt.called ).to.equal( false );
 	} );
@@ -117,7 +119,7 @@ describe( 'lib/utils/choose-package-manager', () => {
 	it( 'should not call prompt when yarn is installed and yarn flag used', async () => {
 		stubs.isYarnInstalled.returns( true );
 
-		await choosePackageManager( { isYarnFlagUsed: true, isNpmFlagUsed: false } );
+		await choosePackageManager( { useYarn: true, useNpm: false } );
 
 		expect( stubs.inquirer.prompt.called ).to.equal( false );
 	} );

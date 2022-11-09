@@ -23,11 +23,10 @@ const getPackageVersion = require( './get-package-version' );
  *   * `false` - the latest version published on npm.
  *
  * @param {Logger} logger
- * @param {Object} options
- * @param {Boolean} options.devMode Whether the current process is executed in the developer mode.
+ * @param {Boolean} dev
  * @returns {Object}
  */
-module.exports = function getDependenciesVersions( logger, { devMode } ) {
+module.exports = function getDependenciesVersions( logger, dev ) {
 	logger.process( 'Collecting the latest CKEditor 5 packages versions...' );
 
 	return {
@@ -35,7 +34,7 @@ module.exports = function getDependenciesVersions( logger, { devMode } ) {
 		ckeditor5Inspector: getPackageVersion( '@ckeditor/ckeditor5-inspector' ),
 		eslintConfigCkeditor5: getPackageVersion( 'eslint-config-ckeditor5' ),
 		stylelintConfigCkeditor5: getPackageVersion( 'stylelint-config-ckeditor5' ),
-		packageTools: devMode ?
+		packageTools: dev ?
 			// Windows accepts unix-like paths in `package.json`, so let's unify it to avoid errors with paths.
 			'file:' + path.resolve( __dirname, '..', '..', '..', 'ckeditor5-package-tools' ).split( path.sep ).join( path.posix.sep ) :
 			'^' + getPackageVersion( '@ckeditor/ckeditor5-package-tools' )

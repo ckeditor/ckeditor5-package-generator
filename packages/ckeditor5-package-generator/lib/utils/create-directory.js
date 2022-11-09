@@ -14,7 +14,7 @@ const path = require( 'path' );
  * Checks whether its possible to create a directory, and either creates it or ends the process with an error.
  *
  * @param {Logger} logger
- * @param {string} packageName
+ * @param {String} packageName
  */
 module.exports = function createDirectory( logger, packageName ) {
 	const directoryName = packageName.split( '/' )[ 1 ];

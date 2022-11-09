@@ -11,30 +11,31 @@ const { spawn } = require( 'child_process' );
 
 /**
  * @param {String} directoryPath
- * @param {Boolean} verbose
  * @param {'npm'|'yarn'} packageManager
- * @param {Boolean} isDevModeFlagUsed
+ * @param {Boolean} verbose
+ * @param {Boolean} dev
+ * @returns {Promise}
  */
-module.exports = async function installDependencies( directoryPath, verbose, packageManager, isDevModeFlagUsed ) {
+module.exports = async function installDependencies( directoryPath, packageManager, verbose, dev ) {
 	const installSpinner = tools.createSpinner( 'Installing dependencies... ' + chalk.gray.italic( 'It takes a while.' ), {
 		isDisabled: verbose
 	} );
 
 	installSpinner.start();
 
-	await installPackages( directoryPath, verbose, packageManager, isDevModeFlagUsed );
+	await installPackages( directoryPath, packageManager, verbose, dev );
 
 	installSpinner.finish();
 };
 
 /**
  * @param {String} directoryPath
- * @param {Boolean} verbose
  * @param {'npm'|'yarn'} packageManager
- * @param {Boolean} isDevModeFlagUsed
+ * @param {Boolean} verbose
+ * @param {Boolean} dev
  * @returns {Promise}
  */
-function installPackages( directoryPath, verbose, packageManager, isDevModeFlagUsed ) {
+function installPackages( directoryPath, packageManager, verbose, dev ) {
 	return new Promise( ( resolve, reject ) => {
 		const spawnOptions = {
 			encoding: 'utf8',
@@ -57,7 +58,7 @@ function installPackages( directoryPath, verbose, packageManager, isDevModeFlagU
 			];
 
 			// Flag required for npm 8 to install linked packages' dependencies
-			if ( isDevModeFlagUsed ) {
+			if ( dev ) {
 				npmArguments.push( '--install-links' );
 			}
 

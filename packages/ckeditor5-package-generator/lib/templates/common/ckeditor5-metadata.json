@@ -1,13 +1,13 @@
 {
 	"plugins": [
 		{
-			"name": "My plugin",
-			"className": "MyPlugin",
+			"name": "<%= formattedNames.plugin.spacedOut %>",
+			"className": "<%= formattedNames.plugin.pascalCase %>",
 			"description": "Adds text to the editor.",
-			"path": "src/myplugin.<%= programmingLanguage %>",
+			"path": "src/<%= formattedNames.plugin.lowerCaseMerged %>.<%= programmingLanguage %>",
 			"uiComponents": [
 				{
-					"name": "myButton",
+					"name": "<%= formattedNames.plugin.camelCase %>Button",
 					"type": "Button",
 					"iconPath": "theme/icons/ckeditor.svg"
 				}

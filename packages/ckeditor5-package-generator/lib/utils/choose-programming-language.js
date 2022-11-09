@@ -17,15 +17,15 @@ const PROGRAMMING_LANGUAGES = [
  * Otherwise, ask user to choose from available programming languages.
  *
  * @param {Logger} logger
- * @param {CKeditor5PackageGeneratorOptions} options
- * @returns {string}
+ * @param {String} lang
+ * @returns {Promise<String>}
  */
-module.exports = async function chooseProgrammingLanguage( logger, options ) {
-	if ( options.lang ) {
+module.exports = async function chooseProgrammingLanguage( logger, lang ) {
+	if ( lang ) {
 		const langShorthands = PROGRAMMING_LANGUAGES.map( ( { value } ) => value );
 
-		if ( langShorthands.includes( options.lang ) ) {
-			return options.lang;
+		if ( langShorthands.includes( lang ) ) {
+			return lang;
 		}
 
 		logger.error( `--lang option has to be one of: ${ langShorthands.join( ', ' ) }. Falling back to manual choice.` );

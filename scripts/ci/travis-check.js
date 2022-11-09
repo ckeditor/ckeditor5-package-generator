@@ -21,7 +21,7 @@ const NEW_PACKAGE_DIRECTORY = path.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-
 const EXPECTED_PUBLISH_FILES = {
 	js: [
 		'src/index.js',
-		'src/myplugin.js',
+		'src/testpackage.js',
 
 		'lang/contexts.json',
 		'theme/icons/ckeditor.svg',
@@ -34,9 +34,9 @@ const EXPECTED_PUBLISH_FILES = {
 	],
 	ts: [
 		'src/index.js',
-		'src/myplugin.js',
+		'src/testpackage.js',
 		'src/index.d.ts',
-		'src/myplugin.d.ts',
+		'src/testpackage.d.ts',
 
 		'lang/contexts.json',
 		'theme/icons/ckeditor.svg',
@@ -52,11 +52,11 @@ const EXPECTED_PUBLISH_FILES = {
 const EXPECTED_SRC_DIR_FILES = {
 	js: [
 		'index.js',
-		'myplugin.js'
+		'testpackage.js'
 	],
 	ts: [
 		'index.ts',
-		'myplugin.ts'
+		'testpackage.ts'
 	]
 };
 
@@ -70,7 +70,7 @@ start();
  */
 async function start() {
 	await testBuild( 'js', 'npm' );
-	await testBuild( 'ts', 'yarn' );
+	await testBuild( 'ts', 'yarn', 'CustomPluginName400' );
 
 	if ( foundError ) {
 		console.log( '\n' + chalk.red( 'Found errors during the verification. Please, review the log above.' ) );
@@ -82,19 +82,37 @@ async function start() {
 /**
  * Build and run scripts for a given language and packageManager.
  *
- * @param {string} lang
+ * @param {String} lang
  * @param {'npm'|'yarn'} packageManager
+ * @param {String|undefined} customPluginName
  */
-async function testBuild( lang, packageManager ) {
-	const packageManagerFlag = packageManager === 'npm' ? '--use-npm' : '--use-yarn';
+async function testBuild( lang, packageManager, customPluginName ) {
+	let testSetupInfoMessage = `Testing build for language: [${ lang }] and package manager: [${ packageManager }]`;
+	const packageBuildCommand = [
+		'node', 'ckeditor5-package-generator/packages/ckeditor5-package-generator/bin/index.js', '@ckeditor/ckeditor5-test-package',
+		'--dev', '--verbose', '--lang', lang, `--use-${ packageManager }`
+	];
 
-	logProcess( `Testing build for language: [${ lang }] and package manager: [${ packageManager }].` );
+	if ( customPluginName ) {
+		testSetupInfoMessage += ` with custom plugin name: [${ customPluginName }]`;
+		packageBuildCommand.push( '--plugin-name', customPluginName );
+
+		const filenameArrays = [
+			...Object.values( EXPECTED_PUBLISH_FILES ),
+			...Object.values( EXPECTED_SRC_DIR_FILES )
+		];
+
+		filenameArrays.forEach( filenameArray => {
+			filenameArray.forEach( ( filename, index, arr ) => {
+				arr[ index ] = filename.replace( 'testpackage', customPluginName.toLowerCase() );
+			} );
+		} );
+	}
+
+	logProcess( testSetupInfoMessage + '.' );
 
 	logProcess( 'Creating new package: "@ckeditor/ckeditor5-test-package"...' );
-	executeCommand( [
-		'node', 'ckeditor5-package-generator/packages/ckeditor5-package-generator/bin/index.js', '@ckeditor/ckeditor5-test-package',
-		'--dev', packageManagerFlag, '--verbose', '--lang', lang
-	], { cwd: path.join( REPOSITORY_DIRECTORY, '..' ) } );
+	executeCommand( packageBuildCommand, { cwd: path.join( REPOSITORY_DIRECTORY, '..' ) } );
 
 	logProcess( 'Executing tests...' );
 	executeCommand( [ 'yarn', 'run', 'test' ], { cwd: NEW_PACKAGE_DIRECTORY } );

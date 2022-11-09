@@ -8,9 +8,7 @@ const sinon = require( 'sinon' );
 const { expect } = require( 'chai' );
 
 describe( 'lib/utils/copy-files', () => {
-	let stubs,
-		options,
-		copyFiles;
+	let stubs, options, copyFiles;
 
 	const packageJson = {
 		'name': '<%= packageName %>',
@@ -31,8 +29,8 @@ describe( 'lib/utils/copy-files', () => {
 		},
 		'scripts': {
 			'dll:build': 'ckeditor5-package-tools dll:build',
-			'prepare': '<%= program %> run dll:build',
-			'prepublishOnly': '<%= program %> run dll:build'
+			'prepare': '<%= packageManager %> run dll:build',
+			'prepublishOnly': '<%= packageManager %> run dll:build'
 		}
 	};
 
@@ -104,6 +102,8 @@ describe( 'lib/utils/copy-files', () => {
 		);
 		stubs.fs.readFileSync.withArgs( 'templates/js/src/index.js', 'utf-8' ).returns( '/* JS CODE */' );
 		stubs.fs.readFileSync.withArgs( 'templates/ts/src/index.ts', 'utf-8' ).returns( '/* TS CODE */' );
+		stubs.fs.readFileSync.withArgs( 'templates/js/src/_PLACEHOLDER_.js', 'utf-8' ).returns( '/* PLACEHOLDER JS CODE */' );
+		stubs.fs.readFileSync.withArgs( 'templates/js/src/foo.js.txt', 'utf-8' ).returns( '/* JS CODE IN TXT FILE */' );
 
 		mockery.registerMock( 'chalk', stubs.chalk );
 		mockery.registerMock( 'fs', stubs.fs );
@@ -112,9 +112,25 @@ describe( 'lib/utils/copy-files', () => {
 		mockery.registerMock( 'path', stubs.path );
 
 		options = {
+			packageName: '@foo/ckeditor5-featurename',
 			programmingLanguage: 'js',
-			packageName: '@foo/ckeditor5-bar',
-			program: 'yarn',
+			formattedNames: {
+				package: {
+					raw: 'featurename',
+					spacedOut: 'Featurename',
+					camelCase: 'featurename',
+					pascalCase: 'Featurename',
+					lowerCaseMerged: 'featurename'
+				},
+				plugin: {
+					raw: 'BarBaz',
+					spacedOut: 'Bar baz',
+					camelCase: 'barBaz',
+					pascalCase: 'BarBaz',
+					lowerCaseMerged: 'barbaz'
+				}
+			},
+			packageManager: 'yarn',
 			directoryPath: 'directory/path/foo',
 			packageVersions: {
 				ckeditor5: '30.0.0',
@@ -143,46 +159,10 @@ describe( 'lib/utils/copy-files', () => {
 		expect( stubs.logger.process.firstCall.firstArg ).to.equal( 'Copying files...' );
 	} );
 
-	it( 'creates the ".gitignore" file for JavaScript', () => {
-		copyFiles( stubs.logger, options );
-
-		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
-		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 0 ] ).to.equal( 'directory/path/foo/.gitignore' );
-		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 1 ] ).to.equal( [
-			'build/',
-			'coverage/',
-			'node_modules/',
-			'tmp/',
-			'sample/ckeditor.dist.js',
-			''
-		].join( '\n' ) );
-	} );
-
-	it( 'creates the ".gitignore" file for TypeScript', () => {
-		options.programmingLanguage = 'ts';
-
-		copyFiles( stubs.logger, options );
-
-		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
-		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 0 ] ).to.equal( 'directory/path/foo/.gitignore' );
-		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 1 ] ).to.equal( [
-			'build/',
-			'coverage/',
-			'node_modules/',
-			'tmp/',
-			'sample/ckeditor.dist.js',
-			'',
-			'# Ignore compiled TypeScript files.',
-			'src/**/*.js',
-			'src/**/*.d.ts',
-			''
-		].join( '\n' ) );
-	} );
-
 	it( 'creates files for JavaScript', () => {
 		copyFiles( stubs.logger, options );
 
-		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
+		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
 		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/path/foo/LICENSE.md' );
 		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/path/foo/lang/contexts.json' );
 		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/path/foo/package.json' );
@@ -198,7 +178,7 @@ describe( 'lib/utils/copy-files', () => {
 			'}'
 		].join( '\n' ) );
 		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 1 ] ).to.equal( JSON.stringify( {
-			'name': '@foo/ckeditor5-bar',
+			'name': '@foo/ckeditor5-featurename',
 			'license': 'MIT',
 			'dependencies': {
 				'ckeditor5': '>=30.0.0'
@@ -230,7 +210,7 @@ describe( 'lib/utils/copy-files', () => {
 
 		copyFiles( stubs.logger, options );
 
-		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
+		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
 		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/path/foo/LICENSE.md' );
 		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/path/foo/lang/contexts.json' );
 		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/path/foo/package.json' );
@@ -246,7 +226,7 @@ describe( 'lib/utils/copy-files', () => {
 			'}'
 		].join( '\n' ) );
 		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 1 ] ).to.equal( JSON.stringify( {
-			'name': '@foo/ckeditor5-bar',
+			'name': '@foo/ckeditor5-featurename',
 			'license': 'MIT',
 			'dependencies': {
 				'ckeditor5': '>=30.0.0'
@@ -273,12 +253,92 @@ describe( 'lib/utils/copy-files', () => {
 		].join( '\n' ) );
 	} );
 
-	it( 'works with npm instead of yarn', () => {
-		options.program = 'npm';
+	it( 'replaces placeholder filenames', () => {
+		stubs.glob.sync.withArgs( 'js/**/*' ).returns( [
+			'js/package.json',
+			'js/src/index.js',
+			'js/src/_PLACEHOLDER_.js'
+		] );
 
 		copyFiles( stubs.logger, options );
 
 		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
+		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 0 ] ).to.equal( 'directory/path/foo/src/barbaz.js' );
+		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 1 ] ).to.equal( [
+			'/* PLACEHOLDER JS CODE */'
+		].join( '\n' ) );
+	} );
+
+	it( 'removes ".txt" extension from filenames', () => {
+		stubs.glob.sync.withArgs( 'js/**/*' ).returns( [
+			'js/package.json',
+			'js/src/index.js',
+			'js/src/foo.js.txt'
+		] );
+
+		copyFiles( stubs.logger, options );
+
+		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
+		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 0 ] ).to.equal( 'directory/path/foo/src/foo.js' );
+		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 1 ] ).to.equal( [
+			'/* JS CODE IN TXT FILE */'
+		].join( '\n' ) );
+	} );
+
+	it( 'works correctly with path containing directory called "common"', () => {
+		options.directoryPath = 'directory/common/foo';
+
+		copyFiles( stubs.logger, options );
+
+		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
+		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/common/foo/LICENSE.md' );
+		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/common/foo/lang/contexts.json' );
+		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/common/foo/package.json' );
+		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/common/foo/src/index.js' );
+	} );
+
+	it( 'works correctly with path containing directory called "js"', () => {
+		options.directoryPath = 'directory/js/foo';
+
+		copyFiles( stubs.logger, options );
+
+		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
+		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/js/foo/LICENSE.md' );
+		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/js/foo/lang/contexts.json' );
+		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/js/foo/package.json' );
+		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/js/foo/src/index.js' );
+	} );
+
+	it( 'works correctly with path containing directory called "ts"', () => {
+		options.directoryPath = 'directory/ts/foo';
+
+		copyFiles( stubs.logger, options );
+
+		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
+		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/ts/foo/LICENSE.md' );
+		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/ts/foo/lang/contexts.json' );
+		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/ts/foo/package.json' );
+		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/ts/foo/src/index.js' );
+	} );
+
+	it( 'works correctly with path containing directory called "Projects" (it ends with "ts")', () => {
+		options.directoryPath = 'directory/Projects/foo';
+
+		copyFiles( stubs.logger, options );
+
+		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
+		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/Projects/foo/LICENSE.md' );
+		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/Projects/foo/lang/contexts.json' );
+		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/Projects/foo/package.json' );
+		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/Projects/foo/src/index.js' );
+	} );
+
+	it( 'works with npm instead of yarn', () => {
+		options.packageManager = 'npm';
+
+		copyFiles( stubs.logger, options );
+
+		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
 		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/path/foo/LICENSE.md' );
 		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/path/foo/lang/contexts.json' );
 		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/path/foo/package.json' );
@@ -294,7 +354,7 @@ describe( 'lib/utils/copy-files', () => {
 			'}'
 		].join( '\n' ) );
 		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 1 ] ).to.equal( JSON.stringify( {
-			'name': '@foo/ckeditor5-bar',
+			'name': '@foo/ckeditor5-featurename',
 			'license': 'MIT',
 			'dependencies': {
 				'ckeditor5': '>=30.0.0'
@@ -321,3 +381,4 @@ describe( 'lib/utils/copy-files', () => {
 		].join( '\n' ) );
 	} );
 } );
+

@@ -13,7 +13,7 @@ const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
  * If the package name is not valid, prints the error and exits the process.
  *
  * @param {Logger} logger
- * @param {string} packageName
+ * @param {String|undefined} packageName
  */
 module.exports = function validatePackageName( logger, packageName ) {
 	logger.process( 'Verifying the specified package name.' );
