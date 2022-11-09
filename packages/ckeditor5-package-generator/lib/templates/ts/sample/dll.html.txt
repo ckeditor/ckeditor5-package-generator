@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/png" href="https://ckeditor.com/assets/images/favicons/32x32-2dcaa14ca8.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://ckeditor.com/docs/ckeditor5/latest/assets/img/favicons/32x32.png" sizes="32x32">
     <meta charset="utf-8">
     <title>CKEditor 5 – DLL Sample</title>
     <style>
