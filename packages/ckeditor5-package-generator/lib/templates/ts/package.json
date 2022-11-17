@@ -85,7 +85,7 @@
     "ts:clear": "npx rimraf \"src/**/*.@(js|d.ts)\"",
     "dll:build": "ckeditor5-package-tools dll:build",
     "dll:serve": "http-server ./ -o sample/dll.html",
-    "lint": "eslint \"**/*.{js,ts}\" --quiet --ignore-pattern \"build/\"",
+    "lint": "eslint \"**/*.{js,ts}\" --quiet",
     "start": "ckeditor5-package-tools start",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
     "test": "ckeditor5-package-tools test",
