@@ -44,8 +44,7 @@ module.exports = async function init( packageName, options ) {
 		directoryPath,
 		packageManager,
 		programmingLanguage,
-		packageVersions,
-		nodeVersion: process.versions.node
+		packageVersions
 	} );
 
 	await installDependencies( directoryPath, packageManager, verbose, dev );
