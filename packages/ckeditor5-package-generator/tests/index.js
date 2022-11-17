@@ -87,6 +87,8 @@ describe( 'lib/index', () => {
 			}
 		}
 
+		sinon.stub( process.versions, 'node' ).value( '12.0.0' );
+
 		mockery.registerMock( 'chalk', stubs.chalk );
 		mockery.registerMock( './utils/logger', Logger );
 
@@ -233,7 +235,8 @@ describe( 'lib/index', () => {
 			directoryPath: 'directoryPath',
 			packageVersions: {
 				ckeditor5: '30.0.0'
-			}
+			},
+			nodeVersion: '12.0.0'
 		} );
 	} );
 
