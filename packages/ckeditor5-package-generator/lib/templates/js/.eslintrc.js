@@ -5,6 +5,10 @@
 module.exports = {
 	extends: 'ckeditor5',
 	root: true,
+	ignorePatterns: [
+		// Ignore the entire `build/` (the DLL build).
+		'build/**'
+	],
 	rules: {
 		// This rule disallows importing core DLL packages directly. Imports should be done using the `ckeditor5` package.
 		// Also, importing non-DLL packages is not allowed. If the package requires other features to work, they should be
