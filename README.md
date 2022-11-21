@@ -112,7 +112,7 @@ Now, the newly created package uses changes from the local repository.
 
 ### Changelog
 
-1. Fetch all changes and switch to the `##master` branch.
+1. Fetch all changes and switch to the `#master` branch.
 2. Execute `npm run changelog`:
 
   * Scan the logs printed by the tool – search for errors (incorrect changelog entries). Incorrect entries (e.g., ones without the type) are being ignored. You may need to create entries for them manually. This is done directly in `CHANGELOG.md` (in the root directory). Make sure to verify the proposed version after you modify the changelog.
