@@ -1,6 +1,35 @@
 Changelog
 =========
 
+## [1.0.0-beta.7](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2022-11-21)
+
+### Features
+
+* The provided package name will now be used as a default name of a plugin (instead of `MyPlugin`) in the generated package. Closes [#54](https://github.com/ckeditor/ckeditor5-package-generator/issues/54). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/0ae33c4ebb7a9fbe21b8bd054164d5b0429b614c))
+* Added the `--plugin-name` option that allows specifying the plugin name different from the package name. See [#54](https://github.com/ckeditor/ckeditor5-package-generator/issues/54). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/0ae33c4ebb7a9fbe21b8bd054164d5b0429b614c))
+
+### Other changes
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Added `--use-yarn` flag to package generator to use yarn for installing dependencies in a newly created package. If npm and yarn are installed and no flags are set, user is prompted for a choice. Closes [#120](https://github.com/ckeditor/ckeditor5-package-generator/issues/120). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/0bd2d02b0ecc8f1cadee56c176e8af077b3cc13d))
+* Removed outdated TODO. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/b44674757852259723a0adb64df8b1a0f163b7e3))
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Releases containing new features:
+
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator): v1.0.0-beta.6 => v1.0.0-beta.7
+
+Other releases:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools): v1.0.0-beta.6 => v1.0.0-beta.7
+</details>
+
+
 ## [1.0.0-beta.6](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2022-08-23)
 
 ### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
