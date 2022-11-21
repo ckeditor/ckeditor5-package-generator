@@ -11,7 +11,6 @@ Changelog
 ### Other changes
 
 * **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Added `--use-yarn` flag to package generator to use yarn for installing dependencies in a newly created package. If npm and yarn are installed and no flags are set, user is prompted for a choice. Closes [#120](https://github.com/ckeditor/ckeditor5-package-generator/issues/120). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/0bd2d02b0ecc8f1cadee56c176e8af077b3cc13d))
-* Removed outdated TODO. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/b44674757852259723a0adb64df8b1a0f163b7e3))
 
 ### Released packages
 
