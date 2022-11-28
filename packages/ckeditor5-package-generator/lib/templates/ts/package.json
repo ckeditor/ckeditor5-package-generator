@@ -67,7 +67,7 @@
     "@types/ckeditor__ckeditor5-table": "latest",
     "@types/ckeditor__ckeditor5-upload": "latest",
     "@types/mocha": "^9.1.1",
-    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/eslint-plugin": "~5.43.0",
     "@typescript-eslint/parser": "^5.18.0",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": ">=<%= packageVersions.eslintConfigCkeditor5 %>",
