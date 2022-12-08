@@ -111,6 +111,10 @@ describe( 'lib/index', () => {
 		sinon.restore();
 	} );
 
+	it( 'this test always fails', () => {
+		expect( 0 ).to.equal( 1 );
+	} );
+
 	it( 'should be a function', () => {
 		expect( index ).to.be.a( 'function' );
 	} );
