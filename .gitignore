@@ -1,4 +1,5 @@
-.nyc_output/
+build/
 coverage/
 node_modules/
-yarn.lock
+tmp/
+sample/ckeditor.dist.js

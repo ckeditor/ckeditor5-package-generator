@@ -1,145 +1,168 @@
-CKEditor 5 Package Generator
-========================
+@foo/ckeditor5-bar
+==================
 
-[![Build Status](https://app.travis-ci.com/ckeditor/ckeditor5-package-generator.svg?branch=master)](https://app.travis-ci.com/ckeditor/ckeditor5-package-generator)
-[![Coverage Status](https://coveralls.io/repos/github/ckeditor/ckeditor5-package-generator/badge.svg?branch=master)](https://coveralls.io/github/ckeditor/ckeditor5-package-generator?branch=master)
-
-This repository follows the mono-repository structure. It contains multiple npm packages.
+This package was created by the [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator) package.
 
 ## Table of contents
 
-* [Packages](#packages)
-* [Develop the `ckeditor5-package-generator` repository](#develop-the-ckeditor5-package-generator-repository)
-  * [Creating a package](#creating-a-package)
-    * [Options](#options)
-    * [Developing the package](#developing-the-package)
-  * [Developing tools in the repository](#developing-tools-in-the-repository)
-* [Releasing packages](#releasing-packages)
+* [Developing the package](#developing-the-package)
+* [Available scripts](#available-scripts)
+  * [`start`](#start)
+  * [`test`](#test)
+  * [`lint`](#lint)
+  * [`stylelint`](#stylelint)
+  * [`dll:build`](#dllbuild)
+  * [`dll:serve`](#dllserve)
+  * [`translations:collect`](#translationscollect)
+  * [`translations:download`](#translationsdownload)
+  * [`translations:upload`](#translationsupload)
 * [License](#license)
 
-## Packages
+## Developing the package
 
-<table>
-<thead>
-	<tr>
-		<th width="30%">Name</th>
-		<th width="15%">Version</th>
-		<th width="55%">Description</th>
-	</tr>
-</thead>
-<tbody>
+To read about the CKEditor 5 framework, visit the [CKEditor5 documentation](https://ckeditor.com/docs/ckeditor5/latest/framework/index.html).
 
-<tr>
-	<td>
-		<a href="/packages/ckeditor5-package-generator"><code>ckeditor5-package-generator</code></a>
-	</td>
-	<td>
-		<a href="https://badge.fury.io/js/ckeditor5-package-generator"><img src="https://badge.fury.io/js/ckeditor5-package-generator.svg" alt="npm version" height="18"></a>
-	</td>
-	<td>
-		The tool for creating CKEditor 5 packages.
-	</td>
-</tr>
+## Available scripts
 
-<tr>
-	<td>
-		<a href="/packages/ckeditor5-package-tools"><code>@ckeditor/ckeditor5-package-tools</code></a>
-	</td>
-	<td>
-		<a href="https://badge.fury.io/js/@ckeditor%2Fckeditor5-package-tools"><img src="https://badge.fury.io/js/@ckeditor%2Fckeditor5-package-tools.svg" alt="npm version" height="18"></a>
-	</td>
-	<td>
-		Development environment tools for CKEditor 5 packages.
-	</td>
-</tr>
+Npm scripts are a convenient way to provide commands in a project. They are defined in the `package.json` file and shared with other people contributing to the project. It ensures that developers use the same command with the same options (flags).
 
-</tbody>
-</table>
+All the scripts can be executed by running `yarn run <script>`. Pre and post commands with matching names will be run for those as well.
 
-## Developing the `ckeditor5-package-generator` repository
+The following scripts are available in the package.
 
-* Clone the repository: `git clone git@github.com:ckeditor/ckeditor5-package-generator.git`
-* Install required dependencies: `yarn install`
+### `start`
 
-### Creating a package
+Starts a HTTP server with the live-reload mechanism that allows previewing and testing plugins available in the package.
 
-To create a new package, call the `ckeditor5-package-generator` executable file. It requires a single argument which is the package name. It must follow the schema: `@scope/ckeditor5-package`, where [@scope](https://docs.npmjs.com/about-scopes) is an owner of the package, and `ckeditor5-package` is the package name. It must start with the `ckeditor5-` prefix.
+When the server has been started, the default browser will open the developer sample. This can be disabled by passing the `--no-open` option to that command.
 
-The tool will create a new directory called `ckeditor5-package` with an example plugin called `Package` and tools for its development.
+You can also define the language that will translate the created editor by specifying the `--language [LANG]` option. It defaults to `'en'`.
 
-To use a local version of the `@ckeditor/ckeditor5-package-tools` package, use the `--dev` option when executing the command.
+Examples:
 
 ```bash
-node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--dev] [--use-npm] [--use-yarn] [--name <...>] [--lang <js|ts>] [--verbose]
+# Starts the server and open the browser.
+yarn run start
+
+# Disable auto-opening the browser.
+yarn run start --no-open
+
+# Create the editor with the interface in German.
+yarn run start --language=de
 ```
 
-#### Options
+### `test`
 
-* `--dev` &ndash; whether to execute in the development mode. It means that the `@ckeditor/ckeditor5-package-tools` will not be installed from npm, but from the local file system.
-* `--use-npm` &ndash; use `npm` to install dependencies in a newly created package.
-* `--use-yarn` &ndash; use `yarn` to install dependencies in a newly created package.
-* `--name` &ndash; define a class name to be different from the package name.
-* `--lang` &ndash; (values: `js` | `ts`) choose whether the created package should use JavaScript or TypeScript. If omitted, the script will ask the user to choose manually.
-* `--verbose` &ndash; (alias: `-v`) print additional logs about the current executed task.
+Allows executing unit tests for the package, specified in the `tests/` directory. The command accepts the following modifiers:
 
-#### Developing the package
+* `--coverage` &ndash; to create the code coverage report,
+* `--watch` &ndash; to observe the source files (the command does not end after executing tests),
+* `--source-map` &ndash; to generate source maps of sources,
+* `--verbose` &ndash; to print additional webpack logs.
 
-Available scripts and their modifiers are described in the [`README.md` file of the `ckeditor5-package-generator` package](/packages/ckeditor5-package-generator).
-
-#### Package metadata
-
-The `ckeditor5-metadata.json` file contains data of the package that allows for an automated detection of plugins and processing them by external scripts. Information about how this file should be maintained is available in the [official guide](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/contributing/package-metadata.html). Keep in mind that this file has no effect on how the plugin work.
-
-### Developing tools in the repository
-
-When creating a new package with the `--dev` option, the local version of the `@ckeditor/ckeditor5-package-tools` will be installed instead of its npm version.
-
-However, applying changes in the local repository does not impact an already created package. Hence, you need to create a [link](https://docs.npmjs.com/cli/link/) between the local repository and the new package.
+Examples:
 
 ```bash
-# The assumption here is your current working directory points to the root directory in the repository.
-cd packages/ckeditor5-package-tools
-yarn link
+# Execute tests.
+yarn run test
 
-# Then, go to the newly created package.
-cd /path/to/new/package/ckeditor5-foo
-yarn link @ckeditor/ckeditor5-package-tools
+# Generate code coverage report after each change in the sources.
+yarn run test --coverage --test
 ```
 
-Now, the newly created package uses changes from the local repository.
+### `lint`
 
-## Releasing packages
+Runs ESLint, which analyzes the code (all `*.js` files) to quickly find problems.
 
-### Changelog
-
-1. Fetch all changes and switch to the `#master` branch.
-2. Execute `npm run changelog`:
-
-  * Scan the logs printed by the tool – search for errors (incorrect changelog entries). Incorrect entries (e.g., ones without the type) are being ignored. You may need to create entries for them manually. This is done directly in `CHANGELOG.md` (in the root directory). Make sure to verify the proposed version after you modify the changelog.
-  * When unsure what has changed in this version of a specific package, use `git diff <hash of the previous release> packages/<name>/`.
-
-### Publishing
-
-After generating the changelog, you are ready for publishing packages.
-
-First, you need to bump their versions:
+Examples:
 
 ```bash
-npm run release:bump-version
+# Execute eslint.
+yarn run lint
 ```
 
-You can also use the `--dry-run` option to see what this task does.
+### `stylelint`
 
-After bumping versions, you can publish changes:
+Similar to the `lint` task, stylelint analyzes the CSS code (`*.css` files in the `theme/` directory) in the package.
+
+Examples:
 
 ```bash
-npm run release:publish
+# Execute stylelint.
+yarn run stylelint
 ```
 
-As in the previous task, the `--dry-run` option is also available.
+### `dll:build`
+
+Creates a DLL-compatible package build which can be loaded into an editor using [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html).
+
+Examples:
+
+```bash
+# Build the DLL file that is ready to publish.
+yarn run dll:build
+
+# Build the DLL file and listen to changes in its sources.
+yarn run dll:build --watch
+```
+
+### `dll:serve`
+
+Creates a simple HTTP server (without the live-reload mechanism) that allows verifying whether the DLL build of the package is compatible with the CKEditor 5 [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html).
+
+Examples:
+
+```bash
+# Starts the HTTP server and opens the browser.
+yarn run dll:serve
+```
+
+### `translations:collect`
+
+Collects translation messages (arguments of the `t()` function) and context files, then validates whether the provided values do not interfere with the values specified in the `@ckeditor/ckeditor5-core` package.
+
+The task may end with an error if one of the following conditions is met:
+
+* Found the `Unused context` error &ndash; entries specified in the `lang/contexts.json` file are not used in source files. They should be removed.
+* Found the `Context is duplicated for the id` error &ndash; some of the entries are duplicated. Consider removing them from the `lang/contexts.json` file, or rewrite them.
+* Found the `Context for the message id is missing` error &ndash; entries specified in source files are not described in the `lang/contexts.json` file. They should be added.
+
+Examples:
+
+```bash
+yarn run translations:collect
+```
+
+### `translations:download`
+
+Download translations from the Transifex server. Depending on users' activity in the project, it creates translations files used for building the editor.
+
+The task requires passing the URL to Transifex API. Usually, it matches the following format: `https://www.transifex.com/api/2/project/[PROJECT_SLUG]`.
+
+To avoid passing the `--transifex` option every time when calls the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:download` command.
+
+Examples:
+
+```bash
+yarn run translations:download --transifex [API URL]
+```
+
+### `translations:upload`
+
+Uploads translation messages onto the Transifex server. It allows for the creation of translations into other languages by users using the Transifex platform.
+
+The task requires passing the URL to the Transifex API. Usually, it matches the following format: `https://www.transifex.com/api/2/project/[PROJECT_SLUG]`.
+
+To avoid passing the `--transifex` option every time when you call the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:upload` command.
+
+Examples:
+
+```bash
+yarn run translations:upload --transifex [API URL]
+```
 
 ## License
 
-The `ckeditor5-package-generator` tool is available under [MIT license](https://opensource.org/licenses/MIT).
+The `@foo/ckeditor5-bar` package is available under [MIT license](https://opensource.org/licenses/MIT).
 
-All packages created with the tool are also available under the MIT license.
+However, it is the default license of packages created by the [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator) package and it can be changed.

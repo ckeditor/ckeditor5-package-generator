@@ -1,0 +1,17 @@
+{
+	"plugins": [
+		{
+			"name": "Bar",
+			"className": "Bar",
+			"description": "Adds text to the editor.",
+			"path": "src/bar.js",
+			"uiComponents": [
+				{
+					"name": "barButton",
+					"type": "Button",
+					"iconPath": "theme/icons/ckeditor.svg"
+				}
+			]
+		}
+	]
+}

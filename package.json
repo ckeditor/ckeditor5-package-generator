@@ -1,84 +1,83 @@
 {
-  "name": "@ckeditor/ckeditor5-package-generator",
-  "version": "1.0.0-beta.7",
-  "private": true,
+  "name": "@foo/ckeditor5-bar",
+  "version": "0.0.1",
+  "description": "A plugin for CKEditor 5.",
   "keywords": [
     "ckeditor",
     "ckeditor5",
     "ckeditor 5",
-    "package",
-    "plugin",
-    "generator",
-    "maker",
-    "wizard",
-    "bootstrapper"
+    "ckeditor5-feature",
+    "ckeditor5-plugin",
+    "ckeditor5-dll",
+    "ckeditor5-package-generator"
   ],
-  "author": "CKSource (http://cksource.com/)",
+  "main": "src/index.js",
   "license": "MIT",
-  "homepage": "https://ckeditor.com/ckeditor-5",
-  "devDependencies": {
-    "@ckeditor/ckeditor5-dev-docs": "^30.0.0",
-    "@ckeditor/ckeditor5-dev-env": "^30.0.0",
-    "chalk": "^4.1.2",
-    "eslint": "^7.32.0",
-    "eslint-config-ckeditor5": "^4.0.0",
-    "husky": "^8.0.2",
-    "lint-staged": "^10.5.4",
-    "mocha": "^9.1.1",
-    "nyc": "^15.1.0",
-    "strip-ansi": "^6.0.1"
-  },
   "engines": {
     "node": ">=14.0.0",
-    "npm": ">=8.1.0"
+    "npm": ">=5.7.1"
+  },
+  "files": [
+    "lang",
+    "src",
+    "theme",
+    "build",
+    "ckeditor5-metadata.json"
+  ],
+  "dependencies": {
+    "ckeditor5": ">=35.3.2"
+  },
+  "devDependencies": {
+    "@ckeditor/ckeditor5-autoformat": ">=35.3.2",
+    "@ckeditor/ckeditor5-basic-styles": ">=35.3.2",
+    "@ckeditor/ckeditor5-block-quote": ">=35.3.2",
+    "@ckeditor/ckeditor5-code-block": ">=35.3.2",
+    "@ckeditor/ckeditor5-core": ">=35.3.2",
+    "@ckeditor/ckeditor5-editor-classic": ">=35.3.2",
+    "@ckeditor/ckeditor5-essentials": ">=35.3.2",
+    "@ckeditor/ckeditor5-heading": ">=35.3.2",
+    "@ckeditor/ckeditor5-image": ">=35.3.2",
+    "@ckeditor/ckeditor5-indent": ">=35.3.2",
+    "@ckeditor/ckeditor5-inspector": ">=4.1.0",
+    "@ckeditor/ckeditor5-link": ">=35.3.2",
+    "@ckeditor/ckeditor5-list": ">=35.3.2",
+    "@ckeditor/ckeditor5-media-embed": ">=35.3.2",
+    "@ckeditor/ckeditor5-package-tools": "^1.0.0-beta.7",
+    "@ckeditor/ckeditor5-paragraph": ">=35.3.2",
+    "@ckeditor/ckeditor5-table": ">=35.3.2",
+    "@ckeditor/ckeditor5-theme-lark": ">=35.3.2",
+    "@ckeditor/ckeditor5-upload": ">=35.3.2",
+    "eslint": "^7.32.0",
+    "eslint-config-ckeditor5": ">=4.1.1",
+    "http-server": "^14.1.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.6",
+    "stylelint": "^13.13.1",
+    "stylelint-config-ckeditor5": ">=4.1.1"
   },
   "scripts": {
-    "postinstall": "node ./scripts/postinstall.js",
-    "changelog": "node scripts/release/changelog.js",
-    "coverage": "nyc npm run test",
-    "lint": "eslint --quiet \"**/*.js\"",
-    "precommit": "lint-staged",
-    "release:bump-version": "node scripts/release/bump-versions.js",
-    "release:publish": "node scripts/release/publish.js",
-    "test": "mocha 'packages/*/tests/**/*.js'",
-    "clean": "npx rimraf package-lock.json yarn.lock ./**/node_modules",
-    "reinstall": "yarn run clean && yarn install"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ckeditor/ckeditor5-package-generator.git"
-  },
-  "nyc": {
-    "reporter": [
-      "text-summary",
-      "lcov"
-    ],
-    "include": [
-      "packages/**/lib"
-    ],
-    "exclude": [
-      "packages/ckeditor5-package-generator/lib/templates"
-    ],
-    "cache": false,
-    "all": true,
-    "check-coverage": true,
-    "lines": 100,
-    "branches": 100,
-    "functions": 100,
-    "statements": 100
+    "dll:build": "ckeditor5-package-tools dll:build",
+    "dll:serve": "http-server ./ -o sample/dll.html",
+    "lint": "eslint \"**/*.js\" --quiet",
+    "start": "ckeditor5-package-tools start",
+    "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
+    "test": "ckeditor5-package-tools test",
+    "prepare": "yarn run dll:build",
+    "translations:collect": "ckeditor5-package-tools translations:collect",
+    "translations:download": "ckeditor5-package-tools translations:download",
+    "translations:upload": "ckeditor5-package-tools translations:upload"
   },
   "lint-staged": {
     "**/*.js": [
       "eslint --quiet"
+    ],
+    "**/*.css": [
+      "stylelint --quiet --allow-empty-input"
     ]
   },
-  "eslintIgnore": [
-    "coverage/**",
-    "packages/*/node_modules/**"
-  ],
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
