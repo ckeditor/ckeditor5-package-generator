@@ -7,12 +7,13 @@
 
 const path = require( 'path' );
 const glob = require( 'glob' );
+const { createPotFiles } = require( '@ckeditor/ckeditor5-dev-transifex' );
 
 module.exports = options => {
 	// Glob handles posix paths.
 	const sourceFilesGlob = path.join( options.cwd, 'src', '**', '*.[jt]s' ).split( /[\\/]/g ).join( '/' );
 
-	return require( '@ckeditor/ckeditor5-dev-env' ).createPotFiles( {
+	return createPotFiles( {
 		// An array containing absolute paths the package sources.
 		sourceFiles: glob.sync( sourceFilesGlob ),
 

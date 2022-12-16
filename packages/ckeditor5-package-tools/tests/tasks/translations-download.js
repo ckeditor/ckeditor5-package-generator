@@ -20,8 +20,8 @@ describe( 'lib/tasks/translations-download', () => {
 		} );
 
 		stubs = {
-			getToken: sinon.stub(),
-			devEnv: {
+			transifex: {
+				getToken: sinon.stub(),
 				downloadTranslations: sinon.stub()
 			},
 			path: {
@@ -34,8 +34,7 @@ describe( 'lib/tasks/translations-download', () => {
 		mockery.registerMock( '/workspace/package.json', {
 			name: '@ckeditor/ckeditor5-foo'
 		} );
-		mockery.registerMock( '@ckeditor/ckeditor5-dev-env', stubs.devEnv );
-		mockery.registerMock( '@ckeditor/ckeditor5-dev-env/lib/translations/gettoken', stubs.getToken );
+		mockery.registerMock( '@ckeditor/ckeditor5-dev-transifex', stubs.transifex );
 
 		translationsDownload = require( '../../lib/tasks/translations-download' );
 	} );
@@ -51,7 +50,7 @@ describe( 'lib/tasks/translations-download', () => {
 
 	it( 'downloads translation files', async () => {
 		stubs.getToken.resolves( 'secretToken' );
-		stubs.devEnv.downloadTranslations.resolves( 'OK' );
+		stubs.transifex.downloadTranslations.resolves( 'OK' );
 
 		const results = await translationsDownload( {
 			cwd: '/workspace',
@@ -61,8 +60,8 @@ describe( 'lib/tasks/translations-download', () => {
 
 		expect( results ).to.equal( 'OK' );
 
-		expect( stubs.devEnv.downloadTranslations.calledOnce ).to.equal( true );
-		expect( stubs.devEnv.downloadTranslations.firstCall.firstArg ).to.deep.equal( {
+		expect( stubs.transifex.downloadTranslations.calledOnce ).to.equal( true );
+		expect( stubs.transifex.downloadTranslations.firstCall.firstArg ).to.deep.equal( {
 			token: 'secretToken',
 			organizationName: 'foo',
 			projectName: 'bar',

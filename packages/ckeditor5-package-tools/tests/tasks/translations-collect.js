@@ -20,7 +20,7 @@ describe( 'lib/tasks/translations-collect', () => {
 		} );
 
 		stubs = {
-			devEnv: {
+			transifex: {
 				createPotFiles: sinon.stub()
 			},
 			path: {
@@ -33,7 +33,7 @@ describe( 'lib/tasks/translations-collect', () => {
 
 		mockery.registerMock( 'path', stubs.path );
 		mockery.registerMock( 'glob', stubs.glob );
-		mockery.registerMock( '@ckeditor/ckeditor5-dev-env', stubs.devEnv );
+		mockery.registerMock( '@ckeditor/ckeditor5-dev-transifex', stubs.transifex );
 
 		translationsCollect = require( '../../lib/tasks/translations-collect' );
 	} );
@@ -54,7 +54,7 @@ describe( 'lib/tasks/translations-collect', () => {
 		];
 
 		stubs.glob.sync.returns( sourceFiles );
-		stubs.devEnv.createPotFiles.returns( 'OK' );
+		stubs.transifex.createPotFiles.returns( 'OK' );
 
 		const results = translationsCollect( {
 			cwd: '/workspace'
@@ -65,8 +65,8 @@ describe( 'lib/tasks/translations-collect', () => {
 		expect( stubs.glob.sync.calledOnce ).to.equal( true );
 		expect( stubs.glob.sync.firstCall.firstArg ).to.equal( '/workspace/src/**/*.[jt]s' );
 
-		expect( stubs.devEnv.createPotFiles.calledOnce ).to.equal( true );
-		expect( stubs.devEnv.createPotFiles.firstCall.firstArg ).to.deep.equal( {
+		expect( stubs.transifex.createPotFiles.calledOnce ).to.equal( true );
+		expect( stubs.transifex.createPotFiles.firstCall.firstArg ).to.deep.equal( {
 			// Verify results returned by `glob.sync()`.
 			sourceFiles,
 			// Verify a path to the `@ckeditor/ckeditor5-core` package.
@@ -91,7 +91,7 @@ describe( 'lib/tasks/translations-collect', () => {
 		];
 
 		stubs.glob.sync.returns( sourceFiles );
-		stubs.devEnv.createPotFiles.returns( 'OK' );
+		stubs.transifex.createPotFiles.returns( 'OK' );
 
 		const results = translationsCollect( {
 			cwd: '/workspace'
@@ -102,8 +102,8 @@ describe( 'lib/tasks/translations-collect', () => {
 		expect( stubs.glob.sync.calledOnce ).to.equal( true );
 		expect( stubs.glob.sync.firstCall.firstArg ).to.equal( '/workspace/src/**/*.[jt]s' );
 
-		expect( stubs.devEnv.createPotFiles.calledOnce ).to.equal( true );
-		expect( stubs.devEnv.createPotFiles.firstCall.firstArg ).to.deep.equal( {
+		expect( stubs.transifex.createPotFiles.calledOnce ).to.equal( true );
+		expect( stubs.transifex.createPotFiles.firstCall.firstArg ).to.deep.equal( {
 			// Verify results returned by `glob.sync()`.
 			sourceFiles,
 			// Verify a path to the `@ckeditor/ckeditor5-core` package.
@@ -122,7 +122,7 @@ describe( 'lib/tasks/translations-collect', () => {
 	} );
 
 	it( 'passes posix paths to glob', () => {
-		stubs.devEnv.createPotFiles.returns( 'OK' );
+		stubs.transifex.createPotFiles.returns( 'OK' );
 
 		const results = translationsCollect( {
 			cwd: 'C:\\workspace'

@@ -9,7 +9,7 @@
 
 'use strict';
 
-const crawler = require( '@ckeditor/ckeditor5-dev-docs/lib/web-crawler/index.js' );
+const { runCrawler } = require( '@ckeditor/ckeditor5-dev-web-crawler' );
 
 // The crawler uses `process.exit()` to finish its work, so it needs to be executed in
 // a separated process to avoid canceling a build if the verification is in the middle of tasks
@@ -21,7 +21,7 @@ const crawler = require( '@ckeditor/ckeditor5-dev-docs/lib/web-crawler/index.js'
 // [1] = './verify-sample.js'
 // [2] = 'http://localhost:8080/'
 
-crawler( {
+runCrawler( {
 	url: process.argv[ 2 ],
 	depth: 1,
 	concurrency: 1,
