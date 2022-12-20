@@ -10,7 +10,7 @@
 const fs = require( 'fs' );
 const path = require( 'path' );
 const webpack = require( 'webpack' );
-const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
+const { CKEditorTranslationsPlugin } = require( '@ckeditor/ckeditor5-dev-translations' );
 const { loaderDefinitions } = require( './webpack-utils' );
 
 module.exports = options => {
@@ -26,7 +26,7 @@ module.exports = options => {
 
 	if ( options.language !== 'en' ) {
 		webpackPlugins.push(
-			new CKEditorWebpackPlugin( {
+			new CKEditorTranslationsPlugin( {
 				language: options.language,
 				sourceFilesPattern: /src[/\\].+\.[jt]s$/
 			} )

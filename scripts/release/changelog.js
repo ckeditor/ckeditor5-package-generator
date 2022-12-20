@@ -7,7 +7,7 @@
 
 'use strict';
 
-require( '@ckeditor/ckeditor5-dev-env' )
+require( '@ckeditor/ckeditor5-dev-release-tools' )
 	.generateChangelogForMonoRepository( {
 		cwd: process.cwd(),
 		packages: 'packages',

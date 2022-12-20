@@ -6,6 +6,7 @@
 'use strict';
 
 const path = require( 'path' );
+const { getToken, downloadTranslations } = require( '@ckeditor/ckeditor5-dev-transifex' );
 
 module.exports = async options => {
 	if ( !options.organization ) {
@@ -20,12 +21,10 @@ module.exports = async options => {
 		throw new Error( 'The --transifex [API end-point] option is no longer supported. Use `--organization` and `--project` instead.' );
 	}
 
-	const getToken = require( '@ckeditor/ckeditor5-dev-env/lib/translations/gettoken' );
-
 	const pkgJson = require( path.join( options.cwd, 'package.json' ) );
 	const packageName = pkgJson.name.split( '/' ).pop();
 
-	return require( '@ckeditor/ckeditor5-dev-env' ).downloadTranslations( {
+	return downloadTranslations( {
 		// Token used for authentication with the Transifex service.
 		token: await getToken(),
 

@@ -35,7 +35,9 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 			webpack: sinon.stub(),
 			providePlugin: sinon.stub(),
 			definePlugin: sinon.stub(),
-			devWebpackPlugin: sinon.stub(),
+			devTranslations: {
+				CKEditorTranslationsPlugin: sinon.stub()
+			},
 			webpackUtils: {
 				loaderDefinitions: {
 					raw: sinon.stub(),
@@ -67,7 +69,7 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		mockery.registerMock( 'path', stubs.path );
 		mockery.registerMock( 'webpack', stubs.webpack );
 		mockery.registerMock( './webpack-utils', stubs.webpackUtils );
-		mockery.registerMock( '@ckeditor/ckeditor5-dev-webpack-plugin', stubs.devWebpackPlugin );
+		mockery.registerMock( '@ckeditor/ckeditor5-dev-translations', stubs.devTranslations );
 
 		getWebpackConfigServer = require( '../../lib/utils/get-webpack-config-server' );
 	} );
@@ -181,8 +183,8 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 				EDITOR_LANGUAGE: '"pl"'
 			} );
 
-			expect( stubs.devWebpackPlugin.calledOnce ).to.equal( true );
-			expect( stubs.devWebpackPlugin.firstCall.firstArg ).to.deep.equal( {
+			expect( stubs.devTranslations.CKEditorTranslationsPlugin.calledOnce ).to.equal( true );
+			expect( stubs.devTranslations.CKEditorTranslationsPlugin.firstCall.firstArg ).to.deep.equal( {
 				language: 'pl',
 				sourceFilesPattern: /src[/\\].+\.[jt]s$/
 			} );

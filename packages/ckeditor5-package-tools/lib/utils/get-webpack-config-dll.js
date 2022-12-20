@@ -12,7 +12,7 @@ const fs = require( 'fs' );
 
 const webpack = require( 'webpack' );
 const TerserPlugin = require( 'terser-webpack-plugin' );
-const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
+const { CKEditorTranslationsPlugin } = require( '@ckeditor/ckeditor5-dev-translations' );
 const { loaderDefinitions } = require( './webpack-utils' );
 
 module.exports = options => {
@@ -46,7 +46,7 @@ module.exports = options => {
 	// include the CKEditor 5 Webpack plugin that produces translation files.
 	if ( fs.existsSync( path.join( options.cwd, 'lang', 'translations', 'en.po' ) ) ) {
 		webpackPlugins.push(
-			new CKEditorWebpackPlugin( {
+			new CKEditorTranslationsPlugin( {
 				language: 'en',
 				additionalLanguages: 'all',
 				sourceFilesPattern: /^src[/\\].+\.[jt]s$/,

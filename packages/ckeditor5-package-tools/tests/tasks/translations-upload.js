@@ -20,8 +20,8 @@ describe( 'lib/tasks/translations-upload', () => {
 		} );
 
 		stubs = {
-			getToken: sinon.stub(),
-			devEnv: {
+			transifex: {
+				getToken: sinon.stub(),
 				uploadPotFiles: sinon.stub()
 			},
 			path: {
@@ -34,8 +34,7 @@ describe( 'lib/tasks/translations-upload', () => {
 		mockery.registerMock( '/workspace/package.json', {
 			name: '@ckeditor/ckeditor5-foo'
 		} );
-		mockery.registerMock( '@ckeditor/ckeditor5-dev-env', stubs.devEnv );
-		mockery.registerMock( '@ckeditor/ckeditor5-dev-env/lib/translations/gettoken', stubs.getToken );
+		mockery.registerMock( '@ckeditor/ckeditor5-dev-transifex', stubs.transifex );
 
 		translationsUpload = require( '../../lib/tasks/translations-upload' );
 	} );
@@ -50,8 +49,8 @@ describe( 'lib/tasks/translations-upload', () => {
 	} );
 
 	it( 'uploads translation files', async () => {
-		stubs.getToken.resolves( 'secretToken' );
-		stubs.devEnv.uploadPotFiles.resolves( 'OK' );
+		stubs.transifex.getToken.resolves( 'secretToken' );
+		stubs.transifex.uploadPotFiles.resolves( 'OK' );
 
 		const results = await translationsUpload( {
 			cwd: '/workspace',
@@ -61,8 +60,8 @@ describe( 'lib/tasks/translations-upload', () => {
 
 		expect( results ).to.equal( 'OK' );
 
-		expect( stubs.devEnv.uploadPotFiles.calledOnce ).to.equal( true );
-		expect( stubs.devEnv.uploadPotFiles.firstCall.firstArg ).to.deep.equal( {
+		expect( stubs.transifex.uploadPotFiles.calledOnce ).to.equal( true );
+		expect( stubs.transifex.uploadPotFiles.firstCall.firstArg ).to.deep.equal( {
 			token: 'secretToken',
 			cwd: '/workspace',
 			organizationName: 'foo',

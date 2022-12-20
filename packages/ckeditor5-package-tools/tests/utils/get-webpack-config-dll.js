@@ -39,7 +39,9 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 			webpack: sinon.stub(),
 			dllReferencePlugin: sinon.stub(),
 			providePlugin: sinon.stub(),
-			devWebpackPlugin: sinon.stub(),
+			devTranslations: {
+				CKEditorTranslationsPlugin: sinon.stub()
+			},
 			webpackUtils: {
 				loaderDefinitions: {
 					raw: sinon.stub(),
@@ -70,7 +72,7 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 		mockery.registerMock( 'path', stubs.path );
 		mockery.registerMock( 'webpack', stubs.webpack );
 		mockery.registerMock( './webpack-utils', stubs.webpackUtils );
-		mockery.registerMock( '@ckeditor/ckeditor5-dev-webpack-plugin', stubs.devWebpackPlugin );
+		mockery.registerMock( '@ckeditor/ckeditor5-dev-translations', stubs.devTranslations );
 
 		mockery.registerMock( '/process/cwd/node_modules/ckeditor5/build/ckeditor5-dll.manifest.json', stubs.ckeditor5manifest );
 		mockery.registerMock( '/process/cwd/package.json', stubs.packageJson );
@@ -163,8 +165,8 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 		expect( stubs.fs.existsSync.calledOnce ).to.equal( true );
 		expect( stubs.fs.existsSync.firstCall.firstArg ).to.equal( '/process/cwd/lang/translations/en.po' );
 
-		expect( stubs.devWebpackPlugin.calledOnce ).to.equal( true );
-		expect( stubs.devWebpackPlugin.firstCall.firstArg ).to.deep.equal( {
+		expect( stubs.devTranslations.CKEditorTranslationsPlugin.calledOnce ).to.equal( true );
+		expect( stubs.devTranslations.CKEditorTranslationsPlugin.firstCall.firstArg ).to.deep.equal( {
 			additionalLanguages: 'all',
 			language: 'en',
 			skipPluralFormFunction: true,

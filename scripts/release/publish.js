@@ -23,7 +23,7 @@ const rootPackageJson = require( '../../package.json' );
 // Use:
 // yarn run release:publish --dry-run
 
-require( '@ckeditor/ckeditor5-dev-env' )
+require( '@ckeditor/ckeditor5-dev-release-tools' )
 	.releaseSubRepositories( {
 		cwd: process.cwd(),
 		packages: 'packages',
