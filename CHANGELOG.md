@@ -1,6 +1,26 @@
 Changelog
 =========
 
+## [1.0.0-beta.8](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2022-12-20)
+
+### Other changes
+
+* Aligned the project to recent changes in the `ckeditor/ckeditor5-dev` repository. See the [release v32.0.0](https://github.com/ckeditor/ckeditor5-dev/releases/tag/v32.0.0). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/a795cf7f3fc431a8821da0a1dfb6223623096eec))
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Other releases:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools): v1.0.0-beta.7 => v1.0.0-beta.8
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator): v1.0.0-beta.7 => v1.0.0-beta.8
+</details>
+
+
 ## [1.0.0-beta.7](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2022-11-21)
 
 ### Features
