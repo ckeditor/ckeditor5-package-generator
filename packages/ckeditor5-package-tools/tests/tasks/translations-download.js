@@ -49,7 +49,7 @@ describe( 'lib/tasks/translations-download', () => {
 	} );
 
 	it( 'downloads translation files', async () => {
-		stubs.getToken.resolves( 'secretToken' );
+		stubs.transifex.getToken.resolves( 'secretToken' );
 		stubs.transifex.downloadTranslations.resolves( 'OK' );
 
 		const results = await translationsDownload( {

@@ -49,7 +49,7 @@ describe( 'lib/tasks/translations-upload', () => {
 	} );
 
 	it( 'uploads translation files', async () => {
-		stubs.getToken.resolves( 'secretToken' );
+		stubs.transifex.getToken.resolves( 'secretToken' );
 		stubs.transifex.uploadPotFiles.resolves( 'OK' );
 
 		const results = await translationsUpload( {
