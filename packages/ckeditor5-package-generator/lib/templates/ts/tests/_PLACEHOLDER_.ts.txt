@@ -1,14 +1,9 @@
 import { expect } from 'chai';
-import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
-import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
-import Heading from '@ckeditor/ckeditor5-heading/src/heading';
-import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+import { Essentials } from '@ckeditor/ckeditor5-essentials';
+import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
+import { Heading } from '@ckeditor/ckeditor5-heading';
+import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
 import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>';
-
-import type { EditorWithUI } from 'ckeditor__ckeditor5-core/src/editor/editorwithui';
-import type { DataApi } from 'ckeditor__ckeditor5-core/src/editor/utils/dataapimixin';
-
-interface Editor extends EditorWithUI, DataApi {}
 
 describe( '<%= formattedNames.plugin.pascalCase %>', () => {
 	it( 'should be named', () => {
@@ -16,7 +11,7 @@ describe( '<%= formattedNames.plugin.pascalCase %>', () => {
 	} );
 
 	describe( 'init()', () => {
-		let domElement: HTMLElement, editor: Editor;
+		let domElement: HTMLElement, editor: ClassicEditor;
 
 		beforeEach( async () => {
 			domElement = document.createElement( 'div' );
