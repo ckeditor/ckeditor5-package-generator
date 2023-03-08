@@ -24,9 +24,6 @@
     "build",
     "ckeditor5-metadata.json"
   ],
-  "dependencies": {
-    "ckeditor5": ">=<%= packageVersions.ckeditor5 %>"
-  },
   "devDependencies": {
     "@ckeditor/ckeditor5-autoformat": ">=<%= packageVersions.ckeditor5 %>",
     "@ckeditor/ckeditor5-basic-styles": ">=<%= packageVersions.ckeditor5 %>",
@@ -47,6 +44,7 @@
     "@ckeditor/ckeditor5-table": ">=<%= packageVersions.ckeditor5 %>",
     "@ckeditor/ckeditor5-theme-lark": ">=<%= packageVersions.ckeditor5 %>",
     "@ckeditor/ckeditor5-upload": ">=<%= packageVersions.ckeditor5 %>",
+    "ckeditor5": ">=<%= packageVersions.ckeditor5 %>",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": ">=<%= packageVersions.eslintConfigCkeditor5 %>",
     "http-server": "^14.1.0",
@@ -54,6 +52,9 @@
     "lint-staged": "^10.2.6",
     "stylelint": "^13.13.1",
     "stylelint-config-ckeditor5": ">=<%= packageVersions.stylelintConfigCkeditor5 %>"
+  },
+  "peerDependencies": {
+    "ckeditor5": ">=<%= packageVersions.ckeditor5 %>"
   },
   "scripts": {
     "dll:build": "ckeditor5-package-tools dll:build",
