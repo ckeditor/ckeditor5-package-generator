@@ -1,6 +1,33 @@
 Changelog
 =========
 
+## [1.0.0-beta.9](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2023-03-09)
+
+### Features
+
+* Replaced the community typings with the official CKEditor 5. Closes [#110](https://github.com/ckeditor/ckeditor5-package-generator/issues/110). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/f2f8264a6847ac6d0cb5f3aa7c77159134669c7d))
+
+### Other changes
+
+* The `ckeditor5` package is no longer a dependency of a created package. Instead, it is marked as a peer dependency to enable using the newly created package with the latest CKEditor 5 versions. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/f2f8264a6847ac6d0cb5f3aa7c77159134669c7d))
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Releases containing new features:
+
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator): v1.0.0-beta.8 => v1.0.0-beta.9
+
+Other releases:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools): v1.0.0-beta.8 => v1.0.0-beta.9
+</details>
+
+
 ## [1.0.0-beta.8](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2022-12-20)
 
 ### Other changes
