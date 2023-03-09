@@ -25,9 +25,6 @@
     "build",
     "ckeditor5-metadata.json"
   ],
-  "dependencies": {
-    "ckeditor5": ">=<%= packageVersions.ckeditor5 %>"
-  },
   "devDependencies": {
     "@ckeditor/ckeditor5-autoformat": ">=<%= packageVersions.ckeditor5 %>",
     "@ckeditor/ckeditor5-basic-styles": ">=<%= packageVersions.ckeditor5 %>",
@@ -49,26 +46,10 @@
     "@ckeditor/ckeditor5-theme-lark": ">=<%= packageVersions.ckeditor5 %>",
     "@ckeditor/ckeditor5-upload": ">=<%= packageVersions.ckeditor5 %>",
     "@types/chai": "^4.3.1",
-    "@types/ckeditor__ckeditor5-autoformat": "latest",
-    "@types/ckeditor__ckeditor5-basic-styles": "latest",
-    "@types/ckeditor__ckeditor5-block-quote": "latest",
-    "@types/ckeditor__ckeditor5-code-block": "latest",
-    "@types/ckeditor__ckeditor5-core": "latest",
-    "@types/ckeditor__ckeditor5-editor-classic": "latest",
-    "@types/ckeditor__ckeditor5-essentials": "latest",
-    "@types/ckeditor__ckeditor5-heading": "latest",
-    "@types/ckeditor__ckeditor5-image": "latest",
-    "@types/ckeditor__ckeditor5-indent": "latest",
-    "@types/ckeditor__ckeditor5-link": "latest",
-    "@types/ckeditor__ckeditor5-list": "latest",
-    "@types/ckeditor__ckeditor5-ui": "latest",
-    "@types/ckeditor__ckeditor5-media-embed": "latest",
-    "@types/ckeditor__ckeditor5-paragraph": "latest",
-    "@types/ckeditor__ckeditor5-table": "latest",
-    "@types/ckeditor__ckeditor5-upload": "latest",
     "@types/mocha": "^9.1.1",
     "@typescript-eslint/eslint-plugin": "~5.43.0",
     "@typescript-eslint/parser": "^5.18.0",
+    "ckeditor5": ">=<%= packageVersions.ckeditor5 %>",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": ">=<%= packageVersions.eslintConfigCkeditor5 %>",
     "http-server": "^14.1.0",
@@ -78,6 +59,9 @@
     "stylelint-config-ckeditor5": ">=<%= packageVersions.stylelintConfigCkeditor5 %>",
     "ts-node": "^10.9.1",
     "typescript": "^4.7.4"
+  },
+  "peerDependencies": {
+    "ckeditor5": ">=<%= packageVersions.ckeditor5 %>"
   },
   "scripts": {
     "ts:build": "tsc -p ./tsconfig.release.json",
