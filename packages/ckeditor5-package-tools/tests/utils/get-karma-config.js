@@ -103,6 +103,98 @@ describe( 'lib/utils/get-karma-config', () => {
 		expect( config.singleRun ).to.equal( false );
 	} );
 
+	describe( '#plugins', () => {
+		it( 'it should load the "karma-chai" plugin', () => {
+			const config = getKarmaConfig( { cwd } );
+
+			expect( config.plugins ).to.be.an( 'array' );
+
+			const plugin = config.plugins.find( pluginPath => pluginPath.match( /[\\/]node_modules[\\/]karma-chai[\\/]/ ) );
+
+			expect( plugin ).to.not.equal( undefined );
+		} );
+
+		it( 'it should load the "karma-chrome-launcher" plugin', () => {
+			const config = getKarmaConfig( { cwd } );
+
+			expect( config.plugins ).to.be.an( 'array' );
+
+			const plugin = config.plugins.find( pluginPath => pluginPath.match( /[\\/]node_modules[\\/]karma-chrome-launcher[\\/]/ ) );
+
+			expect( plugin ).to.not.equal( undefined );
+		} );
+
+		it( 'it should load the "karma-coverage" plugin', () => {
+			const config = getKarmaConfig( { cwd } );
+
+			expect( config.plugins ).to.be.an( 'array' );
+
+			const plugin = config.plugins.find( pluginPath => pluginPath.match( /[\\/]node_modules[\\/]karma-coverage[\\/]/ ) );
+
+			expect( plugin ).to.not.equal( undefined );
+		} );
+
+		it( 'it should load the "karma-mocha" plugin', () => {
+			const config = getKarmaConfig( { cwd } );
+
+			expect( config.plugins ).to.be.an( 'array' );
+
+			const plugin = config.plugins.find( pluginPath => pluginPath.match( /[\\/]node_modules[\\/]karma-mocha[\\/]/ ) );
+
+			expect( plugin ).to.not.equal( undefined );
+		} );
+
+		it( 'it should load the "karma-mocha-reporter" plugin', () => {
+			const config = getKarmaConfig( { cwd } );
+
+			expect( config.plugins ).to.be.an( 'array' );
+
+			const plugin = config.plugins.find( pluginPath => pluginPath.match( /[\\/]node_modules[\\/]karma-mocha-reporter[\\/]/ ) );
+
+			expect( plugin ).to.not.equal( undefined );
+		} );
+
+		it( 'it should load the "karma-sinon" plugin', () => {
+			const config = getKarmaConfig( { cwd } );
+
+			expect( config.plugins ).to.be.an( 'array' );
+
+			const plugin = config.plugins.find( pluginPath => pluginPath.match( /[\\/]node_modules[\\/]karma-sinon[\\/]/ ) );
+
+			expect( plugin ).to.not.equal( undefined );
+		} );
+
+		it( 'it should load the "karma-sinon-chai" plugin', () => {
+			const config = getKarmaConfig( { cwd } );
+
+			expect( config.plugins ).to.be.an( 'array' );
+
+			const plugin = config.plugins.find( pluginPath => pluginPath.match( /[\\/]node_modules[\\/]karma-sinon-chai[\\/]/ ) );
+
+			expect( plugin ).to.not.equal( undefined );
+		} );
+
+		it( 'it should load the "karma-sourcemap-loader" plugin', () => {
+			const config = getKarmaConfig( { cwd } );
+
+			expect( config.plugins ).to.be.an( 'array' );
+
+			const plugin = config.plugins.find( pluginPath => pluginPath.match( /[\\/]node_modules[\\/]karma-sourcemap-loader[\\/]/ ) );
+
+			expect( plugin ).to.not.equal( undefined );
+		} );
+
+		it( 'it should load the "karma-webpack" plugin', () => {
+			const config = getKarmaConfig( { cwd } );
+
+			expect( config.plugins ).to.be.an( 'array' );
+
+			const plugin = config.plugins.find( pluginPath => pluginPath.match( /[\\/]node_modules[\\/]karma-webpack[\\/]/ ) );
+
+			expect( plugin ).to.not.equal( undefined );
+		} );
+	} );
+
 	describe( 'webpack configuration', () => {
 		it( 'uses correct loaders', () => {
 			const config = getKarmaConfig( { cwd } );

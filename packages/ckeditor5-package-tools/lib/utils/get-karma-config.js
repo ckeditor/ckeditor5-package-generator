@@ -20,6 +20,19 @@ module.exports = options => {
 	const karmaConfig = {
 		basePath: options.cwd,
 
+		// For unknown reasons, sometimes Karma does not fill the list automatically. So, all available plugins must be specified manually.
+		plugins: [
+			require.resolve( 'karma-chai' ),
+			require.resolve( 'karma-chrome-launcher' ),
+			require.resolve( 'karma-coverage' ),
+			require.resolve( 'karma-mocha' ),
+			require.resolve( 'karma-mocha-reporter' ),
+			require.resolve( 'karma-sinon' ),
+			require.resolve( 'karma-sinon-chai' ),
+			require.resolve( 'karma-sourcemap-loader' ),
+			require.resolve( 'karma-webpack' )
+		],
+
 		frameworks: [ 'mocha', 'sinon-chai', 'webpack' ],
 
 		files: [ options.entryFile ],
