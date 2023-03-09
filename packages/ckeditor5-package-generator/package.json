@@ -1,6 +1,6 @@
 {
   "name": "ckeditor5-package-generator",
-  "version": "1.0.0-beta.8",
+  "version": "1.0.0-beta.9",
   "description": "A tool for creating a new package for CKEditor 5.",
   "author": "CKSource (http://cksource.com/)",
   "license": "MIT",
