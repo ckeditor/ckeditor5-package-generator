@@ -12,6 +12,8 @@ cache:
   - node_modules
 before_install:
   - export START_TIME=$( date +%s )
+  # To address the "error:0308010C:digital envelope routines::unsupported" issue.
+  - export NODE_OPTIONS=--openssl-legacy-provider
   - npm i -g yarn
 install:
   - yarn install
