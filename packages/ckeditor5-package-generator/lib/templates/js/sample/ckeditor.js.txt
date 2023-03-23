@@ -1,27 +1,21 @@
-import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 
-import { Essentials } from '@ckeditor/ckeditor5-essentials';
+import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
+
 import { Autoformat } from '@ckeditor/ckeditor5-autoformat';
+import { Bold, Code, Italic } from '@ckeditor/ckeditor5-basic-styles';
 import { BlockQuote } from '@ckeditor/ckeditor5-block-quote';
-import { Bold } from '@ckeditor/ckeditor5-basic-styles';
+import { CodeBlock } from '@ckeditor/ckeditor5-code-block';
+import { Essentials } from '@ckeditor/ckeditor5-essentials';
 import { Heading } from '@ckeditor/ckeditor5-heading';
-import { Image } from '@ckeditor/ckeditor5-image';
-import { ImageCaption } from '@ckeditor/ckeditor5-image';
-import { ImageStyle } from '@ckeditor/ckeditor5-image';
-import { ImageToolbar } from '@ckeditor/ckeditor5-image';
-import { ImageUpload } from '@ckeditor/ckeditor5-image';
-import { Base64UploadAdapter } from '@ckeditor/ckeditor5-upload';
+import { Image, ImageCaption, ImageStyle, ImageToolbar, ImageUpload } from '@ckeditor/ckeditor5-image';
 import { Indent } from '@ckeditor/ckeditor5-indent';
-import { Italic } from '@ckeditor/ckeditor5-basic-styles';
 import { Link } from '@ckeditor/ckeditor5-link';
 import { List } from '@ckeditor/ckeditor5-list';
 import { MediaEmbed } from '@ckeditor/ckeditor5-media-embed';
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
-import { Table } from '@ckeditor/ckeditor5-table';
-import { TableToolbar } from '@ckeditor/ckeditor5-table';
-import { CodeBlock } from '@ckeditor/ckeditor5-code-block';
-import { Code } from '@ckeditor/ckeditor5-basic-styles';
+import { Table, TableToolbar } from '@ckeditor/ckeditor5-table';
+import { Base64UploadAdapter } from '@ckeditor/ckeditor5-upload';
 
 import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>';
 
