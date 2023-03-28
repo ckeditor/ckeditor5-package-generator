@@ -1,6 +1,26 @@
 Changelog
 =========
 
+## [1.0.0-beta.10](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.9...v1.0.0-beta.10) (2023-03-28)
+
+### Bug fixes
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Updated the generated packages to use a package entry point when importing plugins. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/eb57f36747a6bec37ea278f2a397581e080b6dbd))
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Other releases:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools): v1.0.0-beta.9 => v1.0.0-beta.10
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator): v1.0.0-beta.9 => v1.0.0-beta.10
+</details>
+
+
 ## [1.0.0-beta.9](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2023-03-09)
 
 ### Features
