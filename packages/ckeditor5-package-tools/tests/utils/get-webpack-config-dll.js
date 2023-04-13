@@ -175,6 +175,15 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 	} );
 
 	describe( 'verifying exposed DLL names', () => {
+		it( 'returns "foo" for a window key and a file name for the "ckeditor5-foo" package', () => {
+			stubs.packageJson.name = 'ckeditor5-foo';
+
+			const webpackConfig = getWebpackConfigDll( { cwd } );
+
+			expect( webpackConfig.output.filename ).to.equal( 'foo.js' );
+			expect( webpackConfig.output.library ).to.deep.equal( [ 'CKEditor5', 'foo' ] );
+		} );
+
 		it( 'returns "foo" for a window key and a file name for the "@ckeditor/ckeditor5-foo" package', () => {
 			const webpackConfig = getWebpackConfigDll( { cwd } );
 

@@ -16,11 +16,12 @@ const { CKEditorTranslationsPlugin } = require( '@ckeditor/ckeditor5-dev-transla
 const { loaderDefinitions } = require( './webpack-utils' );
 
 module.exports = options => {
-	const packageJson = require( path.join( options.cwd, 'package.json' ) );
+	const pkgJson = require( path.join( options.cwd, 'package.json' ) );
 
 	// `dllName` is a short package name without the scope and the `ckeditor5-` prefix.
 	// E.g. for the package called `@ckeditor/ckeditor5-example-package`, the short name is `example-package`.
-	const dllName = packageJson.name.split( '/' )[ 1 ].replace( /^ckeditor5-/, '' );
+	const packageName = pkgJson.name.includes( '/' ) ? pkgJson.name.split( '/' ).pop() : pkgJson.name;
+	const dllName = packageName.replace( /^ckeditor5-/, '' );
 
 	// `dllWindowKey` is a name of a key which will be used for exposing the DLL library under
 	// the `window.CKEditor5` global variable. E.g. for the package called `@ckeditor/ckeditor5-example-package`,

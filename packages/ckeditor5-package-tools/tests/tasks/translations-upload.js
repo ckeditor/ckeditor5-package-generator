@@ -48,7 +48,35 @@ describe( 'lib/tasks/translations-upload', () => {
 		expect( translationsUpload ).to.be.a( 'function' );
 	} );
 
-	it( 'uploads translation files', async () => {
+	it( 'uploads translation files for package "ckeditor5-foo"', async () => {
+		mockery.registerMock( '/workspace/package.json', {
+			name: 'ckeditor5-foo'
+		} );
+
+		stubs.transifex.getToken.resolves( 'secretToken' );
+		stubs.transifex.uploadPotFiles.resolves( 'OK' );
+
+		const results = await translationsUpload( {
+			cwd: '/workspace',
+			organization: 'foo',
+			project: 'bar'
+		} );
+
+		expect( results ).to.equal( 'OK' );
+
+		expect( stubs.transifex.uploadPotFiles.calledOnce ).to.equal( true );
+		expect( stubs.transifex.uploadPotFiles.firstCall.firstArg ).to.deep.equal( {
+			token: 'secretToken',
+			cwd: '/workspace',
+			organizationName: 'foo',
+			packages: new Map( [
+				[ 'ckeditor5-foo', 'tmp/.transifex/ckeditor5-foo' ]
+			] ),
+			projectName: 'bar'
+		} );
+	} );
+
+	it( 'uploads translation files for package "@ckeditor/ckeditor5-foo"', async () => {
 		stubs.transifex.getToken.resolves( 'secretToken' );
 		stubs.transifex.uploadPotFiles.resolves( 'OK' );
 

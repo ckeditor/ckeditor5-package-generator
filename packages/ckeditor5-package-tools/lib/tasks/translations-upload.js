@@ -22,7 +22,7 @@ module.exports = async options => {
 	}
 
 	const pkgJson = require( path.join( options.cwd, 'package.json' ) );
-	const packageName = pkgJson.name.split( '/' ).pop();
+	const packageName = pkgJson.name.includes( '/' ) ? pkgJson.name.split( '/' ).pop() : pkgJson.name;
 
 	return uploadPotFiles( {
 		// Token used for authentication with the Transifex service.
