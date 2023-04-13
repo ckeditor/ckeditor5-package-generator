@@ -70,7 +70,9 @@ start();
  */
 async function start() {
 	await testBuild( 'js', 'npm' );
-	await testBuild( 'ts', 'yarn', 'CustomPluginName400' );
+	await testBuild( 'ts', 'npm', 'CustomPluginName' );
+	await testBuild( 'js', 'yarn', 'customPluginName400' );
+	await testBuild( 'ts', 'yarn' );
 
 	if ( foundError ) {
 		console.log( '\n' + chalk.red( 'Found errors during the verification. Please, review the log above.' ) );
