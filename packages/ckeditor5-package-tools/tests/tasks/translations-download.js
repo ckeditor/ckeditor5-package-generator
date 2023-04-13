@@ -48,7 +48,36 @@ describe( 'lib/tasks/translations-download', () => {
 		expect( translationsDownload ).to.be.a( 'function' );
 	} );
 
-	it( 'downloads translation files', async () => {
+	it( 'downloads translation files for package "ckeditor5-foo"', async () => {
+		mockery.registerMock( '/workspace/package.json', {
+			name: 'ckeditor5-foo'
+		} );
+
+		stubs.transifex.getToken.resolves( 'secretToken' );
+		stubs.transifex.downloadTranslations.resolves( 'OK' );
+
+		const results = await translationsDownload( {
+			cwd: '/workspace',
+			organization: 'foo',
+			project: 'bar'
+		} );
+
+		expect( results ).to.equal( 'OK' );
+
+		expect( stubs.transifex.downloadTranslations.calledOnce ).to.equal( true );
+		expect( stubs.transifex.downloadTranslations.firstCall.firstArg ).to.deep.equal( {
+			token: 'secretToken',
+			organizationName: 'foo',
+			projectName: 'bar',
+			cwd: '/workspace',
+			packages: new Map( [
+				[ 'ckeditor5-foo', '.' ]
+			] ),
+			simplifyLicenseHeader: true
+		} );
+	} );
+
+	it( 'downloads translation files for package "@ckeditor/ckeditor5-foo"', async () => {
 		stubs.transifex.getToken.resolves( 'secretToken' );
 		stubs.transifex.downloadTranslations.resolves( 'OK' );
 
