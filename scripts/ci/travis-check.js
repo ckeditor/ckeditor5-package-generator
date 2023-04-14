@@ -95,20 +95,12 @@ async function testBuild( lang, packageManager, customPluginName ) {
 		'--dev', '--verbose', '--lang', lang, `--use-${ packageManager }`
 	];
 
+	const expectedPublishFiles = getExpectedFiles( EXPECTED_PUBLISH_FILES, lang, customPluginName );
+	const expectedSrcDirFiles = getExpectedFiles( EXPECTED_SRC_DIR_FILES, lang, customPluginName );
+
 	if ( customPluginName ) {
 		testSetupInfoMessage += ` with custom plugin name: [${ customPluginName }]`;
 		packageBuildCommand.push( '--plugin-name', customPluginName );
-
-		const filenameArrays = [
-			...Object.values( EXPECTED_PUBLISH_FILES ),
-			...Object.values( EXPECTED_SRC_DIR_FILES )
-		];
-
-		filenameArrays.forEach( filenameArray => {
-			filenameArray.forEach( ( filename, index, arr ) => {
-				arr[ index ] = filename.replace( 'testpackage', customPluginName.toLowerCase() );
-			} );
-		} );
 	}
 
 	logProcess( testSetupInfoMessage + '.' );
@@ -129,10 +121,10 @@ async function testBuild( lang, packageManager, customPluginName ) {
 	logProcess( 'Verifying release process...' );
 	const { stderr } = executeCommand( [ 'npm', 'publish', '--dry-run' ], { cwd: NEW_PACKAGE_DIRECTORY, pipeStderr: true } );
 	console.log( stderr );
-	checkFileList( stderr, lang );
+	checkFileList( stderr, expectedPublishFiles );
 
 	logProcess( 'Verifying post release cleanup...' );
-	verifyPublishCleanup( lang );
+	verifyPublishCleanup( lang, expectedSrcDirFiles );
 
 	logProcess( 'Starting the development servers and verifying the sample builds...' );
 	await Promise.all( [
@@ -306,9 +298,9 @@ function logProcess( message ) {
  * Checks whether output of "npm publish" contains correct files.
  *
  * @param {String} output
- * @param {string} lang
+ * @param {Object} expectedPublishFiles
  */
-function checkFileList( output, lang ) {
+function checkFileList( output, expectedPublishFiles ) {
 	const match = output.match( /Tarball Contents.+\n(?<lines>[\s\S]+)\n.+Tarball Details/ );
 
 	if ( !match ) {
@@ -321,8 +313,8 @@ function checkFileList( output, lang ) {
 
 	const files = match.groups.lines.split( '\n' ).map( string => string.trim().split( ' ' ).pop() );
 
-	const missingFiles	= EXPECTED_PUBLISH_FILES[ lang ].filter( item => !files.includes( item ) );
-	const excessFiles	= files.filter( item => !EXPECTED_PUBLISH_FILES[ lang ].includes( item ) );
+	const missingFiles	= expectedPublishFiles.filter( item => !files.includes( item ) );
+	const excessFiles	= files.filter( item => !expectedPublishFiles.includes( item ) );
 
 	if ( !missingFiles.length && !excessFiles.length ) {
 		console.log( chalk.green( 'Files staged for publishing verified successfully.' ) );
@@ -350,8 +342,9 @@ function checkFileList( output, lang ) {
  * - There should be no leftover build files in "src" directory.
  *
  * @param {String} lang
+ * @param {Object} expectedSrcDirFiles
  */
-function verifyPublishCleanup( lang ) {
+function verifyPublishCleanup( lang, expectedSrcDirFiles ) {
 	// "package.json" check.
 	const pkgJsonPath = path.join( NEW_PACKAGE_DIRECTORY, 'package.json' );
 	const pkgJsonRaw = fs.readFileSync( pkgJsonPath, 'utf-8' );
@@ -369,7 +362,7 @@ function verifyPublishCleanup( lang ) {
 	// "src" directory check.
 	const srcDirPath = path.join( NEW_PACKAGE_DIRECTORY, 'src' );
 	const excessFiles = fs.readdirSync( srcDirPath )
-		.filter( file => !EXPECTED_SRC_DIR_FILES[ lang ].includes( file ) );
+		.filter( file => !expectedSrcDirFiles.includes( file ) );
 
 	if ( excessFiles.length ) {
 		console.log( chalk.red( 'Excess files after publishing in "src" directory:' ) );
@@ -381,4 +374,21 @@ function verifyPublishCleanup( lang ) {
 	if ( hasCorrectEntryPoint && !excessFiles.length ) {
 		console.log( chalk.green( 'Post release cleanup successful.' ) );
 	}
+}
+
+/**
+ * Returns an array of expected files for a given language.
+ * Custom plugin name is also accounted for, if its specified.
+ *
+ * @param {Object} expectedFilesObject
+ * @param {String} lang
+ * @param {String|undefined} customPluginName
+ * @returns {Array<String>}
+ */
+function getExpectedFiles( expectedFilesObject, lang, customPluginName ) {
+	if ( !customPluginName ) {
+		return expectedFilesObject[ lang ];
+	}
+
+	return expectedFilesObject[ lang ].map( filename => filename.replace( 'testpackage', customPluginName.toLowerCase() ) );
 }
