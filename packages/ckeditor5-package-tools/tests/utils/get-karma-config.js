@@ -8,6 +8,7 @@
 const sinon = require( 'sinon' );
 const mockery = require( 'mockery' );
 const expect = require( 'chai' ).expect;
+const path = require( 'path' );
 
 describe( 'lib/utils/get-karma-config', () => {
 	let getKarmaConfig, stubs;
@@ -35,7 +36,8 @@ describe( 'lib/utils/get-karma-config', () => {
 					styles: sinon.stub(),
 					coverage: sinon.stub(),
 					typescript: sinon.stub()
-				}
+				},
+				getModuleResolutionPaths: sinon.stub()
 			}
 		};
 
@@ -43,6 +45,7 @@ describe( 'lib/utils/get-karma-config', () => {
 		stubs.webpackUtils.loaderDefinitions.typescript.returns( 'typescript-loader' );
 		stubs.webpackUtils.loaderDefinitions.styles.withArgs( cwd ).returns( 'styles-loader' );
 		stubs.webpackUtils.loaderDefinitions.coverage.withArgs( cwd ).returns( 'coverage-loader' );
+		stubs.webpackUtils.getModuleResolutionPaths.returns( 'loader-resolution-paths' );
 
 		mockery.registerMock( 'path', stubs.path );
 		mockery.registerMock( './webpack-utils', stubs.webpackUtils );
@@ -196,6 +199,12 @@ describe( 'lib/utils/get-karma-config', () => {
 	} );
 
 	describe( 'webpack configuration', () => {
+		it( 'has mode set to "development"', () => {
+			const config = getKarmaConfig( { cwd } );
+
+			expect( config.webpack.mode ).to.equal( 'development' );
+		} );
+
 		it( 'uses correct loaders', () => {
 			const config = getKarmaConfig( { cwd } );
 
@@ -223,16 +232,25 @@ describe( 'lib/utils/get-karma-config', () => {
 			expect( config.webpack.resolve.extensions ).to.deep.equal( [ '.ts', '...' ] );
 		} );
 
-		it( 'has mode set to "development"', () => {
+		it( 'resolves correct module paths', () => {
 			const config = getKarmaConfig( { cwd } );
 
-			expect( config.webpack.mode ).to.equal( 'development' );
+			expect( config.webpack.resolve ).to.have.property( 'modules', 'loader-resolution-paths' );
 		} );
 
-		it( 'has node_modules defined in "resolveLoader"', () => {
+		it( 'resolves correct loader paths', () => {
 			const config = getKarmaConfig( { cwd } );
 
-			expect( config.webpack.resolveLoader ).to.deep.equal( { modules: [ 'node_modules' ] } );
+			expect( config.webpack.resolveLoader ).to.have.property( 'modules', 'loader-resolution-paths' );
+		} );
+
+		it( 'calls "getModuleResolutionPaths" with correct arguments', () => {
+			getKarmaConfig( { cwd } );
+
+			expect( stubs.webpackUtils.getModuleResolutionPaths.callCount ).to.equal( 1 );
+			const normalizedArgument = stubs.webpackUtils.getModuleResolutionPaths.firstCall.firstArg
+				.split( path.sep ).join( path.posix.sep );
+			expect( normalizedArgument.endsWith( '/packages/ckeditor5-package-tools/lib/utils/../..' ) ).to.equal( true );
 		} );
 
 		it( 'allows enabling source maps', () => {
