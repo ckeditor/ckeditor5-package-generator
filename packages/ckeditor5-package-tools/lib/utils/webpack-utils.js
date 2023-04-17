@@ -68,7 +68,8 @@ module.exports = {
 	getModuleResolutionPaths: packageRootDir => {
 		return [
 			'node_modules',
-			path.resolve( packageRootDir, '..', '..', 'node_modules' )
+			path.resolve( packageRootDir, '..', '..', 'node_modules' ),
+			path.resolve( packageRootDir, '..', '..', '..', 'node_modules' )
 		];
 	}
 };

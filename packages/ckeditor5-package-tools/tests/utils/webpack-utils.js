@@ -231,9 +231,18 @@ describe( 'lib/utils/webpack-utils', () => {
 		it( 'loads "node_modules" from root of the "ckeditor5-package-generator" repository', () => {
 			expect( moduleResolutionPaths[ 1 ] ).to.equal( 'root/directory/../../node_modules' );
 
-			expect( stubs.path.resolve.callCount ).to.equal( 1 );
+			expect( stubs.path.resolve.callCount ).to.equal( 2 );
 			expect( stubs.path.resolve.getCall( 0 ).args ).to.deep.equal(
 				[ 'root/directory', '..', '..', 'node_modules' ]
+			);
+		} );
+
+		it( 'loads "node_modules" from root of the repository that uses the "ckeditor5-package-tools" package', () => {
+			expect( moduleResolutionPaths[ 2 ] ).to.equal( 'root/directory/../../../node_modules' );
+
+			expect( stubs.path.resolve.callCount ).to.equal( 2 );
+			expect( stubs.path.resolve.getCall( 1 ).args ).to.deep.equal(
+				[ 'root/directory', '..', '..', '..', 'node_modules' ]
 			);
 		} );
 	} );
