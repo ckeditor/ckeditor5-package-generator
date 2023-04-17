@@ -68,10 +68,7 @@ module.exports = {
 	getModuleResolutionPaths: packageRootDir => {
 		return [
 			'node_modules',
-			//  Root of this package.
-			path.resolve( packageRootDir, 'node_modules' ),
-			// Root of the CPG repository.
-			path.resolve( packageRootDir, '..', '..', 'node_modules' )
+			path.resolve( packageRootDir, 'node_modules' )
 		];
 	}
 };
