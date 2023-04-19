@@ -8,6 +8,7 @@
 const mockery = require( 'mockery' );
 const sinon = require( 'sinon' );
 const expect = require( 'chai' ).expect;
+const path = require( 'path' );
 
 describe( 'lib/utils/get-webpack-config-server', () => {
 	let getWebpackConfigServer, stubs;
@@ -43,13 +44,15 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 					raw: sinon.stub(),
 					styles: sinon.stub(),
 					typescript: sinon.stub()
-				}
+				},
+				getModuleResolutionPaths: sinon.stub()
 			}
 		};
 
 		stubs.webpackUtils.loaderDefinitions.raw.returns( 'raw-loader' );
 		stubs.webpackUtils.loaderDefinitions.typescript.returns( 'typescript-loader' );
 		stubs.webpackUtils.loaderDefinitions.styles.withArgs( cwd ).returns( 'styles-loader' );
+		stubs.webpackUtils.getModuleResolutionPaths.returns( 'loader-resolution-paths' );
 
 		stubs.fs.readdirSync.withArgs( '/process/cwd/sample' ).returns( [
 			'ckeditor.js',
@@ -97,6 +100,27 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		const config = getWebpackConfigServer( { cwd } );
 
 		expect( config.resolve.extensions ).to.deep.equal( [ '.ts', '...' ] );
+	} );
+
+	it( 'resolves correct module paths', () => {
+		const config = getWebpackConfigServer( { cwd } );
+
+		expect( config.resolve ).to.have.property( 'modules', 'loader-resolution-paths' );
+	} );
+
+	it( 'resolves correct loader paths', () => {
+		const config = getWebpackConfigServer( { cwd } );
+
+		expect( config.resolveLoader ).to.have.property( 'modules', 'loader-resolution-paths' );
+	} );
+
+	it( 'calls "getModuleResolutionPaths" with correct arguments', () => {
+		getWebpackConfigServer( { cwd } );
+
+		expect( stubs.webpackUtils.getModuleResolutionPaths.callCount ).to.equal( 1 );
+		const normalizedArgument = stubs.webpackUtils.getModuleResolutionPaths.firstCall.firstArg
+			.split( path.sep ).join( path.posix.sep );
+		expect( normalizedArgument.endsWith( '/packages/ckeditor5-package-tools/lib/utils/../..' ) ).to.equal( true );
 	} );
 
 	it( 'processes the "ckeditor.js" file', () => {

@@ -11,7 +11,9 @@ const fs = require( 'fs' );
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 const { CKEditorTranslationsPlugin } = require( '@ckeditor/ckeditor5-dev-translations' );
-const { loaderDefinitions } = require( './webpack-utils' );
+const { loaderDefinitions, getModuleResolutionPaths } = require( './webpack-utils' );
+
+const PACKAGE_ROOT_DIR = path.join( __dirname, '..', '..' );
 
 module.exports = options => {
 	const webpackPlugins = [
@@ -35,6 +37,8 @@ module.exports = options => {
 
 	const entryFileName = fs.readdirSync( path.join( options.cwd, 'sample' ) )
 		.find( filePath => /^ckeditor\.[jt]s$/.test( filePath ) );
+
+	const moduleResolutionPaths = getModuleResolutionPaths( PACKAGE_ROOT_DIR );
 
 	return {
 		mode: options.production ? 'production' : 'development',
@@ -65,7 +69,12 @@ module.exports = options => {
 
 		resolve: {
 			// Triple dots syntax allows extending default extension list instead of overwriting it.
-			extensions: [ '.ts', '...' ]
+			extensions: [ '.ts', '...' ],
+			modules: moduleResolutionPaths
+		},
+
+		resolveLoader: {
+			modules: moduleResolutionPaths
 		},
 
 		module: {

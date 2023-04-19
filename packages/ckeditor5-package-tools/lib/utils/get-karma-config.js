@@ -8,7 +8,9 @@
 /* eslint-env node */
 
 const path = require( 'path' );
-const { loaderDefinitions } = require( './webpack-utils' );
+const { loaderDefinitions, getModuleResolutionPaths } = require( './webpack-utils' );
+
+const PACKAGE_ROOT_DIR = path.join( __dirname, '..', '..' );
 
 /**
  * @param {Object} options
@@ -139,12 +141,15 @@ module.exports = options => {
  * @returns {Object}
  */
 function getWebpackConfiguration( options ) {
+	const moduleResolutionPaths = getModuleResolutionPaths( PACKAGE_ROOT_DIR );
+
 	const config = {
 		mode: 'development',
 
 		resolve: {
 			// Triple dots syntax allows extending default extension list instead of overwriting it.
-			extensions: [ '.ts', '...' ]
+			extensions: [ '.ts', '...' ],
+			modules: moduleResolutionPaths
 		},
 
 		module: {
@@ -156,9 +161,7 @@ function getWebpackConfiguration( options ) {
 		},
 
 		resolveLoader: {
-			modules: [
-				'node_modules'
-			]
+			modules: moduleResolutionPaths
 		}
 	};
 

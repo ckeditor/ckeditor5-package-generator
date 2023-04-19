@@ -90,13 +90,13 @@ function uppercaseFirstChar( string ) {
 /**
  * @typedef {Object} FormattedName
  *
- * @property {String} raw: super-feature-name
+ * @property {String} raw super-feature-name
  *
- * @property {String} spacedOut Super plugin name
+ * @property {String} spacedOut Super feature name
  *
- * @property {String} camelCase superPluginName
+ * @property {String} camelCase superFeatureName
  *
- * @property {String} pascalCase SuperPluginName
+ * @property {String} pascalCase SuperFeatureName
  *
- * @property {String} lowerCaseMerged superpluginname
+ * @property {String} lowerCaseMerged superfeaturename
  */

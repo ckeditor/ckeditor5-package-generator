@@ -13,7 +13,9 @@ const fs = require( 'fs' );
 const webpack = require( 'webpack' );
 const TerserPlugin = require( 'terser-webpack-plugin' );
 const { CKEditorTranslationsPlugin } = require( '@ckeditor/ckeditor5-dev-translations' );
-const { loaderDefinitions } = require( './webpack-utils' );
+const { loaderDefinitions, getModuleResolutionPaths } = require( './webpack-utils' );
+
+const PACKAGE_ROOT_DIR = path.join( __dirname, '..', '..' );
 
 module.exports = options => {
 	const pkgJson = require( path.join( options.cwd, 'package.json' ) );
@@ -59,6 +61,8 @@ module.exports = options => {
 	const entryFileName = fs.readdirSync( path.join( options.cwd, 'src' ) )
 		.find( filePath => /^index\.[jt]s$/.test( filePath ) );
 
+	const moduleResolutionPaths = getModuleResolutionPaths( PACKAGE_ROOT_DIR );
+
 	return {
 		mode: 'production',
 
@@ -91,7 +95,12 @@ module.exports = options => {
 
 		resolve: {
 			// Triple dots syntax allows extending default extension list instead of overwriting it.
-			extensions: [ '.ts', '...' ]
+			extensions: [ '.ts', '...' ],
+			modules: moduleResolutionPaths
+		},
+
+		resolveLoader: {
+			modules: moduleResolutionPaths
 		},
 
 		module: {

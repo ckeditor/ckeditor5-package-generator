@@ -24,7 +24,8 @@ describe( 'lib/utils/webpack-utils', () => {
 
 		stubs = {
 			path: {
-				join: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) )
+				join: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) ),
+				resolve: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) )
 			},
 			getThemePath: sinon.stub(),
 			devUtils: {
@@ -213,6 +214,27 @@ describe( 'lib/utils/webpack-utils', () => {
 				expect( '/Users/ckeditor/ckeditor5-foo/theme/icons/ckeditor.html' ).to.not.match( loader.test );
 				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\theme\\icons\\ckeditor.html' ).to.not.match( loader.test );
 			} );
+		} );
+	} );
+
+	describe( 'getModuleResolutionPaths()', () => {
+		let moduleResolutionPaths;
+
+		beforeEach( () => {
+			moduleResolutionPaths = webpackUtils.getModuleResolutionPaths( 'root/directory' );
+		} );
+
+		it( 'loads "node_modules" directly', () => {
+			expect( moduleResolutionPaths[ 0 ] ).to.equal( 'node_modules' );
+		} );
+
+		it( 'loads "node_modules" from root of the "ckeditor5-package-tools" package', () => {
+			expect( moduleResolutionPaths[ 1 ] ).to.equal( 'root/directory/node_modules' );
+
+			expect( stubs.path.resolve.callCount ).to.equal( 1 );
+			expect( stubs.path.resolve.getCall( 0 ).args ).to.deep.equal(
+				[ 'root/directory', 'node_modules' ]
+			);
 		} );
 	} );
 } );
