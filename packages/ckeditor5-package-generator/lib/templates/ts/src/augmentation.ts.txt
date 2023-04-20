@@ -1,0 +1,7 @@
+import type { <%= formattedNames.plugin.pascalCase %> } from './index';
+
+declare module '@ckeditor/ckeditor5-core' {
+	interface PluginsMap {
+		[ <%= formattedNames.plugin.pascalCase %>.pluginName ]: <%= formattedNames.plugin.pascalCase %>;
+	}
+}

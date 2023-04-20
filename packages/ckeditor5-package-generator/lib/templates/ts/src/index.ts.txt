@@ -1,4 +1,5 @@
 import ckeditor from './../theme/icons/ckeditor.svg';
+import './augmentation';
 
 export { default as <%= formattedNames.plugin.pascalCase %> } from './<%= formattedNames.plugin.lowerCaseMerged %>';
 

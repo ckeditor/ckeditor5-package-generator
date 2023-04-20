@@ -33,8 +33,10 @@ const EXPECTED_PUBLISH_FILES = {
 		'ckeditor5-metadata.json'
 	],
 	ts: [
+		'src/augmentation.js',
 		'src/index.js',
 		'src/testpackage.js',
+		'src/augmentation.d.ts',
 		'src/index.d.ts',
 		'src/testpackage.d.ts',
 
@@ -55,6 +57,7 @@ const EXPECTED_SRC_DIR_FILES = {
 		'testpackage.js'
 	],
 	ts: [
+		'augmentation.ts',
 		'index.ts',
 		'testpackage.ts'
 	]
