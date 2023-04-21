@@ -11,10 +11,12 @@ const isYarnInstalled = require( './is-yarn-installed' );
 /**
  * @param {Boolean} useNpm
  * @param {Boolean} useYarn
- * @returns {Promise<'npm'|'yarn'>}
+ * @param {Boolean} usePnpm
+ * @returns {Promise<'npm'|'yarn'|'pnpm'}
  */
-module.exports = async function choosePackageManager( useNpm, useYarn ) {
+module.exports = async function choosePackageManager( useNpm, useYarn, usePnpm ) {
 	const yarnInstalled = isYarnInstalled();
+	// TODO: Is pnpm available?
 
 	if ( useYarn && !yarnInstalled ) {
 		throw new Error( 'Detected --use-yarn option but yarn is not installed.' );
@@ -24,8 +26,12 @@ module.exports = async function choosePackageManager( useNpm, useYarn ) {
 		return 'npm';
 	}
 
-	if ( useNpm && useYarn ) {
+	if ( [ useNpm, useYarn, usePnpm ].filter( Boolean ).length >= 2 ) {
 		return await askUserToChoosePackageManager();
+	}
+
+	if ( usePnpm ) {
+		return 'pnpm';
 	}
 
 	if ( useNpm ) {
@@ -48,7 +54,7 @@ async function askUserToChoosePackageManager() {
 		name: 'packageManager',
 		message: 'Choose the package manager:',
 		type: 'list',
-		choices: [ 'yarn', 'npm' ]
+		choices: [ 'yarn', 'npm', 'pnpm' ]
 	} ] );
 
 	return packageManager;

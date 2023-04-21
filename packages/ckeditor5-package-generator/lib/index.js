@@ -26,7 +26,7 @@ const validatePluginName = require( './utils/validate-plugin-name' );
  * @param {CKeditor5PackageGeneratorOptions} options
  */
 module.exports = async function init( packageName, options ) {
-	const { dev, verbose, useNpm, useYarn, lang, pluginName } = options;
+	const { dev, verbose, usePnpm, useNpm, useYarn, lang, pluginName } = options;
 
 	const logger = new Logger( verbose );
 
@@ -34,7 +34,7 @@ module.exports = async function init( packageName, options ) {
 	validatePluginName( logger, pluginName );
 	const formattedNames = getPackageNameFormats( packageName, pluginName );
 	const { directoryName, directoryPath } = createDirectory( logger, packageName );
-	const packageManager = await choosePackageManager( useNpm, useYarn );
+	const packageManager = await choosePackageManager( useNpm, useYarn, usePnpm );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
 	const packageVersions = getDependenciesVersions( logger, dev );
 
@@ -75,6 +75,8 @@ module.exports = async function init( packageName, options ) {
  * @property {Boolean} [useNpm=false]
  *
  * @property {Boolean} [useYarn=false]
+ *
+ * @property {Boolean} [usePnpm=false]
  *
  * @property {Boolean} [dev=false]
  *

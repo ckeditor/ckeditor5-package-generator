@@ -63,13 +63,15 @@ function installPackages( directoryPath, packageManager, verbose, dev ) {
 			}
 
 			installTask = spawn( 'npm', npmArguments, spawnOptions );
-		} else {
+		} else if ( packageManager === 'yarn' ) {
 			const yarnArguments = [
 				'--cwd',
 				directoryPath
 			];
 
 			installTask = spawn( 'yarnpkg', yarnArguments, spawnOptions );
+		} else {
+			installTask = spawn( 'pnpm install', [], spawnOptions );
 		}
 
 		installTask.on( 'close', exitCode => {
