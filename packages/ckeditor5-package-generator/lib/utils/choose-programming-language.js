@@ -8,8 +8,8 @@
 const { prompt } = require( 'inquirer' );
 
 const PROGRAMMING_LANGUAGES = [
-	{ value: 'js', displayName: 'JavaScript' },
-	{ value: 'ts', displayName: 'TypeScript (experimental)' }
+	{ value: 'ts', displayName: 'TypeScript' },
+	{ value: 'js', displayName: 'JavaScript' }
 ];
 
 /**
