@@ -1,6 +1,50 @@
 Changelog
 =========
 
+## [1.0.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.10...v1.0.0) (2023-04-25)
+
+We are happy to announce the first stable release of `ckeditor5-package-generator`.
+
+This tool allows creating a working package with the development environment to write new plugins for CKEditor 5.
+
+For more details on using the tool, please, take a look at the [README.md](https://github.com/ckeditor/ckeditor5-package-generator/blob/master/packages/ckeditor5-package-generator/README.md) file of the `ckeditor5-package-generator` package.
+
+### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
+
+* Upgraded the minimal versions of Node.js to `16.0.0` due to the end of LTS.
+
+### Features
+
+* Add `augmentation.ts` to the TypeScript package generator. Closes [ckeditor/ckeditor5-package-generator#144](https://github.com/ckeditor/ckeditor5-package-generator/issues/144). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/f736d0882571ad38d196156d386020f484c9fd62))
+
+### Bug fixes
+
+* **[tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: Added the missing `ts-loader`. Webpack missed it when creating a new package using `npm` as the package manager. Closes [#143](https://github.com/ckeditor/ckeditor5-package-generator/issues/143). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/69bc170b21dc461ad1dd3e5b96be2943117ca49c))
+* **[tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: Added support for a package name without an organization prefix. Preparing the DLL build will not throw an error for such a package. Closes [#139](https://github.com/ckeditor/ckeditor5-package-generator/issues/139). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/a820183289fa73c2bba14f98dbfe2ac1ee3a085e))
+
+### Other changes
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Removed the "experimental" label from TS and made it the default choice. Related [#111](https://github.com/ckeditor/ckeditor5-package-generator/issues/111). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/5b82666eee376e8ed2b235b861de50bad512b82b))
+* **[tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: Update `terser-webpack-plugin` to enable optional chaining syntax. Closes [#136](https://github.com/ckeditor/ckeditor5-package-generator/issues/136). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/fddaa523edbe7f4cba0b5fe6f6624940fe1a384c))
+* Updated the required version of Node.js to 16. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/9872918528fdfe58ea6b4570c8a1ae55d7c48516))
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Releases containing new features:
+
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator): v1.0.0-beta.10 => v1.0.0
+
+Other releases:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools): v1.0.0-beta.10 => v1.0.0
+</details>
+
+
 ## [1.0.0-beta.10](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.9...v1.0.0-beta.10) (2023-03-28)
 
 ### Bug fixes
