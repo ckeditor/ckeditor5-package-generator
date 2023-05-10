@@ -29,5 +29,7 @@ new Command( packageJson.name )
 	.option( '--lang <lang>', 'programming language to use' )
 	.option( '--plugin-name <name>', 'optional custom plugin name' )
 	.allowUnknownOption()
+	.version( packageJson.version )
+	.addHelpText( 'after', `\nVersion: ${ packageJson.version }` )
 	.action( ( packageName, options ) => init( packageName, options ) )
 	.parse( process.argv );
