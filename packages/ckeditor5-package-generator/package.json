@@ -20,6 +20,7 @@
     "webpack": "^5.67.0"
   },
   "files": [
+    "bin",
     "lib"
   ],
   "bin": {
