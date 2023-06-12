@@ -41,9 +41,7 @@ module.exports = function parseArguments( cliArguments ) {
 /**
  * @typedef {Object} ReleaseOptions
  *
- * @property {Number} concurrency
- *
- * @property {String} [npmTag='staging']
+ * @property {String} [npmTag='latest']
  *
  * @property {Array.<String>|null} packages
  */
