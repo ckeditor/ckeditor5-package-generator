@@ -12,11 +12,17 @@
 const { Listr } = require( 'listr2' );
 const releaseTools = require( '@ckeditor/ckeditor5-dev-release-tools' );
 const parseArguments = require( './utils/parsearguments' );
-const { PACKAGES_DIRECTORY, RELEASE_DIRECTORY } = require( './utils/constants' );
+const { PACKAGE_GENERATOR_ROOT, PACKAGES_DIRECTORY, RELEASE_DIRECTORY } = require( './utils/constants' );
+const upath = require( 'upath' );
+const { globSync } = require( 'glob' );
 
 const cliArguments = parseArguments( process.argv.slice( 2 ) );
 const latestVersion = releaseTools.getLastFromChangelog();
 const versionChangelog = releaseTools.getChangesForVersion( latestVersion );
+
+const PACKAGE_GENERATOR_PACKAGES = globSync( '*/', {
+	cwd: upath.join( PACKAGE_GENERATOR_ROOT, PACKAGES_DIRECTORY )
+} );
 
 const tasks = new Listr( [
 	{
@@ -41,6 +47,18 @@ const tasks = new Listr( [
 			return releaseTools.updateVersions( {
 				packagesDirectory: PACKAGES_DIRECTORY,
 				version: latestVersion
+			} );
+		}
+	},
+	{
+		title: 'Updating dependencies.',
+		task: () => {
+			return releaseTools.updateDependencies( {
+				version: '^' + latestVersion,
+				packagesDirectory: PACKAGES_DIRECTORY,
+				shouldUpdateVersionCallback: packageName => {
+					return PACKAGE_GENERATOR_PACKAGES.includes( packageName.split( '/' )[ 1 ] );
+				}
 			} );
 		}
 	},
