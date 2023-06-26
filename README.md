@@ -125,18 +125,14 @@ After generating the changelog, you are ready for publishing packages.
 First, you need to bump their versions:
 
 ```bash
-npm run release:bump-version
+npm run release:prepare-packages
 ```
-
-You can also use the `--dry-run` option to see what this task does.
 
 After bumping versions, you can publish changes:
 
 ```bash
-npm run release:publish
+npm run release:publish-packages
 ```
-
-As in the previous task, the `--dry-run` option is also available.
 
 ## License
 
