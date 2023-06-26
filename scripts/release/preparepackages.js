@@ -20,8 +20,11 @@ const cliArguments = parseArguments( process.argv.slice( 2 ) );
 const latestVersion = releaseTools.getLastFromChangelog();
 const versionChangelog = releaseTools.getChangesForVersion( latestVersion );
 
-const PACKAGE_GENERATOR_PACKAGES = globSync( '*/', {
-	cwd: upath.join( PACKAGE_GENERATOR_ROOT, PACKAGES_DIRECTORY )
+const PACKAGE_GENERATOR_PACKAGES_NAMES = globSync( '*/', {
+	cwd: upath.join( PACKAGE_GENERATOR_ROOT, PACKAGES_DIRECTORY ),
+	absolute: true
+} ).map( packagePath => {
+	return require( upath.join( packagePath, 'package.json' ) ).name;
 } );
 
 const tasks = new Listr( [
@@ -57,7 +60,7 @@ const tasks = new Listr( [
 				version: '^' + latestVersion,
 				packagesDirectory: PACKAGES_DIRECTORY,
 				shouldUpdateVersionCallback: packageName => {
-					return PACKAGE_GENERATOR_PACKAGES.includes( packageName.split( '/' )[ 1 ] );
+					return PACKAGE_GENERATOR_PACKAGES_NAMES.includes( packageName );
 				}
 			} );
 		}
