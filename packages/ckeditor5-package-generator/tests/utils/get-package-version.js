@@ -10,7 +10,7 @@ const expect = require( 'chai' ).expect;
 const mockery = require( 'mockery' );
 
 describe( 'lib/utils/get-package-version', () => {
-	let getPackageVersion, spawnSyncStub;
+	let getPackageVersion, execSyncStub;
 
 	beforeEach( () => {
 		mockery.enable( {
@@ -19,16 +19,10 @@ describe( 'lib/utils/get-package-version', () => {
 			warnOnUnregistered: false
 		} );
 
-		spawnSyncStub = sinon.stub().returns( {
-			stdout: Buffer.from( JSON.stringify( {
-				versions: [
-					'30.0.0'
-				]
-			} ) )
-		} );
+		execSyncStub = sinon.stub().returns( Buffer.from( '30.0.0' ) );
 
 		mockery.registerMock( 'child_process', {
-			spawnSync: spawnSyncStub
+			execSync: execSyncStub
 		} );
 
 		getPackageVersion = require( '../../lib/utils/get-package-version' );
@@ -49,27 +43,15 @@ describe( 'lib/utils/get-package-version', () => {
 		expect( returnedValue ).to.be.a( 'string' );
 	} );
 
-	it( 'calls "npm view" to determine the version', () => {
+	it( 'calls "npm show" to determine the version', () => {
 		getPackageVersion( 'ckeditor5' );
 
-		expect( spawnSyncStub.firstCall.args[ 0 ] ).to.equal( 'npm' );
-		expect( spawnSyncStub.firstCall.args[ 1 ] ).to.deep.equal( [ 'view', 'ckeditor5', '--json' ] );
-		expect( spawnSyncStub.firstCall.args[ 2 ] ).to.be.an( 'object' );
+		expect( execSyncStub.firstCall.firstArg ).to.equal( 'npm view ckeditor5 version' );
 	} );
 
 	it( 'returns a version matching semantic versioning specification', () => {
 		const returnedValue = getPackageVersion( 'ckeditor5' );
 
 		expect( returnedValue ).to.equal( '30.0.0' );
-	} );
-
-	it( 'throws an error when asking about a non-existing package', () => {
-		spawnSyncStub.returns( {
-			stdout: Buffer.from( '' )
-		} );
-
-		expect(
-			() => getPackageVersion( 'non-existing-foo-package' )
-		).to.throw( 'The specified package has not been published on npm yet.', Error );
 	} );
 } );
