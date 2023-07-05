@@ -79,10 +79,7 @@ describe( 'lib/utils/install-dependencies', () => {
 		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
 			'yarnpkg',
-			[
-				'--cwd',
-				defaultDirectoryPath
-			],
+			[],
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -98,10 +95,7 @@ describe( 'lib/utils/install-dependencies', () => {
 		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
 			'yarnpkg',
-			[
-				'--cwd',
-				defaultDirectoryPath
-			],
+			[],
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -119,9 +113,7 @@ describe( 'lib/utils/install-dependencies', () => {
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
 			'npm',
 			[
-				'install',
-				'--prefix',
-				defaultDirectoryPath
+				'install'
 			],
 			{
 				encoding: 'utf8',
@@ -139,9 +131,7 @@ describe( 'lib/utils/install-dependencies', () => {
 		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
 			'npm',
 			[
-				'install',
-				'--prefix',
-				defaultDirectoryPath
+				'install'
 			],
 			{
 				encoding: 'utf8',

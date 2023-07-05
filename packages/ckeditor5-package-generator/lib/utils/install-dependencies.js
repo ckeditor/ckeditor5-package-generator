@@ -52,9 +52,7 @@ function installPackages( directoryPath, packageManager, verbose, dev ) {
 
 		if ( packageManager === 'npm' ) {
 			const npmArguments = [
-				'install',
-				'--prefix',
-				directoryPath
+				'install'
 			];
 
 			// Flag required for npm 8 to install linked packages' dependencies
@@ -64,12 +62,7 @@ function installPackages( directoryPath, packageManager, verbose, dev ) {
 
 			installTask = spawn( 'npm', npmArguments, spawnOptions );
 		} else {
-			const yarnArguments = [
-				'--cwd',
-				directoryPath
-			];
-
-			installTask = spawn( 'yarnpkg', yarnArguments, spawnOptions );
+			installTask = spawn( 'yarnpkg', [], spawnOptions );
 		}
 
 		installTask.on( 'close', exitCode => {
