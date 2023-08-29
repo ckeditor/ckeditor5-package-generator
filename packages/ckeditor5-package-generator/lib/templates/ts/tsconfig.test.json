@@ -5,5 +5,11 @@
       "@types/mocha"
     ],
     "sourceMap": true
-  }
+  },
+  "include": [
+    "./sample",
+    "./src",
+    "./tests",
+    "./typings"
+  ]
 }
