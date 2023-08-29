@@ -8,12 +8,13 @@
 /* eslint-env node */
 
 const path = require( 'path' );
+const fs = require( 'fs' );
 const { loaderDefinitions, getModuleResolutionPaths } = require( './webpack-utils' );
 
 const PACKAGE_ROOT_DIR = path.join( __dirname, '..', '..' );
 
 /**
- * @param {Object} options
+ * @param {Ckeditor5PackageToolsOptions} options
  * @returns {Object}
  */
 module.exports = options => {
@@ -59,11 +60,11 @@ module.exports = options => {
 		logLevel: 'INFO',
 
 		browsers: [
-			process.env.CI === 'true' ? 'CHROME_TRAVIS_CI' : 'CHROME_LOCAL'
+			process.env.CI === 'true' ? 'CHROME_CI' : 'CHROME_LOCAL'
 		],
 
 		customLaunchers: {
-			CHROME_TRAVIS_CI: {
+			CHROME_CI: {
 				base: 'Chrome',
 				flags: [ '--no-sandbox', '--disable-background-timer-throttling', '--js-flags="--expose-gc"' ]
 			},
@@ -135,13 +136,17 @@ module.exports = options => {
 };
 
 /**
- * @param {Object} options
- * @param {Boolean} [options.sourceMap=false]
- * @param {Boolean} [options.coverage=false]
+ * @param {Ckeditor5PackageToolsOptions} options
  * @returns {Object}
  */
 function getWebpackConfiguration( options ) {
 	const moduleResolutionPaths = getModuleResolutionPaths( PACKAGE_ROOT_DIR );
+
+	let tsconfigFile = 'tsconfig.json';
+
+	if ( fs.existsSync( options.cwd, 'tsconfig.test.json' ) ) {
+		tsconfigFile = 'tsconfig.test.json';
+	}
 
 	const config = {
 		mode: 'development',
@@ -156,7 +161,7 @@ function getWebpackConfiguration( options ) {
 			rules: [
 				loaderDefinitions.raw(),
 				loaderDefinitions.styles( options.cwd ),
-				loaderDefinitions.typescript()
+				loaderDefinitions.typescript( options.cwd, tsconfigFile )
 			]
 		},
 
