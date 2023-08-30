@@ -14,14 +14,23 @@ module.exports = {
 		raw: () => {
 			return {
 				test: /\.(svg|txt|html|rtf)$/,
-				use: 'raw-loader'
+				loader: 'raw-loader'
 			};
 		},
 
-		typescript: () => {
+		/**
+		 * @param {String} cwd
+		 * @param {String} [tsconfigName='tsconfig.json'] The TypeScript configuration that should be used
+		 * by the `ts-loader` when processing TypeScript files.
+		 * @returns {Object}
+		 */
+		typescript: ( cwd, tsconfigName = 'tsconfig.json' ) => {
 			return {
 				test: /\.ts$/,
-				use: 'ts-loader'
+				loader: 'ts-loader',
+				options: {
+					configFile: path.join( cwd, tsconfigName )
+				}
 			};
 		},
 

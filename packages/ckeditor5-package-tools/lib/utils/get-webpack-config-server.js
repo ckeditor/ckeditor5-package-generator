@@ -81,7 +81,7 @@ module.exports = options => {
 			rules: [
 				loaderDefinitions.raw(),
 				loaderDefinitions.styles( options.cwd ),
-				loaderDefinitions.typescript()
+				loaderDefinitions.typescript( options.cwd )
 			]
 		}
 	};

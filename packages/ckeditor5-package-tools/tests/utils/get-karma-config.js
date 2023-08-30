@@ -30,6 +30,9 @@ describe( 'lib/utils/get-karma-config', () => {
 				join: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) ),
 				resolve: sinon.stub().callsFake( file => `/process/cwd/${ file }` )
 			},
+			fs: {
+				existsSync: sinon.stub().returns( false )
+			},
 			webpackUtils: {
 				loaderDefinitions: {
 					raw: sinon.stub(),
@@ -47,6 +50,7 @@ describe( 'lib/utils/get-karma-config', () => {
 		stubs.webpackUtils.loaderDefinitions.coverage.withArgs( cwd ).returns( 'coverage-loader' );
 		stubs.webpackUtils.getModuleResolutionPaths.returns( 'loader-resolution-paths' );
 
+		mockery.registerMock( 'fs', stubs.fs );
 		mockery.registerMock( 'path', stubs.path );
 		mockery.registerMock( './webpack-utils', stubs.webpackUtils );
 
@@ -71,7 +75,7 @@ describe( 'lib/utils/get-karma-config', () => {
 
 	it( 'uses sandboxed version of Chrome when executing on local environment', () => {
 		const envCI = process.env.CI;
-		process.env.CI = false;
+		process.env.CI = 'false';
 
 		const config = getKarmaConfig( { cwd } );
 
@@ -82,11 +86,11 @@ describe( 'lib/utils/get-karma-config', () => {
 
 	it( 'uses no sandbox version of Chrome when executing on CI', () => {
 		const envCI = process.env.CI;
-		process.env.CI = true;
+		process.env.CI = 'true';
 
 		const config = getKarmaConfig( { cwd } );
 
-		expect( config.browsers ).to.deep.equal( [ 'CHROME_TRAVIS_CI' ] );
+		expect( config.browsers ).to.deep.equal( [ 'CHROME_CI' ] );
 
 		process.env.CI = envCI;
 	} );
@@ -257,6 +261,24 @@ describe( 'lib/utils/get-karma-config', () => {
 			const config = getKarmaConfig( { cwd, sourceMap: true } );
 
 			expect( config.webpack.devtool ).to.equal( 'eval-cheap-module-source-map' );
+		} );
+
+		it( 'allows using the "tsconfig.test.json" file for TypeScript files if exists', () => {
+			stubs.fs.existsSync.returns( true );
+
+			getKarmaConfig( { cwd } );
+
+			expect( stubs.webpackUtils.loaderDefinitions.typescript.callCount ).to.equal( 1 );
+			expect( stubs.webpackUtils.loaderDefinitions.typescript.firstCall.args[ 0 ] ).to.equal( cwd );
+			expect( stubs.webpackUtils.loaderDefinitions.typescript.firstCall.args[ 1 ] ).to.equal( 'tsconfig.test.json' );
+		} );
+
+		it( 'uses the default "tsconfig.json" configuration if the test config does not exist', () => {
+			getKarmaConfig( { cwd } );
+
+			expect( stubs.webpackUtils.loaderDefinitions.typescript.callCount ).to.equal( 1 );
+			expect( stubs.webpackUtils.loaderDefinitions.typescript.firstCall.args[ 0 ] ).to.equal( cwd );
+			expect( stubs.webpackUtils.loaderDefinitions.typescript.firstCall.args[ 1 ] ).to.equal( 'tsconfig.json' );
 		} );
 	} );
 } );

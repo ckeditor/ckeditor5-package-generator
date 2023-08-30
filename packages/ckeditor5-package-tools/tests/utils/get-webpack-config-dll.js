@@ -102,6 +102,20 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 		] );
 	} );
 
+	it( 'passes the "cwd" directory to TypeScript loader', () => {
+		getWebpackConfigDll( { cwd } );
+
+		expect( stubs.webpackUtils.loaderDefinitions.typescript.callCount ).to.equal( 1 );
+		expect( stubs.webpackUtils.loaderDefinitions.typescript.firstCall.args[ 0 ] ).to.equal( cwd );
+	} );
+
+	it( 'passes the "cwd" directory to Styles loader', () => {
+		getWebpackConfigDll( { cwd } );
+
+		expect( stubs.webpackUtils.loaderDefinitions.styles.callCount ).to.equal( 1 );
+		expect( stubs.webpackUtils.loaderDefinitions.styles.firstCall.args[ 0 ] ).to.equal( cwd );
+	} );
+
 	it( 'resolves correct file extensions', () => {
 		const config = getWebpackConfigDll( { cwd } );
 
