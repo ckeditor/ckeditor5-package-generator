@@ -59,11 +59,11 @@ module.exports = options => {
 		logLevel: 'INFO',
 
 		browsers: [
-			process.env.CI === 'true' ? 'CHROME_TRAVIS_CI' : 'CHROME_LOCAL'
+			process.env.CI === 'true' ? 'CHROME_CI' : 'CHROME_LOCAL'
 		],
 
 		customLaunchers: {
-			CHROME_TRAVIS_CI: {
+			CHROME_CI: {
 				base: 'Chrome',
 				flags: [ '--no-sandbox', '--disable-background-timer-throttling', '--js-flags="--expose-gc"' ]
 			},
