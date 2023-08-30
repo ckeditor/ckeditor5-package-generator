@@ -73,6 +73,18 @@ jobs:
       - run:
           name: Run unit tests
           command: yarn run coverage
+      - run:
+          name: Verify build (JavaScript, npm)
+          command: node scripts/ci/verify-build -l js -p npm
+      - run:
+          name: Verify build (TypeScript, npm, custom plugin name)
+          command: node scripts/ci/verify-build -l ts -p npm -n CustomPluginName
+      - run:
+          name: Verify build (JavaScript, yarn, custom plugin name)
+          command: node scripts/ci/verify-build -l js -p yarn -n customPluginName400
+      - run:
+          name: Verify build (TypeScript, yarn)
+          command: node scripts/ci/verify-build -l ts -p yarn
       - unless:
           # Upload the code coverage results for non-nightly builds only.
           condition: << pipeline.parameters.isNightly >>
@@ -91,18 +103,6 @@ jobs:
             - run:
                 name: Upload code coverage
                 command: cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-      - run:
-          name: Verify build (JavaScript, npm)
-          command: node scripts/ci/verify-build -l js -p npm
-      - run:
-          name: Verify build (TypeScript, npm, custom plugin name)
-          command: node scripts/ci/verify-build -l ts -p npm -n CustomPluginName
-      - run:
-          name: Verify build (JavaScript, yarn, custom plugin name)
-          command: node scripts/ci/verify-build -l js -p yarn -n customPluginName400
-      - run:
-          name: Verify build (TypeScript, yarn)
-          command: node scripts/ci/verify-build -l ts -p yarn
 
 workflows:
   version: 2
