@@ -14,6 +14,7 @@ const path = require( 'path' );
 const fs = require( 'fs' );
 const chalk = require( 'chalk' );
 const stripAnsiEscapeCodes = require( 'strip-ansi' );
+const parseArguments = require( './utils/parsearguments' );
 
 const REPOSITORY_DIRECTORY = path.join( __dirname, '..', '..' );
 const NEW_PACKAGE_DIRECTORY = path.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-test-package' );
@@ -72,10 +73,9 @@ start();
  * Runs checks and exits with an appropriate exit code.
  */
 async function start() {
-	await testBuild( 'js', 'npm' );
-	await testBuild( 'ts', 'npm', 'CustomPluginName' );
-	await testBuild( 'js', 'yarn', 'customPluginName400' );
-	await testBuild( 'ts', 'yarn' );
+	const options = parseArguments( process.argv.slice( 2 ) );
+
+	await verifyBuild( options );
 
 	if ( foundError ) {
 		console.log( '\n' + chalk.red( 'Found errors during the verification. Please, review the log above.' ) );
@@ -87,19 +87,17 @@ async function start() {
 /**
  * Build and run scripts for a given language and packageManager.
  *
- * @param {String} lang
- * @param {'npm'|'yarn'} packageManager
- * @param {String|undefined} customPluginName
+ * @param {VerificationOptions} options
  */
-async function testBuild( lang, packageManager, customPluginName ) {
-	let testSetupInfoMessage = `Testing build for language: [${ lang }] and package manager: [${ packageManager }]`;
+async function verifyBuild( { language, packageManager, customPluginName } ) {
+	let testSetupInfoMessage = `Testing build for language: [${ language }] and package manager: [${ packageManager }]`;
 	const packageBuildCommand = [
 		'node', 'ckeditor5-package-generator/packages/ckeditor5-package-generator/bin/index.js', '@ckeditor/ckeditor5-test-package',
-		'--dev', '--verbose', '--lang', lang, `--use-${ packageManager }`
+		'--dev', '--verbose', '--lang', language, `--use-${ packageManager }`
 	];
 
-	const expectedPublishFiles = getExpectedFiles( EXPECTED_PUBLISH_FILES, lang, customPluginName );
-	const expectedSrcDirFiles = getExpectedFiles( EXPECTED_SRC_DIR_FILES, lang, customPluginName );
+	const expectedPublishFiles = getExpectedFiles( EXPECTED_PUBLISH_FILES, language, customPluginName );
+	const expectedSrcDirFiles = getExpectedFiles( EXPECTED_SRC_DIR_FILES, language, customPluginName );
 
 	if ( customPluginName ) {
 		testSetupInfoMessage += ` with custom plugin name: [${ customPluginName }]`;
@@ -127,7 +125,7 @@ async function testBuild( lang, packageManager, customPluginName ) {
 	checkFileList( stderr, expectedPublishFiles );
 
 	logProcess( 'Verifying post release cleanup...' );
-	verifyPublishCleanup( lang, expectedSrcDirFiles );
+	verifyPublishCleanup( language, expectedSrcDirFiles );
 
 	logProcess( 'Starting the development servers and verifying the sample builds...' );
 	await Promise.all( [
