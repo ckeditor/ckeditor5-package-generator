@@ -96,6 +96,20 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		] );
 	} );
 
+	it( 'passes the "cwd" directory to TypeScript loader', () => {
+		getWebpackConfigServer( { cwd } );
+
+		expect( stubs.webpackUtils.loaderDefinitions.typescript.callCount ).to.equal( 1 );
+		expect( stubs.webpackUtils.loaderDefinitions.typescript.firstCall.args[ 0 ] ).to.equal( cwd );
+	} );
+
+	it( 'passes the "cwd" directory to Styles loader', () => {
+		getWebpackConfigServer( { cwd } );
+
+		expect( stubs.webpackUtils.loaderDefinitions.styles.callCount ).to.equal( 1 );
+		expect( stubs.webpackUtils.loaderDefinitions.styles.firstCall.args[ 0 ] ).to.equal( cwd );
+	} );
+
 	it( 'resolves correct file extensions', () => {
 		const config = getWebpackConfigServer( { cwd } );
 

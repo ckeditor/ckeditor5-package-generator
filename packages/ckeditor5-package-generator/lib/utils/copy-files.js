@@ -19,7 +19,7 @@ const TEMPLATE_PATH = path.join( __dirname, '..', 'templates' );
  *
  * @param {Logger} logger
  * @param {Object} options
- * @param {String} packageName
+ * @param {String} options.packageName
  * @param {FormattedNames} options.formattedNames
  * @param {String} options.directoryPath
  * @param {String} options.packageManager

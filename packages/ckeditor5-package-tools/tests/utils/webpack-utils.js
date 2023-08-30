@@ -59,7 +59,7 @@ describe( 'lib/utils/webpack-utils', () => {
 			} );
 
 			it( 'uses "raw-loader" for providing files', () => {
-				expect( loader.use ).to.equal( 'raw-loader' );
+				expect( loader.loader ).to.equal( 'raw-loader' );
 			} );
 
 			it( 'loads paths that end with the ".svg" suffix', () => {
@@ -99,11 +99,11 @@ describe( 'lib/utils/webpack-utils', () => {
 			let loader;
 
 			beforeEach( () => {
-				loader = webpackUtils.loaderDefinitions.typescript();
+				loader = webpackUtils.loaderDefinitions.typescript( cwd );
 			} );
 
 			it( 'uses "ts-loader" for providing files', () => {
-				expect( loader.use ).to.equal( 'ts-loader' );
+				expect( loader.loader ).to.equal( 'ts-loader' );
 			} );
 
 			it( 'loads paths that end with the ".ts" suffix', () => {
@@ -112,6 +112,18 @@ describe( 'lib/utils/webpack-utils', () => {
 
 				expect( '/Users/ckeditor/ckeditor5-foo/assets/ckeditor.js' ).to.not.match( loader.test );
 				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\assets\\ckeditor.js' ).to.not.match( loader.test );
+			} );
+
+			it( 'passes default values to loader options', () => {
+				expect( loader.options ).to.be.an( 'object' );
+				expect( loader.options ).to.have.property( 'configFile', '/process/cwd/tsconfig.json' );
+			} );
+
+			it( 'allows defining custom tsconfig file', () => {
+				loader = webpackUtils.loaderDefinitions.typescript( cwd, 'tsconfig.test.json' );
+
+				expect( loader.options ).to.be.an( 'object' );
+				expect( loader.options ).to.have.property( 'configFile', '/process/cwd/tsconfig.test.json' );
 			} );
 		} );
 
