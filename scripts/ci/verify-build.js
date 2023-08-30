@@ -91,8 +91,10 @@ async function start() {
  */
 async function verifyBuild( { language, packageManager, customPluginName } ) {
 	let testSetupInfoMessage = `Testing build for language: [${ language }] and package manager: [${ packageManager }]`;
+
+	const projectRootName = path.basename( process.cwd() );
 	const packageBuildCommand = [
-		'node', 'ckeditor5-package-generator/packages/ckeditor5-package-generator/bin/index.js', '@ckeditor/ckeditor5-test-package',
+		'node', `${ projectRootName }/packages/ckeditor5-package-generator/bin/index.js`, '@ckeditor/ckeditor5-test-package',
 		'--dev', '--verbose', '--lang', language, `--use-${ packageManager }`
 	];
 
@@ -208,7 +210,7 @@ function startDevelopmentServer( cwd ) {
 		// Webpack prints the "hidden modules..." string when finished processing the file.
 		// Hence, we can assume that the server is live at this stage.
 		sampleServer.stdout.on( 'data', data => {
-			const content = data.toString().slice( 0, -1 );
+			const content = stripAnsiEscapeCodes( data.toString() ).slice( 0, -1 );
 			const endMatch = /webpack \d+\.\d+\.\d+ compiled successfully in \d+ ms/.test( content );
 
 			if ( endMatch ) {
@@ -233,7 +235,7 @@ function startDevelopmentServer( cwd ) {
  */
 function startDevelopmentServerForDllBuild( cwd ) {
 	return new Promise( ( resolve, reject ) => {
-		const sampleServer = spawn( 'http-server', [ './' ], {
+		const sampleServer = spawn( 'npx', [ 'http-server', './' ], {
 			cwd,
 			encoding: 'utf8',
 			shell: true
