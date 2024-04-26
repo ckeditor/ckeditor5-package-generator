@@ -63,7 +63,7 @@ ClassicEditor
 		],
 		toolbar: [
 			'undo',
-			'redo'
+			'redo',
 			'|',
 			'<%= formattedNames.plugin.camelCase %>Button',
 			'|',
