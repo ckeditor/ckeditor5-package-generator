@@ -14,6 +14,10 @@ module.exports = {
 		return require( '../lib/tasks/start' )( options );
 	},
 
+	'dll:build'( options ) {
+		return require( '../lib/tasks/dll-build' )( options );
+	},
+
 	'translations:collect'( options ) {
 		return require( '../lib/tasks/translations-collect' )( options );
 	},
