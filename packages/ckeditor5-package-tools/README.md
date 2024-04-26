@@ -16,6 +16,7 @@ The following scripts are available in the package:
 
 * `test` &ndash; prepares an entry file and passes it to the [karma](https://karma-runner.github.io/) test runner,
 * `start` &ndash; prepares the [development server](https://webpack.js.org/configuration/dev-server/) with the live-reloading mechanism,
+* `dll:build` &ndash; prepares a file compatible with [CKEditor 5 DLL](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html) that exposes plugins from the package,
 * `translations:collect` &ndash; collects translations context and prepares them to be sent to [Transifex](https://www.transifex.com/),
 * `translations:upload` &ndash; uploads collected contexts to [Transifex](https://www.transifex.com/),
 * `translations:download` &ndash; downloads translated contexts from [Transifex](https://www.transifex.com/),

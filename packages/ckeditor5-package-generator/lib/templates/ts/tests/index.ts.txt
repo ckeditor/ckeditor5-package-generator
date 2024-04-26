@@ -1,10 +1,14 @@
 import { expect } from 'chai';
-import { icons } from '../src';
+import { <%= formattedNames.plugin.pascalCase %> as <%= formattedNames.plugin.pascalCase %>Dll, icons } from '../src';
 import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>';
 
 import ckeditor from './../theme/icons/ckeditor.svg';
 
-describe( 'CKEditor5 <%= formattedNames.plugin.pascalCase %> Plugin', () => {
+describe( 'CKEditor5 <%= formattedNames.plugin.pascalCase %> DLL', () => {
+	it( 'exports <%= formattedNames.plugin.pascalCase %>', () => {
+		expect( <%= formattedNames.plugin.pascalCase %>Dll ).to.equal( <%= formattedNames.plugin.pascalCase %> );
+	} );
+
 	describe( 'icons', () => {
 		it( 'exports the "ckeditor" icon', () => {
 			expect( icons.ckeditor ).to.equal( ckeditor );
