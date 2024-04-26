@@ -11,7 +11,6 @@ This package was created by the [ckeditor5-package-generator](https://www.npmjs.
   * [`test`](#test)
   * [`lint`](#lint)
   * [`stylelint`](#stylelint)
-  * [`dll:build`](#dllbuild)
   * [`dll:serve`](#dllserve)
   * [`translations:collect`](#translationscollect)
   * [`translations:download`](#translationsdownload)
@@ -90,31 +89,6 @@ Examples:
 ```bash
 # Execute stylelint.
 <%= packageManager %> run stylelint
-```
-
-### `dll:build`
-
-Creates a DLL-compatible package build which can be loaded into an editor using [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html).
-
-Examples:
-
-```bash
-# Build the DLL file that is ready to publish.
-<%= packageManager %> run dll:build
-
-# Build the DLL file and listen to changes in its sources.
-<%= packageManager %> run dll:build <%= cliSeparator %>--watch
-```
-
-### `dll:serve`
-
-Creates a simple HTTP server (without the live-reload mechanism) that allows verifying whether the DLL build of the package is compatible with the CKEditor 5 [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html).
-
-Examples:
-
-```bash
-# Starts the HTTP server and opens the browser.
-<%= packageManager %> run dll:serve
 ```
 
 ### `translations:collect`

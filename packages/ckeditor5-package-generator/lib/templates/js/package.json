@@ -8,7 +8,6 @@
     "ckeditor 5",
     "ckeditor5-feature",
     "ckeditor5-plugin",
-    "ckeditor5-dll",
     "ckeditor5-package-generator"
   ],
   "main": "src/index.js",
@@ -57,13 +56,10 @@
     "ckeditor5": ">=<%= packageVersions.ckeditor5 %>"
   },
   "scripts": {
-    "dll:build": "ckeditor5-package-tools dll:build",
-    "dll:serve": "http-server ./ -o sample/dll.html",
     "lint": "eslint \"**/*.js\" --quiet",
     "start": "ckeditor5-package-tools start",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
     "test": "ckeditor5-package-tools test",
-    "prepare": "<%= packageManager %> run dll:build",
     "translations:collect": "ckeditor5-package-tools translations:collect",
     "translations:download": "ckeditor5-package-tools translations:download",
     "translations:upload": "ckeditor5-package-tools translations:upload"
