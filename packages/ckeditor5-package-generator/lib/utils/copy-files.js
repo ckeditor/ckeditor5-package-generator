@@ -45,8 +45,6 @@ module.exports = function copyFiles( logger, options ) {
 		} );
 	} );
 
-	console.log( 'templatesToCopy', templatesToCopy );
-
 	for ( const templatePath of templatesToCopy ) {
 		logger.verboseInfo( `* Copying "${ chalk.gray( templatePath ) }"...` );
 

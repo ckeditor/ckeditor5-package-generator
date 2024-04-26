@@ -38,8 +38,6 @@ module.exports = async function init( packageName, options ) {
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
 	const packageVersions = getDependenciesVersions( logger, dev );
 
-	console.log( 'useLegacyMethods', useLegacyMethods );
-
 	copyFiles( logger, {
 		packageName,
 		formattedNames,
