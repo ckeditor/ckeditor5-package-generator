@@ -8,7 +8,6 @@
     "ckeditor 5",
     "ckeditor5-feature",
     "ckeditor5-plugin",
-    "ckeditor5-dll",
     "ckeditor5-package-generator"
   ],
   "main": "src/index.js",
@@ -25,26 +24,9 @@
     "ckeditor5-metadata.json"
   ],
   "devDependencies": {
-    "@ckeditor/ckeditor5-autoformat": ">=<%= packageVersions.ckeditor5 %>",
-    "@ckeditor/ckeditor5-basic-styles": ">=<%= packageVersions.ckeditor5 %>",
-    "@ckeditor/ckeditor5-block-quote": ">=<%= packageVersions.ckeditor5 %>",
-    "@ckeditor/ckeditor5-code-block": ">=<%= packageVersions.ckeditor5 %>",
-    "@ckeditor/ckeditor5-core": ">=<%= packageVersions.ckeditor5 %>",
-    "@ckeditor/ckeditor5-editor-classic": ">=<%= packageVersions.ckeditor5 %>",
-    "@ckeditor/ckeditor5-essentials": ">=<%= packageVersions.ckeditor5 %>",
-    "@ckeditor/ckeditor5-heading": ">=<%= packageVersions.ckeditor5 %>",
-    "@ckeditor/ckeditor5-image": ">=<%= packageVersions.ckeditor5 %>",
-    "@ckeditor/ckeditor5-indent": ">=<%= packageVersions.ckeditor5 %>",
     "@ckeditor/ckeditor5-inspector": ">=<%= packageVersions.ckeditor5Inspector %>",
-    "@ckeditor/ckeditor5-link": ">=<%= packageVersions.ckeditor5 %>",
-    "@ckeditor/ckeditor5-list": ">=<%= packageVersions.ckeditor5 %>",
-    "@ckeditor/ckeditor5-media-embed": ">=<%= packageVersions.ckeditor5 %>",
     "@ckeditor/ckeditor5-package-tools": "<%= packageVersions.packageTools %>",
-    "@ckeditor/ckeditor5-paragraph": ">=<%= packageVersions.ckeditor5 %>",
-    "@ckeditor/ckeditor5-table": ">=<%= packageVersions.ckeditor5 %>",
-    "@ckeditor/ckeditor5-theme-lark": ">=<%= packageVersions.ckeditor5 %>",
-    "@ckeditor/ckeditor5-upload": ">=<%= packageVersions.ckeditor5 %>",
-    "ckeditor5": ">=<%= packageVersions.ckeditor5 %>",
+    "ckeditor5": "nightly",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": ">=<%= packageVersions.eslintConfigCkeditor5 %>",
     "http-server": "^14.1.0",
@@ -54,7 +36,7 @@
     "stylelint-config-ckeditor5": ">=<%= packageVersions.stylelintConfigCkeditor5 %>"
   },
   "peerDependencies": {
-    "ckeditor5": ">=<%= packageVersions.ckeditor5 %>"
+    "ckeditor5": "nightly"
   },
   "scripts": {
     "lint": "eslint \"**/*.js\" --quiet",
