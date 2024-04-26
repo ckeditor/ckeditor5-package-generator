@@ -26,7 +26,7 @@ const validatePluginName = require( './utils/validate-plugin-name' );
  * @param {CKeditor5PackageGeneratorOptions} options
  */
 module.exports = async function init( packageName, options ) {
-	const { dev, verbose, useNpm, useYarn, lang, pluginName } = options;
+	const { dev, verbose, useNpm, useYarn, useLegacyMethods, lang, pluginName } = options;
 
 	const logger = new Logger( verbose );
 
@@ -38,13 +38,16 @@ module.exports = async function init( packageName, options ) {
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
 	const packageVersions = getDependenciesVersions( logger, dev );
 
+	console.log( 'useLegacyMethods', useLegacyMethods );
+
 	copyFiles( logger, {
 		packageName,
 		formattedNames,
 		directoryPath,
 		packageManager,
 		programmingLanguage,
-		packageVersions
+		packageVersions,
+		useLegacyMethods
 	} );
 
 	await installDependencies( directoryPath, packageManager, verbose, dev );
@@ -75,6 +78,8 @@ module.exports = async function init( packageName, options ) {
  * @property {Boolean} [useNpm=false]
  *
  * @property {Boolean} [useYarn=false]
+ *
+ * @property {Boolean} [useLegacyMethods=false]
  *
  * @property {Boolean} [dev=false]
  *

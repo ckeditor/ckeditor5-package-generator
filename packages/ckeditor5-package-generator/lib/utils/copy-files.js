@@ -25,13 +25,16 @@ const TEMPLATE_PATH = path.join( __dirname, '..', 'templates' );
  * @param {String} options.packageManager
  * @param {String} options.programmingLanguage
  * @param {Object} options.packageVersions
+ * @param {Boolean} options.useLegacyMethods
  */
 module.exports = function copyFiles( logger, options ) {
 	logger.process( 'Copying files...' );
 
+	const templatePatternToCopy = `${ options.useLegacyMethods ? 'legacy-' : '' }${ options.programmingLanguage }/**/*`;
+
 	const templateGlobs = [
 		'common/**/*',
-		`${ options.programmingLanguage }/**/*`
+		templatePatternToCopy
 	];
 
 	const templatesToCopy = templateGlobs.flatMap( globPattern => {
@@ -41,6 +44,8 @@ module.exports = function copyFiles( logger, options ) {
 			nodir: true
 		} );
 	} );
+
+	console.log( 'templatesToCopy', templatesToCopy );
 
 	for ( const templatePath of templatesToCopy ) {
 		logger.verboseInfo( `* Copying "${ chalk.gray( templatePath ) }"...` );
@@ -68,7 +73,7 @@ function copyTemplate( templatePath, packagePath, data ) {
 
 	const processedTemplatePath = templatePath
 		// Remove sub-directory inside templates to merge results into one directory.
-		.replace( /^(?:common|js|ts)(?:\\|\/)/, '' )
+		.replace( /^(?:common|js|ts|legacy-js|legacy-ts)(?:\\|\/)/, '' )
 		// We use the ".txt" file extension to circumvent syntax errors in templates and npm not publishing the ".gitignore" file.
 		.replace( /\.txt$/, '' )
 		// Replace placeholder filenames with the class name.
