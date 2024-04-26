@@ -78,6 +78,7 @@ node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--d
 * `--dev` &ndash; whether to execute in the development mode. It means that the `@ckeditor/ckeditor5-package-tools` will not be installed from npm, but from the local file system.
 * `--use-npm` &ndash; use `npm` to install dependencies in a newly created package.
 * `--use-yarn` &ndash; use `yarn` to install dependencies in a newly created package.
+* `--use-legacy-methods` &ndash; use old installations methods in a newly created package. [TODO: Link to DLLs documentation??]
 * `--name` &ndash; define a class name to be different from the package name.
 * `--lang` &ndash; (values: `js` | `ts`) choose whether the created package should use JavaScript or TypeScript. If omitted, the script will ask the user to choose manually.
 * `--verbose` &ndash; (alias: `-v`) print additional logs about the current executed task.
