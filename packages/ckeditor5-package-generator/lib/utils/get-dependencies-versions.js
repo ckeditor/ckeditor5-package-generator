@@ -13,6 +13,7 @@ const getPackageVersion = require( './get-package-version' );
  *
  *   * ckeditor5
  *   * @ckeditor/ckeditor5-inspector (as `ckeditor5Inspector`)
+ *   * @ckeditor/ckeditor5-dev-build-tools (as `ckeditor5DevBuildTools`)
  *   * eslint-config-ckeditor5 (as `eslintConfigCkeditor5`)
  *   * stylelint-config-ckeditor5 (as `stylelintConfigCkeditor5`)
  *   * @ckeditor/ckeditor5-package-tools (as `packageTools`)
@@ -32,6 +33,7 @@ module.exports = function getDependenciesVersions( logger, dev ) {
 	return {
 		ckeditor5: getPackageVersion( 'ckeditor5' ),
 		ckeditor5Inspector: getPackageVersion( '@ckeditor/ckeditor5-inspector' ),
+		ckeditor5DevBuildTools: getPackageVersion( '@ckeditor/ckeditor5-dev-build-tools' ),
 		eslintConfigCkeditor5: getPackageVersion( 'eslint-config-ckeditor5' ),
 		stylelintConfigCkeditor5: getPackageVersion( 'stylelint-config-ckeditor5' ),
 		packageTools: dev ?

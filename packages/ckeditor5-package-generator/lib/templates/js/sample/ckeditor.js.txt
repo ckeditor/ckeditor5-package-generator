@@ -25,7 +25,9 @@ import {
 	TableToolbar
 } from 'ckeditor5';
 
-import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>';
+import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>.js';
+
+import 'ckeditor5/index.css';
 
 /* global document, window */
 

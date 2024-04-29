@@ -27,6 +27,7 @@
     "ckeditor5-metadata.json"
   ],
   "devDependencies": {
+    "@ckeditor/ckeditor5-dev-build-tools": "<%= packageVersions.ckeditor5DevBuildTools %>",
     "@ckeditor/ckeditor5-inspector": ">=<%= packageVersions.ckeditor5Inspector %>",
     "@ckeditor/ckeditor5-package-tools": "<%= packageVersions.packageTools %>",
     "@types/chai": "^4.3.1",
@@ -48,6 +49,7 @@
     "ckeditor5": "nightly"
   },
   "scripts": {
+    "build:dist": "ckeditor5-dev-build-tools --input=src/index.ts --source-map --clean",
     "ts:build": "tsc -p ./tsconfig.release.json",
     "ts:clear": "npx rimraf \"src/**/*.@(js|d.ts)\"",
     "lint": "eslint \"**/*.{js,ts}\" --quiet",
