@@ -10,6 +10,7 @@
     "ckeditor5-plugin",
     "ckeditor5-package-generator"
   ],
+  "type": "module",
   "main": "src/index.js",
   "license": "MIT",
   "engines": {
