@@ -1,5 +1,5 @@
 import { ClassicEditor, Essentials, Paragraph, Heading } from 'ckeditor5';
-import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>';
+import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>.js';
 
 /* global document */
 
