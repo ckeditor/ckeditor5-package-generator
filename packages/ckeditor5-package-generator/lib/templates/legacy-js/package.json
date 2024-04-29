@@ -11,7 +11,6 @@
     "ckeditor5-dll",
     "ckeditor5-package-generator"
   ],
-  "type": "module",
   "main": "src/index.js",
   "license": "MIT",
   "engines": {

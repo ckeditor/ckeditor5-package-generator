@@ -43,13 +43,10 @@
   },
   "scripts": {
     "build:dist": "ckeditor5-dev-build-tools --input=src/index.js --source-map --clean",
-    "dll:build": "ckeditor5-package-tools dll:build",
-    "dll:serve": "http-server ./ -o sample/dll.html",
     "lint": "eslint \"**/*.js\" --quiet",
     "start": "ckeditor5-package-tools start",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
     "test": "ckeditor5-package-tools test",
-    "prepare": "<%= packageManager %> run dll:build",
     "translations:collect": "ckeditor5-package-tools translations:collect",
     "translations:download": "ckeditor5-package-tools translations:download",
     "translations:upload": "ckeditor5-package-tools translations:upload"
