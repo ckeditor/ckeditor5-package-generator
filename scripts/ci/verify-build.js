@@ -19,36 +19,46 @@ const parseArguments = require( './utils/parsearguments' );
 const REPOSITORY_DIRECTORY = path.join( __dirname, '..', '..' );
 const NEW_PACKAGE_DIRECTORY = path.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-test-package' );
 
+const EXPECTED_JS_PUBLISH_FILES = [
+	'src/index.js',
+	'src/testpackage.js',
+
+	'lang/contexts.json',
+	'theme/icons/ckeditor.svg',
+
+	'package.json',
+	'LICENSE.md',
+	'README.md',
+	'ckeditor5-metadata.json'
+];
+
+const EXPECTED_TS_PUBLISH_FILES = [
+	'src/augmentation.js',
+	'src/index.js',
+	'src/testpackage.js',
+	'src/augmentation.d.ts',
+	'src/index.d.ts',
+	'src/testpackage.d.ts',
+
+	'lang/contexts.json',
+	'theme/icons/ckeditor.svg',
+
+	'package.json',
+	'LICENSE.md',
+	'README.md',
+	'ckeditor5-metadata.json'
+];
+
 const EXPECTED_PUBLISH_FILES = {
-	js: [
-		'src/index.js',
-		'src/testpackage.js',
-
-		'lang/contexts.json',
-		'theme/icons/ckeditor.svg',
-		'build/test-package.js',
-
-		'package.json',
-		'LICENSE.md',
-		'README.md',
-		'ckeditor5-metadata.json'
+	js: EXPECTED_JS_PUBLISH_FILES,
+	'legacy-js': [
+		...EXPECTED_JS_PUBLISH_FILES,
+		'build/test-package.js'
 	],
-	ts: [
-		'src/augmentation.js',
-		'src/index.js',
-		'src/testpackage.js',
-		'src/augmentation.d.ts',
-		'src/index.d.ts',
-		'src/testpackage.d.ts',
-
-		'lang/contexts.json',
-		'theme/icons/ckeditor.svg',
-		'build/test-package.js',
-
-		'package.json',
-		'LICENSE.md',
-		'README.md',
-		'ckeditor5-metadata.json'
+	ts: EXPECTED_TS_PUBLISH_FILES,
+	'legacy-ts': [
+		...EXPECTED_TS_PUBLISH_FILES,
+		'build/test-package.js'
 	]
 };
 
@@ -98,8 +108,8 @@ async function verifyBuild( { language, packageManager, customPluginName, useLeg
 		'--dev', '--verbose', '--lang', language, `--use-${ packageManager }`
 	];
 
-	const expectedPublishFiles = getExpectedFiles( EXPECTED_PUBLISH_FILES, language, customPluginName );
-	const expectedSrcDirFiles = getExpectedFiles( EXPECTED_SRC_DIR_FILES, language, customPluginName );
+	const expectedPublishFiles = getExpectedFiles( EXPECTED_PUBLISH_FILES, language, customPluginName, useLegacyMethods );
+	const expectedSrcDirFiles = getExpectedFiles( EXPECTED_SRC_DIR_FILES, language, customPluginName, useLegacyMethods );
 
 	if ( customPluginName ) {
 		testSetupInfoMessage += ` with custom plugin name: [${ customPluginName }]`;
@@ -397,10 +407,12 @@ function verifyPublishCleanup( lang, expectedSrcDirFiles ) {
  * @param {String|undefined} customPluginName
  * @returns {Array<String>}
  */
-function getExpectedFiles( expectedFilesObject, lang, customPluginName ) {
+function getExpectedFiles( expectedFilesObject, lang, customPluginName, useLegacyMethods ) {
+	const languageKey = `${ useLegacyMethods ? 'legacy-' : '' }${ lang }`;
+
 	if ( !customPluginName ) {
-		return expectedFilesObject[ lang ];
+		return expectedFilesObject[ languageKey ];
 	}
 
-	return expectedFilesObject[ lang ].map( filename => filename.replace( 'testpackage', customPluginName.toLowerCase() ) );
+	return expectedFilesObject[ languageKey ].map( filename => filename.replace( 'testpackage', customPluginName.toLowerCase() ) );
 }
