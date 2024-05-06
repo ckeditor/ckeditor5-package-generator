@@ -128,7 +128,7 @@ async function verifyBuild( { language, packageManager, customPluginName, useLeg
 	}
 
 	if ( useLegacyMethods ) {
-		testSetupInfoMessage += ` with use of legacy methods of installations: [${ customPluginName }]`;
+		testSetupInfoMessage += ' with use of legacy methods of installations';
 		packageBuildCommand.push( '--use-legacy-methods' );
 	}
 
