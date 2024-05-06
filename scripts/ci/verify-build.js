@@ -51,12 +51,15 @@ const EXPECTED_TS_PUBLISH_FILES = [
 
 const EXPECTED_PUBLISH_FILES = {
 	js: EXPECTED_JS_PUBLISH_FILES,
-	'legacy-js': [
+	ts: EXPECTED_TS_PUBLISH_FILES
+};
+
+const EXPECTED_LEGACY_PUBLISH_FILES = {
+	js: [
 		...EXPECTED_JS_PUBLISH_FILES,
 		'build/test-package.js'
 	],
-	ts: EXPECTED_TS_PUBLISH_FILES,
-	'legacy-ts': [
+	ts: [
 		...EXPECTED_TS_PUBLISH_FILES,
 		'build/test-package.js'
 	]
@@ -108,8 +111,16 @@ async function verifyBuild( { language, packageManager, customPluginName, useLeg
 		'--dev', '--verbose', '--lang', language, `--use-${ packageManager }`
 	];
 
-	const expectedPublishFiles = getExpectedFiles( EXPECTED_PUBLISH_FILES, language, customPluginName, useLegacyMethods );
-	const expectedSrcDirFiles = getExpectedFiles( EXPECTED_SRC_DIR_FILES, language, customPluginName, useLegacyMethods );
+	const expectedPublishFiles = getExpectedFiles(
+		useLegacyMethods ? EXPECTED_LEGACY_PUBLISH_FILES : EXPECTED_PUBLISH_FILES,
+		language,
+		customPluginName
+	);
+	const expectedSrcDirFiles = getExpectedFiles(
+		EXPECTED_SRC_DIR_FILES,
+		language,
+		customPluginName
+	);
 
 	if ( customPluginName ) {
 		testSetupInfoMessage += ` with custom plugin name: [${ customPluginName }]`;
@@ -407,12 +418,10 @@ function verifyPublishCleanup( lang, expectedSrcDirFiles ) {
  * @param {String|undefined} customPluginName
  * @returns {Array<String>}
  */
-function getExpectedFiles( expectedFilesObject, lang, customPluginName, useLegacyMethods ) {
-	const languageKey = `${ useLegacyMethods ? 'legacy-' : '' }${ lang }`;
-
+function getExpectedFiles( expectedFilesObject, lang, customPluginName ) {
 	if ( !customPluginName ) {
-		return expectedFilesObject[ languageKey ];
+		return expectedFilesObject[ lang ];
 	}
 
-	return expectedFilesObject[ languageKey ].map( filename => filename.replace( 'testpackage', customPluginName.toLowerCase() ) );
+	return expectedFilesObject[ lang ].map( filename => filename.replace( 'testpackage', customPluginName.toLowerCase() ) );
 }
