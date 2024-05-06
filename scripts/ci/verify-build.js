@@ -136,10 +136,13 @@ async function verifyBuild( { language, packageManager, customPluginName, useLeg
 
 	logProcess( 'Starting the development servers and verifying the sample builds...' );
 
-	await Promise.all( [
-		startDevelopmentServer( NEW_PACKAGE_DIRECTORY ),
-		useLegacyMethods ? startDevelopmentServerForDllBuild( NEW_PACKAGE_DIRECTORY ) : null
-	] )
+	const listOfDevelopmentServers = [ startDevelopmentServer( NEW_PACKAGE_DIRECTORY ) ];
+
+	if ( useLegacyMethods ) {
+		listOfDevelopmentServers.push( startDevelopmentServerForDllBuild( NEW_PACKAGE_DIRECTORY ) );
+	}
+
+	await Promise.all( listOfDevelopmentServers )
 		.then( optionsList => {
 			optionsList.forEach( options => {
 				executeCommand( [ 'node', path.join( 'scripts', 'ci', 'verify-sample.js' ), options.url ], { cwd: REPOSITORY_DIRECTORY } );
