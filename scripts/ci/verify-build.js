@@ -89,7 +89,7 @@ async function start() {
  *
  * @param {VerificationOptions} options
  */
-async function verifyBuild( { language, packageManager, customPluginName } ) {
+async function verifyBuild( { language, packageManager, customPluginName, useLegacyMethods } ) {
 	let testSetupInfoMessage = `Testing build for language: [${ language }] and package manager: [${ packageManager }]`;
 
 	const projectRootName = path.basename( process.cwd() );
@@ -104,6 +104,11 @@ async function verifyBuild( { language, packageManager, customPluginName } ) {
 	if ( customPluginName ) {
 		testSetupInfoMessage += ` with custom plugin name: [${ customPluginName }]`;
 		packageBuildCommand.push( '--plugin-name', customPluginName );
+	}
+
+	if ( useLegacyMethods ) {
+		testSetupInfoMessage += ` with use of legacy methods of installations: [${ customPluginName }]`;
+		packageBuildCommand.push( '--use-legacy-methods' );
 	}
 
 	logProcess( testSetupInfoMessage + '.' );
@@ -130,9 +135,10 @@ async function verifyBuild( { language, packageManager, customPluginName } ) {
 	verifyPublishCleanup( language, expectedSrcDirFiles );
 
 	logProcess( 'Starting the development servers and verifying the sample builds...' );
+
 	await Promise.all( [
 		startDevelopmentServer( NEW_PACKAGE_DIRECTORY ),
-		startDevelopmentServerForDllBuild( NEW_PACKAGE_DIRECTORY )
+		useLegacyMethods ? startDevelopmentServerForDllBuild( NEW_PACKAGE_DIRECTORY ) : null
 	] )
 		.then( optionsList => {
 			optionsList.forEach( options => {

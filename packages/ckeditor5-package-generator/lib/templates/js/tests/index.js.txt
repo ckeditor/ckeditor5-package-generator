@@ -1,5 +1,4 @@
 import { icons } from '../src/index.js';
-import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>.js';
 
 import ckeditor from './../theme/icons/ckeditor.svg';
 

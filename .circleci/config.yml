@@ -77,14 +77,26 @@ jobs:
           name: Verify build (JavaScript, npm)
           command: node scripts/ci/verify-build -l js -p npm
       - run:
+          name: Verify build (JavaScript, npm, legacy)
+          command: node scripts/ci/verify-build -l js -p npm -m
+      - run:
           name: Verify build (TypeScript, npm, custom plugin name)
           command: node scripts/ci/verify-build -l ts -p npm -n CustomPluginName
+      - run:
+          name: Verify build (TypeScript, npm, legacy, custom plugin name)
+          command: node scripts/ci/verify-build -l ts -p npm -m -n CustomPluginName
       - run:
           name: Verify build (JavaScript, yarn, custom plugin name)
           command: node scripts/ci/verify-build -l js -p yarn -n customPluginName400
       - run:
+          name: Verify build (JavaScript, yarn, legacy, custom plugin name)
+          command: node scripts/ci/verify-build -l js -p yarn -m -n customPluginName400
+      - run:
           name: Verify build (TypeScript, yarn)
           command: node scripts/ci/verify-build -l ts -p yarn
+      - run:
+          name: Verify build (TypeScript, yarn, legacy)
+          command: node scripts/ci/verify-build -l ts -p yarn -m
       - unless:
           # Upload the code coverage results for non-nightly builds only.
           condition: << pipeline.parameters.isNightly >>

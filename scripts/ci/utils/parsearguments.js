@@ -18,19 +18,22 @@ module.exports = function parseArguments( cliArguments ) {
 		string: [
 			'language',
 			'package-manager',
-			'custom-plugin-name'
+			'custom-plugin-name',
+			'use-legacy-methods'
 		],
 
 		alias: {
 			l: 'language',
 			p: 'package-manager',
-			n: 'custom-plugin-name'
+			n: 'custom-plugin-name',
+			m: 'use-legacy-methods'
 		},
 
 		default: {
 			language: 'js',
 			'package-manager': 'yarn',
-			'custom-plugin-name': ''
+			'custom-plugin-name': '',
+			'use-legacy-methods': false
 		}
 	};
 
@@ -41,6 +44,9 @@ module.exports = function parseArguments( cliArguments ) {
 
 	options.customPluginName = options[ 'custom-plugin-name' ];
 	delete options[ 'custom-plugin-name' ];
+
+	options.useLegacyMethods = typeof options[ 'use-legacy-methods' ] === 'string';
+	delete options[ 'use-legacy-methods' ];
 
 	return options;
 };
@@ -53,4 +59,6 @@ module.exports = function parseArguments( cliArguments ) {
  * @property {String} packageManager
  *
  * @property {String} customPluginName
+ *
+ * @property {String} useLegacyMethods
  */
