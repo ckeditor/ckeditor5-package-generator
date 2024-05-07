@@ -21,7 +21,7 @@ While not necessary, it is also nice to have the latest version of `yarn 1.x` in
 To create a new package without installing the tool, simply execute the following command:
 
 ```bash
-npx ckeditor5-package-generator <packageName> [--use-npm] [--use-yarn] [--plugin-name <...>] [--lang <js|ts>] [--verbose]
+npx ckeditor5-package-generator <packageName> [--use-npm] [--use-yarn] [--use-legacy-methods] [--plugin-name <...>] [--lang <js|ts>] [--verbose]
 ```
 
 The `<packageName>` argument is required and  must follow these rules:
