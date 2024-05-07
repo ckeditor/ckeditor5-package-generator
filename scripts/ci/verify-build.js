@@ -57,6 +57,12 @@ const EXPECTED_DIST_PUBLISH_FILES = [
 	'dist/index.js.map'
 ];
 
+const EXPECTED_DIST_TYPES_PUBLISH_FILES = [
+	'dist/types/sample/ckeditor.d.ts',
+	'dist/types/src/augmentation.d.ts',
+	'dist/types/src/index.d.ts'
+];
+
 const EXPECTED_PUBLISH_FILES = {
 	js: [
 		...EXPECTED_JS_PUBLISH_FILES,
@@ -64,7 +70,8 @@ const EXPECTED_PUBLISH_FILES = {
 	],
 	ts: [
 		...EXPECTED_TS_PUBLISH_FILES,
-		...EXPECTED_DIST_PUBLISH_FILES
+		...EXPECTED_DIST_PUBLISH_FILES,
+		...EXPECTED_DIST_TYPES_PUBLISH_FILES
 	]
 };
 
@@ -124,6 +131,12 @@ async function verifyBuild( { language, packageManager, customPluginName, useLeg
 		'node', `${ projectRootName }/packages/ckeditor5-package-generator/bin/index.js`, '@ckeditor/ckeditor5-test-package',
 		'--dev', '--verbose', '--lang', language, `--use-${ packageManager }`
 	];
+
+	if ( !useLegacyMethods && language === 'ts' ) {
+		const fileName = customPluginName ? customPluginName.toLowerCase() : 'testpackage';
+
+		EXPECTED_PUBLISH_FILES.ts.push( `dist/types/src/${ fileName }.d.ts` );
+	}
 
 	const expectedPublishFiles = getExpectedFiles(
 		useLegacyMethods ? EXPECTED_LEGACY_PUBLISH_FILES : EXPECTED_PUBLISH_FILES,
