@@ -49,9 +49,23 @@ const EXPECTED_TS_PUBLISH_FILES = [
 	'ckeditor5-metadata.json'
 ];
 
+const EXPECTED_DIST_PUBLISH_FILES = [
+	'dist/index-content.css',
+	'dist/index-editor.css',
+	'dist/index.css',
+	'dist/index.js',
+	'dist/index.js.map'
+];
+
 const EXPECTED_PUBLISH_FILES = {
-	js: EXPECTED_JS_PUBLISH_FILES,
-	ts: EXPECTED_TS_PUBLISH_FILES
+	js: [
+		...EXPECTED_JS_PUBLISH_FILES,
+		...EXPECTED_DIST_PUBLISH_FILES
+	],
+	ts: [
+		...EXPECTED_TS_PUBLISH_FILES,
+		...EXPECTED_DIST_PUBLISH_FILES
+	]
 };
 
 const EXPECTED_LEGACY_PUBLISH_FILES = {
