@@ -154,6 +154,9 @@ function getWebpackConfiguration( options ) {
 		resolve: {
 			// Triple dots syntax allows extending default extension list instead of overwriting it.
 			extensions: [ '.ts', '...' ],
+			extensionAlias: {
+				'.js': [ '.js', '.ts' ]
+			},
 			modules: moduleResolutionPaths
 		},
 
