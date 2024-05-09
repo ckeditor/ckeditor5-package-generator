@@ -42,7 +42,7 @@
     "ckeditor5": "nightly"
   },
   "scripts": {
-    "build:dist": "ckeditor5-dev-build-tools --input=src/index.js --source-map --clean",
+    "build:dist": "node ./scripts/build-dist.mjs",
     "lint": "eslint \"**/*.js\" --quiet",
     "start": "ckeditor5-package-tools start",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",

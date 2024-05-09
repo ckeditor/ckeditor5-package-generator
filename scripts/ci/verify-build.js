@@ -50,6 +50,14 @@ const EXPECTED_TS_PUBLISH_FILES = [
 ];
 
 const EXPECTED_DIST_PUBLISH_FILES = [
+	'dist/browser/index-content.css',
+	'dist/browser/index-editor.css',
+	'dist/browser/index.css',
+	'dist/browser/index.js',
+	'dist/browser/index.js.map',
+	'dist/browser/index.umd.js',
+	'dist/browser/index.umd.js.map',
+
 	'dist/index-content.css',
 	'dist/index-editor.css',
 	'dist/index.css',
@@ -58,9 +66,8 @@ const EXPECTED_DIST_PUBLISH_FILES = [
 ];
 
 const EXPECTED_DIST_TYPES_PUBLISH_FILES = [
-	'dist/types/sample/ckeditor.d.ts',
-	'dist/types/src/augmentation.d.ts',
-	'dist/types/src/index.d.ts'
+	'dist/types/augmentation.d.ts',
+	'dist/types/index.d.ts'
 ];
 
 const EXPECTED_PUBLISH_FILES = {
@@ -135,7 +142,7 @@ async function verifyBuild( { language, packageManager, customPluginName, useLeg
 	if ( !useLegacyMethods && language === 'ts' ) {
 		const fileName = customPluginName ? customPluginName.toLowerCase() : 'testpackage';
 
-		EXPECTED_PUBLISH_FILES.ts.push( `dist/types/src/${ fileName }.d.ts` );
+		EXPECTED_PUBLISH_FILES.ts.push( `dist/types/${ fileName }.d.ts` );
 	}
 
 	const expectedPublishFiles = getExpectedFiles(
