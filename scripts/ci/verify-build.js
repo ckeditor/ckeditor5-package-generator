@@ -85,10 +85,13 @@ const EXPECTED_PUBLISH_FILES = {
 const EXPECTED_LEGACY_PUBLISH_FILES = {
 	js: [
 		...EXPECTED_JS_PUBLISH_FILES,
+		...EXPECTED_DIST_PUBLISH_FILES,
 		'build/test-package.js'
 	],
 	ts: [
 		...EXPECTED_TS_PUBLISH_FILES,
+		...EXPECTED_DIST_PUBLISH_FILES,
+		...EXPECTED_DIST_TYPES_PUBLISH_FILES,
 		'build/test-package.js'
 	]
 };
@@ -139,10 +142,9 @@ async function verifyBuild( { language, packageManager, customPluginName, useLeg
 		'--dev', '--verbose', '--lang', language, `--use-${ packageManager }`
 	];
 
-	if ( !useLegacyMethods && language === 'ts' ) {
+	if ( language === 'ts' ) {
 		const fileName = customPluginName ? customPluginName.toLowerCase() : 'testpackage';
-
-		EXPECTED_PUBLISH_FILES.ts.push( `dist/types/${ fileName }.d.ts` );
+		( useLegacyMethods ? EXPECTED_LEGACY_PUBLISH_FILES : EXPECTED_PUBLISH_FILES ).ts.push( `dist/types/${ fileName }.d.ts` );
 	}
 
 	const expectedPublishFiles = getExpectedFiles(
