@@ -41,6 +41,13 @@ const EXPECTED_JS_PUBLISH_FILES = [
 
 const EXPECTED_TS_PUBLISH_FILES = [
 	...EXPECTED_DIST_PUBLISH_FILES,
+	'package.json',
+	'LICENSE.md',
+	'README.md',
+	'ckeditor5-metadata.json'
+];
+
+const EXPECTED_TS_LEGACY_PUBLISH_FILES = [
 	'src/augmentation.js',
 	'src/index.js',
 	'src/testpackage.js',
@@ -49,12 +56,7 @@ const EXPECTED_TS_PUBLISH_FILES = [
 	'src/testpackage.d.ts',
 
 	'lang/contexts.json',
-	'theme/icons/ckeditor.svg',
-
-	'package.json',
-	'LICENSE.md',
-	'README.md',
-	'ckeditor5-metadata.json'
+	'theme/icons/ckeditor.svg'
 ];
 
 const EXPECTED_DIST_TYPES_PUBLISH_FILES = [
@@ -79,6 +81,7 @@ const EXPECTED_LEGACY_PUBLISH_FILES = {
 	],
 	ts: [
 		...EXPECTED_TS_PUBLISH_FILES,
+		...EXPECTED_TS_LEGACY_PUBLISH_FILES,
 		...EXPECTED_DIST_TYPES_PUBLISH_FILES,
 		'build/test-package.js'
 	]
