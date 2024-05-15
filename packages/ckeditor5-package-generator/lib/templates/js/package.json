@@ -22,7 +22,6 @@
     "lang",
     "src",
     "theme",
-    "build",
     "ckeditor5-metadata.json"
   ],
   "devDependencies": {

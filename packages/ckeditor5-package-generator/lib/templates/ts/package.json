@@ -23,7 +23,6 @@
     "src/**/*.js",
     "src/**/*.d.ts",
     "theme",
-    "build",
     "ckeditor5-metadata.json"
   ],
   "devDependencies": {
