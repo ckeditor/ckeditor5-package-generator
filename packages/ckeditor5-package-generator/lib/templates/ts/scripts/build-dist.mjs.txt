@@ -29,7 +29,7 @@ function dist( path ) {
 
 	await build( {
 		input: 'src/index.ts',
-		output: upath.resolve( process.cwd(), './dist/index.js' ),
+		output: dist( './index.js' ),
 		tsconfig: 'tsconfig.dist.json',
 		external: [
 			'ckeditor5',
