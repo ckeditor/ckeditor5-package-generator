@@ -25,14 +25,16 @@ const EXPECTED_DIST_PUBLISH_FILES = [
 	'dist/index.js.map'
 ];
 
-const EXPECTED_JS_PUBLISH_FILES = [
-	...EXPECTED_DIST_PUBLISH_FILES,
+const EXPECTED_JS_LEGACY_PUBLISH_FILES = [
 	'src/index.js',
 	'src/testpackage.js',
 
 	'lang/contexts.json',
-	'theme/icons/ckeditor.svg',
+	'theme/icons/ckeditor.svg'
+];
 
+const EXPECTED_JS_PUBLISH_FILES = [
+	...EXPECTED_DIST_PUBLISH_FILES,
 	'package.json',
 	'LICENSE.md',
 	'README.md',
@@ -77,6 +79,7 @@ const EXPECTED_PUBLISH_FILES = {
 const EXPECTED_LEGACY_PUBLISH_FILES = {
 	js: [
 		...EXPECTED_JS_PUBLISH_FILES,
+		...EXPECTED_JS_LEGACY_PUBLISH_FILES,
 		'build/test-package.js'
 	],
 	ts: [
