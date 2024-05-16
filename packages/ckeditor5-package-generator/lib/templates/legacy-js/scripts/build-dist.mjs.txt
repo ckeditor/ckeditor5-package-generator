@@ -30,7 +30,6 @@ function dist( path ) {
 		output: dist( './index.js' ),
 		external: [
 			'ckeditor5',
-			'ckeditor5-premium-features',
 			...Object.keys( {
 				...pkg.dependencies,
 				...pkg.peerDependencies
@@ -54,8 +53,7 @@ function dist( path ) {
 		browser: true,
 		name: '<%= formattedNames.plugin.lowerCaseMerged %>',
 		external: [
-			'ckeditor5',
-			'ckeditor5-premium-features'
+			'ckeditor5'
 		]
 	} );
 } )();

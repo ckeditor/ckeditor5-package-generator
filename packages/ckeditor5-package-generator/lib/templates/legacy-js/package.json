@@ -48,7 +48,6 @@
     "@ckeditor/ckeditor5-theme-lark": ">=<%= packageVersions.ckeditor5 %>",
     "@ckeditor/ckeditor5-upload": ">=<%= packageVersions.ckeditor5 %>",
     "ckeditor5": ">=<%= packageVersions.ckeditor5 %>",
-    "ckeditor5-premium-features": ">=<%= packageVersions.ckeditor5 %>",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": ">=<%= packageVersions.eslintConfigCkeditor5 %>",
     "http-server": "^14.1.0",
@@ -58,8 +57,7 @@
     "stylelint-config-ckeditor5": ">=<%= packageVersions.stylelintConfigCkeditor5 %>"
   },
   "peerDependencies": {
-    "ckeditor5": ">=<%= packageVersions.ckeditor5 %>",
-    "ckeditor5-premium-features": ">=<%= packageVersions.ckeditor5 %>"
+    "ckeditor5": ">=<%= packageVersions.ckeditor5 %>"
   },
   "scripts": {
     "build:dist": "node ./scripts/build-dist.mjs",

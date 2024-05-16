@@ -32,6 +32,7 @@ module.exports = function getDependenciesVersions( logger, dev ) {
 
 	return {
 		ckeditor5: getPackageVersion( 'ckeditor5' ),
+		ckeditor5PremiumFeatures: getPackageVersion( 'ckeditor5-premium-features' ),
 		ckeditor5Inspector: getPackageVersion( '@ckeditor/ckeditor5-inspector' ),
 		ckeditor5DevBuildTools: getPackageVersion( '@ckeditor/ckeditor5-dev-build-tools' ),
 		eslintConfigCkeditor5: getPackageVersion( 'eslint-config-ckeditor5' ),

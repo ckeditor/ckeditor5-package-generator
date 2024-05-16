@@ -53,7 +53,6 @@
     "@typescript-eslint/eslint-plugin": "~5.43.0",
     "@typescript-eslint/parser": "^5.18.0",
     "ckeditor5": ">=<%= packageVersions.ckeditor5 %>",
-    "ckeditor5-premium-features": ">=<%= packageVersions.ckeditor5 %>",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": ">=<%= packageVersions.eslintConfigCkeditor5 %>",
     "http-server": "^14.1.0",
@@ -65,8 +64,7 @@
     "typescript": "5.0.4"
   },
   "peerDependencies": {
-    "ckeditor5": ">=<%= packageVersions.ckeditor5 %>",
-    "ckeditor5-premium-features": ">=<%= packageVersions.ckeditor5 %>"
+    "ckeditor5": ">=<%= packageVersions.ckeditor5 %>"
   },
   "scripts": {
     "build:dist": "node ./scripts/build-dist.mjs",
