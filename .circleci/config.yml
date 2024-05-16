@@ -77,8 +77,14 @@ jobs:
           name: Verify build (JavaScript, npm)
           command: node scripts/ci/verify-build -l js -p npm
       - run:
+          name: Verify build (JavaScript, yarn)
+          command: node scripts/ci/verify-build -l js -p yarn
+      - run:
           name: Verify build (JavaScript, npm, legacy)
           command: node scripts/ci/verify-build -l js -p npm -m
+      - run:
+          name: Verify build (JavaScript, yarn, legacy)
+          command: node scripts/ci/verify-build -l js -p yarn -m
       - run:
           name: Verify build (TypeScript, npm, custom plugin name)
           command: node scripts/ci/verify-build -l ts -p npm -n CustomPluginName
