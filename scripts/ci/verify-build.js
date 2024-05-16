@@ -101,7 +101,7 @@ async function verifyBuild( { language, packageManager, customPluginName, useLeg
 	checkFileList( stderr, expectedPublishFiles );
 
 	logProcess( 'Verifying post release cleanup...' );
-	verifyPublishCleanup( language, expectedSrcDirFiles );
+	verifyPublishCleanup( language, expectedSrcDirFiles, useLegacyMethods );
 
 	logProcess( 'Starting the development servers and verifying the sample builds...' );
 
@@ -325,13 +325,13 @@ function checkFileList( output, expectedPublishFiles ) {
  * @param {String} lang
  * @param {Object} expectedSrcDirFiles
  */
-function verifyPublishCleanup( lang, expectedSrcDirFiles ) {
+function verifyPublishCleanup( lang, expectedSrcDirFiles, useLegacyMethods ) {
 	// "package.json" check.
 	const pkgJsonPath = path.join( NEW_PACKAGE_DIRECTORY, 'package.json' );
 	const pkgJsonRaw = fs.readFileSync( pkgJsonPath, 'utf-8' );
 	const pkgJsonContent = JSON.parse( pkgJsonRaw );
 
-	const hasCorrectEntryPoint = pkgJsonContent.main === `src/index.${ lang }`;
+	const hasCorrectEntryPoint = pkgJsonContent.main === `${ useLegacyMethods ? 'src' : 'dist' }/index.${ lang }`;
 
 	if ( !hasCorrectEntryPoint ) {
 		console.log( chalk.red( '"package.json" has incorrect value in "main" field:' ) );

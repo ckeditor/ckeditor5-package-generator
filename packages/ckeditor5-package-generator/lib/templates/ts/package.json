@@ -11,7 +11,7 @@
     "ckeditor5-package-generator"
   ],
   "type": "module",
-  "main": "src/index.ts",
+  "main": "dist/index.ts",
   "license": "MIT",
   "engines": {
     "node": ">=18.0.0",
