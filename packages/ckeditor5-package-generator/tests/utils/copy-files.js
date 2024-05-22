@@ -88,11 +88,11 @@ describe( 'lib/utils/copy-files', () => {
 			'ts/package.json',
 			'ts/src/index.ts'
 		] );
-		stubs.glob.sync.withArgs( 'legacy-js/**/*' ).returns( [
+		stubs.glob.sync.withArgs( 'js-legacy/**/*' ).returns( [
 			'js/package.json',
 			'js/src/index.js'
 		] );
-		stubs.glob.sync.withArgs( 'legacy-ts/**/*' ).returns( [
+		stubs.glob.sync.withArgs( 'ts-legacy/**/*' ).returns( [
 			'ts/package.json',
 			'ts/src/index.ts'
 		] );
