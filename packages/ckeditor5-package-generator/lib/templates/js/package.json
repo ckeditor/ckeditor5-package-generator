@@ -12,6 +12,17 @@
   ],
   "type": "module",
   "main": "dist/index.js",
+  "module": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./translations/*.js": {
+      "import": "./dist/translations/*.js"
+    },
+    "./*.css": "./dist/*.css",
+    "./package.json": "./package.json"
+  },
   "license": "MIT",
   "engines": {
     "node": ">=18.0.0",
