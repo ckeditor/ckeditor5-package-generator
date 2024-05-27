@@ -70,7 +70,7 @@ The tool will create a new directory called `ckeditor5-package` with an example 
 To use a local version of the `@ckeditor/ckeditor5-package-tools` package, use the `--dev` option when executing the command.
 
 ```bash
-node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--dev] [--use-npm] [--use-yarn] [--use-legacy-methods] [--name <...>] [--lang <js|ts>] [--verbose]
+node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--dev] [--use-npm] [--use-yarn] [--without-legacy-methods] [--name <...>] [--lang <js|ts>] [--verbose]
 ```
 
 #### Options
@@ -78,7 +78,7 @@ node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--d
 * `--dev` &ndash; whether to execute in the development mode. It means that the `@ckeditor/ckeditor5-package-tools` will not be installed from npm, but from the local file system.
 * `--use-npm` &ndash; use `npm` to install dependencies in a newly created package.
 * `--use-yarn` &ndash; use `yarn` to install dependencies in a newly created package.
-* `--use-legacy-methods` &ndash; use old installations methods in a newly created package. [TODO: Link to DLLs documentation??]
+* `--without-legacy-methods` &ndash; do not use the old installations methods in a newly created package.
 * `--name` &ndash; define a class name to be different from the package name.
 * `--lang` &ndash; (values: `js` | `ts`) choose whether the created package should use JavaScript or TypeScript. If omitted, the script will ask the user to choose manually.
 * `--verbose` &ndash; (alias: `-v`) print additional logs about the current executed task.

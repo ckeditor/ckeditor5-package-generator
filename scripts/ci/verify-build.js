@@ -45,7 +45,7 @@ async function start() {
  *
  * @param {VerificationOptions} options
  */
-async function verifyBuild( { language, packageManager, customPluginName, useLegacyMethods } ) {
+async function verifyBuild( { language, packageManager, customPluginName, withoutLegacyMethods } ) {
 	let testSetupInfoMessage = `Testing build for language: [${ language }] and package manager: [${ packageManager }]`;
 
 	const projectRootName = path.basename( process.cwd() );
@@ -56,11 +56,11 @@ async function verifyBuild( { language, packageManager, customPluginName, useLeg
 
 	if ( language === 'ts' ) {
 		const fileName = customPluginName ? customPluginName.toLowerCase() : 'testpackage';
-		( useLegacyMethods ? EXPECTED_LEGACY_PUBLISH_FILES : EXPECTED_PUBLISH_FILES ).ts.push( `dist/types/${ fileName }.d.ts` );
+		( withoutLegacyMethods ? EXPECTED_PUBLISH_FILES : EXPECTED_LEGACY_PUBLISH_FILES ).ts.push( `dist/types/${ fileName }.d.ts` );
 	}
 
 	const expectedPublishFiles = getExpectedFiles(
-		useLegacyMethods ? EXPECTED_LEGACY_PUBLISH_FILES : EXPECTED_PUBLISH_FILES,
+		withoutLegacyMethods ? EXPECTED_PUBLISH_FILES : EXPECTED_LEGACY_PUBLISH_FILES,
 		language,
 		customPluginName
 	);
@@ -75,8 +75,9 @@ async function verifyBuild( { language, packageManager, customPluginName, useLeg
 		packageBuildCommand.push( '--plugin-name', customPluginName );
 	}
 
-	if ( useLegacyMethods ) {
-		testSetupInfoMessage += ' with use of legacy methods of installations';
+	if ( withoutLegacyMethods ) {
+		testSetupInfoMessage += ' without use of legacy methods of installations';
+		packageBuildCommand.push( '--without-legacy-methods' );
 		packageBuildCommand.push( '--use-legacy-methods' );
 	}
 
@@ -101,13 +102,13 @@ async function verifyBuild( { language, packageManager, customPluginName, useLeg
 	checkFileList( stderr, expectedPublishFiles );
 
 	logProcess( 'Verifying post release cleanup...' );
-	verifyPublishCleanup( language, expectedSrcDirFiles, useLegacyMethods );
+	verifyPublishCleanup( language, expectedSrcDirFiles, withoutLegacyMethods );
 
 	logProcess( 'Starting the development servers and verifying the sample builds...' );
 
 	const listOfDevelopmentServers = [ startDevelopmentServer( NEW_PACKAGE_DIRECTORY ) ];
 
-	if ( useLegacyMethods ) {
+	if ( !withoutLegacyMethods ) {
 		listOfDevelopmentServers.push( startDevelopmentServerForDllBuild( NEW_PACKAGE_DIRECTORY ) );
 	}
 
@@ -325,13 +326,13 @@ function checkFileList( output, expectedPublishFiles ) {
  * @param {String} lang
  * @param {Object} expectedSrcDirFiles
  */
-function verifyPublishCleanup( lang, expectedSrcDirFiles, useLegacyMethods ) {
+function verifyPublishCleanup( lang, expectedSrcDirFiles, withoutLegacyMethods ) {
 	// "package.json" check.
 	const pkgJsonPath = path.join( NEW_PACKAGE_DIRECTORY, 'package.json' );
 	const pkgJsonRaw = fs.readFileSync( pkgJsonPath, 'utf-8' );
 	const pkgJsonContent = JSON.parse( pkgJsonRaw );
 
-	const hasCorrectEntryPoint = pkgJsonContent.main === `${ useLegacyMethods ? 'src' : 'dist' }/index.${ lang }`;
+	const hasCorrectEntryPoint = pkgJsonContent.main === `${ withoutLegacyMethods ? 'dist' : 'src' }/index.${ lang }`;
 
 	if ( !hasCorrectEntryPoint ) {
 		console.log( chalk.red( '"package.json" has incorrect value in "main" field:' ) );

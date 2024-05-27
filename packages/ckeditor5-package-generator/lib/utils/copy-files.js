@@ -25,12 +25,12 @@ const TEMPLATE_PATH = path.join( __dirname, '..', 'templates' );
  * @param {String} options.packageManager
  * @param {String} options.programmingLanguage
  * @param {Object} options.packageVersions
- * @param {Boolean} options.useLegacyMethods
+ * @param {Boolean} options.withoutLegacyMethods
  */
 module.exports = function copyFiles( logger, options ) {
 	logger.process( 'Copying files...' );
 
-	const templatePatternToCopy = `${ options.programmingLanguage }${ options.useLegacyMethods ? '-legacy' : '' }/**/*`;
+	const templatePatternToCopy = `${ options.programmingLanguage }${ options.withoutLegacyMethods ? '' : '-legacy' }/**/*`;
 
 	const templateGlobs = [
 		'common/**/*',
