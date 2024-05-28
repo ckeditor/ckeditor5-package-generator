@@ -272,7 +272,7 @@ describe( 'lib/utils/copy-files', () => {
 			'js/src/_PLACEHOLDER_.js'
 		] );
 
-		options.withoutLegacyMethods = true;
+		options.useOnlyNewInstallationMethods = true;
 
 		copyFiles( stubs.logger, options );
 
@@ -290,7 +290,7 @@ describe( 'lib/utils/copy-files', () => {
 			'js/src/foo.js.txt'
 		] );
 
-		options.withoutLegacyMethods = true;
+		options.useOnlyNewInstallationMethods = true;
 
 		copyFiles( stubs.logger, options );
 
@@ -337,9 +337,9 @@ describe( 'lib/utils/copy-files', () => {
 		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/ts/foo/src/index.js' );
 	} );
 
-	it( 'works correctly with path containing directory called "js" with flag "--without-legacy-methods"', () => {
+	it( 'works correctly with path containing directory called "js" with flag "--use-only-new-installation-methods"', () => {
 		options.directoryPath = 'directory/js/foo';
-		options.withoutLegacyMethods = true;
+		options.useOnlyNewInstallationMethods = true;
 
 		copyFiles( stubs.logger, options );
 
@@ -350,9 +350,9 @@ describe( 'lib/utils/copy-files', () => {
 		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/js/foo/src/index.js' );
 	} );
 
-	it( 'works correctly with path containing directory called "ts" with flag "--without-legacy-methods"', () => {
+	it( 'works correctly with path containing directory called "ts" with flag "--use-only-new-installation-methods"', () => {
 		options.directoryPath = 'directory/ts/foo';
-		options.withoutLegacyMethods = true;
+		options.useOnlyNewInstallationMethods = true;
 
 		copyFiles( stubs.logger, options );
 

@@ -23,7 +23,7 @@ describe( 'lib/index', () => {
 			verbose: true,
 			useYarn: true,
 			useNpm: false,
-			withoutLegacyMethods: false,
+			useOnlyNewInstallationMethods: false,
 			pluginName: 'FooBar',
 			lang: 'js',
 			dev: false
@@ -214,7 +214,7 @@ describe( 'lib/index', () => {
 		expect( stubs.copyFiles.getCall( 0 ).args[ 1 ] ).to.deep.equal( {
 			packageName: '@scope/ckeditor5-feature',
 			programmingLanguage: 'js',
-			withoutLegacyMethods: false,
+			useOnlyNewInstallationMethods: false,
 			formattedNames: {
 				package: {
 					raw: 'xyz',

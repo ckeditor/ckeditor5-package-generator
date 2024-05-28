@@ -45,7 +45,7 @@ module.exports = function parseArguments( cliArguments ) {
 	options.customPluginName = options[ 'custom-plugin-name' ];
 	delete options[ 'custom-plugin-name' ];
 
-	options.withoutLegacyMethods = typeof options[ 'no-legacy-methods' ] === 'string';
+	options.useOnlyNewInstallationMethods = typeof options[ 'no-legacy-methods' ] === 'string';
 	delete options[ 'no-legacy-methods' ];
 
 	return options;
@@ -60,5 +60,5 @@ module.exports = function parseArguments( cliArguments ) {
  *
  * @property {String} customPluginName
  *
- * @property {String} withoutLegacyMethods
+ * @property {String} useOnlyNewInstallationMethods
  */
