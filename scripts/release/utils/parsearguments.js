@@ -16,12 +16,14 @@ const minimist = require( 'minimist' );
 module.exports = function parseArguments( cliArguments ) {
 	const config = {
 		string: [
+			'branch',
 			'packages',
 			'npm-tag'
 		],
 
 		default: {
 			packages: null,
+			branch: 'master',
 			'npm-tag': 'latest'
 		}
 	};
@@ -44,4 +46,6 @@ module.exports = function parseArguments( cliArguments ) {
  * @property {String} [npmTag='latest']
  *
  * @property {Array.<String>|null} packages
+ *
+ * @property {String} [branch='master']
  */
