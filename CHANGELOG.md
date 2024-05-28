@@ -1,6 +1,44 @@
 Changelog
 =========
 
+## [2.0.0-alpha.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.1.0...v2.0.0-alpha.0) (2024-05-28)
+
+### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
+
+* Upgraded the minimal versions of Node.js to `18.0.0` due to the end of LTS.
+
+### MINOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
+
+* **[tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: The `typescript()` function exported from the `webpack-utils` module requires passing the `cwd` as the first argument. Optionally, you can pass the TypeScript configuration file name that should be used when processing TS files by `ts-loader`.
+
+### Features
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Added the `--use-only-new-installation-methods` CLI flag that should allow the generation of a package without support for the [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/alternative-setups/dll-builds.html). See [#15502](https://github.com/ckeditor/ckeditor5/issues/15502), [#15739](https://github.com/ckeditor/ckeditor5/issues/15739).
+* **[tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: Karma will use the `tsconfig.test.json` file as a TypeScript configuration if it exists when executing automated tests. By default, it fallbacks to `tsconfig.json` file. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/56207d846095a78e35bf2805c2c30823cb6cb9de))
+
+### Bug fixes
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Allow to build plugin with potentially used external `ckeditor5-premium-features`. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/9af9807f49db31685a2864c419eea77af176dbcc))
+
+### Other changes
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Aligned the produced configuration to changes in CKEditor 5. See [ckeditor/ckeditor5#14173](https://github.com/ckeditor/ckeditor5/issues/14173). Closes [#160](https://github.com/ckeditor/ckeditor5-package-generator/issues/160). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/56207d846095a78e35bf2805c2c30823cb6cb9de))
+* Updated the required version of Node.js to 18. See [ckeditor/ckeditor5#14924](https://github.com/ckeditor/ckeditor5/issues/14924). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/6842056128d279a9fb3dc1cadccbba3ccc1bf0df))
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Releases containing new features:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/2.0.0-alpha.0): v1.1.0 => v2.0.0-alpha.0
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/2.0.0-alpha.0): v1.1.0 => v2.0.0-alpha.0
+</details>
+
+
 ## [1.1.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0...v1.1.0) (2023-07-05)
 
 ### Features
@@ -120,26 +158,6 @@ Releases containing new features:
 Other releases:
 
 * [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools): v1.0.0-beta.8 => v1.0.0-beta.9
-</details>
-
-
-## [1.0.0-beta.8](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2022-12-20)
-
-### Other changes
-
-* Aligned the project to recent changes in the `ckeditor/ckeditor5-dev` repository. See the [release v32.0.0](https://github.com/ckeditor/ckeditor5-dev/releases/tag/v32.0.0). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/a795cf7f3fc431a8821da0a1dfb6223623096eec))
-
-### Released packages
-
-Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
-
-<details>
-<summary>Released packages (summary)</summary>
-
-Other releases:
-
-* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools): v1.0.0-beta.7 => v1.0.0-beta.8
-* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator): v1.0.0-beta.7 => v1.0.0-beta.8
 </details>
 
 ---
