@@ -27,7 +27,6 @@ const INSTALLATION_METHODS = [
  * @returns {Promise<String>}
  */
 module.exports = async function chooseIn( logger, method ) {
-	console.log( 'method', method );
 	if ( method ) {
 		const methodShorthands = INSTALLATION_METHODS.map( ( { value } ) => value );
 
