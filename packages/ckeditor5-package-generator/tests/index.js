@@ -23,7 +23,7 @@ describe( 'lib/index', () => {
 			verbose: true,
 			useYarn: true,
 			useNpm: false,
-			useOnlyNewInstallationMethods: false,
+			installationMethods: 'current',
 			pluginName: 'FooBar',
 			lang: 'js',
 			dev: false
@@ -41,6 +41,7 @@ describe( 'lib/index', () => {
 			},
 			choosePackageManager: sinon.stub(),
 			chooseProgrammingLanguage: sinon.stub(),
+			chooseInstallationMethods: sinon.stub(),
 			copyFiles: sinon.stub(),
 			createDirectory: sinon.stub(),
 			getDependenciesVersions: sinon.stub(),
@@ -74,6 +75,7 @@ describe( 'lib/index', () => {
 		} );
 		stubs.choosePackageManager.resolves( 'yarn' );
 		stubs.chooseProgrammingLanguage.resolves( 'js' );
+		stubs.chooseInstallationMethods.resolves( 'current' );
 		stubs.getDependenciesVersions.returns( {
 			ckeditor5: '30.0.0'
 		} );
@@ -93,6 +95,7 @@ describe( 'lib/index', () => {
 
 		mockery.registerMock( './utils/choose-package-manager', stubs.choosePackageManager );
 		mockery.registerMock( './utils/choose-programming-language', stubs.chooseProgrammingLanguage );
+		mockery.registerMock( './utils/choose-installation-methods.js', stubs.chooseInstallationMethods );
 		mockery.registerMock( './utils/copy-files', stubs.copyFiles );
 		mockery.registerMock( './utils/create-directory', stubs.createDirectory );
 		mockery.registerMock( './utils/get-dependencies-versions', stubs.getDependenciesVersions );
@@ -194,6 +197,16 @@ describe( 'lib/index', () => {
 		expect( stubs.chooseProgrammingLanguage.getCall( 0 ).args[ 1 ] ).to.equal( 'js' );
 	} );
 
+	it( 'chooses the installation method', async () => {
+		await index( packageName, options );
+
+		expect( stubs.chooseInstallationMethods.callCount ).to.equal( 1 );
+		expect( stubs.chooseInstallationMethods.getCall( 0 ).args.length ).to.equal( 2 );
+
+		expect( stubs.chooseInstallationMethods.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
+		expect( stubs.chooseInstallationMethods.getCall( 0 ).args[ 1 ] ).to.equal( 'current' );
+	} );
+
 	it( 'gets the versions of the dependencies', async () => {
 		await index( packageName, options );
 
@@ -214,7 +227,7 @@ describe( 'lib/index', () => {
 		expect( stubs.copyFiles.getCall( 0 ).args[ 1 ] ).to.deep.equal( {
 			packageName: '@scope/ckeditor5-feature',
 			programmingLanguage: 'js',
-			useOnlyNewInstallationMethods: false,
+			installationMethods: 'current',
 			formattedNames: {
 				package: {
 					raw: 'xyz',

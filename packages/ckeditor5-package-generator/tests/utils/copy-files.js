@@ -140,6 +140,7 @@ describe( 'lib/utils/copy-files', () => {
 				}
 			},
 			packageManager: 'yarn',
+			installationMethodOfPackage: 'current',
 			directoryPath: 'directory/path/foo',
 			packageVersions: {
 				ckeditor5DevBuildTools: '40.0.0',
@@ -272,8 +273,6 @@ describe( 'lib/utils/copy-files', () => {
 			'js/src/_PLACEHOLDER_.js'
 		] );
 
-		options.useOnlyNewInstallationMethods = true;
-
 		copyFiles( stubs.logger, options );
 
 		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
@@ -289,8 +288,6 @@ describe( 'lib/utils/copy-files', () => {
 			'js/src/index.js',
 			'js/src/foo.js.txt'
 		] );
-
-		options.useOnlyNewInstallationMethods = true;
 
 		copyFiles( stubs.logger, options );
 
@@ -337,9 +334,9 @@ describe( 'lib/utils/copy-files', () => {
 		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/ts/foo/src/index.js' );
 	} );
 
-	it( 'works correctly with path containing directory called "js" with flag "--use-only-new-installation-methods"', () => {
+	it( 'works correctly with path containing directory called "js" with flag "--installation-methods" set to "current-and-legacy"', () => {
 		options.directoryPath = 'directory/js/foo';
-		options.useOnlyNewInstallationMethods = true;
+		options.installationMethodOfPackage = 'current-and-legacy';
 
 		copyFiles( stubs.logger, options );
 
@@ -350,9 +347,9 @@ describe( 'lib/utils/copy-files', () => {
 		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/js/foo/src/index.js' );
 	} );
 
-	it( 'works correctly with path containing directory called "ts" with flag "--use-only-new-installation-methods"', () => {
+	it( 'works correctly with path containing directory called "ts" with flag "--installation-methods" set to "current-and-legacy', () => {
 		options.directoryPath = 'directory/ts/foo';
-		options.useOnlyNewInstallationMethods = true;
+		options.installationMethodOfPackage = 'current-and-legacy';
 
 		copyFiles( stubs.logger, options );
 

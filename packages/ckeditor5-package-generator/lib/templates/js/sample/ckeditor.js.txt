@@ -27,7 +27,7 @@ import {
 
 import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>.js';
 
-import 'ckeditor5/index.css';
+import 'ckeditor5/ckeditor5.css';
 
 /* global document, window */
 
