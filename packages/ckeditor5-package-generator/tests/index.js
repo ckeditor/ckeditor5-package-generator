@@ -95,7 +95,7 @@ describe( 'lib/index', () => {
 
 		mockery.registerMock( './utils/choose-package-manager', stubs.choosePackageManager );
 		mockery.registerMock( './utils/choose-programming-language', stubs.chooseProgrammingLanguage );
-		mockery.registerMock( './utils/choose-installation-methods.js', stubs.chooseInstallationMethods );
+		mockery.registerMock( './utils/choose-installation-methods', stubs.chooseInstallationMethods );
 		mockery.registerMock( './utils/copy-files', stubs.copyFiles );
 		mockery.registerMock( './utils/create-directory', stubs.createDirectory );
 		mockery.registerMock( './utils/get-dependencies-versions', stubs.getDependenciesVersions );
@@ -227,7 +227,7 @@ describe( 'lib/index', () => {
 		expect( stubs.copyFiles.getCall( 0 ).args[ 1 ] ).to.deep.equal( {
 			packageName: '@scope/ckeditor5-feature',
 			programmingLanguage: 'js',
-			installationMethods: 'current',
+			installationMethodOfPackage: 'current',
 			formattedNames: {
 				package: {
 					raw: 'xyz',
