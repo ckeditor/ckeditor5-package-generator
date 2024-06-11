@@ -34,7 +34,10 @@ describe( 'lib/index', () => {
 				underline: sinon.stub().callsFake( str => str ),
 				green: sinon.stub().callsFake( str => str ),
 				cyan: sinon.stub().callsFake( str => str ),
-				gray: sinon.stub().callsFake( str => str )
+				gray: sinon.stub().callsFake( str => str ),
+				yellow: {
+					inverse: sinon.stub().callsFake( str => str )
+				}
 			},
 			logger: {
 				info: sinon.stub()
@@ -301,6 +304,41 @@ describe( 'lib/index', () => {
 			'  * stylelint - for running a tool for static analyzing CSS files.',
 			'',
 			'Example: yarn run start',
+			''
+		].join( '\n' ) );
+		expect( stubs.logger.info.getCall( 0 ).args[ 1 ] ).to.deep.equal( { startWithNewLine: true } );
+	} );
+
+	it( 'logs extended info before the script finishes when current and legacy installation methods were chosen', async () => {
+		options.installationMethods = 'current-and-legacy';
+
+		stubs.chooseInstallationMethods.resolves( 'current-and-legacy' );
+
+		await index( packageName, options );
+
+		expect( stubs.logger.info.callCount ).to.equal( 2 );
+		expect( stubs.logger.info.getCall( 0 ).args[ 0 ] ).to.equal( [
+			'Done!',
+			'',
+			'Execute the "cd directoryName" command to change the current working directory',
+			'to the newly created package. Then, the package offers a few predefined scripts:',
+			'',
+			'  * start - for creating the HTTP server with the editor sample,',
+			'  * test - for executing unit tests of an example plugin,',
+			'  * lint - for running a tool for static analyzing JavaScript files,',
+			'  * stylelint - for running a tool for static analyzing CSS files.',
+			'',
+			'Example: yarn run start',
+			''
+		].join( '\n' ) );
+
+		expect( stubs.logger.info.getCall( 1 ).args[ 0 ] ).to.equal( [
+			' ╔═════════════════════════════════════════════════════════════════════╗ ',
+			' ║   Supporting a wider range of CKEditor 5 versions requires using    ║ ',
+			' ║   a more complex method of importing modules from CKEditor 5.       ║ ',
+			' ║                                                                     ║ ',
+			' ║   Read more here: <LINK TO THE  GUIDE EXPLAINING THIS></LINK>       ║ ',
+			' ╚═════════════════════════════════════════════════════════════════════╝ ',
 			''
 		].join( '\n' ) );
 		expect( stubs.logger.info.getCall( 0 ).args[ 1 ] ).to.deep.equal( { startWithNewLine: true } );
