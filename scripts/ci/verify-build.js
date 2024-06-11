@@ -81,7 +81,6 @@ async function verifyBuild( { language, packageManager, customPluginName, instal
 		packageBuildCommand.push( '--plugin-name', customPluginName );
 	}
 
-	console.log( '!!!!!!!installationMethod!!!!!', installationMethod );
 	packageBuildCommand.push( '--installation-methods', installationMethod );
 
 	logProcess( testSetupInfoMessage + '.' );

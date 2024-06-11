@@ -45,12 +45,8 @@ module.exports = function parseArguments( cliArguments ) {
 	options.customPluginName = options[ 'custom-plugin-name' ];
 	delete options[ 'custom-plugin-name' ];
 
-	console.log( 'options22222', options );
-
 	options.installationMethod = options[ 'installation-method' ];
 	delete options[ 'installation-method' ];
-
-	console.log( 'options2', options );
 
 	return options;
 };
