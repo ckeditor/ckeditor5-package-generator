@@ -36,8 +36,7 @@
     "@ckeditor/ckeditor5-dev-build-tools": "<%= packageVersions.ckeditor5DevBuildTools %>",
     "@ckeditor/ckeditor5-inspector": ">=<%= packageVersions.ckeditor5Inspector %>",
     "@ckeditor/ckeditor5-package-tools": "<%= packageVersions.packageTools %>",
-    "ckeditor5": "nightly",
-    "ckeditor5-premium-features": "nightly",
+    "ckeditor5": "alpha",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": ">=<%= packageVersions.eslintConfigCkeditor5 %>",
     "http-server": "^14.1.0",
@@ -47,8 +46,7 @@
     "stylelint-config-ckeditor5": ">=<%= packageVersions.stylelintConfigCkeditor5 %>"
   },
   "peerDependencies": {
-    "ckeditor5": "nightly",
-    "ckeditor5-premium-features": "nightly"
+    "ckeditor5": ">=42.0.0 || ^0.0.0-nightly"
   },
   "scripts": {
     "build:dist": "node ./scripts/build-dist.mjs",
