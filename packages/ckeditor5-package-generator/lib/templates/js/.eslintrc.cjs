@@ -10,7 +10,13 @@ module.exports = {
 		'dist/**'
 	],
 	rules: {
-		'ckeditor5-rules/allow-imports-only-from-main-package-entry-point': 'error'
+		'ckeditor5-rules/allow-imports-only-from-main-package-entry-point': 'error',
+		'ckeditor5-rules/require-file-extensions-in-imports': [
+			'error',
+			{
+				extensions: [ '.ts', '.js', '.json' ]
+			}
+		]
 	},
 	overrides: [
 		{

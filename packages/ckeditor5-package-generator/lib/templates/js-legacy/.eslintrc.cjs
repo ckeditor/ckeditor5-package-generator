@@ -17,7 +17,13 @@ module.exports = {
 		// specified as soft-requirements.
 		// Read more: https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migration/migration-to-26.html#soft-requirements.
 		'ckeditor5-rules/ckeditor-imports': 'error',
-		'ckeditor5-rules/allow-imports-only-from-main-package-entry-point': 'error'
+		'ckeditor5-rules/allow-imports-only-from-main-package-entry-point': 'error',
+		'ckeditor5-rules/require-file-extensions-in-imports': [
+			'error',
+			{
+				extensions: [ '.ts', '.js', '.json' ]
+			}
+		]
 	},
 	overrides: [
 		{
