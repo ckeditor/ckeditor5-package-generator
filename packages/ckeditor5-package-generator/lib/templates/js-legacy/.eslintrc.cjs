@@ -17,7 +17,10 @@ module.exports = {
 		// specified as soft-requirements.
 		// Read more: https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migration/migration-to-26.html#soft-requirements.
 		'ckeditor5-rules/ckeditor-imports': 'error',
+		//  This rule disallows importing from any path other than the package main entrypoint.
 		'ckeditor5-rules/allow-imports-only-from-main-package-entry-point': 'error',
+		// As required by the ECMAScript (ESM) standard, all imports must include a file extension.
+		// If the import does not include it, this rule will try to automatically detect the correct file extension.
 		'ckeditor5-rules/require-file-extensions-in-imports': [
 			'error',
 			{
