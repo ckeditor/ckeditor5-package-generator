@@ -9,6 +9,9 @@ module.exports = {
 		// Ignore the entire `dist/`.
 		'dist/**'
 	],
+	rules: {
+		'ckeditor5-rules/allow-imports-only-from-main-package-entry-point': 'error'
+	},
 	overrides: [
 		{
 			files: [ 'tests/**/*.js', 'sample/**/*.js' ],
