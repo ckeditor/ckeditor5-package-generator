@@ -18,11 +18,12 @@
     "noImplicitAny": true,
     "noImplicitOverride": true,
     "strict": true,
-    "module": "es6",
     "target": "es2019",
     "sourceMap": true,
     "allowJs": true,
-    "moduleResolution": "node",
+	"moduleDetection": "force",
+	"moduleResolution": "NodeNext",
+	"module": "NodeNext",
     "typeRoots": [
       "typings",
       "node_modules/@types"
