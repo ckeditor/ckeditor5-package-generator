@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { <%= formattedNames.plugin.pascalCase %> as <%= formattedNames.plugin.pascalCase %>Dll, icons } from '../src';
-import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>';
+import { <%= formattedNames.plugin.pascalCase %> as <%= formattedNames.plugin.pascalCase %>Dll, icons } from '../src/index.js';
+import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>.js';
 
 import ckeditor from './../theme/icons/ckeditor.svg';
 
