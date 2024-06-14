@@ -13,6 +13,18 @@
   ],
   "type": "module",
   "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./dist/index.js": "./dist/index.js",
+    "./translations/*.js": {
+      "types": "./dist/translations/*.d.ts",
+      "import": "./dist/translations/*.js"
+    },
+    "./*.css": "./dist/*.css",
+    "./build/*": "./build/*",
+		"./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
   "license": "MIT",
   "engines": {
     "node": ">=18.0.0",
