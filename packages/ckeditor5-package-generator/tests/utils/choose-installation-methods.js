@@ -17,7 +17,8 @@ describe( 'lib/utils/choose-installation-methods', () => {
 		},
 		{
 			value: 'current-and-legacy',
-			displayName: 'Current and legacy methods with DLLs (pre-42.0.0). [⚠️ Requires additional work with imports. See: <link>]'
+			displayName: 'Current and legacy methods with DLLs (pre-42.0.0). [⚠️ Requires additional work with imports. ' +
+				'See: https://ckeditor.com/docs/ckeditor5/latest/framework/tutorials/supporting-multiple-versions.html]'
 		}
 	];
 

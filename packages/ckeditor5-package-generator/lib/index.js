@@ -71,12 +71,24 @@ module.exports = async function init( packageName, options ) {
 
 	if ( installationMethodOfPackage === 'current-and-legacy' ) {
 		logger.info( [
-			chalk.yellow.inverse( ' ╔═════════════════════════════════════════════════════════════════════╗ ' ),
-			chalk.yellow.inverse( ' ║   Supporting a wider range of CKEditor 5 versions requires using    ║ ' ),
-			chalk.yellow.inverse( ' ║   a more complex method of importing modules from CKEditor 5.       ║ ' ),
-			chalk.yellow.inverse( ' ║                                                                     ║ ' ),
-			chalk.yellow.inverse( ' ║   Read more here: <LINK TO THE  GUIDE EXPLAINING THIS></LINK>       ║ ' ),
-			chalk.yellow.inverse( ' ╚═════════════════════════════════════════════════════════════════════╝ ' ),
+			chalk.yellow.inverse(
+				' ╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗ '
+			),
+			chalk.yellow.inverse(
+				' ║   Supporting a wider range of CKEditor 5 versions requires using a more complex method of importing modules         ║ '
+			),
+			chalk.yellow.inverse(
+				' ║   from CKEditor 5.                                                                                                  ║ '
+			),
+			chalk.yellow.inverse(
+				' ║                                                                                                                     ║ '
+			),
+			chalk.yellow.inverse(
+				' ║   Read more here: https://ckeditor.com/docs/ckeditor5/latest/framework/tutorials/supporting-multiple-versions.html  ║ '
+			),
+			chalk.yellow.inverse(
+				' ╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝ '
+			),
 			''
 		].join( '\n' ), { startWithNewLine: true } );
 	}

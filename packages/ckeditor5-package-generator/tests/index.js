@@ -333,12 +333,12 @@ describe( 'lib/index', () => {
 		].join( '\n' ) );
 
 		expect( stubs.logger.info.getCall( 1 ).args[ 0 ] ).to.equal( [
-			' ╔═════════════════════════════════════════════════════════════════════╗ ',
-			' ║   Supporting a wider range of CKEditor 5 versions requires using    ║ ',
-			' ║   a more complex method of importing modules from CKEditor 5.       ║ ',
-			' ║                                                                     ║ ',
-			' ║   Read more here: <LINK TO THE  GUIDE EXPLAINING THIS></LINK>       ║ ',
-			' ╚═════════════════════════════════════════════════════════════════════╝ ',
+			' ╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗ ',
+			' ║   Supporting a wider range of CKEditor 5 versions requires using a more complex method of importing modules         ║ ',
+			' ║   from CKEditor 5.                                                                                                  ║ ',
+			' ║                                                                                                                     ║ ',
+			' ║   Read more here: https://ckeditor.com/docs/ckeditor5/latest/framework/tutorials/supporting-multiple-versions.html  ║ ',
+			' ╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝ ',
 			''
 		].join( '\n' ) );
 		expect( stubs.logger.info.getCall( 0 ).args[ 1 ] ).to.deep.equal( { startWithNewLine: true } );
