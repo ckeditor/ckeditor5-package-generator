@@ -30,8 +30,8 @@ const TEMPLATE_PATH = path.join( __dirname, '..', 'templates' );
 module.exports = function copyFiles( logger, options ) {
 	logger.process( 'Copying files...' );
 
-	const IsSupportingOnlyCurrentInstallationMethod = options.installationMethodOfPackage === 'current';
-	const templatePatternToCopy = `${ options.programmingLanguage }${ IsSupportingOnlyCurrentInstallationMethod ? '' : '-legacy' }/**/*`;
+	const supportsLegacyMethods = options.installationMethodOfPackage !== 'current';
+	const templatePatternToCopy = `${ options.programmingLanguage }${ supportsLegacyMethods ? '-legacy' : '' }/**/*`;
 
 	const templateGlobs = [
 		'common/**/*',
