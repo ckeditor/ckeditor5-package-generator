@@ -45,8 +45,10 @@ async function start() {
  *
  * @param {VerificationOptions} options
  */
-async function verifyBuild( { language, packageManager, customPluginName, useOnlyNewInstallationMethods } ) {
+async function verifyBuild( { language, packageManager, customPluginName, installationMethod } ) {
 	let testSetupInfoMessage = `Testing build for language: [${ language }] and package manager: [${ packageManager }]`;
+
+	const supportsLegacyMethods = installationMethod !== 'current';
 
 	const projectRootName = path.basename( process.cwd() );
 	const packageBuildCommand = [
@@ -57,14 +59,14 @@ async function verifyBuild( { language, packageManager, customPluginName, useOnl
 	if ( language === 'ts' ) {
 		const fileName = customPluginName ? customPluginName.toLowerCase() : 'testpackage';
 
-		( useOnlyNewInstallationMethods ?
-			EXPECTED_PUBLISH_FILES :
-			EXPECTED_LEGACY_PUBLISH_FILES
+		( supportsLegacyMethods ?
+			EXPECTED_LEGACY_PUBLISH_FILES :
+			EXPECTED_PUBLISH_FILES
 		).ts.push( `dist/types/${ fileName }.d.ts` );
 	}
 
 	const expectedPublishFiles = getExpectedFiles(
-		useOnlyNewInstallationMethods ? EXPECTED_PUBLISH_FILES : EXPECTED_LEGACY_PUBLISH_FILES,
+		supportsLegacyMethods ? EXPECTED_LEGACY_PUBLISH_FILES : EXPECTED_PUBLISH_FILES,
 		language,
 		customPluginName
 	);
@@ -79,11 +81,7 @@ async function verifyBuild( { language, packageManager, customPluginName, useOnl
 		packageBuildCommand.push( '--plugin-name', customPluginName );
 	}
 
-	if ( useOnlyNewInstallationMethods ) {
-		testSetupInfoMessage += ' without use of legacy methods of installations';
-		packageBuildCommand.push( '--use-only-new-installation-methods' );
-		packageBuildCommand.push( '--use-legacy-methods' );
-	}
+	packageBuildCommand.push( '--installation-methods', installationMethod );
 
 	logProcess( testSetupInfoMessage + '.' );
 
@@ -106,13 +104,13 @@ async function verifyBuild( { language, packageManager, customPluginName, useOnl
 	checkFileList( stderr, expectedPublishFiles );
 
 	logProcess( 'Verifying post release cleanup...' );
-	verifyPublishCleanup( language, expectedSrcDirFiles, useOnlyNewInstallationMethods );
+	verifyPublishCleanup( language, expectedSrcDirFiles, supportsLegacyMethods );
 
 	logProcess( 'Starting the development servers and verifying the sample builds...' );
 
 	const listOfDevelopmentServers = [ startDevelopmentServer( NEW_PACKAGE_DIRECTORY ) ];
 
-	if ( !useOnlyNewInstallationMethods ) {
+	if ( supportsLegacyMethods ) {
 		listOfDevelopmentServers.push( startDevelopmentServerForDllBuild( NEW_PACKAGE_DIRECTORY ) );
 	}
 
@@ -195,12 +193,17 @@ function startDevelopmentServer( cwd ) {
 		sampleServer.stdout.on( 'data', data => {
 			const content = stripAnsiEscapeCodes( data.toString() ).slice( 0, -1 );
 			const endMatch = /webpack \d+\.\d+\.\d+ compiled successfully in \d+ ms/.test( content );
+			const errorMatch = content.indexOf( 'ERROR' ) !== -1;
 
 			if ( endMatch ) {
 				return resolve( {
 					server: sampleServer,
 					url: sampleUrl
 				} );
+			}
+
+			if ( errorMatch ) {
+				return reject( content );
 			}
 		} );
 
@@ -329,14 +332,15 @@ function checkFileList( output, expectedPublishFiles ) {
  *
  * @param {String} lang
  * @param {Object} expectedSrcDirFiles
+ * @param {Boolean} supportsLegacyMethods
  */
-function verifyPublishCleanup( lang, expectedSrcDirFiles, useOnlyNewInstallationMethods ) {
+function verifyPublishCleanup( lang, expectedSrcDirFiles, supportsLegacyMethods ) {
 	// "package.json" check.
 	const pkgJsonPath = path.join( NEW_PACKAGE_DIRECTORY, 'package.json' );
 	const pkgJsonRaw = fs.readFileSync( pkgJsonPath, 'utf-8' );
 	const pkgJsonContent = JSON.parse( pkgJsonRaw );
 
-	const hasCorrectEntryPoint = pkgJsonContent.main === `${ useOnlyNewInstallationMethods ? 'dist' : 'src' }/index.${ lang }`;
+	const hasCorrectEntryPoint = pkgJsonContent.main === `${ supportsLegacyMethods ? 'src' : 'dist' }/index.${ lang }`;
 
 	if ( !hasCorrectEntryPoint ) {
 		console.log( chalk.red( '"package.json" has incorrect value in "main" field:' ) );

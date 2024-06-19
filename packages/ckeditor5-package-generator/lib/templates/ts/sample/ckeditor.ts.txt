@@ -31,9 +31,9 @@ import {
 
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 
-import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>';
+import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>.js';
 
-import 'ckeditor5/index.css';
+import 'ckeditor5/ckeditor5.css';
 
 ClassicEditor
 	.create( document.getElementById( 'editor' )!, {

@@ -10,8 +10,6 @@ module.exports = {
 	],
 	root: true,
 	ignorePatterns: [
-		// Ignore the entire `build/` (the DLL build).
-		'build/**',
 		// Ignore the entire `dist/` (the NIM build).
 		'dist/**',
 		// Ignore compiled JavaScript files, as they are generated automatically.
@@ -20,11 +18,20 @@ module.exports = {
 		'src/**/*.d.ts'
 	],
 	rules: {
-		// This rule disallows importing core DLL packages directly. Imports should be done using the `ckeditor5` package.
-		// Also, importing non-DLL packages is not allowed. If the package requires other features to work, they should be
-		// specified as soft-requirements.
-		// Read more: https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migration/migration-to-26.html#soft-requirements.
-		'ckeditor5-rules/ckeditor-imports': 'error'
+		//  This rule disallows importing from any path other than the package main entrypoint.
+		'ckeditor5-rules/allow-imports-only-from-main-package-entry-point': 'error',
+		// This rule ensures that all imports from `@ckeditor/*` packages are done through the main package entry points.
+		// This is required for the editor types to work properly and to ease migration to the installation methods
+		// introduced in CKEditor 5 version 42.0.0.
+		'ckeditor5-rules/no-legacy-imports': 'error',
+		// As required by the ECMAScript (ESM) standard, all imports must include a file extension.
+		// If the import does not include it, this rule will try to automatically detect the correct file extension.
+		'ckeditor5-rules/require-file-extensions-in-imports': [
+			'error',
+			{
+				extensions: [ '.ts', '.js', '.json' ]
+			}
+		]
 	},
 	overrides: [
 		{

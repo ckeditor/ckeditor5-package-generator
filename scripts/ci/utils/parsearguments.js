@@ -19,21 +19,21 @@ module.exports = function parseArguments( cliArguments ) {
 			'language',
 			'package-manager',
 			'custom-plugin-name',
-			'no-legacy-methods'
+			'installation-method'
 		],
 
 		alias: {
 			l: 'language',
 			p: 'package-manager',
 			n: 'custom-plugin-name',
-			m: 'no-legacy-methods'
+			m: 'installation-method'
 		},
 
 		default: {
 			language: 'js',
 			'package-manager': 'yarn',
 			'custom-plugin-name': '',
-			'no-legacy-methods': false
+			'installation-method': 'current'
 		}
 	};
 
@@ -45,8 +45,8 @@ module.exports = function parseArguments( cliArguments ) {
 	options.customPluginName = options[ 'custom-plugin-name' ];
 	delete options[ 'custom-plugin-name' ];
 
-	options.useOnlyNewInstallationMethods = typeof options[ 'no-legacy-methods' ] === 'string';
-	delete options[ 'no-legacy-methods' ];
+	options.installationMethod = options[ 'installation-method' ];
+	delete options[ 'installation-method' ];
 
 	return options;
 };
@@ -60,5 +60,5 @@ module.exports = function parseArguments( cliArguments ) {
  *
  * @property {String} customPluginName
  *
- * @property {String} useOnlyNewInstallationMethods
+ * @property {String} installationMethods
  */
