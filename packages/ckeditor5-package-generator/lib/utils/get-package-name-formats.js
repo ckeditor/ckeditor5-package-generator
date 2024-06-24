@@ -38,6 +38,7 @@ function format( name ) {
 
 	return {
 		raw,
+		fullName: name,
 		spacedOut: toSpacedOut( parts ),
 		camelCase: toCamelCase( parts ),
 		pascalCase: toPascalCase( parts ),
@@ -91,6 +92,8 @@ function uppercaseFirstChar( string ) {
  * @typedef {Object} FormattedName
  *
  * @property {String} raw super-feature-name
+ *
+ * @property {String} full @scope/ckeditor5-super-feature-name
  *
  * @property {String} spacedOut Super feature name
  *

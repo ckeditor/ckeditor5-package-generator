@@ -25,6 +25,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 			expect( result ).to.deep.equal( {
 				package: {
 					raw: 'bar',
+					fullName: '@foo/ckeditor5-bar',
 					spacedOut: 'Bar',
 					camelCase: 'bar',
 					pascalCase: 'Bar',
@@ -32,6 +33,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				},
 				plugin: {
 					raw: 'bar',
+					fullName: '@foo/ckeditor5-bar',
 					spacedOut: 'Bar',
 					camelCase: 'bar',
 					pascalCase: 'Bar',
@@ -48,6 +50,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 			expect( result ).to.deep.equal( {
 				package: {
 					raw: 'bar.baz',
+					fullName: '@foo/ckeditor5-bar.baz',
 					spacedOut: 'Bar baz',
 					camelCase: 'barBaz',
 					pascalCase: 'BarBaz',
@@ -55,6 +58,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				},
 				plugin: {
 					raw: 'bar.baz',
+					fullName: '@foo/ckeditor5-bar.baz',
 					spacedOut: 'Bar baz',
 					camelCase: 'barBaz',
 					pascalCase: 'BarBaz',
@@ -71,6 +75,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 			expect( result ).to.deep.equal( {
 				package: {
 					raw: 'bar-baz',
+					fullName: '@foo/ckeditor5-bar-baz',
 					spacedOut: 'Bar baz',
 					camelCase: 'barBaz',
 					pascalCase: 'BarBaz',
@@ -78,6 +83,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				},
 				plugin: {
 					raw: 'bar-baz',
+					fullName: '@foo/ckeditor5-bar-baz',
 					spacedOut: 'Bar baz',
 					camelCase: 'barBaz',
 					pascalCase: 'BarBaz',
@@ -94,6 +100,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 			expect( result ).to.deep.equal( {
 				package: {
 					raw: 'bar_baz',
+					fullName: '@foo/ckeditor5-bar_baz',
 					spacedOut: 'Bar baz',
 					camelCase: 'barBaz',
 					pascalCase: 'BarBaz',
@@ -101,6 +108,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				},
 				plugin: {
 					raw: 'bar_baz',
+					fullName: '@foo/ckeditor5-bar_baz',
 					spacedOut: 'Bar baz',
 					camelCase: 'barBaz',
 					pascalCase: 'BarBaz',
@@ -117,6 +125,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 			expect( result ).to.deep.equal( {
 				package: {
 					raw: 'bar99baz',
+					fullName: '@foo/ckeditor5-bar99baz',
 					spacedOut: 'Bar 99 baz',
 					camelCase: 'bar99Baz',
 					pascalCase: 'Bar99Baz',
@@ -124,6 +133,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				},
 				plugin: {
 					raw: 'bar99baz',
+					fullName: '@foo/ckeditor5-bar99baz',
 					spacedOut: 'Bar 99 baz',
 					camelCase: 'bar99Baz',
 					pascalCase: 'Bar99Baz',
@@ -140,6 +150,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 			expect( result ).to.deep.equal( {
 				package: {
 					raw: 'bar-1.2baz__33baw',
+					fullName: '@foo/ckeditor5-bar-1.2baz__33baw',
 					spacedOut: 'Bar 1 2 baz 33 baw',
 					camelCase: 'bar12Baz33Baw',
 					pascalCase: 'Bar12Baz33Baw',
@@ -147,6 +158,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				},
 				plugin: {
 					raw: 'bar-1.2baz__33baw',
+					fullName: '@foo/ckeditor5-bar-1.2baz__33baw',
 					spacedOut: 'Bar 1 2 baz 33 baw',
 					camelCase: 'bar12Baz33Baw',
 					pascalCase: 'Bar12Baz33Baw',
@@ -165,6 +177,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 			expect( result ).to.deep.equal( {
 				package: {
 					raw: 'xyz',
+					fullName: '@foo/ckeditor5-xyz',
 					spacedOut: 'Xyz',
 					camelCase: 'xyz',
 					pascalCase: 'Xyz',
@@ -172,6 +185,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				},
 				plugin: {
 					raw: 'Bar',
+					fullName: 'Bar',
 					spacedOut: 'Bar',
 					camelCase: 'bar',
 					pascalCase: 'Bar',
@@ -188,6 +202,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 			expect( result ).to.deep.equal( {
 				package: {
 					raw: 'xyz',
+					fullName: '@foo/ckeditor5-xyz',
 					spacedOut: 'Xyz',
 					camelCase: 'xyz',
 					pascalCase: 'Xyz',
@@ -195,6 +210,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				},
 				plugin: {
 					raw: 'BarBaz',
+					fullName: 'BarBaz',
 					spacedOut: 'Bar baz',
 					camelCase: 'barBaz',
 					pascalCase: 'BarBaz',
@@ -211,6 +227,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 			expect( result ).to.deep.equal( {
 				package: {
 					raw: 'xyz',
+					fullName: '@foo/ckeditor5-xyz',
 					spacedOut: 'Xyz',
 					camelCase: 'xyz',
 					pascalCase: 'Xyz',
@@ -218,6 +235,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				},
 				plugin: {
 					raw: 'BarBazBaw',
+					fullName: 'BarBazBaw',
 					spacedOut: 'Bar baz baw',
 					camelCase: 'barBazBaw',
 					pascalCase: 'BarBazBaw',
@@ -234,6 +252,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 			expect( result ).to.deep.equal( {
 				package: {
 					raw: 'xyz',
+					fullName: '@foo/ckeditor5-xyz',
 					spacedOut: 'Xyz',
 					camelCase: 'xyz',
 					pascalCase: 'Xyz',
@@ -241,6 +260,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				},
 				plugin: {
 					raw: 'Bar1baz22Baw',
+					fullName: 'Bar1baz22Baw',
 					spacedOut: 'Bar 1 baz 22 baw',
 					camelCase: 'bar1Baz22Baw',
 					pascalCase: 'Bar1Baz22Baw',
