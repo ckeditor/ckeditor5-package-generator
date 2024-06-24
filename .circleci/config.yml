@@ -74,17 +74,35 @@ jobs:
           name: Run unit tests
           command: yarn run coverage
       - run:
-          name: Verify build (JavaScript, npm)
-          command: node scripts/ci/verify-build -l js -p npm
+          name: Verify build (JavaScript, npm, current and legacy installation methods)
+          command: node scripts/ci/verify-build -l js -p npm -m current-and-legacy
       - run:
-          name: Verify build (TypeScript, npm, custom plugin name)
-          command: node scripts/ci/verify-build -l ts -p npm -n CustomPluginName
+          name: Verify build (JavaScript, yarn, current and legacy installation methods)
+          command: node scripts/ci/verify-build -l js -p yarn -m current-and-legacy
       - run:
-          name: Verify build (JavaScript, yarn, custom plugin name)
-          command: node scripts/ci/verify-build -l js -p yarn -n customPluginName400
+          name: Verify build (JavaScript, npm, current installation methods)
+          command: node scripts/ci/verify-build -l js -p npm -m current
       - run:
-          name: Verify build (TypeScript, yarn)
-          command: node scripts/ci/verify-build -l ts -p yarn
+          name: Verify build (JavaScript, yarn, current installation methods)
+          command: node scripts/ci/verify-build -l js -p yarn -m current
+      - run:
+          name: Verify build (TypeScript, npm, current and legacy installation methods, custom plugin name)
+          command: node scripts/ci/verify-build -l ts -p npm -m current-and-legacy -n CustomPluginName
+      - run:
+          name: Verify build (TypeScript, npm, current installation methods, custom plugin name)
+          command: node scripts/ci/verify-build -l ts -p npm -m current -n CustomPluginName
+      - run:
+          name: Verify build (JavaScript, yarn, current and legacy installation methods, custom plugin name)
+          command: node scripts/ci/verify-build -l js -p yarn -m current-and-legacy -n customPluginName400
+      - run:
+          name: Verify build (JavaScript, yarn, current installation methods, custom plugin name)
+          command: node scripts/ci/verify-build -l js -p yarn -m current -n customPluginName400
+      - run:
+          name: Verify build (TypeScript, yarn, current and legacy installation methods)
+          command: node scripts/ci/verify-build -l ts -p yarn -m current-and-legacy
+      - run:
+          name: Verify build (TypeScript, yarn, current installation methods)
+          command: node scripts/ci/verify-build -l ts -p yarn -m current
       - unless:
           # Upload the code coverage results for non-nightly builds only.
           condition: << pipeline.parameters.isNightly >>

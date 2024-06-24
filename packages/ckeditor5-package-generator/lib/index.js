@@ -9,6 +9,7 @@ const chalk = require( 'chalk' );
 
 const Logger = require( './utils/logger' );
 
+const chooseInstallationMethods = require( './utils/choose-installation-methods' );
 const choosePackageManager = require( './utils/choose-package-manager' );
 const chooseProgrammingLanguage = require( './utils/choose-programming-language' );
 const copyFiles = require( './utils/copy-files' );
@@ -26,7 +27,7 @@ const validatePluginName = require( './utils/validate-plugin-name' );
  * @param {CKeditor5PackageGeneratorOptions} options
  */
 module.exports = async function init( packageName, options ) {
-	const { dev, verbose, useNpm, useYarn, lang, pluginName } = options;
+	const { dev, verbose, useNpm, useYarn, installationMethods, lang, pluginName } = options;
 
 	const logger = new Logger( verbose );
 
@@ -36,6 +37,7 @@ module.exports = async function init( packageName, options ) {
 	const { directoryName, directoryPath } = createDirectory( logger, packageName );
 	const packageManager = await choosePackageManager( useNpm, useYarn );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
+	const installationMethodOfPackage = await chooseInstallationMethods( logger, installationMethods );
 	const packageVersions = getDependenciesVersions( logger, dev );
 
 	copyFiles( logger, {
@@ -44,7 +46,8 @@ module.exports = async function init( packageName, options ) {
 		directoryPath,
 		packageManager,
 		programmingLanguage,
-		packageVersions
+		packageVersions,
+		installationMethodOfPackage
 	} );
 
 	await installDependencies( directoryPath, packageManager, verbose, dev );
@@ -65,6 +68,30 @@ module.exports = async function init( packageName, options ) {
 		'Example: ' + chalk.gray( packageManager + ' run start' ),
 		''
 	].join( '\n' ), { startWithNewLine: true } );
+
+	if ( installationMethodOfPackage === 'current-and-legacy' ) {
+		logger.info( [
+			chalk.yellow.inverse(
+				' ╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗ '
+			),
+			chalk.yellow.inverse(
+				' ║   Supporting a wider range of CKEditor 5 versions requires using a more complex method of importing modules         ║ '
+			),
+			chalk.yellow.inverse(
+				' ║   from CKEditor 5.                                                                                                  ║ '
+			),
+			chalk.yellow.inverse(
+				' ║                                                                                                                     ║ '
+			),
+			chalk.yellow.inverse(
+				' ║   Read more here: https://ckeditor.com/docs/ckeditor5/latest/framework/tutorials/supporting-multiple-versions.html  ║ '
+			),
+			chalk.yellow.inverse(
+				' ╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝ '
+			),
+			''
+		].join( '\n' ), { startWithNewLine: true } );
+	}
 };
 
 /**
@@ -75,6 +102,8 @@ module.exports = async function init( packageName, options ) {
  * @property {Boolean} [useNpm=false]
  *
  * @property {Boolean} [useYarn=false]
+ *
+ * @property {String} installationMethods
  *
  * @property {Boolean} [dev=false]
  *

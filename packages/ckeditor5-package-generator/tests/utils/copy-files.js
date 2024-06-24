@@ -17,6 +17,7 @@ describe( 'lib/utils/copy-files', () => {
 			'ckeditor5': '>=<%= packageVersions.ckeditor5 %>'
 		},
 		'devDependencies': {
+			'@ckeditor/ckeditor5-dev-build-tools': '<%= packageVersions.ckeditor5DevBuildTools %>',
 			'@ckeditor/ckeditor5-autoformat': '>=<%= packageVersions.ckeditor5 %>',
 			'@ckeditor/ckeditor5-basic-styles': '>=<%= packageVersions.ckeditor5 %>',
 			'@ckeditor/ckeditor5-block-quote': '>=<%= packageVersions.ckeditor5 %>',
@@ -87,6 +88,14 @@ describe( 'lib/utils/copy-files', () => {
 			'ts/package.json',
 			'ts/src/index.ts'
 		] );
+		stubs.glob.sync.withArgs( 'js-legacy/**/*' ).returns( [
+			'js/package.json',
+			'js/src/index.js'
+		] );
+		stubs.glob.sync.withArgs( 'ts-legacy/**/*' ).returns( [
+			'ts/package.json',
+			'ts/src/index.ts'
+		] );
 
 		stubs.fs.readFileSync.withArgs( 'templates/common/LICENSE.md', 'utf-8' ).returns(
 			'Copyright (c) <%= now.getFullYear() %>. All rights reserved.\n'
@@ -131,8 +140,10 @@ describe( 'lib/utils/copy-files', () => {
 				}
 			},
 			packageManager: 'yarn',
+			installationMethodOfPackage: 'current',
 			directoryPath: 'directory/path/foo',
 			packageVersions: {
+				ckeditor5DevBuildTools: '40.0.0',
 				ckeditor5: '30.0.0',
 				packageTools: '25.0.0'
 			},
@@ -184,6 +195,7 @@ describe( 'lib/utils/copy-files', () => {
 				'ckeditor5': '>=30.0.0'
 			},
 			'devDependencies': {
+				'@ckeditor/ckeditor5-dev-build-tools': '40.0.0',
 				'@ckeditor/ckeditor5-autoformat': '>=30.0.0',
 				'@ckeditor/ckeditor5-basic-styles': '>=30.0.0',
 				'@ckeditor/ckeditor5-block-quote': '>=30.0.0',
@@ -232,6 +244,7 @@ describe( 'lib/utils/copy-files', () => {
 				'ckeditor5': '>=30.0.0'
 			},
 			'devDependencies': {
+				'@ckeditor/ckeditor5-dev-build-tools': '40.0.0',
 				'@ckeditor/ckeditor5-autoformat': '>=30.0.0',
 				'@ckeditor/ckeditor5-basic-styles': '>=30.0.0',
 				'@ckeditor/ckeditor5-block-quote': '>=30.0.0',
@@ -321,6 +334,32 @@ describe( 'lib/utils/copy-files', () => {
 		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/ts/foo/src/index.js' );
 	} );
 
+	it( 'works correctly with path containing directory called "js" with flag "--installation-methods" set to "current-and-legacy"', () => {
+		options.directoryPath = 'directory/js/foo';
+		options.installationMethodOfPackage = 'current-and-legacy';
+
+		copyFiles( stubs.logger, options );
+
+		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
+		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/js/foo/LICENSE.md' );
+		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/js/foo/lang/contexts.json' );
+		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/js/foo/package.json' );
+		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/js/foo/src/index.js' );
+	} );
+
+	it( 'works correctly with path containing directory called "ts" with flag "--installation-methods" set to "current-and-legacy', () => {
+		options.directoryPath = 'directory/ts/foo';
+		options.installationMethodOfPackage = 'current-and-legacy';
+
+		copyFiles( stubs.logger, options );
+
+		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
+		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/ts/foo/LICENSE.md' );
+		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/ts/foo/lang/contexts.json' );
+		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/ts/foo/package.json' );
+		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/ts/foo/src/index.js' );
+	} );
+
 	it( 'works correctly with path containing directory called "Projects" (it ends with "ts")', () => {
 		options.directoryPath = 'directory/Projects/foo';
 
@@ -360,6 +399,7 @@ describe( 'lib/utils/copy-files', () => {
 				'ckeditor5': '>=30.0.0'
 			},
 			'devDependencies': {
+				'@ckeditor/ckeditor5-dev-build-tools': '40.0.0',
 				'@ckeditor/ckeditor5-autoformat': '>=30.0.0',
 				'@ckeditor/ckeditor5-basic-styles': '>=30.0.0',
 				'@ckeditor/ckeditor5-block-quote': '>=30.0.0',

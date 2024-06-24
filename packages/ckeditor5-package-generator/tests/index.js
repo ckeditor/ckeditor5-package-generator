@@ -23,6 +23,7 @@ describe( 'lib/index', () => {
 			verbose: true,
 			useYarn: true,
 			useNpm: false,
+			installationMethods: 'current',
 			pluginName: 'FooBar',
 			lang: 'js',
 			dev: false
@@ -33,13 +34,17 @@ describe( 'lib/index', () => {
 				underline: sinon.stub().callsFake( str => str ),
 				green: sinon.stub().callsFake( str => str ),
 				cyan: sinon.stub().callsFake( str => str ),
-				gray: sinon.stub().callsFake( str => str )
+				gray: sinon.stub().callsFake( str => str ),
+				yellow: {
+					inverse: sinon.stub().callsFake( str => str )
+				}
 			},
 			logger: {
 				info: sinon.stub()
 			},
 			choosePackageManager: sinon.stub(),
 			chooseProgrammingLanguage: sinon.stub(),
+			chooseInstallationMethods: sinon.stub(),
 			copyFiles: sinon.stub(),
 			createDirectory: sinon.stub(),
 			getDependenciesVersions: sinon.stub(),
@@ -73,6 +78,7 @@ describe( 'lib/index', () => {
 		} );
 		stubs.choosePackageManager.resolves( 'yarn' );
 		stubs.chooseProgrammingLanguage.resolves( 'js' );
+		stubs.chooseInstallationMethods.resolves( 'current' );
 		stubs.getDependenciesVersions.returns( {
 			ckeditor5: '30.0.0'
 		} );
@@ -92,6 +98,7 @@ describe( 'lib/index', () => {
 
 		mockery.registerMock( './utils/choose-package-manager', stubs.choosePackageManager );
 		mockery.registerMock( './utils/choose-programming-language', stubs.chooseProgrammingLanguage );
+		mockery.registerMock( './utils/choose-installation-methods', stubs.chooseInstallationMethods );
 		mockery.registerMock( './utils/copy-files', stubs.copyFiles );
 		mockery.registerMock( './utils/create-directory', stubs.createDirectory );
 		mockery.registerMock( './utils/get-dependencies-versions', stubs.getDependenciesVersions );
@@ -193,6 +200,16 @@ describe( 'lib/index', () => {
 		expect( stubs.chooseProgrammingLanguage.getCall( 0 ).args[ 1 ] ).to.equal( 'js' );
 	} );
 
+	it( 'chooses the installation method', async () => {
+		await index( packageName, options );
+
+		expect( stubs.chooseInstallationMethods.callCount ).to.equal( 1 );
+		expect( stubs.chooseInstallationMethods.getCall( 0 ).args.length ).to.equal( 2 );
+
+		expect( stubs.chooseInstallationMethods.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
+		expect( stubs.chooseInstallationMethods.getCall( 0 ).args[ 1 ] ).to.equal( 'current' );
+	} );
+
 	it( 'gets the versions of the dependencies', async () => {
 		await index( packageName, options );
 
@@ -213,6 +230,7 @@ describe( 'lib/index', () => {
 		expect( stubs.copyFiles.getCall( 0 ).args[ 1 ] ).to.deep.equal( {
 			packageName: '@scope/ckeditor5-feature',
 			programmingLanguage: 'js',
+			installationMethodOfPackage: 'current',
 			formattedNames: {
 				package: {
 					raw: 'xyz',
@@ -286,6 +304,41 @@ describe( 'lib/index', () => {
 			'  * stylelint - for running a tool for static analyzing CSS files.',
 			'',
 			'Example: yarn run start',
+			''
+		].join( '\n' ) );
+		expect( stubs.logger.info.getCall( 0 ).args[ 1 ] ).to.deep.equal( { startWithNewLine: true } );
+	} );
+
+	it( 'logs extended info before the script finishes when current and legacy installation methods were chosen', async () => {
+		options.installationMethods = 'current-and-legacy';
+
+		stubs.chooseInstallationMethods.resolves( 'current-and-legacy' );
+
+		await index( packageName, options );
+
+		expect( stubs.logger.info.callCount ).to.equal( 2 );
+		expect( stubs.logger.info.getCall( 0 ).args[ 0 ] ).to.equal( [
+			'Done!',
+			'',
+			'Execute the "cd directoryName" command to change the current working directory',
+			'to the newly created package. Then, the package offers a few predefined scripts:',
+			'',
+			'  * start - for creating the HTTP server with the editor sample,',
+			'  * test - for executing unit tests of an example plugin,',
+			'  * lint - for running a tool for static analyzing JavaScript files,',
+			'  * stylelint - for running a tool for static analyzing CSS files.',
+			'',
+			'Example: yarn run start',
+			''
+		].join( '\n' ) );
+
+		expect( stubs.logger.info.getCall( 1 ).args[ 0 ] ).to.equal( [
+			' ╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗ ',
+			' ║   Supporting a wider range of CKEditor 5 versions requires using a more complex method of importing modules         ║ ',
+			' ║   from CKEditor 5.                                                                                                  ║ ',
+			' ║                                                                                                                     ║ ',
+			' ║   Read more here: https://ckeditor.com/docs/ckeditor5/latest/framework/tutorials/supporting-multiple-versions.html  ║ ',
+			' ╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝ ',
 			''
 		].join( '\n' ) );
 		expect( stubs.logger.info.getCall( 0 ).args[ 1 ] ).to.deep.equal( { startWithNewLine: true } );

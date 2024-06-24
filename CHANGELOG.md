@@ -13,7 +13,7 @@ Changelog
 
 ### Features
 
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Added the `--use-only-new-installation-methods` CLI flag that should allow the generation of a package without support for the [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/alternative-setups/dll-builds.html). See [#15502](https://github.com/ckeditor/ckeditor5/issues/15502), [#15739](https://github.com/ckeditor/ckeditor5/issues/15739).
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Added the `--installation-methods` CLI flag that should allow the generation of a package without support for the [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/alternative-setups/dll-builds.html). See [#15502](https://github.com/ckeditor/ckeditor5/issues/15502), [#15739](https://github.com/ckeditor/ckeditor5/issues/15739).
 * **[tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: Karma will use the `tsconfig.test.json` file as a TypeScript configuration if it exists when executing automated tests. By default, it fallbacks to `tsconfig.json` file. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/56207d846095a78e35bf2805c2c30823cb6cb9de))
 
 ### Bug fixes

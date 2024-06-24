@@ -18,19 +18,22 @@ module.exports = function parseArguments( cliArguments ) {
 		string: [
 			'language',
 			'package-manager',
-			'custom-plugin-name'
+			'custom-plugin-name',
+			'installation-method'
 		],
 
 		alias: {
 			l: 'language',
 			p: 'package-manager',
-			n: 'custom-plugin-name'
+			n: 'custom-plugin-name',
+			m: 'installation-method'
 		},
 
 		default: {
 			language: 'js',
 			'package-manager': 'yarn',
-			'custom-plugin-name': ''
+			'custom-plugin-name': '',
+			'installation-method': 'current'
 		}
 	};
 
@@ -41,6 +44,9 @@ module.exports = function parseArguments( cliArguments ) {
 
 	options.customPluginName = options[ 'custom-plugin-name' ];
 	delete options[ 'custom-plugin-name' ];
+
+	options.installationMethod = options[ 'installation-method' ];
+	delete options[ 'installation-method' ];
 
 	return options;
 };
@@ -53,4 +59,6 @@ module.exports = function parseArguments( cliArguments ) {
  * @property {String} packageManager
  *
  * @property {String} customPluginName
+ *
+ * @property {String} installationMethods
  */

@@ -1,6 +1,6 @@
 {
   "name": "@ckeditor/ckeditor5-package-generator",
-  "version": "1.1.0",
+  "version": "2.0.0-alpha.0",
   "private": true,
   "keywords": [
     "ckeditor",
@@ -17,14 +17,14 @@
   "license": "MIT",
   "homepage": "https://ckeditor.com/ckeditor-5",
   "devDependencies": {
-    "@ckeditor/ckeditor5-dev-bump-year": "^38.0.0",
-    "@ckeditor/ckeditor5-dev-ci": "^38.0.0",
-    "@ckeditor/ckeditor5-dev-release-tools": "^38.0.0",
-    "@ckeditor/ckeditor5-dev-web-crawler": "^38.0.0",
+    "@ckeditor/ckeditor5-dev-bump-year": "^40.0.1",
+    "@ckeditor/ckeditor5-dev-ci": "^40.0.1",
+    "@ckeditor/ckeditor5-dev-release-tools": "^40.0.1",
+    "@ckeditor/ckeditor5-dev-web-crawler": "^40.0.1",
     "chalk": "^4.1.2",
     "coveralls": "^3.1.1",
     "eslint": "^7.32.0",
-    "eslint-config-ckeditor5": "^5.3.2",
+    "eslint-config-ckeditor5": "^6.0.0",
     "glob": "^10.2.5",
     "husky": "^8.0.2",
     "lint-staged": "^10.5.4",
