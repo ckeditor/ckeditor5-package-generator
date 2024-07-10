@@ -10,7 +10,7 @@ const fs = require( 'fs' );
 const glob = require( 'glob' );
 const mkdirp = require( 'mkdirp' );
 const path = require( 'path' );
-const template = require( 'lodash.template' );
+const { template } = require( 'lodash' );
 
 const TEMPLATE_PATH = path.join( __dirname, '..', 'templates' );
 
