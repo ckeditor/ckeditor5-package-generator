@@ -12,6 +12,7 @@
 const { Listr } = require( 'listr2' );
 const releaseTools = require( '@ckeditor/ckeditor5-dev-release-tools' );
 const parseArguments = require( './utils/parsearguments' );
+const getListrOptions = require( './utils/getlistroptions' );
 const { PACKAGE_GENERATOR_ROOT, PACKAGES_DIRECTORY, RELEASE_DIRECTORY } = require( './utils/constants' );
 const upath = require( 'upath' );
 const { globSync } = require( 'glob' );
@@ -42,6 +43,14 @@ const tasks = new Listr( [
 			}
 
 			return Promise.reject( 'Aborted due to errors.\n' + errors.map( message => `* ${ message }` ).join( '\n' ) );
+		},
+		skip: () => {
+			// When compiling the packages only, do not validate the release.
+			if ( cliArguments.compileOnly ) {
+				return true;
+			}
+
+			return false;
 		}
 	},
 	{
@@ -51,6 +60,14 @@ const tasks = new Listr( [
 				packagesDirectory: PACKAGES_DIRECTORY,
 				version: latestVersion
 			} );
+		},
+		skip: () => {
+			// When compiling the packages only, do not validate the release.
+			if ( cliArguments.compileOnly ) {
+				return true;
+			}
+
+			return false;
 		}
 	},
 	{
@@ -63,6 +80,14 @@ const tasks = new Listr( [
 					return PACKAGE_GENERATOR_PACKAGES_NAMES.includes( packageName );
 				}
 			} );
+		},
+		skip: () => {
+			// When compiling the packages only, do not validate the release.
+			if ( cliArguments.compileOnly ) {
+				return true;
+			}
+
+			return false;
 		}
 	},
 	{
@@ -93,9 +118,17 @@ const tasks = new Listr( [
 					`${ PACKAGES_DIRECTORY }/*/package.json`
 				]
 			} );
+		},
+		skip: () => {
+			// When compiling the packages only, do not validate the release.
+			if ( cliArguments.compileOnly ) {
+				return true;
+			}
+
+			return false;
 		}
 	}
-] );
+], getListrOptions( cliArguments ) );
 
 tasks.run()
 	.catch( err => {
