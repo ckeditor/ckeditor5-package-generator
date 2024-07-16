@@ -30,7 +30,7 @@ module.exports = function parseArguments( cliArguments ) {
 		default: {
 			packages: null,
 			branch: 'master',
-			'npm-tag': 'latest',
+			'npm-tag': null,
 			ci: false,
 			'compile-only': false,
 			verbose: false
@@ -59,7 +59,7 @@ module.exports = function parseArguments( cliArguments ) {
 /**
  * @typedef {Object} ReleaseOptions
  *
- * @property {String} [npmTag='latest']
+ * @property {String|null} [npmTag=null]
  *
  * @property {Array.<String>|null} packages
  *
