@@ -7,20 +7,14 @@
 
 /* eslint-env node */
 
-const path = require( 'path' );
-
 /**
  * Returns an absolute path to the main file of the `@ckeditor/ckeditor5-theme-lark` package.
  *
- * The function does the same as what does `require.resolve()`. However, there is no option for mocking it in tests,
- * hence the value is obtained manually.
+ * Used to assist mocking require.resolve() in tests.
  *
- * @param {String} cwd
+ * @param {Function} resolver
  * @return {String}
  */
-module.exports = function getThemePath( cwd ) {
-	const packagePath = path.join( cwd, 'node_modules', '@ckeditor', 'ckeditor5-theme-lark' );
-	const packageJson = require( path.join( packagePath, 'package.json' ) );
-
-	return path.join( packagePath, packageJson.main );
+module.exports = function getThemePath( resolver ) {
+	return resolver( '@ckeditor/ckeditor5-theme-lark' );
 };

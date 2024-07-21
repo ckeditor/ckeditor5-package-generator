@@ -177,7 +177,8 @@ describe( 'lib/utils/webpack-utils', () => {
 			// Webpack processes loaders from the bottom, to the top. Hence, "postcss-loader" will be called as the first one.
 			it( 'uses "postcss-loader" for processing CKEditor 5 assets', () => {
 				expect( stubs.getThemePath.calledOnce ).to.equal( true );
-				expect( stubs.getThemePath.firstCall.args[ 0 ] ).to.equal( '/process/cwd' );
+				expect( typeof stubs.getThemePath.firstCall.args[ 0 ] == 'function' ).to.equal( true );
+				expect( stubs.getThemePath.firstCall.args[ 0 ].prototype.constructor.name ).to.equal( 'resolve' );
 
 				expect( stubs.devUtils.styles.getPostCssConfig.calledOnce ).to.equal( true );
 				expect( stubs.devUtils.styles.getPostCssConfig.firstCall.firstArg ).to.deep.equal( {
