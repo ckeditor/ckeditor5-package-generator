@@ -11,11 +11,11 @@ This package was created by the [ckeditor5-package-generator](https://www.npmjs.
   * [`test`](#test)
   * [`lint`](#lint)
   * [`stylelint`](#stylelint)
-  * [`dll:build`](#dllbuild)
-  * [`dll:serve`](#dllserve)
+  * [`build:dist`](#builddist)
   * [`translations:collect`](#translationscollect)
   * [`translations:download`](#translationsdownload)
   * [`translations:upload`](#translationsupload)
+  * [`ts:build` and `ts:clear`](#tsbuild-and-tsclear)
 * [License](#license)
 
 ## Developing the package
@@ -92,29 +92,15 @@ Examples:
 <%= packageManager %> run stylelint
 ```
 
-### `dll:build`
+### `build:dist`
 
-Creates a DLL-compatible package build which can be loaded into an editor using [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html).
-
-Examples:
-
-```bash
-# Build the DLL file that is ready to publish.
-<%= packageManager %> run dll:build
-
-# Build the DLL file and listen to changes in its sources.
-<%= packageManager %> run dll:build <%= cliSeparator %>--watch
-```
-
-### `dll:serve`
-
-Creates a simple HTTP server (without the live-reload mechanism) that allows verifying whether the DLL build of the package is compatible with the CKEditor 5 [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html).
+Creates npm and browser builds of your plugin. These builds can be added to the editor by following the [Configuring CKEditor 5 features](https://ckeditor.com/docs/ckeditor5/latest/getting-started/setup/configuration.html) guide.
 
 Examples:
 
 ```bash
-# Starts the HTTP server and opens the browser.
-<%= packageManager %> run dll:serve
+# Builds the `npm` and browser files thats are ready to publish.
+npm run build:dist
 ```
 
 ### `translations:collect`
@@ -160,6 +146,10 @@ Examples:
 ```bash
 <%= packageManager %> run translations:upload <%= cliSeparator %>--transifex [API URL]
 ```
+
+### `ts:build` and `ts:clear`
+
+These scripts compile TypeScript and remove the compiled files. They are used in the aforementioned life cycle scripts, and there is no need to call them manually.
 
 ## License
 
