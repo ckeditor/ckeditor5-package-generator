@@ -62,8 +62,8 @@ const EXPECTED_TS_LEGACY_PUBLISH_FILES = [
 ];
 
 const EXPECTED_DIST_TYPES_PUBLISH_FILES = [
-	'dist/types/augmentation.d.ts',
-	'dist/types/index.d.ts'
+	'dist/augmentation.d.ts',
+	'dist/index.d.ts'
 ];
 
 const EXPECTED_PUBLISH_FILES = {

@@ -62,7 +62,7 @@ async function verifyBuild( { language, packageManager, customPluginName, instal
 		( supportsLegacyMethods ?
 			EXPECTED_LEGACY_PUBLISH_FILES :
 			EXPECTED_PUBLISH_FILES
-		).ts.push( `dist/types/${ fileName }.d.ts` );
+		).ts.push( `dist/${ fileName }.d.ts` );
 	}
 
 	const expectedPublishFiles = getExpectedFiles(
