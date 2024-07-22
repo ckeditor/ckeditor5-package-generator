@@ -22,11 +22,8 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./translations/*.js": {
-      "types": "./dist/translations/*.d.ts",
-      "import": "./dist/translations/*.js"
-    },
-    "./*.css": "./dist/*.css",
+		"./*": "./dist/*",
+    "./browser/*": null,
     "./build/*": "./build/*",
 		"./src/*": "./src/*",
     "./package.json": "./package.json"
