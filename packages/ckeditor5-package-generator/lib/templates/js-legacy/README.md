@@ -25,7 +25,7 @@ To read about the CKEditor 5 Framework, visit the [CKEditor 5 Framework document
 
 ## Available scripts
 
-NPM scripts are a convenient way to provide commands in a project. They are defined in the `package.json` file and shared with other people contributing to the project. It ensures that developers use the same command with the same options (flags).
+NPM scripts are a convenient way to provide commands in a project. They are defined in the `package.json` file and shared with people contributing to the project. It ensures developers use the same command with the same options (flags).
 
 All the scripts can be executed by running `<%= packageManager %> run <script>`. Pre and post commands with matching names will be run for those as well.
 
@@ -35,7 +35,7 @@ The following scripts are available in the package.
 
 Starts an HTTP server with the live-reload mechanism that allows previewing and testing of plugins available in the package.
 
-When the server has been started, the default browser will open the developer sample. This can be disabled by passing the `--no-open` option to that command.
+When the server starts, the default browser will open the developer sample. This can be disabled by passing the `--no-open` option to that command.
 
 You can also define the language that will translate the created editor by specifying the `--language [LANG]` option. It defaults to `'en'`.
 
@@ -54,7 +54,7 @@ Examples:
 
 ### `test`
 
-Allows executing unit tests for the package, specified in the `tests/` directory. The command accepts the following modifiers:
+Allows executing unit tests for the package specified in the `tests/` directory. The command accepts the following modifiers:
 
 * `--coverage` &ndash; to create the code coverage report,
 * `--watch` &ndash; to observe the source files (the command does not end after executing tests),
@@ -95,7 +95,7 @@ Examples:
 
 ### `build:dist`
 
-Creates npm and browser builds of your plugin. These builds can be added to the editor by following the [Configuring CKEditor 5 features](https://ckeditor.com/docs/ckeditor5/latest/getting-started/setup/configuration.html) guide.
+Creates npm and browser builds of your plugin. These builds can be added to the editor following the [Configuring CKEditor 5 features](https://ckeditor.com/docs/ckeditor5/latest/getting-started/setup/configuration.html) guide.
 
 Examples:
 
@@ -161,11 +161,11 @@ Examples:
 
 ### `translations:upload`
 
-Uploads translation messages onto the Transifex server. It allows for the creation of translations into other languages by users using the Transifex platform.
+Uploads translation messages onto the Transifex server. It allows users to create translations into other languages using the Transifex platform.
 
 The task requires passing the URL to the Transifex API. Usually, it matches the following format: `https://www.transifex.com/api/2/project/[PROJECT_SLUG]`.
 
-To avoid passing the `--transifex` option every time when you call the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:upload` command.
+To avoid passing the `--transifex` option whenever you call the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:upload` command.
 
 Examples:
 
@@ -177,4 +177,4 @@ Examples:
 
 The `<%= packageName %>` package is available under [MIT license](https://opensource.org/licenses/MIT).
 
-However, it is the default license of packages created by the [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator) package and it can be changed.
+However, it is the default license of packages created by the [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator) package and can be changed.
