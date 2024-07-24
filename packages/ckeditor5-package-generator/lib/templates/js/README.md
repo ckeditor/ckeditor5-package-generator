@@ -19,11 +19,10 @@ This package was created by the [ckeditor5-package-generator](https://www.npmjs.
 
 ## Developing the package
 
-To read about the CKEditor 5 framework, visit the [CKEditor5 documentation](https://ckeditor.com/docs/ckeditor5/latest/framework/index.html).
+To read about the CKEditor 5 Framework, visit the [CKEditor 5 Framework documentation](https://ckeditor.com/docs/ckeditor5/latest/framework/index.html).
 
 ## Available scripts
-
-Npm scripts are a convenient way to provide commands in a project. They are defined in the `package.json` file and shared with other people contributing to the project. It ensures that developers use the same command with the same options (flags).
+NPM scripts are a convenient way to provide commands in a project. They are defined in the `package.json` file and shared with other people contributing to the project. It ensures that developers use the same command with the same options (flags).
 
 All the scripts can be executed by running `<%= packageManager %> run <script>`. Pre and post commands with matching names will be run for those as well.
 
@@ -31,7 +30,7 @@ The following scripts are available in the package.
 
 ### `start`
 
-Starts a HTTP server with the live-reload mechanism that allows previewing and testing plugins available in the package.
+Starts an HTTP server with the live-reload mechanism that allows previewing and testing of plugins available in the package.
 
 When the server has been started, the default browser will open the developer sample. This can be disabled by passing the `--no-open` option to that command.
 
@@ -109,7 +108,7 @@ Collects translation messages (arguments of the `t()` function) and context file
 The task may end with an error if one of the following conditions is met:
 
 * Found the `Unused context` error &ndash; entries specified in the `lang/contexts.json` file are not used in source files. They should be removed.
-* Found the `Context is duplicated for the id` error &ndash; some of the entries are duplicated. Consider removing them from the `lang/contexts.json` file, or rewrite them.
+* Found the `Context is duplicated for the id` error &ndash; some of the entries are duplicated. Consider removing them from the `lang/contexts.json` file, or rewriting them.
 * Found the `Context for the message id is missing` error &ndash; entries specified in source files are not described in the `lang/contexts.json` file. They should be added.
 
 Examples:
@@ -120,11 +119,11 @@ Examples:
 
 ### `translations:download`
 
-Download translations from the Transifex server. Depending on users' activity in the project, it creates translations files used for building the editor.
+Download translations from the Transifex server. Depending on users' activity in the project, it creates translation files used for building the editor.
 
 The task requires passing the URL to Transifex API. Usually, it matches the following format: `https://www.transifex.com/api/2/project/[PROJECT_SLUG]`.
 
-To avoid passing the `--transifex` option every time when calls the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:download` command.
+To avoid passing the `--transifex` option every time when you call the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:download` command.
 
 Examples:
 
