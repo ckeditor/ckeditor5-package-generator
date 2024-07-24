@@ -182,4 +182,4 @@ These scripts compile TypeScript and remove the compiled files. They are used in
 
 The `<%= packageName %>` package is available under [MIT license](https://opensource.org/licenses/MIT).
 
-However, it is the default license of packages created by the [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator) package and it can be changed.
+However, it is the default license of packages created by the [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator) package and can be changed.
