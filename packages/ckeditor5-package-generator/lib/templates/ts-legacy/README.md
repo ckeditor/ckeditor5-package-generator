@@ -11,20 +11,22 @@ This package was created by the [ckeditor5-package-generator](https://www.npmjs.
   * [`test`](#test)
   * [`lint`](#lint)
   * [`stylelint`](#stylelint)
+  * [`build:dist`](#builddist)
   * [`dll:build`](#dllbuild)
   * [`dll:serve`](#dllserve)
   * [`translations:collect`](#translationscollect)
   * [`translations:download`](#translationsdownload)
   * [`translations:upload`](#translationsupload)
+  * [`ts:build` and `ts:clear`](#tsbuild-and-tsclear)
 * [License](#license)
 
 ## Developing the package
 
-To read about the CKEditor 5 framework, visit the [CKEditor5 documentation](https://ckeditor.com/docs/ckeditor5/latest/framework/index.html).
+To read about the CKEditor 5 Framework, visit the [CKEditor 5 Framework documentation](https://ckeditor.com/docs/ckeditor5/latest/framework/index.html).
 
 ## Available scripts
 
-Npm scripts are a convenient way to provide commands in a project. They are defined in the `package.json` file and shared with other people contributing to the project. It ensures that developers use the same command with the same options (flags).
+NPM scripts are a convenient way to provide commands in a project. They are defined in the `package.json` file and shared with people contributing to the project. It ensures developers use the same command with the same options (flags).
 
 All the scripts can be executed by running `<%= packageManager %> run <script>`. Pre and post commands with matching names will be run for those as well.
 
@@ -32,9 +34,9 @@ The following scripts are available in the package.
 
 ### `start`
 
-Starts a HTTP server with the live-reload mechanism that allows previewing and testing plugins available in the package.
+Starts an HTTP server with the live-reload mechanism that allows previewing and testing plugins available in the package.
 
-When the server has been started, the default browser will open the developer sample. This can be disabled by passing the `--no-open` option to that command.
+When the server starts, the default browser will open the developer sample. This can be disabled by passing the `--no-open` option to that command.
 
 You can also define the language that will translate the created editor by specifying the `--language [LANG]` option. It defaults to `'en'`.
 
@@ -92,9 +94,20 @@ Examples:
 <%= packageManager %> run stylelint
 ```
 
+### `build:dist`
+
+Creates npm and browser builds of your plugin. These builds can be added to the editor by following the [Configuring CKEditor 5 features](https://ckeditor.com/docs/ckeditor5/latest/getting-started/setup/configuration.html) guide.
+
+Examples:
+
+```bash
+# Builds the `npm` and browser files thats are ready to publish.
+npm run build:dist
+```
+
 ### `dll:build`
 
-Creates a DLL-compatible package build which can be loaded into an editor using [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html).
+Creates a DLL-compatible package build that can be loaded into an editor using [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html).
 
 Examples:
 
@@ -135,11 +148,11 @@ Examples:
 
 ### `translations:download`
 
-Download translations from the Transifex server. Depending on users' activity in the project, it creates translations files used for building the editor.
+Download translations from the Transifex server. Depending on users' activity in the project, it creates translation files used for building the editor.
 
 The task requires passing the URL to Transifex API. Usually, it matches the following format: `https://www.transifex.com/api/2/project/[PROJECT_SLUG]`.
 
-To avoid passing the `--transifex` option every time when calls the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:download` command.
+To avoid passing the `--transifex` option whenever you call the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:download` command.
 
 Examples:
 
@@ -149,11 +162,11 @@ Examples:
 
 ### `translations:upload`
 
-Uploads translation messages onto the Transifex server. It allows for the creation of translations into other languages by users using the Transifex platform.
+Uploads translation messages onto the Transifex server. It allows users to create translations into other languages using the Transifex platform.
 
 The task requires passing the URL to the Transifex API. Usually, it matches the following format: `https://www.transifex.com/api/2/project/[PROJECT_SLUG]`.
 
-To avoid passing the `--transifex` option every time when you call the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:upload` command.
+To avoid passing the `--transifex` option whenever you call the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:upload` command.
 
 Examples:
 
@@ -161,8 +174,12 @@ Examples:
 <%= packageManager %> run translations:upload <%= cliSeparator %>--transifex [API URL]
 ```
 
+### `ts:build` and `ts:clear`
+
+These scripts compile TypeScript and remove the compiled files. They are used in the aforementioned life cycle scripts, and there is no need to call them manually.
+
 ## License
 
 The `<%= packageName %>` package is available under [MIT license](https://opensource.org/licenses/MIT).
 
-However, it is the default license of packages created by the [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator) package and it can be changed.
+However, it is the default license of packages created by the [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator) package and can be changed.
