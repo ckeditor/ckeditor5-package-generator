@@ -51,7 +51,7 @@ Examples:
 
 ### `test`
 
-Allows executing unit tests for the package, specified in the `tests/` directory. The command accepts the following modifiers:
+Allows executing unit tests for the package specified in the `tests/` directory. The command accepts the following modifiers:
 
 * `--coverage` &ndash; to create the code coverage report,
 * `--watch` &ndash; to observe the source files (the command does not end after executing tests),
