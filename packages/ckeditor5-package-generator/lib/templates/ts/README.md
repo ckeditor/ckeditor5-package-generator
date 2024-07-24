@@ -135,7 +135,7 @@ Examples:
 
 ### `translations:upload`
 
-Uploads translation messages onto the Transifex server. It allows for the creation of translations into other languages by users using the Transifex platform.
+Uploads translation messages onto the Transifex server. It allows users to create translations into other languages using the Transifex platform.
 
 The task requires passing the URL to the Transifex API. Usually, it matches the following format: `https://www.transifex.com/api/2/project/[PROJECT_SLUG]`.
 
