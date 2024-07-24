@@ -22,7 +22,7 @@ This package was created by the [ckeditor5-package-generator](https://www.npmjs.
 To read about the CKEditor 5 Framework, visit the [CKEditor 5 Framework documentation](https://ckeditor.com/docs/ckeditor5/latest/framework/index.html).
 
 ## Available scripts
-NPM scripts are a convenient way to provide commands in a project. They are defined in the `package.json` file and shared with other people contributing to the project. It ensures that developers use the same command with the same options (flags).
+NPM scripts are a convenient way to provide commands in a project. They are defined in the `package.json` file and shared with people contributing to the project. It ensures developers use the same command with the same options (flags).
 
 All the scripts can be executed by running `<%= packageManager %> run <script>`. Pre and post commands with matching names will be run for those as well.
 
