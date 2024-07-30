@@ -147,7 +147,7 @@ jobs:
       - prepare_environment_command
       - run:
           name: Verify build (JavaScript, npm, current and legacy installation methods)
-          command: node scripts/ci/verify-build -l js -p npm -m current-and-legacy
+          command: node scripts/ci/verify-build -l js -p npm -m current-and-legacy -g GLOBAL_NAME
 
   package_js_yarn_both_install_methods:
     machine: true
@@ -160,7 +160,7 @@ jobs:
       - prepare_environment_command
       - run:
           name: Verify build (JavaScript, yarn, current and legacy installation methods)
-          command: node scripts/ci/verify-build -l js -p yarn -m current-and-legacy
+          command: node scripts/ci/verify-build -l js -p yarn -m current-and-legacy -g GLOBAL_NAME
 
   package_js_npm_current_install_methods:
     machine: true
@@ -173,7 +173,7 @@ jobs:
       - prepare_environment_command
       - run:
           name: Verify build (JavaScript, npm, current installation methods)
-          command: node scripts/ci/verify-build -l js -p npm -m current
+          command: node scripts/ci/verify-build -l js -p npm -m current -g GLOBAL_NAME
 
   package_js_yarn_current_install_methods:
     machine: true
@@ -186,7 +186,7 @@ jobs:
       - prepare_environment_command
       - run:
           name: Verify build (JavaScript, yarn, current installation methods)
-          command: node scripts/ci/verify-build -l js -p yarn -m current
+          command: node scripts/ci/verify-build -l js -p yarn -m current -g GLOBAL_NAME
 
   package_ts_npm_both_install_methods_custom_name:
     machine: true
@@ -199,7 +199,7 @@ jobs:
       - prepare_environment_command
       - run:
           name: Verify build (TypeScript, npm, current and legacy installation methods, custom plugin name)
-          command: node scripts/ci/verify-build -l ts -p npm -m current-and-legacy -n CustomPluginName
+          command: node scripts/ci/verify-build -l ts -p npm -m current-and-legacy -n CustomPluginName -g GLOBAL_NAME
 
   package_ts_npm_current_install_methods_custom_name:
     machine: true
@@ -212,7 +212,7 @@ jobs:
       - prepare_environment_command
       - run:
           name: Verify build (TypeScript, npm, current installation methods, custom plugin name)
-          command: node scripts/ci/verify-build -l ts -p npm -m current -n CustomPluginName
+          command: node scripts/ci/verify-build -l ts -p npm -m current -n CustomPluginName -g GLOBAL_NAME
 
 
   package_js_yarn_both_install_methods_custom_name:
@@ -226,7 +226,7 @@ jobs:
       - prepare_environment_command
       - run:
           name: Verify build (JavaScript, yarn, current and legacy installation methods, custom plugin name)
-          command: node scripts/ci/verify-build -l js -p yarn -m current-and-legacy -n customPluginName400
+          command: node scripts/ci/verify-build -l js -p yarn -m current-and-legacy -n customPluginName400 -g GLOBAL_NAME
 
   package_js_yarn_current_install_methods_custom_name:
     machine: true
@@ -239,7 +239,7 @@ jobs:
       - prepare_environment_command
       - run:
           name: Verify build (JavaScript, yarn, current installation methods, custom plugin name)
-          command: node scripts/ci/verify-build -l js -p yarn -m current -n customPluginName400
+          command: node scripts/ci/verify-build -l js -p yarn -m current -n customPluginName400 -g GLOBAL_NAME
 
   package_ts_yarn_both_install_methods:
     machine: true
@@ -252,7 +252,7 @@ jobs:
       - prepare_environment_command
       - run:
           name: Verify build (TypeScript, yarn, current and legacy installation methods)
-          command: node scripts/ci/verify-build -l ts -p yarn -m current-and-legacy
+          command: node scripts/ci/verify-build -l ts -p yarn -m current-and-legacy -g GLOBAL_NAME
 
   package_ts_yarn_current_install_methods:
     machine: true
@@ -265,7 +265,7 @@ jobs:
       - prepare_environment_command
       - run:
           name: Verify build (TypeScript, yarn, current installation methods)
-          command: node scripts/ci/verify-build -l ts -p yarn -m current
+          command: node scripts/ci/verify-build -l ts -p yarn -m current -g GLOBAL_NAME
 
   release_prepare:
     machine: true
