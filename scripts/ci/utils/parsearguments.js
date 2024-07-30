@@ -67,4 +67,6 @@ module.exports = function parseArguments( cliArguments ) {
  * @property {String} customPluginName
  *
  * @property {String} installationMethods
+ *
+ * @property {String} globalName
  */
