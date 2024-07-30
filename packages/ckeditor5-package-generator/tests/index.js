@@ -26,7 +26,8 @@ describe( 'lib/index', () => {
 			installationMethods: 'current',
 			pluginName: 'FooBar',
 			lang: 'js',
-			dev: false
+			dev: false,
+			globalName: 'GLOBAL'
 		};
 
 		stubs = {
@@ -52,8 +53,10 @@ describe( 'lib/index', () => {
 			initializeGitRepository: sinon.stub(),
 			installDependencies: sinon.stub(),
 			installGitHooks: sinon.stub(),
+			setGlobalName: sinon.stub(),
 			validatePluginName: sinon.stub(),
-			validatePackageName: sinon.stub()
+			validatePackageName: sinon.stub(),
+			validateGlobalName: sinon.stub()
 		};
 
 		stubs.getPackageNameFormats.returns( {
@@ -82,6 +85,7 @@ describe( 'lib/index', () => {
 		stubs.getDependenciesVersions.returns( {
 			ckeditor5: '30.0.0'
 		} );
+		stubs.setGlobalName.resolves( 'GLOBAL' );
 		stubs.installDependencies.resolves();
 		stubs.initializeGitRepository.returns();
 		stubs.installGitHooks.resolves();
@@ -106,8 +110,10 @@ describe( 'lib/index', () => {
 		mockery.registerMock( './utils/initialize-git-repository', stubs.initializeGitRepository );
 		mockery.registerMock( './utils/install-dependencies', stubs.installDependencies );
 		mockery.registerMock( './utils/install-git-hooks', stubs.installGitHooks );
+		mockery.registerMock( './utils/set-global-name', stubs.setGlobalName );
 		mockery.registerMock( './utils/validate-package-name', stubs.validatePackageName );
 		mockery.registerMock( './utils/validate-plugin-name', stubs.validatePluginName );
+		mockery.registerMock( './utils/validate-global-name', stubs.validateGlobalName );
 
 		index = require( '../lib/index' );
 	} );
@@ -210,6 +216,16 @@ describe( 'lib/index', () => {
 		expect( stubs.chooseInstallationMethods.getCall( 0 ).args[ 1 ] ).to.equal( 'current' );
 	} );
 
+	it( 'sets the global name', async () => {
+		await index( packageName, options );
+
+		expect( stubs.setGlobalName.callCount ).to.equal( 1 );
+		expect( stubs.setGlobalName.getCall( 0 ).args.length ).to.equal( 2 );
+
+		expect( stubs.setGlobalName.getCall( 0 ).args[ 0 ].constructor.name ).to.equal( 'Logger' );
+		expect( stubs.setGlobalName.getCall( 0 ).args[ 1 ] ).to.equal( 'GLOBAL' );
+	} );
+
 	it( 'gets the versions of the dependencies', async () => {
 		await index( packageName, options );
 
@@ -230,6 +246,7 @@ describe( 'lib/index', () => {
 		expect( stubs.copyFiles.getCall( 0 ).args[ 1 ] ).to.deep.equal( {
 			packageName: '@scope/ckeditor5-feature',
 			programmingLanguage: 'js',
+			validatedGlobalName: 'GLOBAL',
 			installationMethodOfPackage: 'current',
 			formattedNames: {
 				package: {

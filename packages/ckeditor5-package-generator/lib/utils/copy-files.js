@@ -26,6 +26,7 @@ const TEMPLATE_PATH = path.join( __dirname, '..', 'templates' );
  * @param {String} options.programmingLanguage
  * @param {Object} options.packageVersions
  * @param {String} options.installationMethodOfPackage
+ * @param {String} options.validatedGlobalName
  */
 module.exports = function copyFiles( logger, options ) {
 	logger.process( 'Copying files...' );
