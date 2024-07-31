@@ -8,10 +8,9 @@
 const { prompt } = require( 'inquirer' );
 const validateGlobalName = require( './validate-global-name' );
 
-// TODO!!!!!
 /**
  * Sets global name for generated package. It's used in UMD builds.
- * If --global-name option us used, and it has valid value, that is returned.
+ * If `--global-name` option us used, and it has valid value, that is returned.
  * Otherwise, ask user to input the name.
  *
  * @param {Logger} logger

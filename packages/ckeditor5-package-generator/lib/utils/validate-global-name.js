@@ -45,7 +45,7 @@ function validator( globalName ) {
 	}
 
 	if ( !/^(?!\/).*(?!\/)$/g.test( globalName ) ) {
-		return 'The global name cannot starts with "/" and ends with "/" characters.';
+		return 'The global name cannot start with "/" and end with "/" characters.';
 	}
 
 	if ( /^[0-9]/.test( globalName ) ) {
