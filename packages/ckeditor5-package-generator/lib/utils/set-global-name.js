@@ -15,7 +15,7 @@ const validateGlobalName = require( './validate-global-name' );
  *
  * @param {Logger} logger
  * @param {String} globalName
- * @returns {Promise<String>}
+ * @returns {Promise.<String>}
  */
 module.exports = async function setGlobalName( logger, globalName ) {
 	if ( globalName ) {
@@ -24,13 +24,13 @@ module.exports = async function setGlobalName( logger, globalName ) {
 		}
 
 		logger.error(
-			`--global-name ${ globalName } provided is not align with the pattern.`
+			'--global-name does not match the pattern. Falling back to manual choice.'
 		);
 	}
 
 	const globalNameFromInput = await prompt( {
 		required: true,
-		message: 'Enter the global name for plugin (important in UMD build)',
+		message: 'Enter the global name for plugin for UMD build',
 		type: 'input',
 		name: 'globalName',
 		validate: validateGlobalName.bind( this, logger )

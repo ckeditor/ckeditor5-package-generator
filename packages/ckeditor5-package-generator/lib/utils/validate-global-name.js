@@ -8,13 +8,13 @@
 const chalk = require( 'chalk' );
 
 /**
- * If the global name is not valid, prints the error and exits the process.
+ * If the global name is not valid, prints the error.
  *
  * @param {Logger} logger
- * @param {String|undefined} globalName
+ * @param {String} globalName
  */
 module.exports = function validateGlobalName( logger, globalName ) {
-	if ( !globalName ) {
+	if ( !globalName.length ) {
 		return;
 	}
 

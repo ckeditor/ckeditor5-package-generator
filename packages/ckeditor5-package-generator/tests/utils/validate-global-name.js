@@ -48,8 +48,8 @@ describe( 'lib/utils/validate-global-name', () => {
 		expect( validateGlobalName ).to.be.an( 'function' );
 	} );
 
-	it( 'does nothing if the global name is not provided', () => {
-		validateGlobalName( stubs.logger );
+	it( 'does nothing if the global name is an empty string', () => {
+		validateGlobalName( stubs.logger, '' );
 
 		expect( stubs.logger.process.called ).to.equal( false );
 		expect( stubs.logger.error.called ).to.equal( false );

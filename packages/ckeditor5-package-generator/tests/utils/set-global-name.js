@@ -50,7 +50,7 @@ describe( 'lib/utils/set-global-name', () => {
 
 		expect( stubs.inquirer.prompt.callCount ).to.equal( 1 );
 		expect( stubs.inquirer.prompt.firstCall.firstArg.required ).to.equal( true );
-		expect( stubs.inquirer.prompt.firstCall.firstArg.message ).to.equal( 'Enter the global name for plugin (important in UMD build)' );
+		expect( stubs.inquirer.prompt.firstCall.firstArg.message ).to.equal( 'Enter the global name for plugin for UMD build' );
 		expect( stubs.inquirer.prompt.firstCall.firstArg.type ).to.equal( 'input' );
 		expect( stubs.inquirer.prompt.firstCall.firstArg.name ).to.equal( 'globalName' );
 		expect( stubs.inquirer.prompt.firstCall.firstArg.validate ).to.be.a( 'function' );
