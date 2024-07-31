@@ -93,7 +93,7 @@ describe( 'lib/utils/validate-global-name', () => {
 		expect( stubs.logger.error.calledTwice ).to.equal( true );
 		expect( stubs.logger.error.getCall( 0 ).firstArg ).to.equal( '❗ Found an error while verifying the provided global name:' );
 		expect( stubs.logger.error.getCall( 1 ).firstArg ).to.equal(
-			'The global name cannot starts with "/" and ends with "/" characters.'
+			'The global name cannot start with "/" and end with "/" characters.'
 		);
 
 		expect( stubs.logger.info.calledTwice ).to.equal( true );
