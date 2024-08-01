@@ -14,10 +14,6 @@ const chalk = require( 'chalk' );
  * @param {String} globalName
  */
 module.exports = function validateGlobalName( logger, globalName ) {
-	if ( !globalName.length ) {
-		return;
-	}
-
 	const validationError = validator( globalName );
 
 	if ( !validationError ) {
@@ -40,12 +36,15 @@ module.exports = function validateGlobalName( logger, globalName ) {
  * @returns {String|null}
  */
 function validator( globalName ) {
+	if ( !globalName.length ) {
+		return 'The global name can not be an empty string.';
+	}
 	if ( !/^[a-zA-Z0-9_\-/@]+$/.test( globalName ) ) {
 		return 'The global name contains non-allowed characters.';
 	}
 
 	if ( !/^(?!\/).*(?!\/)$/g.test( globalName ) ) {
-		return 'The global name cannot start with "/" and end with "/" characters.';
+		return 'The global name can not start with "/" and end with "/" characters.';
 	}
 
 	if ( /^[0-9]/.test( globalName ) ) {

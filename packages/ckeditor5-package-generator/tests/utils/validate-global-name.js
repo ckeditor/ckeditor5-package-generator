@@ -48,19 +48,22 @@ describe( 'lib/utils/validate-global-name', () => {
 		expect( validateGlobalName ).to.be.an( 'function' );
 	} );
 
-	it( 'does nothing if the global name is an empty string', () => {
-		validateGlobalName( stubs.logger, '' );
-
-		expect( stubs.logger.process.called ).to.equal( false );
-		expect( stubs.logger.error.called ).to.equal( false );
-		expect( stubs.logger.info.called ).to.equal( false );
-		expect( stubs.process.exit.called ).to.equal( false );
-	} );
-
 	it( 'Returns `true` if the plugin name is provided and it passed the validation', () => {
 		const result = validateGlobalName( stubs.logger, 'Foo' );
 
 		expect( result ).to.equal( true );
+	} );
+
+	it( 'logs info when global name is an empty string', () => {
+		validateGlobalName( stubs.logger, '' );
+
+		expect( stubs.logger.error.calledTwice ).to.equal( true );
+		expect( stubs.logger.error.getCall( 0 ).firstArg ).to.equal( '❗ Found an error while verifying the provided global name:' );
+		expect( stubs.logger.error.getCall( 1 ).firstArg ).to.equal( 'The global name can not be an empty string.' );
+
+		expect( stubs.logger.info.calledTwice ).to.equal( true );
+		expect( stubs.logger.info.getCall( 0 ).firstArg ).to.equal( 'The provided global name:    ' );
+		expect( stubs.logger.info.getCall( 1 ).firstArg ).to.equal( 'Allowed characters list:     0-9 A-Z a-z _ - / @' );
 	} );
 
 	it( 'logs info about incorrect global name format', () => {
@@ -93,7 +96,7 @@ describe( 'lib/utils/validate-global-name', () => {
 		expect( stubs.logger.error.calledTwice ).to.equal( true );
 		expect( stubs.logger.error.getCall( 0 ).firstArg ).to.equal( '❗ Found an error while verifying the provided global name:' );
 		expect( stubs.logger.error.getCall( 1 ).firstArg ).to.equal(
-			'The global name cannot start with "/" and end with "/" characters.'
+			'The global name can not start with "/" and end with "/" characters.'
 		);
 
 		expect( stubs.logger.info.calledTwice ).to.equal( true );
