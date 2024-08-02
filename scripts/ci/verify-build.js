@@ -45,7 +45,7 @@ async function start() {
  *
  * @param {VerificationOptions} options
  */
-async function verifyBuild( { language, packageManager, customPluginName, installationMethod } ) {
+async function verifyBuild( { language, packageManager, customPluginName, installationMethod, globalName } ) {
 	let testSetupInfoMessage = `Testing build for language: [${ language }] and package manager: [${ packageManager }]`;
 
 	const supportsLegacyMethods = installationMethod !== 'current';
@@ -53,7 +53,7 @@ async function verifyBuild( { language, packageManager, customPluginName, instal
 	const projectRootName = path.basename( process.cwd() );
 	const packageBuildCommand = [
 		'node', `${ projectRootName }/packages/ckeditor5-package-generator/bin/index.js`, '@ckeditor/ckeditor5-test-package',
-		'--dev', '--verbose', '--lang', language, `--use-${ packageManager }`
+		'--dev', '--verbose', '--lang', language, `--use-${ packageManager }`, `--global-name ${ globalName }`
 	];
 
 	if ( language === 'ts' ) {

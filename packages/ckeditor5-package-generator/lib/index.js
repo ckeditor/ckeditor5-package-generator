@@ -12,6 +12,7 @@ const Logger = require( './utils/logger' );
 const chooseInstallationMethods = require( './utils/choose-installation-methods' );
 const choosePackageManager = require( './utils/choose-package-manager' );
 const chooseProgrammingLanguage = require( './utils/choose-programming-language' );
+const setGlobalName = require( './utils/set-global-name' );
 const copyFiles = require( './utils/copy-files' );
 const createDirectory = require( './utils/create-directory' );
 const getDependenciesVersions = require( './utils/get-dependencies-versions' );
@@ -27,7 +28,7 @@ const validatePluginName = require( './utils/validate-plugin-name' );
  * @param {CKeditor5PackageGeneratorOptions} options
  */
 module.exports = async function init( packageName, options ) {
-	const { dev, verbose, useNpm, useYarn, installationMethods, lang, pluginName } = options;
+	const { dev, verbose, useNpm, useYarn, installationMethods, lang, pluginName, globalName } = options;
 
 	const logger = new Logger( verbose );
 
@@ -38,6 +39,7 @@ module.exports = async function init( packageName, options ) {
 	const packageManager = await choosePackageManager( useNpm, useYarn );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
 	const installationMethodOfPackage = await chooseInstallationMethods( logger, installationMethods );
+	const validatedGlobalName = await setGlobalName( logger, globalName );
 	const packageVersions = getDependenciesVersions( logger, dev );
 
 	copyFiles( logger, {
@@ -47,7 +49,8 @@ module.exports = async function init( packageName, options ) {
 		packageManager,
 		programmingLanguage,
 		packageVersions,
-		installationMethodOfPackage
+		installationMethodOfPackage,
+		validatedGlobalName
 	} );
 
 	await installDependencies( directoryPath, packageManager, verbose, dev );
@@ -110,4 +113,6 @@ module.exports = async function init( packageName, options ) {
  * @property {String} lang
  *
  * @property {String} pluginName
+ *
+ * @property {String} globalName
  */
