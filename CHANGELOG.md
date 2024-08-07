@@ -1,6 +1,38 @@
 Changelog
 =========
 
+## [2.1.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v2.0.0...v2.1.0) (2024-08-07)
+
+### MINOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: The global names for the `ckeditor5` and `ckeditor5-premium-features` packages in the UMD builds have been changed to `CKEDITOR` and `CKEDITOR_PREMIUM_FEATURES` respectively.
+
+### Bug fixes
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: New flag `--global-name` to define a global name of the package to be used in the UMD build. See https://github.com/ckeditor/ckeditor5/issues/16798. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/0bc5128710e4246ea72c1f06b02f0fbba5be9624))
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Each package template should have own `README.md` based on what commands can be execute in it. Closes https://github.com/ckeditor/ckeditor5-package-generator/issues/174. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/e7538509015e17c63332764e1d2fc6565509ff4b))
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Update the `exports` field in `package.json` templates to fix issues with loading CSS and translations in older bundlers. See https://github.com/ckeditor/ckeditor5/issues/16638. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/b98672e4a4f2a65b7602f3ff8c305cb384c74647))
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Change the path to the types in the `package.json`  in `ts` templates. See https://github.com/ckeditor/ckeditor5/issues/16684. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/84ff608360e67f6d0184e7491682c3593d335045))
+
+### Other changes
+
+* Updated webpack-dev-server, stylelint and lodash to fix vulnerability alert. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/6e6641e5e911913b28035ed4b342a29b24fbb8f4))
+* Fixed dependabot alerts & changed to yarn.lock instead of package-json.lock. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/db932ba79db0dba773473a112117dd1df6f20ea7))
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Other releases:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/2.1.0): v2.0.0 => v2.1.0
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/2.1.0): v2.0.0 => v2.1.0
+</details>
+
+
 ## [2.0.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v2.0.0-alpha.0...v2.0.0) (2024-06-26)
 
 We are excited to announce an update to the package generator for CKEditor 5 plugins. Now the new package generator fully supports the [latest installation methods](https://github.com/ckeditor/ckeditor5/releases/tag/v42.0.0) in CKEditor 5.
@@ -135,26 +167,6 @@ Releases containing new features:
 Other releases:
 
 * [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools): v1.0.0-beta.10 => v1.0.0
-</details>
-
-
-## [1.0.0-beta.10](https://github.com/ckeditor/ckeditor5-package-generator/compare/v1.0.0-beta.9...v1.0.0-beta.10) (2023-03-28)
-
-### Bug fixes
-
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Updated the generated packages to use a package entry point when importing plugins. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/eb57f36747a6bec37ea278f2a397581e080b6dbd))
-
-### Released packages
-
-Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
-
-<details>
-<summary>Released packages (summary)</summary>
-
-Other releases:
-
-* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools): v1.0.0-beta.9 => v1.0.0-beta.10
-* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator): v1.0.0-beta.9 => v1.0.0-beta.10
 </details>
 
 ---
