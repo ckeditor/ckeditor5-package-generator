@@ -10,14 +10,9 @@ Changelog
 ### Bug fixes
 
 * **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: New flag `--global-name` to define a global name of the package to be used in the UMD build. See https://github.com/ckeditor/ckeditor5/issues/16798. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/0bc5128710e4246ea72c1f06b02f0fbba5be9624))
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Each package template should have own `README.md` based on what commands can be execute in it. Closes https://github.com/ckeditor/ckeditor5-package-generator/issues/174. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/e7538509015e17c63332764e1d2fc6565509ff4b))
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Update the `exports` field in `package.json` templates to fix issues with loading CSS and translations in older bundlers. See https://github.com/ckeditor/ckeditor5/issues/16638. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/b98672e4a4f2a65b7602f3ff8c305cb384c74647))
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Change the path to the types in the `package.json`  in `ts` templates. See https://github.com/ckeditor/ckeditor5/issues/16684. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/84ff608360e67f6d0184e7491682c3593d335045))
-
-### Other changes
-
-* Updated webpack-dev-server, stylelint and lodash to fix vulnerability alert. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/6e6641e5e911913b28035ed4b342a29b24fbb8f4))
-* Fixed dependabot alerts & changed to yarn.lock instead of package-json.lock. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/db932ba79db0dba773473a112117dd1df6f20ea7))
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Each package template should have own `README.md` based on what commands can be executed in it. Closes https://github.com/ckeditor/ckeditor5-package-generator/issues/174. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/e7538509015e17c63332764e1d2fc6565509ff4b))
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Updated the `exports` field in `package.json` templates to fix issues with loading CSS and translations in older bundlers. See https://github.com/ckeditor/ckeditor5/issues/16638. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/b98672e4a4f2a65b7602f3ff8c305cb384c74647))
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Changed the path to the types in the `package.json` in `ts` templates. See https://github.com/ckeditor/ckeditor5/issues/16684. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/84ff608360e67f6d0184e7491682c3593d335045))
 
 ### Released packages
 
