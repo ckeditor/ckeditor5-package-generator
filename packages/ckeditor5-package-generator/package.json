@@ -18,7 +18,7 @@
     "lodash": "^4.17.21",
     "mkdirp": "^1.0.4",
     "upath": "^2.0.0",
-    "webpack": "^5.67.0"
+    "webpack": "^5.93.0"
   },
   "files": [
     "bin",
