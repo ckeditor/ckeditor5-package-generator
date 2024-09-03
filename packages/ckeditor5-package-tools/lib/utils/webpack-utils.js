@@ -45,7 +45,7 @@ module.exports = {
 			};
 		},
 
-		styles: cwd => {
+		styles: () => {
 			return {
 				test: /\.css$/,
 				use: [
@@ -64,7 +64,7 @@ module.exports = {
 						options: {
 							postcssOptions: getPostCssConfig( {
 								themeImporter: {
-									themePath: getThemePath( cwd )
+									themePath: getThemePath( require.resolve )
 								},
 								minify: true
 							} )
