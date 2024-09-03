@@ -14,7 +14,7 @@ npm install --save @ckeditor/ckeditor5-package-tools
 
 The following scripts are available in the package:
 
-* `test` &ndash; prepares an entry file and passes it to the [karma](https://karma-runner.github.io/) test runner,
+* `test` &ndash; run tests using [Vitest](https://vitest.dev/) testing framework,
 * `start` &ndash; prepares the [development server](https://webpack.js.org/configuration/dev-server/) with the live-reloading mechanism,
 * `dll:build` &ndash; prepares a file compatible with [CKEditor 5 DLL](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html) that exposes plugins from the package,
 * `translations:collect` &ndash; collects translations context and prepares them to be sent to [Transifex](https://www.transifex.com/),

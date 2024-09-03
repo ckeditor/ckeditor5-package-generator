@@ -34,7 +34,6 @@ describe( 'lib/index', () => {
 			}
 		};
 
-		mockery.registerMock( '../lib/tasks/test', stubs.tasks.test );
 		mockery.registerMock( '../lib/tasks/start', stubs.tasks.start );
 		mockery.registerMock( '../lib/tasks/dll-build', stubs.tasks.dllBuild );
 		mockery.registerMock( '../lib/tasks/translations-collect', stubs.tasks.translationsCollect );
@@ -71,25 +70,6 @@ describe( 'lib/index', () => {
 			tasks.start( options );
 
 			expect( stubs.tasks.start.firstCall.args[ 0 ] ).to.deep.equal( options );
-		} );
-	} );
-
-	describe( '#test', () => {
-		it( 'is available', () => {
-			expect( tasks.test ).is.a( 'function' );
-		} );
-
-		it( 'executes the proper function from the "tasks/" directory', () => {
-			tasks.test();
-
-			expect( stubs.tasks.test.calledOnce ).to.equal( true );
-		} );
-
-		it( 'passes arguments directly to the function', () => {
-			const options = { foo: 1, bar: true };
-			tasks.test( options );
-
-			expect( stubs.tasks.test.firstCall.args[ 0 ] ).to.deep.equal( options );
 		} );
 	} );
 

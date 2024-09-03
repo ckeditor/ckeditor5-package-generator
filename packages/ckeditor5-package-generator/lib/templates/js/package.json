@@ -32,6 +32,8 @@
     "@ckeditor/ckeditor5-dev-build-tools": "<%= packageVersions.ckeditor5DevBuildTools %>",
     "@ckeditor/ckeditor5-inspector": ">=<%= packageVersions.ckeditor5Inspector %>",
     "@ckeditor/ckeditor5-package-tools": "<%= packageVersions.packageTools %>",
+    "@vitest/coverage-istanbul": "^2.0.5",
+    "@vitest/browser": "^2.0.5",
     "ckeditor5": "latest",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": ">=<%= packageVersions.eslintConfigCkeditor5 %>",
@@ -39,7 +41,10 @@
     "husky": "^4.2.5",
     "lint-staged": "^10.2.6",
     "stylelint": "^13.13.1",
-    "stylelint-config-ckeditor5": ">=<%= packageVersions.stylelintConfigCkeditor5 %>"
+    "stylelint-config-ckeditor5": ">=<%= packageVersions.stylelintConfigCkeditor5 %>",
+    "vite-plugin-svgo": "^1.4.0",
+    "vitest": "^2.0.5",
+    "webdriverio": "^9.0.7"
   },
   "peerDependencies": {
     "ckeditor5": ">=42.0.0 || ^0.0.0-nightly"
@@ -49,7 +54,7 @@
     "lint": "eslint \"**/*.js\" --quiet",
     "start": "ckeditor5-package-tools start",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
-    "test": "ckeditor5-package-tools test",
+    "test": "vitest",
     "prepare": "<%= packageManager %> run build:dist",
     "translations:collect": "ckeditor5-package-tools translations:collect",
     "translations:download": "ckeditor5-package-tools translations:download",

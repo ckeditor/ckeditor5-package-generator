@@ -15,31 +15,25 @@ module.exports = args => {
 		],
 
 		boolean: [
-			'coverage',
 			'open',
 			'production',
-			'source-map',
 			'verbose',
 			'watch'
 		],
 
 		alias: {
-			c: 'coverage',
 			w: 'watch',
-			v: 'verbose',
-			s: 'source-map'
+			v: 'verbose'
 		},
 
 		default: {
-			coverage: false,
 			open: true,
 			language: 'en',
 			verbose: false,
 			organization: null,
 			production: false,
 			project: null,
-			watch: false,
-			'source-map': false
+			watch: false
 		}
 	};
 
@@ -50,10 +44,6 @@ module.exports = args => {
 	for ( const alias of Object.keys( config.alias ) ) {
 		delete options[ alias ];
 	}
-
-	// "kebab-case" to "camelCase" conversion.
-	options.sourceMap = options[ 'source-map' ];
-	delete options[ 'source-map' ];
 
 	// Save the current work directory.
 	options.cwd = process.cwd();
@@ -75,13 +65,9 @@ module.exports = args => {
  *
  * @property {Array.<String>} _ Additional modifiers for the executed task that could not be matched with the supported options.
  *
- * @property {Boolean} [coverage=false] When executing tests, this option allows creating a code coverage report.
- *
  * @property {Boolean} [watch=false] When executing tests, this option
  *
  * @property {Boolean} [verbose=false] Whether to display additional logs by tasks.
- *
- * @property {Boolean} [sourceMap=false] When executing tests, it allows creating source maps between built test file, and sources.
  *
  * @property {Boolean} [production=false] Whether to prepare an optimized build.
  *
