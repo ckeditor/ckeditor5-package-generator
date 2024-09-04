@@ -16,6 +16,7 @@
     "@ckeditor/ckeditor5-dev-utils": "^40.0.1",
     "buffer": "^6.0.3",
     "chai": "^4.3.4",
+    "chalk": "^4.1.2",
     "css-loader": "^5.2.7",
     "minimist": "^1.2.5",
     "mocha": "^7.2.0",
