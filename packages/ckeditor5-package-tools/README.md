@@ -15,6 +15,7 @@ npm install --save @ckeditor/ckeditor5-package-tools
 The following scripts are available in the package:
 
 * `test` &ndash; run tests using [Vitest](https://vitest.dev/) testing framework,
+* `test:debug` &ndash; run tests using [Vitest](https://vitest.dev/) testing framework and allows debugging them. Once Vitest starts it will stop execution and wait for you to open developer tools that can connect to Node.js inspector,
 * `start` &ndash; prepares the [development server](https://webpack.js.org/configuration/dev-server/) with the live-reloading mechanism,
 * `dll:build` &ndash; prepares a file compatible with [CKEditor 5 DLL](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html) that exposes plugins from the package,
 * `translations:collect` &ndash; collects translations context and prepares them to be sent to [Transifex](https://www.transifex.com/),

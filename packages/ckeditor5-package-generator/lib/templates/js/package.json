@@ -42,7 +42,7 @@
     "lint-staged": "^10.2.6",
     "stylelint": "^13.13.1",
     "stylelint-config-ckeditor5": ">=<%= packageVersions.stylelintConfigCkeditor5 %>",
-    "vite-plugin-svgo": "^1.4.0",
+    "vite-plugin-svgo": "~1.4.0",
     "vitest": "^2.0.5",
     "webdriverio": "^9.0.7"
   },
@@ -55,6 +55,7 @@
     "start": "ckeditor5-package-tools start",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
     "test": "vitest",
+    "test:debug": "vitest --inspect-brk --no-file-parallelism --browser.headless=false",
     "prepare": "<%= packageManager %> run build:dist",
     "translations:collect": "ckeditor5-package-tools translations:collect",
     "translations:download": "ckeditor5-package-tools translations:download",
