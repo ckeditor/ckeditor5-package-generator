@@ -23,6 +23,7 @@ export default defineConfig( {
 			'tests/**/*.[jt]s'
 		],
 		globals: true,
+		watch: false,
 		coverage: {
 			thresholds: {
 				lines: 100,
