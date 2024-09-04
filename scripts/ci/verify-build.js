@@ -89,7 +89,7 @@ async function verifyBuild( { language, packageManager, customPluginName, instal
 	executeCommand( packageBuildCommand, { cwd: path.join( REPOSITORY_DIRECTORY, '..' ) } );
 
 	logProcess( 'Executing tests...' );
-	executeCommand( [ 'yarn', 'run', 'test' ], { cwd: NEW_PACKAGE_DIRECTORY } );
+	executeCommand( [ 'yarn', 'run', 'test', '--no-watch' ], { cwd: NEW_PACKAGE_DIRECTORY } );
 
 	logProcess( 'Executing linters...' );
 	executeCommand( [ 'yarn', 'run', 'lint' ], { cwd: NEW_PACKAGE_DIRECTORY } );
