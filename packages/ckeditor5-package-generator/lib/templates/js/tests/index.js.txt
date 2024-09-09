@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { icons } from '../src/index.js';
 
 import ckeditor from './../theme/icons/ckeditor.svg';

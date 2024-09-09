@@ -6,10 +6,6 @@
 'use strict';
 
 module.exports = {
-	test( options ) {
-		return require( '../lib/tasks/test' )( options );
-	},
-
 	start( options ) {
 		return require( '../lib/tasks/start' )( options );
 	},

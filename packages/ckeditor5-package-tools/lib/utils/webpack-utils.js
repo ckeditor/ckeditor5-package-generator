@@ -34,17 +34,6 @@ module.exports = {
 			};
 		},
 
-		coverage: cwd => {
-			return {
-				test: /\.[jt]s$/,
-				loader: 'istanbul-instrumenter-loader',
-				include: path.join( cwd, 'src' ),
-				options: {
-					esModules: true
-				}
-			};
-		},
-
 		styles: cwd => {
 			return {
 				test: /\.css$/,

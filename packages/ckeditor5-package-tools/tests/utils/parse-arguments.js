@@ -27,8 +27,6 @@ describe( 'lib/utils/parse-arguments', () => {
 		sinon.stub( process, 'cwd' ).returns( '/cwd' );
 		const options = parseArguments( [ 'task-to-execute' ] );
 
-		expect( options.coverage ).to.equal( false );
-		expect( options.sourceMap ).to.equal( false );
 		expect( options.production ).to.equal( false );
 		expect( options.verbose ).to.equal( false );
 		expect( options.watch ).to.equal( false );
@@ -50,30 +48,6 @@ describe( 'lib/utils/parse-arguments', () => {
 		const options = parseArguments( [ 'task-to-execute' ] );
 
 		expect( options.task ).to.equal( 'task-to-execute' );
-	} );
-
-	it( 'allows specifying the coverage option', () => {
-		const options = parseArguments( [ 'task-to-execute', '--coverage' ] );
-
-		expect( options.coverage ).to.equal( true );
-	} );
-
-	it( 'allows specifying the coverage option (using an alias)', () => {
-		const options = parseArguments( [ 'task-to-execute', '-c' ] );
-
-		expect( options.coverage ).to.equal( true );
-	} );
-
-	it( 'allows specifying the source-map option', () => {
-		const options = parseArguments( [ 'task-to-execute', '--source-map' ] );
-
-		expect( options.sourceMap ).to.equal( true );
-	} );
-
-	it( 'allows specifying the source-map option (using an alias)', () => {
-		const options = parseArguments( [ 'task-to-execute', '-s' ] );
-
-		expect( options.sourceMap ).to.equal( true );
 	} );
 
 	it( 'allows specifying the verbose option', () => {
@@ -107,18 +81,16 @@ describe( 'lib/utils/parse-arguments', () => {
 	} );
 
 	it( 'allows specifying many modifiers', () => {
-		const options = parseArguments( [ 'task-to-execute', '--watch', '--coverage', '-s' ] );
+		const options = parseArguments( [ 'task-to-execute', '--production', '--verbose', '-w' ] );
 
+		expect( options.production ).to.equal( true );
+		expect( options.verbose ).to.equal( true );
 		expect( options.watch ).to.equal( true );
-		expect( options.coverage ).to.equal( true );
-		expect( options.sourceMap ).to.equal( true );
 	} );
 
 	it( 'does not attach aliases as available properties in the returned object', () => {
 		const options = parseArguments( [ 'task-to-execute' ] );
 
-		expect( options.c ).to.equal( undefined );
-		expect( options.s ).to.equal( undefined );
 		expect( options.v ).to.equal( undefined );
 		expect( options.w ).to.equal( undefined );
 	} );

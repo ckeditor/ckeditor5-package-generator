@@ -46,10 +46,10 @@
     "@ckeditor/ckeditor5-dev-build-tools": "<%= packageVersions.ckeditor5DevBuildTools %>",
     "@ckeditor/ckeditor5-inspector": ">=<%= packageVersions.ckeditor5Inspector %>",
     "@ckeditor/ckeditor5-package-tools": "<%= packageVersions.packageTools %>",
-    "@types/chai": "^4.3.1",
-    "@types/mocha": "^9.1.1",
     "@typescript-eslint/eslint-plugin": "~5.43.0",
     "@typescript-eslint/parser": "^5.18.0",
+    "@vitest/coverage-istanbul": "^2.0.5",
+    "@vitest/browser": "^2.0.5",
     "ckeditor5": "latest",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": ">=<%= packageVersions.eslintConfigCkeditor5 %>",
@@ -59,7 +59,10 @@
     "stylelint": "^13.13.1",
     "stylelint-config-ckeditor5": ">=<%= packageVersions.stylelintConfigCkeditor5 %>",
     "ts-node": "^10.9.1",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "vite-plugin-svgo": "~1.4.0",
+    "vitest": "^2.0.5",
+    "webdriverio": "^9.0.7"
   },
   "peerDependencies": {
     "ckeditor5": ">=42.0.0 || ^0.0.0-nightly"
@@ -73,7 +76,8 @@
     "lint": "eslint \"**/*.{js,ts}\" --quiet",
     "start": "ckeditor5-package-tools start",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
-    "test": "ckeditor5-package-tools test",
+    "test": "vitest",
+    "test:debug": "vitest --inspect-brk --no-file-parallelism --browser.headless=false",
     "prepare": "<%= packageManager %> run dll:build && <%= packageManager %> run build:dist",
     "prepublishOnly": "<%= packageManager %> run ts:build && ckeditor5-package-tools export-package-as-javascript",
     "postpublish": "<%= packageManager %> run ts:clear && ckeditor5-package-tools export-package-as-typescript",

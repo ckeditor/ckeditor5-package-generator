@@ -51,12 +51,7 @@ Examples:
 
 ### `test`
 
-Allows executing unit tests for the package specified in the `tests/` directory. The command accepts the following modifiers:
-
-* `--coverage` &ndash; to create the code coverage report,
-* `--watch` &ndash; to observe the source files (the command does not end after executing tests),
-* `--source-map` &ndash; to generate source maps of sources,
-* `--verbose` &ndash; to print additional webpack logs.
+Allows executing unit tests for the package specified in the `tests/` directory. To check the code coverage, add the `--coverage` modifier. See other [CLI flags](https://vitest.dev/guide/cli.html) in Vitest.
 
 Examples:
 
@@ -65,7 +60,7 @@ Examples:
 <%= packageManager %> run test
 
 # Generate code coverage report after each change in the sources.
-<%= packageManager %> run test <%= cliSeparator %>--coverage --test
+<%= packageManager %> run test <%= cliSeparator %>--coverage
 ```
 
 ### `lint`

@@ -127,42 +127,6 @@ describe( 'lib/utils/webpack-utils', () => {
 			} );
 		} );
 
-		describe( 'coverage()', () => {
-			let loader;
-
-			beforeEach( () => {
-				loader = webpackUtils.loaderDefinitions.coverage( cwd );
-			} );
-
-			it( 'uses "ts-loader" for providing files', () => {
-				expect( loader.loader ).to.equal( 'istanbul-instrumenter-loader' );
-			} );
-
-			it( 'loads correct files', () => {
-				expect( loader.include ).to.equal( '/process/cwd/src' );
-			} );
-
-			it( 'has correct options set', () => {
-				expect( loader.options ).to.deep.equal( { esModules: true } );
-			} );
-
-			it( 'loads paths that end with the ".js" suffix', () => {
-				expect( '/Users/ckeditor/ckeditor5-foo/assets/ckeditor.js' ).to.match( loader.test );
-				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\assets\\ckeditor.js' ).to.match( loader.test );
-
-				expect( '/Users/ckeditor/ckeditor5-foo/assets/ckeditor.jsx' ).to.not.match( loader.test );
-				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\assets\\ckeditor.jsx' ).to.not.match( loader.test );
-			} );
-
-			it( 'loads paths that end with the ".ts" suffix', () => {
-				expect( '/Users/ckeditor/ckeditor5-foo/assets/ckeditor.ts' ).to.match( loader.test );
-				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\assets\\ckeditor.ts' ).to.match( loader.test );
-
-				expect( '/Users/ckeditor/ckeditor5-foo/assets/ckeditor.jsx' ).to.not.match( loader.test );
-				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\assets\\ckeditor.jsx' ).to.not.match( loader.test );
-			} );
-		} );
-
 		describe( 'styles()', () => {
 			let loader;
 
