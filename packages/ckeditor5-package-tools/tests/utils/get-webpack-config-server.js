@@ -3,12 +3,10 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
-const mockery = require( 'mockery' );
-const sinon = require( 'sinon' );
+import mockery from 'mockery';
+import sinon from 'sinon';
 const expect = require( 'chai' ).expect;
-const path = require( 'path' );
+import path from 'path';
 
 describe( 'lib/utils/get-webpack-config-server', () => {
 	let getWebpackConfigServer, stubs;

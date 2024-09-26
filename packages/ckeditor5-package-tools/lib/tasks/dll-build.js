@@ -3,12 +3,10 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import webpack from 'webpack';
+import getWebpackConfigDll from '../utils/get-webpack-config-dll.js';
 
-const webpack = require( 'webpack' );
-const getWebpackConfigDll = require( '../utils/get-webpack-config-dll' );
-
-module.exports = options => {
+export default options => {
 	const webpackConfig = getWebpackConfigDll( options );
 
 	return runWebpack( webpackConfig );

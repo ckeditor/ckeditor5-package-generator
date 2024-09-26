@@ -3,43 +3,22 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import { describe, it, expect, vi } from 'vitest';
+import webpack from 'webpack';
+import getWebpackConfigDll from '../../lib/utils/get-webpack-config-dll.js';
+import dllBuild from '../../lib/tasks/dll-build.js';
 
-const sinon = require( 'sinon' );
-const expect = require( 'chai' ).expect;
-const mockery = require( 'mockery' );
+vi.mock( 'webpack' );
+vi.mock( '../../lib/utils/get-webpack-config-dll.js' );
 
 describe( 'lib/tasks/dll-build', () => {
-	let dllBuild, stubs;
-
-	beforeEach( () => {
-		mockery.enable( {
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
-		} );
-
-		stubs = {
-			webpack: sinon.stub(),
-			webpackConfig: sinon.stub()
-		};
-
-		mockery.registerMock( 'webpack', stubs.webpack );
-		mockery.registerMock( '../utils/get-webpack-config-dll', stubs.webpackConfig );
-
-		dllBuild = require( '../../lib/tasks/dll-build' );
-	} );
-
-	afterEach( () => {
-		sinon.restore();
-		mockery.disable();
-	} );
-
 	it( 'should be a function', () => {
-		expect( dllBuild ).to.be.a( 'function' );
+		expect( dllBuild ).toBeTypeOf( 'function' );
 	} );
 
-	it( 'resolves a promise after building a file', done => {
+	it( 'resolves a promise after building a file', async () => {
+		vi.spyOn( console, 'log' ).mockImplementation( () => {} );
+
 		const taskOptions = {
 			cwd: '/cwd'
 		};
@@ -50,26 +29,15 @@ describe( 'lib/tasks/dll-build', () => {
 		};
 
 		// Mock reading the configuration.
-		stubs.webpackConfig.returns( webpackConfig );
-
-		const consoleStub = sinon.stub( console, 'log' );
+		vi.mocked( getWebpackConfigDll ).mockReturnValue( webpackConfig );
 
 		// Execute the task.
-		dllBuild( taskOptions )
-			.then( () => {
-				consoleStub.restore();
+		const taskPromise = dllBuild( taskOptions );
 
-				expect( consoleStub.calledOnce ).to.equal( true );
-				expect( consoleStub.firstCall.args[ 0 ] ).to.equal( 'Compilation stats.' );
+		expect( webpack ).toHaveBeenCalledTimes( 1 );
+		expect( webpack ).toHaveBeenCalledWith( webpackConfig, expect.any( Function ) );
 
-				done();
-			} );
-
-		expect( stubs.webpack.calledOnce ).to.equal( true );
-		expect( stubs.webpack.firstCall.args[ 0 ] ).to.equal( webpackConfig );
-		expect( stubs.webpack.firstCall.args[ 1 ] ).to.be.a( 'function' );
-
-		const doneCallback = stubs.webpack.firstCall.args[ 1 ];
+		const [ , doneCallback ] = webpack.mock.calls[ 0 ];
 		doneCallback( null, {
 			hasErrors() {
 				return false;
@@ -78,9 +46,14 @@ describe( 'lib/tasks/dll-build', () => {
 				return 'Compilation stats.';
 			}
 		} );
+
+		await taskPromise;
+
+		expect( console.log ).toHaveBeenCalledTimes( 1 );
+		expect( console.log ).toHaveBeenCalledWith( 'Compilation stats.' );
 	} );
 
-	it( 'rejects if webpack returned an error', done => {
+	it( 'rejects if webpack returned an error', async () => {
 		const taskOptions = {
 			cwd: '/cwd'
 		};
@@ -88,50 +61,41 @@ describe( 'lib/tasks/dll-build', () => {
 		const error = new Error( 'Unexpected error.' );
 
 		// Mock reading the configuration.
-		stubs.webpackConfig.returns( {} );
+		vi.mocked( getWebpackConfigDll ).mockReturnValue( {} );
 
 		// Execute the task.
-		dllBuild( taskOptions )
-			.then(
-				() => {
-					throw new Error( 'Expected to be rejected.' );
-				},
-				err => {
-					expect( err ).to.equal( error );
-					done();
-				}
-			);
+		const taskPromise = dllBuild( taskOptions );
 
-		expect( stubs.webpack.calledOnce ).to.equal( true );
+		expect( webpack ).toHaveBeenCalledTimes( 1 );
 
-		const doneCallback = stubs.webpack.firstCall.args[ 1 ];
+		const [ , doneCallback ] = webpack.mock.calls[ 0 ];
 
 		doneCallback( error, {} );
+
+		return taskPromise.then(
+			() => {
+				throw new Error( 'Expected to be rejected.' );
+			},
+			err => {
+				expect( err ).toEqual( error );
+			}
+		);
 	} );
 
-	it( 'rejects if webpack completed a build with an error', done => {
+	it( 'rejects if webpack completed a build with an error', async () => {
 		const taskOptions = {
 			cwd: '/cwd'
 		};
 
 		// Mock reading the configuration.
-		stubs.webpackConfig.returns( {} );
+		vi.mocked( getWebpackConfigDll ).mockReturnValue( {} );
 
 		// Execute the task.
-		dllBuild( taskOptions )
-			.then(
-				() => {
-					throw new Error( 'Expected to be rejected.' );
-				},
-				err => {
-					expect( err.message ).to.equal( 'Unexpected error.' );
-					done();
-				}
-			);
+		const taskPromise = dllBuild( taskOptions );
 
-		expect( stubs.webpack.calledOnce ).to.equal( true );
+		expect( webpack ).toHaveBeenCalledTimes( 1 );
 
-		const doneCallback = stubs.webpack.firstCall.args[ 1 ];
+		const [ , doneCallback ] = webpack.mock.calls[ 0 ];
 
 		doneCallback( null, {
 			hasErrors() {
@@ -141,5 +105,14 @@ describe( 'lib/tasks/dll-build', () => {
 				return 'Unexpected error.';
 			}
 		} );
+
+		return taskPromise.then(
+			() => {
+				throw new Error( 'Expected to be rejected.' );
+			},
+			err => {
+				expect( err.message ).toEqual( 'Unexpected error.' );
+			}
+		);
 	} );
 } );

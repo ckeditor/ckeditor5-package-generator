@@ -3,13 +3,11 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import path from 'path';
+import getThemePath from './get-theme-path.js';
+import { styles } from '@ckeditor/ckeditor5-dev-utils';
 
-const path = require( 'path' );
-const getThemePath = require( './get-theme-path' );
-const { getPostCssConfig } = require( '@ckeditor/ckeditor5-dev-utils' ).styles;
-
-module.exports = {
+export default {
 	loaderDefinitions: {
 		raw: () => {
 			return {
@@ -51,7 +49,7 @@ module.exports = {
 					{
 						loader: 'postcss-loader',
 						options: {
-							postcssOptions: getPostCssConfig( {
+							postcssOptions: styles.getPostCssConfig( {
 								themeImporter: {
 									themePath: getThemePath( cwd )
 								},

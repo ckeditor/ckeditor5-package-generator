@@ -7,8 +7,6 @@
 
 /* eslint-env node */
 
-'use strict';
-
 const EXPECTED_DIST_PUBLISH_FILES = [
 	'dist/browser/index-content.css',
 	'dist/browser/index-editor.css',
@@ -66,7 +64,7 @@ const EXPECTED_DIST_TYPES_PUBLISH_FILES = [
 	'dist/index.d.ts'
 ];
 
-const EXPECTED_PUBLISH_FILES = {
+export const EXPECTED_PUBLISH_FILES = {
 	js: [
 		...EXPECTED_JS_PUBLISH_FILES
 	],
@@ -76,7 +74,7 @@ const EXPECTED_PUBLISH_FILES = {
 	]
 };
 
-const EXPECTED_LEGACY_PUBLISH_FILES = {
+export const EXPECTED_LEGACY_PUBLISH_FILES = {
 	js: [
 		...EXPECTED_JS_PUBLISH_FILES,
 		...EXPECTED_JS_LEGACY_PUBLISH_FILES,
@@ -90,7 +88,7 @@ const EXPECTED_LEGACY_PUBLISH_FILES = {
 	]
 };
 
-const EXPECTED_SRC_DIR_FILES = {
+export const EXPECTED_SRC_DIR_FILES = {
 	js: [
 		'index.js',
 		'testpackage.js'
@@ -100,10 +98,4 @@ const EXPECTED_SRC_DIR_FILES = {
 		'index.ts',
 		'testpackage.ts'
 	]
-};
-
-module.exports = {
-	EXPECTED_PUBLISH_FILES,
-	EXPECTED_LEGACY_PUBLISH_FILES,
-	EXPECTED_SRC_DIR_FILES
 };

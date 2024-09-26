@@ -3,69 +3,47 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import fs from 'fs-extra';
+import { getToken, downloadTranslations } from '@ckeditor/ckeditor5-dev-transifex';
+import translationsDownload from '../../lib/tasks/translations-download.js';
 
-const sinon = require( 'sinon' );
-const expect = require( 'chai' ).expect;
-const mockery = require( 'mockery' );
+vi.mock( 'path', () => ( {
+	default: {
+		join: ( ...chunks ) => chunks.join( '/' )
+	}
+} ) );
+vi.mock( 'fs-extra' );
+vi.mock( '@ckeditor/ckeditor5-dev-transifex' );
 
 describe( 'lib/tasks/translations-download', () => {
-	let translationsDownload, stubs;
-
 	beforeEach( () => {
-		mockery.enable( {
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
-		} );
-
-		stubs = {
-			transifex: {
-				getToken: sinon.stub(),
-				downloadTranslations: sinon.stub()
-			},
-			path: {
-				join: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) )
+		vi.mocked( getToken ).mockResolvedValue( 'secretToken' );
+		vi.mocked( downloadTranslations ).mockResolvedValue( 'OK' );
+		vi.mocked( fs.readJsonSync ).mockImplementation( filePath => {
+			if ( filePath === '/workspace/package.json' ) {
+				return {
+					name: 'ckeditor5-foo'
+				};
 			}
-		};
-
-		mockery.registerMock( 'path', stubs.path );
-		mockery.registerMock( 'glob', stubs.glob );
-		mockery.registerMock( '/workspace/package.json', {
-			name: '@ckeditor/ckeditor5-foo'
 		} );
-		mockery.registerMock( '@ckeditor/ckeditor5-dev-transifex', stubs.transifex );
-
-		translationsDownload = require( '../../lib/tasks/translations-download' );
-	} );
-
-	afterEach( () => {
-		sinon.restore();
-		mockery.disable();
 	} );
 
 	it( 'should be a function', () => {
-		expect( translationsDownload ).to.be.a( 'function' );
+		expect( translationsDownload ).toBeTypeOf( 'function' );
 	} );
 
 	it( 'downloads translation files for package "ckeditor5-foo"', async () => {
-		mockery.registerMock( '/workspace/package.json', {
-			name: 'ckeditor5-foo'
-		} );
-
-		stubs.transifex.getToken.resolves( 'secretToken' );
-		stubs.transifex.downloadTranslations.resolves( 'OK' );
-
 		const results = await translationsDownload( {
 			cwd: '/workspace',
 			organization: 'foo',
 			project: 'bar'
 		} );
 
-		expect( results ).to.equal( 'OK' );
+		expect( results ).toEqual( 'OK' );
 
-		expect( stubs.transifex.downloadTranslations.calledOnce ).to.equal( true );
-		expect( stubs.transifex.downloadTranslations.firstCall.firstArg ).to.deep.equal( {
+		expect( downloadTranslations ).toHaveBeenCalledTimes( 1 );
+		expect( downloadTranslations ).toHaveBeenCalledWith( {
 			token: 'secretToken',
 			organizationName: 'foo',
 			projectName: 'bar',
@@ -78,19 +56,16 @@ describe( 'lib/tasks/translations-download', () => {
 	} );
 
 	it( 'downloads translation files for package "@ckeditor/ckeditor5-foo"', async () => {
-		stubs.transifex.getToken.resolves( 'secretToken' );
-		stubs.transifex.downloadTranslations.resolves( 'OK' );
-
 		const results = await translationsDownload( {
 			cwd: '/workspace',
 			organization: 'foo',
 			project: 'bar'
 		} );
 
-		expect( results ).to.equal( 'OK' );
+		expect( results ).toEqual( 'OK' );
 
-		expect( stubs.transifex.downloadTranslations.calledOnce ).to.equal( true );
-		expect( stubs.transifex.downloadTranslations.firstCall.firstArg ).to.deep.equal( {
+		expect( downloadTranslations ).toHaveBeenCalledTimes( 1 );
+		expect( downloadTranslations ).toHaveBeenCalledWith( {
 			token: 'secretToken',
 			organizationName: 'foo',
 			projectName: 'bar',
@@ -108,7 +83,7 @@ describe( 'lib/tasks/translations-download', () => {
 				cwd: '/workspace'
 			} );
 		} catch ( err ) {
-			expect( err.message ).to.equal(
+			expect( err.message ).toEqual(
 				'The organization name is required. Use --organization [organization name] to provide the value.'
 			);
 		}
@@ -121,7 +96,7 @@ describe( 'lib/tasks/translations-download', () => {
 				organization: 'foo'
 			} );
 		} catch ( err ) {
-			expect( err.message ).to.equal(
+			expect( err.message ).toEqual(
 				'The project name is required. Use --project [project name] to provide the value.'
 			);
 		}
@@ -136,7 +111,7 @@ describe( 'lib/tasks/translations-download', () => {
 				transifex: 'https://api.example.com'
 			} );
 		} catch ( err ) {
-			expect( err.message ).to.equal(
+			expect( err.message ).toEqual(
 				'The --transifex [API end-point] option is no longer supported. Use `--organization` and `--project` instead.'
 			);
 		}

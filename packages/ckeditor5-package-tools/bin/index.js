@@ -5,12 +5,10 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import { red } from 'chalk';
 
-const { red } = require( 'chalk' );
-
-const parseArguments = require( '../lib/utils/parse-arguments' );
-const availableTasks = require( '../lib/index' );
+import parseArguments from '../lib/utils/parse-arguments.js';
+import availableTasks from '../lib/index.js';
 
 const options = parseArguments( process.argv.slice( 2 ) );
 

@@ -3,11 +3,9 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import minimist from 'minimist';
 
-const minimist = require( 'minimist' );
-
-module.exports = args => {
+export default args => {
 	const config = {
 		string: [
 			'organization',

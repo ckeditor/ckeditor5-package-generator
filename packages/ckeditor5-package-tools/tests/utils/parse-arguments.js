@@ -3,9 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
-const sinon = require( 'sinon' );
+import sinon from 'sinon';
 const expect = require( 'chai' ).expect;
 
 describe( 'lib/utils/parse-arguments', () => {

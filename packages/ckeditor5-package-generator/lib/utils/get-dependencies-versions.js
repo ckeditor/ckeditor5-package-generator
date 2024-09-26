@@ -3,10 +3,12 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import path from 'path';
+import getPackageVersion from './get-package-version.js';
+import { fileURLToPath } from 'url';
 
-const path = require( 'path' );
-const getPackageVersion = require( './get-package-version' );
+const __filename = fileURLToPath( import.meta.url );
+const __dirname = path.dirname( __filename );
 
 /**
  * Returns an object containing version for the packages listed below:
@@ -27,7 +29,7 @@ const getPackageVersion = require( './get-package-version' );
  * @param {Boolean} dev
  * @returns {Object}
  */
-module.exports = function getDependenciesVersions( logger, dev ) {
+export default function getDependenciesVersions( logger, dev ) {
 	logger.process( 'Collecting the latest CKEditor 5 packages versions...' );
 
 	return {
@@ -42,4 +44,4 @@ module.exports = function getDependenciesVersions( logger, dev ) {
 			'file:' + path.resolve( __dirname, '..', '..', '..', 'ckeditor5-package-tools' ).split( path.sep ).join( path.posix.sep ) :
 			'^' + getPackageVersion( '@ckeditor/ckeditor5-package-tools' )
 	};
-};
+}

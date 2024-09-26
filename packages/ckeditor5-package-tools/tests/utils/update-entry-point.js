@@ -3,11 +3,9 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
-const sinon = require( 'sinon' );
+import sinon from 'sinon';
 const expect = require( 'chai' ).expect;
-const mockery = require( 'mockery' );
+import mockery from 'mockery';
 
 describe( 'lib/utils/update-entry-point', () => {
 	let updateEntryPoint, stubs, pkgJsonTS, pkgJsonJS;

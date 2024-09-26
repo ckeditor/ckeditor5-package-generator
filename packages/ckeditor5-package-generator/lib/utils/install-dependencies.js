@@ -3,11 +3,9 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
-const { tools } = require( '@ckeditor/ckeditor5-dev-utils' );
-const chalk = require( 'chalk' );
-const { spawn } = require( 'child_process' );
+import { tools } from '@ckeditor/ckeditor5-dev-utils';
+import chalk from 'chalk';
+import { spawn } from 'child_process';
 
 /**
  * @param {String} directoryPath
@@ -16,7 +14,7 @@ const { spawn } = require( 'child_process' );
  * @param {Boolean} dev
  * @returns {Promise}
  */
-module.exports = async function installDependencies( directoryPath, packageManager, verbose, dev ) {
+export default async function installDependencies( directoryPath, packageManager, verbose, dev ) {
 	const installSpinner = tools.createSpinner( 'Installing dependencies... ' + chalk.gray.italic( 'It takes a while.' ), {
 		isDisabled: verbose
 	} );
@@ -26,7 +24,7 @@ module.exports = async function installDependencies( directoryPath, packageManag
 	await installPackages( directoryPath, packageManager, verbose, dev );
 
 	installSpinner.finish();
-};
+}
 
 /**
  * @param {String} directoryPath

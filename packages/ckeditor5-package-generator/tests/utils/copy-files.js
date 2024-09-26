@@ -3,12 +3,28 @@
  * For licensing, see LICENSE.md.
  */
 
-const mockery = require( 'mockery' );
-const sinon = require( 'sinon' );
-const { expect } = require( 'chai' );
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import fs from 'fs';
+import glob from 'glob';
+import copyFiles from '../../lib/utils/copy-files.js';
+
+vi.mock( 'chalk', () => ( {
+	default: {
+		gray: vi.fn()
+	}
+} ) );
+vi.mock( 'path', () => ( {
+	default: {
+		dirname: () => '.',
+		join: ( ...chunks ) => chunks.join( '/' )
+	}
+} ) );
+vi.mock( 'fs' );
+vi.mock( 'glob' );
+vi.mock( 'mkdirp' );
 
 describe( 'lib/utils/copy-files', () => {
-	let stubs, options, copyFiles;
+	let options, stubs;
 
 	const packageJson = {
 		'name': '<%= packageName %>',
@@ -36,89 +52,69 @@ describe( 'lib/utils/copy-files', () => {
 	};
 
 	beforeEach( () => {
-		mockery.enable( {
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
-		} );
-
-		// 'lodash.template' is not stubbed for more realistic tests.
-
-		sinon.useFakeTimers( {
+		vi.useFakeTimers( {
 			now: new Date( 1984, 1, 1, 0, 0 ),
 			shouldAdvanceTime: true,
 			toFake: [ 'Date' ]
 		} );
 
-		stubs = {
-			logger: {
-				process: sinon.stub(),
-				verboseInfo: sinon.stub()
-			},
-			chalk: {
-				gray: sinon.stub().callsFake( str => str )
-			},
-			fs: {
-				writeFileSync: sinon.stub(),
-				readFileSync: sinon.stub()
-			},
-			glob: {
-				sync: sinon.stub()
-			},
-			mkdirp: {
-				sync: sinon.stub().callsFake( str => str )
-			},
-			path: {
-				sep: '/',
-				// This replace() removes the ( __dirname, '..' ) part from the path.
-				join: sinon.stub().callsFake( ( ...args ) => args.join( '/' ).replace( /^.+\.\.\//, '' ) ),
-				dirname: sinon.stub()
+		vi.mocked( glob.sync ).mockImplementation( pattern => {
+			if ( pattern === 'common/**/*' ) {
+				return [ 'common/LICENSE.md', 'common/lang/contexts.json' ];
 			}
-		};
 
-		stubs.glob.sync.withArgs( 'common/**/*' ).returns( [
-			'common/LICENSE.md',
-			'common/lang/contexts.json'
-		] );
-		stubs.glob.sync.withArgs( 'js/**/*' ).returns( [
-			'js/package.json',
-			'js/src/index.js'
-		] );
-		stubs.glob.sync.withArgs( 'ts/**/*' ).returns( [
-			'ts/package.json',
-			'ts/src/index.ts'
-		] );
-		stubs.glob.sync.withArgs( 'js-legacy/**/*' ).returns( [
-			'js/package.json',
-			'js/src/index.js'
-		] );
-		stubs.glob.sync.withArgs( 'ts-legacy/**/*' ).returns( [
-			'ts/package.json',
-			'ts/src/index.ts'
-		] );
+			if ( pattern === 'js/**/*' ) {
+				return [ 'js/package.json', 'js/src/index.js' ];
+			}
 
-		stubs.fs.readFileSync.withArgs( 'templates/common/LICENSE.md', 'utf-8' ).returns(
-			'Copyright (c) <%= now.getFullYear() %>. All rights reserved.\n'
-		);
-		stubs.fs.readFileSync.withArgs( 'templates/common/lang/contexts.json', 'utf-8' ).returns(
-			JSON.stringify( { 'My plugin': 'Content for a tooltip is displayed when a user hovers the CKEditor 5 icon.' }, null, 2 )
-		);
-		stubs.fs.readFileSync.withArgs( 'templates/js/package.json', 'utf-8' ).returns(
-			JSON.stringify( packageJson, null, 2 )
-		);
-		stubs.fs.readFileSync.withArgs( 'templates/ts/package.json', 'utf-8' ).returns(
-			JSON.stringify( packageJson, null, 2 )
-		);
-		stubs.fs.readFileSync.withArgs( 'templates/js/src/index.js', 'utf-8' ).returns( '/* JS CODE */' );
-		stubs.fs.readFileSync.withArgs( 'templates/ts/src/index.ts', 'utf-8' ).returns( '/* TS CODE */' );
-		stubs.fs.readFileSync.withArgs( 'templates/js/src/_PLACEHOLDER_.js', 'utf-8' ).returns( '/* PLACEHOLDER JS CODE */' );
-		stubs.fs.readFileSync.withArgs( 'templates/js/src/foo.js.txt', 'utf-8' ).returns( '/* JS CODE IN TXT FILE */' );
+			if ( pattern === 'ts/**/*' ) {
+				return [ 'ts/package.json', 'ts/src/index.ts' ];
+			}
 
-		mockery.registerMock( 'chalk', stubs.chalk );
-		mockery.registerMock( 'fs', stubs.fs );
-		mockery.registerMock( 'glob', stubs.glob );
-		mockery.registerMock( 'mkdirp', stubs.mkdirp );
-		mockery.registerMock( 'path', stubs.path );
+			if ( pattern === 'js-legacy/**/*' ) {
+				return [ 'js/package.json', 'js/src/index.js' ];
+			}
+
+			if ( pattern === 'ts-legacy/**/*' ) {
+				return [ 'ts/package.json', 'ts/src/index.ts' ];
+			}
+		} );
+
+		vi.mocked( fs.readFileSync ).mockImplementation( path => {
+			if ( path.endsWith( 'templates/common/LICENSE.md' ) ) {
+				return 'Copyright (c) <%= now.getFullYear() %>. All rights reserved.\n';
+			}
+
+			if ( path.endsWith( 'templates/common/lang/contexts.json' ) ) {
+				return JSON.stringify( {
+					'My plugin': 'Content for a tooltip is displayed when a user hovers the CKEditor 5 icon.'
+				}, null, 2 );
+			}
+
+			if ( path.endsWith( 'templates/js/package.json' ) ) {
+				return JSON.stringify( packageJson, null, 2 );
+			}
+
+			if ( path.endsWith( 'templates/ts/package.json' ) ) {
+				return JSON.stringify( packageJson, null, 2 );
+			}
+
+			if ( path.endsWith( 'templates/js/src/index.js' ) ) {
+				return '/* JS CODE */';
+			}
+
+			if ( path.endsWith( 'templates/ts/src/index.ts' ) ) {
+				return '/* TS CODE */';
+			}
+
+			if ( path.endsWith( 'templates/js/src/_PLACEHOLDER_.js' ) ) {
+				return '/* PLACEHOLDER JS CODE */';
+			}
+
+			if ( path.endsWith( 'templates/js/src/foo.js.txt' ) ) {
+				return '/* JS CODE IN TXT FILE */';
+			}
+		} );
 
 		options = {
 			packageName: '@foo/ckeditor5-featurename',
@@ -150,71 +146,83 @@ describe( 'lib/utils/copy-files', () => {
 			dllConfiguration: {}
 		};
 
-		copyFiles = require( '../../lib/utils/copy-files' );
+		stubs = {
+			logger: {
+				process: vi.fn(),
+				verboseInfo: vi.fn()
+			}
+		};
 	} );
 
 	afterEach( () => {
-		mockery.deregisterAll();
-		mockery.disable();
-		sinon.restore();
+		vi.useRealTimers();
 	} );
 
 	it( 'should be a function', () => {
-		expect( copyFiles ).to.be.a( 'function' );
+		expect( copyFiles ).toBeTypeOf( 'function' );
 	} );
 
 	it( 'logs the process', () => {
 		copyFiles( stubs.logger, options );
 
-		expect( stubs.logger.process.calledOnce ).to.equal( true );
-		expect( stubs.logger.process.firstCall.firstArg ).to.equal( 'Copying files...' );
+		expect( stubs.logger.process ).toHaveBeenCalledWith( 'Copying files...' );
 	} );
 
 	it( 'creates files for JavaScript', () => {
 		copyFiles( stubs.logger, options );
 
-		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
-		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/path/foo/LICENSE.md' );
-		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/path/foo/lang/contexts.json' );
-		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/path/foo/package.json' );
-		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/path/foo/src/index.js' );
+		expect( fs.writeFileSync ).toHaveBeenCalledTimes( 4 );
 
-		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 1 ] ).to.equal( [
-			'Copyright (c) 1984. All rights reserved.',
-			''
-		].join( '\n' ) );
-		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 1 ] ).to.equal( [
-			'{',
-			'  "My plugin": "Content for a tooltip is displayed when a user hovers the CKEditor 5 icon."',
-			'}'
-		].join( '\n' ) );
-		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 1 ] ).to.equal( JSON.stringify( {
-			'name': '@foo/ckeditor5-featurename',
-			'license': 'MIT',
-			'dependencies': {
-				'ckeditor5': '>=30.0.0'
-			},
-			'devDependencies': {
-				'@ckeditor/ckeditor5-dev-build-tools': '40.0.0',
-				'@ckeditor/ckeditor5-autoformat': '>=30.0.0',
-				'@ckeditor/ckeditor5-basic-styles': '>=30.0.0',
-				'@ckeditor/ckeditor5-block-quote': '>=30.0.0',
-				'@ckeditor/ckeditor5-inspector': '>=',
-				'@ckeditor/ckeditor5-package-tools': '25.0.0',
-				'eslint': '^7.32.0',
-				'eslint-config-ckeditor5': '>=',
-				'stylelint': '^13.13.1',
-				'stylelint-config-ckeditor5': '>='
-			},
-			'scripts': {
-				'dll:build': 'ckeditor5-package-tools dll:build',
-				'prepare': 'yarn run dll:build',
-				'prepublishOnly': 'yarn run dll:build'
-			}
-		}, null, 2 ) );
-		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 1 ] ).to.equal( [
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			1,
+			'directory/path/foo/LICENSE.md',
+			'Copyright (c) 1984. All rights reserved.\n'
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			2,
+			'directory/path/foo/lang/contexts.json',
+			[
+				'{',
+				'  "My plugin": "Content for a tooltip is displayed when a user hovers the CKEditor 5 icon."',
+				'}'
+			].join( '\n' )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			3,
+			'directory/path/foo/package.json',
+			JSON.stringify( {
+				'name': '@foo/ckeditor5-featurename',
+				'license': 'MIT',
+				'dependencies': {
+					'ckeditor5': '>=30.0.0'
+				},
+				'devDependencies': {
+					'@ckeditor/ckeditor5-dev-build-tools': '40.0.0',
+					'@ckeditor/ckeditor5-autoformat': '>=30.0.0',
+					'@ckeditor/ckeditor5-basic-styles': '>=30.0.0',
+					'@ckeditor/ckeditor5-block-quote': '>=30.0.0',
+					'@ckeditor/ckeditor5-inspector': '>=',
+					'@ckeditor/ckeditor5-package-tools': '25.0.0',
+					'eslint': '^7.32.0',
+					'eslint-config-ckeditor5': '>=',
+					'stylelint': '^13.13.1',
+					'stylelint-config-ckeditor5': '>='
+				},
+				'scripts': {
+					'dll:build': 'ckeditor5-package-tools dll:build',
+					'prepare': 'yarn run dll:build',
+					'prepublishOnly': 'yarn run dll:build'
+				}
+			}, null, 2 )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			4,
+			'directory/path/foo/src/index.js',
 			'/* JS CODE */'
-		].join( '\n' ) );
+		);
 	} );
 
 	it( 'creates files for TypeScript', () => {
@@ -222,80 +230,108 @@ describe( 'lib/utils/copy-files', () => {
 
 		copyFiles( stubs.logger, options );
 
-		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
-		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/path/foo/LICENSE.md' );
-		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/path/foo/lang/contexts.json' );
-		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/path/foo/package.json' );
-		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/path/foo/src/index.ts' );
+		expect( fs.writeFileSync ).toHaveBeenCalledTimes( 4 );
 
-		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 1 ] ).to.equal( [
-			'Copyright (c) 1984. All rights reserved.',
-			''
-		].join( '\n' ) );
-		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 1 ] ).to.equal( [
-			'{',
-			'  "My plugin": "Content for a tooltip is displayed when a user hovers the CKEditor 5 icon."',
-			'}'
-		].join( '\n' ) );
-		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 1 ] ).to.equal( JSON.stringify( {
-			'name': '@foo/ckeditor5-featurename',
-			'license': 'MIT',
-			'dependencies': {
-				'ckeditor5': '>=30.0.0'
-			},
-			'devDependencies': {
-				'@ckeditor/ckeditor5-dev-build-tools': '40.0.0',
-				'@ckeditor/ckeditor5-autoformat': '>=30.0.0',
-				'@ckeditor/ckeditor5-basic-styles': '>=30.0.0',
-				'@ckeditor/ckeditor5-block-quote': '>=30.0.0',
-				'@ckeditor/ckeditor5-inspector': '>=',
-				'@ckeditor/ckeditor5-package-tools': '25.0.0',
-				'eslint': '^7.32.0',
-				'eslint-config-ckeditor5': '>=',
-				'stylelint': '^13.13.1',
-				'stylelint-config-ckeditor5': '>='
-			},
-			'scripts': {
-				'dll:build': 'ckeditor5-package-tools dll:build',
-				'prepare': 'yarn run dll:build',
-				'prepublishOnly': 'yarn run dll:build'
-			}
-		}, null, 2 ) );
-		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 1 ] ).to.equal( [
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			1,
+			'directory/path/foo/LICENSE.md',
+			'Copyright (c) 1984. All rights reserved.\n'
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			2,
+			'directory/path/foo/lang/contexts.json',
+			[
+				'{',
+				'  "My plugin": "Content for a tooltip is displayed when a user hovers the CKEditor 5 icon."',
+				'}'
+			].join( '\n' )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			3,
+			'directory/path/foo/package.json',
+			JSON.stringify( {
+				'name': '@foo/ckeditor5-featurename',
+				'license': 'MIT',
+				'dependencies': {
+					'ckeditor5': '>=30.0.0'
+				},
+				'devDependencies': {
+					'@ckeditor/ckeditor5-dev-build-tools': '40.0.0',
+					'@ckeditor/ckeditor5-autoformat': '>=30.0.0',
+					'@ckeditor/ckeditor5-basic-styles': '>=30.0.0',
+					'@ckeditor/ckeditor5-block-quote': '>=30.0.0',
+					'@ckeditor/ckeditor5-inspector': '>=',
+					'@ckeditor/ckeditor5-package-tools': '25.0.0',
+					'eslint': '^7.32.0',
+					'eslint-config-ckeditor5': '>=',
+					'stylelint': '^13.13.1',
+					'stylelint-config-ckeditor5': '>='
+				},
+				'scripts': {
+					'dll:build': 'ckeditor5-package-tools dll:build',
+					'prepare': 'yarn run dll:build',
+					'prepublishOnly': 'yarn run dll:build'
+				}
+			}, null, 2 )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			4,
+			'directory/path/foo/src/index.ts',
 			'/* TS CODE */'
-		].join( '\n' ) );
+		);
 	} );
 
 	it( 'replaces placeholder filenames', () => {
-		stubs.glob.sync.withArgs( 'js/**/*' ).returns( [
-			'js/package.json',
-			'js/src/index.js',
-			'js/src/_PLACEHOLDER_.js'
-		] );
+		const globSyncMock = vi.mocked( glob.sync ).getMockImplementation();
+
+		vi.mocked( glob.sync ).mockImplementation( pattern => {
+			if ( pattern === 'js/**/*' ) {
+				return [
+					'js/package.json',
+					'js/src/index.js',
+					'js/src/_PLACEHOLDER_.js'
+				];
+			}
+
+			return globSyncMock( pattern );
+		} );
 
 		copyFiles( stubs.logger, options );
 
-		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
-		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 0 ] ).to.equal( 'directory/path/foo/src/barbaz.js' );
-		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 1 ] ).to.equal( [
+		expect( fs.writeFileSync ).toHaveBeenCalledTimes( 5 );
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			5,
+			'directory/path/foo/src/barbaz.js',
 			'/* PLACEHOLDER JS CODE */'
-		].join( '\n' ) );
+		);
 	} );
 
 	it( 'removes ".txt" extension from filenames', () => {
-		stubs.glob.sync.withArgs( 'js/**/*' ).returns( [
-			'js/package.json',
-			'js/src/index.js',
-			'js/src/foo.js.txt'
-		] );
+		const globSyncMock = vi.mocked( glob.sync ).getMockImplementation();
+
+		vi.mocked( glob.sync ).mockImplementation( pattern => {
+			if ( pattern === 'js/**/*' ) {
+				return [
+					'js/package.json',
+					'js/src/index.js',
+					'js/src/foo.js.txt'
+				];
+			}
+
+			return globSyncMock( pattern );
+		} );
 
 		copyFiles( stubs.logger, options );
 
-		expect( stubs.fs.writeFileSync.callCount ).to.equal( 5 );
-		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 0 ] ).to.equal( 'directory/path/foo/src/foo.js' );
-		expect( stubs.fs.writeFileSync.getCall( 4 ).args[ 1 ] ).to.equal( [
+		expect( fs.writeFileSync ).toHaveBeenCalledTimes( 5 );
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			5,
+			'directory/path/foo/src/foo.js',
 			'/* JS CODE IN TXT FILE */'
-		].join( '\n' ) );
+		);
 	} );
 
 	it( 'works correctly with path containing directory called "common"', () => {
@@ -303,11 +339,31 @@ describe( 'lib/utils/copy-files', () => {
 
 		copyFiles( stubs.logger, options );
 
-		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
-		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/common/foo/LICENSE.md' );
-		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/common/foo/lang/contexts.json' );
-		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/common/foo/package.json' );
-		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/common/foo/src/index.js' );
+		expect( fs.writeFileSync ).toHaveBeenCalledTimes( 4 );
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			1,
+			'directory/common/foo/LICENSE.md',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			2,
+			'directory/common/foo/lang/contexts.json',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			3,
+			'directory/common/foo/package.json',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			4,
+			'directory/common/foo/src/index.js',
+			expect.any( String )
+		);
 	} );
 
 	it( 'works correctly with path containing directory called "js"', () => {
@@ -315,11 +371,31 @@ describe( 'lib/utils/copy-files', () => {
 
 		copyFiles( stubs.logger, options );
 
-		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
-		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/js/foo/LICENSE.md' );
-		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/js/foo/lang/contexts.json' );
-		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/js/foo/package.json' );
-		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/js/foo/src/index.js' );
+		expect( fs.writeFileSync ).toHaveBeenCalledTimes( 4 );
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			1,
+			'directory/js/foo/LICENSE.md',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			2,
+			'directory/js/foo/lang/contexts.json',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			3,
+			'directory/js/foo/package.json',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			4,
+			'directory/js/foo/src/index.js',
+			expect.any( String )
+		);
 	} );
 
 	it( 'works correctly with path containing directory called "ts"', () => {
@@ -327,11 +403,31 @@ describe( 'lib/utils/copy-files', () => {
 
 		copyFiles( stubs.logger, options );
 
-		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
-		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/ts/foo/LICENSE.md' );
-		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/ts/foo/lang/contexts.json' );
-		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/ts/foo/package.json' );
-		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/ts/foo/src/index.js' );
+		expect( fs.writeFileSync ).toHaveBeenCalledTimes( 4 );
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			1,
+			'directory/ts/foo/LICENSE.md',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			2,
+			'directory/ts/foo/lang/contexts.json',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			3,
+			'directory/ts/foo/package.json',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			4,
+			'directory/ts/foo/src/index.js',
+			expect.any( String )
+		);
 	} );
 
 	it( 'works correctly with path containing directory called "js" with flag "--installation-methods" set to "current-and-legacy"', () => {
@@ -340,11 +436,31 @@ describe( 'lib/utils/copy-files', () => {
 
 		copyFiles( stubs.logger, options );
 
-		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
-		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/js/foo/LICENSE.md' );
-		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/js/foo/lang/contexts.json' );
-		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/js/foo/package.json' );
-		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/js/foo/src/index.js' );
+		expect( fs.writeFileSync ).toHaveBeenCalledTimes( 4 );
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			1,
+			'directory/js/foo/LICENSE.md',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			2,
+			'directory/js/foo/lang/contexts.json',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			3,
+			'directory/js/foo/package.json',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			4,
+			'directory/js/foo/src/index.js',
+			expect.any( String )
+		);
 	} );
 
 	it( 'works correctly with path containing directory called "ts" with flag "--installation-methods" set to "current-and-legacy', () => {
@@ -353,11 +469,31 @@ describe( 'lib/utils/copy-files', () => {
 
 		copyFiles( stubs.logger, options );
 
-		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
-		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/ts/foo/LICENSE.md' );
-		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/ts/foo/lang/contexts.json' );
-		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/ts/foo/package.json' );
-		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/ts/foo/src/index.js' );
+		expect( fs.writeFileSync ).toHaveBeenCalledTimes( 4 );
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			1,
+			'directory/ts/foo/LICENSE.md',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			2,
+			'directory/ts/foo/lang/contexts.json',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			3,
+			'directory/ts/foo/package.json',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			4,
+			'directory/ts/foo/src/index.js',
+			expect.any( String )
+		);
 	} );
 
 	it( 'works correctly with path containing directory called "Projects" (it ends with "ts")', () => {
@@ -365,11 +501,31 @@ describe( 'lib/utils/copy-files', () => {
 
 		copyFiles( stubs.logger, options );
 
-		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
-		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/Projects/foo/LICENSE.md' );
-		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/Projects/foo/lang/contexts.json' );
-		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/Projects/foo/package.json' );
-		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/Projects/foo/src/index.js' );
+		expect( fs.writeFileSync ).toHaveBeenCalledTimes( 4 );
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			1,
+			'directory/Projects/foo/LICENSE.md',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			2,
+			'directory/Projects/foo/lang/contexts.json',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			3,
+			'directory/Projects/foo/package.json',
+			expect.any( String )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			4,
+			'directory/Projects/foo/src/index.js',
+			expect.any( String )
+		);
 	} );
 
 	it( 'works with npm instead of yarn', () => {
@@ -377,48 +533,58 @@ describe( 'lib/utils/copy-files', () => {
 
 		copyFiles( stubs.logger, options );
 
-		expect( stubs.fs.writeFileSync.callCount ).to.equal( 4 );
-		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 0 ] ).to.equal( 'directory/path/foo/LICENSE.md' );
-		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 0 ] ).to.equal( 'directory/path/foo/lang/contexts.json' );
-		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 0 ] ).to.equal( 'directory/path/foo/package.json' );
-		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 0 ] ).to.equal( 'directory/path/foo/src/index.js' );
+		expect( fs.writeFileSync ).toHaveBeenCalledTimes( 4 );
 
-		expect( stubs.fs.writeFileSync.getCall( 0 ).args[ 1 ] ).to.equal( [
-			'Copyright (c) 1984. All rights reserved.',
-			''
-		].join( '\n' ) );
-		expect( stubs.fs.writeFileSync.getCall( 1 ).args[ 1 ] ).to.equal( [
-			'{',
-			'  "My plugin": "Content for a tooltip is displayed when a user hovers the CKEditor 5 icon."',
-			'}'
-		].join( '\n' ) );
-		expect( stubs.fs.writeFileSync.getCall( 2 ).args[ 1 ] ).to.equal( JSON.stringify( {
-			'name': '@foo/ckeditor5-featurename',
-			'license': 'MIT',
-			'dependencies': {
-				'ckeditor5': '>=30.0.0'
-			},
-			'devDependencies': {
-				'@ckeditor/ckeditor5-dev-build-tools': '40.0.0',
-				'@ckeditor/ckeditor5-autoformat': '>=30.0.0',
-				'@ckeditor/ckeditor5-basic-styles': '>=30.0.0',
-				'@ckeditor/ckeditor5-block-quote': '>=30.0.0',
-				'@ckeditor/ckeditor5-inspector': '>=',
-				'@ckeditor/ckeditor5-package-tools': '25.0.0',
-				'eslint': '^7.32.0',
-				'eslint-config-ckeditor5': '>=',
-				'stylelint': '^13.13.1',
-				'stylelint-config-ckeditor5': '>='
-			},
-			'scripts': {
-				'dll:build': 'ckeditor5-package-tools dll:build',
-				'prepare': 'npm run dll:build',
-				'prepublishOnly': 'npm run dll:build'
-			}
-		}, null, 2 ) );
-		expect( stubs.fs.writeFileSync.getCall( 3 ).args[ 1 ] ).to.equal( [
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			1,
+			'directory/path/foo/LICENSE.md',
+			'Copyright (c) 1984. All rights reserved.\n'
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			2,
+			'directory/path/foo/lang/contexts.json',
+			[
+				'{',
+				'  "My plugin": "Content for a tooltip is displayed when a user hovers the CKEditor 5 icon."',
+				'}'
+			].join( '\n' )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			3,
+			'directory/path/foo/package.json',
+			JSON.stringify( {
+				'name': '@foo/ckeditor5-featurename',
+				'license': 'MIT',
+				'dependencies': {
+					'ckeditor5': '>=30.0.0'
+				},
+				'devDependencies': {
+					'@ckeditor/ckeditor5-dev-build-tools': '40.0.0',
+					'@ckeditor/ckeditor5-autoformat': '>=30.0.0',
+					'@ckeditor/ckeditor5-basic-styles': '>=30.0.0',
+					'@ckeditor/ckeditor5-block-quote': '>=30.0.0',
+					'@ckeditor/ckeditor5-inspector': '>=',
+					'@ckeditor/ckeditor5-package-tools': '25.0.0',
+					'eslint': '^7.32.0',
+					'eslint-config-ckeditor5': '>=',
+					'stylelint': '^13.13.1',
+					'stylelint-config-ckeditor5': '>='
+				},
+				'scripts': {
+					'dll:build': 'ckeditor5-package-tools dll:build',
+					'prepare': 'npm run dll:build',
+					'prepublishOnly': 'npm run dll:build'
+				}
+			}, null, 2 )
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			4,
+			'directory/path/foo/src/index.js',
 			'/* JS CODE */'
-		].join( '\n' ) );
+		);
 	} );
 } );
 

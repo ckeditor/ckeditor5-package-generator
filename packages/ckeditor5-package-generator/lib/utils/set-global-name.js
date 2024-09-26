@@ -3,10 +3,8 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
-const { prompt } = require( 'inquirer' );
-const validateGlobalName = require( './validate-global-name' );
+import inquirer from 'inquirer';
+import validateGlobalName from './validate-global-name.js';
 
 /**
  * Sets global name for generated package. It's used in UMD builds.
@@ -17,7 +15,7 @@ const validateGlobalName = require( './validate-global-name' );
  * @param {String} globalName
  * @returns {Promise.<String>}
  */
-module.exports = async function setGlobalName( logger, globalName ) {
+export default async function setGlobalName( logger, globalName ) {
 	if ( globalName ) {
 		if ( validateGlobalName( logger, globalName ) ) {
 			return globalName;
@@ -28,7 +26,7 @@ module.exports = async function setGlobalName( logger, globalName ) {
 		);
 	}
 
-	const globalNameFromInput = await prompt( {
+	const globalNameFromInput = await inquirer.prompt( {
 		required: true,
 		message: 'Enter the global name for plugin for UMD build',
 		type: 'input',
@@ -37,4 +35,4 @@ module.exports = async function setGlobalName( logger, globalName ) {
 	} );
 
 	return globalNameFromInput.globalName;
-};
+}

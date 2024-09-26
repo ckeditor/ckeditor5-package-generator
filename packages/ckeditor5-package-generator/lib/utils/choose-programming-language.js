@@ -3,9 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
-const { prompt } = require( 'inquirer' );
+import inquirer from 'inquirer';
 
 const PROGRAMMING_LANGUAGES = [
 	{ value: 'ts', displayName: 'TypeScript' },
@@ -20,7 +18,7 @@ const PROGRAMMING_LANGUAGES = [
  * @param {String} lang
  * @returns {Promise<String>}
  */
-module.exports = async function chooseProgrammingLanguage( logger, lang ) {
+export default async function chooseProgrammingLanguage( logger, lang ) {
 	if ( lang ) {
 		const langShorthands = PROGRAMMING_LANGUAGES.map( ( { value } ) => value );
 
@@ -31,7 +29,7 @@ module.exports = async function chooseProgrammingLanguage( logger, lang ) {
 		logger.error( `--lang option has to be one of: ${ langShorthands.join( ', ' ) }. Falling back to manual choice.` );
 	}
 
-	const { programmingLanguage } = await prompt( [ {
+	const { programmingLanguage } = await inquirer.prompt( [ {
 		prefix: '📍',
 		name: 'programmingLanguage',
 		message: 'Choose your programming language:',
@@ -41,4 +39,4 @@ module.exports = async function chooseProgrammingLanguage( logger, lang ) {
 
 	// Full name to shorthand: "JavaScript" => "js"
 	return PROGRAMMING_LANGUAGES.find( p => p.displayName === programmingLanguage ).value;
-};
+}

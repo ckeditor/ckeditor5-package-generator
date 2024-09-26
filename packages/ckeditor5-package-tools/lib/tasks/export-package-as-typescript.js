@@ -3,8 +3,6 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import updateEntryPoint from '../utils/update-entry-point.js';
 
-const updateEntryPoint = require( '../utils/update-entry-point' );
-
-module.exports = options => updateEntryPoint( options, 'ts' );
+export default options => updateEntryPoint( options, 'ts' );

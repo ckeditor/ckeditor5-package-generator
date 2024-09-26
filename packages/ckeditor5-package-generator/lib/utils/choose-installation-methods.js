@@ -3,9 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
-const { prompt } = require( 'inquirer' );
+import inquirer from 'inquirer';
 
 const INSTALLATION_METHODS = [
 	{
@@ -27,7 +25,7 @@ const INSTALLATION_METHODS = [
  * @param {String} method
  * @returns {Promise<String>}
  */
-module.exports = async function chooseIn( logger, method ) {
+export default async function chooseInstallationMethods( logger, method ) {
 	if ( method ) {
 		const methodShorthands = INSTALLATION_METHODS.map( ( { value } ) => value );
 
@@ -40,7 +38,7 @@ module.exports = async function chooseIn( logger, method ) {
 		);
 	}
 
-	const { installationMethod } = await prompt( [ {
+	const { installationMethod } = await inquirer.prompt( [ {
 		prefix: '📍',
 		name: 'installationMethod',
 		message: 'Which installation methods of CKEditor 5 do you want to support?',
@@ -49,4 +47,4 @@ module.exports = async function chooseIn( logger, method ) {
 	} ] );
 
 	return INSTALLATION_METHODS.find( p => p.displayName === installationMethod ).value;
-};
+}
