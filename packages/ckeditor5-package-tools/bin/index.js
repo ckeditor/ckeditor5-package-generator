@@ -5,7 +5,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import { red } from 'chalk';
+import chalk from 'chalk';
 
 import parseArguments from '../lib/utils/parse-arguments.js';
 import availableTasks from '../lib/index.js';
@@ -20,5 +20,5 @@ if ( availableTasks[ options.task ] ) {
 		...Object.keys( availableTasks ).map( taskName => `- ${ taskName }` )
 	].join( '\n' );
 
-	console.log( red( errorMessage ) );
+	console.log( chalk.red( errorMessage ) );
 }

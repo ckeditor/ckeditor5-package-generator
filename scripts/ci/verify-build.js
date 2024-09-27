@@ -292,7 +292,7 @@ function logProcess( message ) {
  * @param {Object} expectedPublishFiles
  */
 function checkFileList( output, expectedPublishFiles ) {
-	const match = output.match( /Tarball Contents.+\n(?<lines>[\s\S]+)\n.+Tarball Details/ );
+	const match = output.match( /Tarball Contents.*\n(?<lines>[\s\S]+)\n.*Tarball Details/ );
 
 	if ( !match ) {
 		console.log( chalk.red( 'Command "npm publish" finished with an unexpected output.' ) );

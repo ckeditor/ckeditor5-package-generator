@@ -3,117 +3,109 @@
  * For licensing, see LICENSE.md.
  */
 
-import sinon from 'sinon';
-const expect = require( 'chai' ).expect;
+import { describe, it, expect, vi } from 'vitest';
+import parseArguments from '../../lib/utils/parse-arguments.js';
 
 describe( 'lib/utils/parse-arguments', () => {
-	let parseArguments;
-
-	beforeEach( () => {
-		parseArguments = require( '../../lib/utils/parse-arguments' );
-	} );
-
-	afterEach( () => {
-		sinon.restore();
-	} );
-
 	it( 'should be a function', () => {
-		expect( parseArguments ).to.be.a( 'function' );
+		expect( parseArguments ).toBeTypeOf( 'function' );
 	} );
 
 	it( 'returns the default values if modifiers are not specified', () => {
-		sinon.stub( process, 'cwd' ).returns( '/cwd' );
+		vi.spyOn( process, 'cwd' ).mockReturnValue( '/cwd' );
+
 		const options = parseArguments( [ 'task-to-execute' ] );
 
-		expect( options.production ).to.equal( false );
-		expect( options.verbose ).to.equal( false );
-		expect( options.watch ).to.equal( false );
-		expect( options.open ).to.equal( true );
-		expect( options.language ).to.equal( 'en' );
-		expect( options.organization ).to.equal( null );
-		expect( options.project ).to.equal( null );
-		expect( options.transifex ).to.equal( undefined );
+		expect( options.production ).toEqual( false );
+		expect( options.verbose ).toEqual( false );
+		expect( options.watch ).toEqual( false );
+		expect( options.open ).toEqual( true );
+		expect( options.language ).toEqual( 'en' );
+		expect( options.organization ).toEqual( null );
+		expect( options.project ).toEqual( null );
+		expect( options.transifex ).toEqual( undefined );
 	} );
 
 	it( 'assigns the current work directory as the "#cwd" property', () => {
-		sinon.stub( process, 'cwd' ).returns( '/cwd' );
+		vi.spyOn( process, 'cwd' ).mockReturnValue( '/cwd' );
+
 		const options = parseArguments( [ 'task-to-execute' ] );
 
-		expect( options.cwd ).to.equal( '/cwd' );
+		expect( options.cwd ).toEqual( '/cwd' );
 	} );
 
 	it( 'assigns the specified task as the "#task" property', () => {
 		const options = parseArguments( [ 'task-to-execute' ] );
 
-		expect( options.task ).to.equal( 'task-to-execute' );
+		expect( options.task ).toEqual( 'task-to-execute' );
 	} );
 
 	it( 'allows specifying the verbose option', () => {
 		const options = parseArguments( [ 'task-to-execute', '--verbose' ] );
 
-		expect( options.verbose ).to.equal( true );
+		expect( options.verbose ).toEqual( true );
 	} );
 
 	it( 'allows specifying the verbose option (using an alias)', () => {
 		const options = parseArguments( [ 'task-to-execute', '-v' ] );
 
-		expect( options.verbose ).to.equal( true );
+		expect( options.verbose ).toEqual( true );
 	} );
 
 	it( 'allows specifying the watch option', () => {
 		const options = parseArguments( [ 'task-to-execute', '--watch' ] );
 
-		expect( options.watch ).to.equal( true );
+		expect( options.watch ).toEqual( true );
 	} );
 
 	it( 'allows specifying the watch option (using an alias)', () => {
 		const options = parseArguments( [ 'task-to-execute', '-w' ] );
 
-		expect( options.watch ).to.equal( true );
+		expect( options.watch ).toEqual( true );
 	} );
 
 	it( 'allows specifying the production option', () => {
 		const options = parseArguments( [ 'task-to-execute', '--production' ] );
 
-		expect( options.production ).to.equal( true );
+		expect( options.production ).toEqual( true );
 	} );
 
 	it( 'allows specifying many modifiers', () => {
 		const options = parseArguments( [ 'task-to-execute', '--production', '--verbose', '-w' ] );
 
-		expect( options.production ).to.equal( true );
-		expect( options.verbose ).to.equal( true );
-		expect( options.watch ).to.equal( true );
+		expect( options.production ).toEqual( true );
+		expect( options.verbose ).toEqual( true );
+		expect( options.watch ).toEqual( true );
 	} );
 
 	it( 'does not attach aliases as available properties in the returned object', () => {
 		const options = parseArguments( [ 'task-to-execute' ] );
 
-		expect( options.v ).to.equal( undefined );
-		expect( options.w ).to.equal( undefined );
+		expect( options.v ).toEqual( undefined );
+		expect( options.w ).toEqual( undefined );
 	} );
 
 	it( 'allows set to `false` the "open" option by passing "--no-open"', () => {
 		const options = parseArguments( [ 'task-to-execute', '--no-open' ] );
 
-		expect( options.open ).to.equal( false );
+		expect( options.open ).toEqual( false );
 	} );
 
 	it( 'allows specifying the language option', () => {
 		const options = parseArguments( [ 'task-to-execute', '--language', 'pl' ] );
 
-		expect( options.language ).to.equal( 'pl' );
+		expect( options.language ).toEqual( 'pl' );
 	} );
 
 	it( 'allows specifying the organization option', () => {
 		const options = parseArguments( [ 'task-to-execute', '--organization', 'bar' ] );
 
-		expect( options.organization ).to.equal( 'bar' );
+		expect( options.organization ).toEqual( 'bar' );
 	} );
 
 	it( 'allows specifying the project option', () => {
 		const options = parseArguments( [ 'task-to-execute', '--project', 'foo' ] );
 
-		expect( options.project ).to.equal( 'foo' );
+		expect( options.project ).toEqual( 'foo' );
 	} );
 } );

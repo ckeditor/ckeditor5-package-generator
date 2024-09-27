@@ -23,7 +23,7 @@ describe( 'lib/tasks/translations-upload', () => {
 		vi.mocked( fs.readJsonSync ).mockImplementation( filePath => {
 			if ( filePath === '/workspace/package.json' ) {
 				return {
-					name: 'ckeditor5-foo'
+					name: '@ckeditor/ckeditor5-foo'
 				};
 			}
 		} );
@@ -34,6 +34,14 @@ describe( 'lib/tasks/translations-upload', () => {
 	} );
 
 	it( 'uploads translation files for package "ckeditor5-foo"', async () => {
+		vi.mocked( fs.readJsonSync ).mockImplementation( filePath => {
+			if ( filePath === '/workspace/package.json' ) {
+				return {
+					name: 'ckeditor5-foo'
+				};
+			}
+		} );
+
 		const results = await translationsUpload( {
 			cwd: '/workspace',
 			organization: 'foo',

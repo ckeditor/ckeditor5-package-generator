@@ -16,7 +16,7 @@
     "@ckeditor/ckeditor5-dev-translations": "^44.0.0-alpha.0",
     "@ckeditor/ckeditor5-dev-utils": "^44.0.0-alpha.0",
     "buffer": "^6.0.3",
-    "chalk": "^4.1.2",
+    "chalk": "^5.0.0",
     "css-loader": "^5.2.7",
     "fs-extra": "^11.2.0",
     "glob": "^7.1.7",
