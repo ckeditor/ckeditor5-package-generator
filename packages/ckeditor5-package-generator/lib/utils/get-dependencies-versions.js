@@ -30,11 +30,17 @@ const getPackageVersion = require( './get-package-version' );
 module.exports = function getDependenciesVersions( logger, dev ) {
 	logger.process( 'Collecting the latest CKEditor 5 packages versions...' );
 
+	// Due to the release of breaking changes in the `@ckeditor/ckeditor5-dev-*` packages, package generator must lock
+	// a version of the `@ckeditor/ckeditor5-dev-build-tools` package to the last compatible version: ^43.0.0.
+	// Package generator will be able to use latest stable version of the `@ckeditor/ckeditor5-dev-build-tools` when
+	// all blockers specified in https://github.com/ckeditor/ckeditor5-package-generator/issues/192 are resolved.
+	const ckeditor5DevBuildToolsVersion = '43.0.0';
+
 	return {
 		ckeditor5: getPackageVersion( 'ckeditor5' ),
 		ckeditor5PremiumFeatures: getPackageVersion( 'ckeditor5-premium-features' ),
 		ckeditor5Inspector: getPackageVersion( '@ckeditor/ckeditor5-inspector' ),
-		ckeditor5DevBuildTools: getPackageVersion( '@ckeditor/ckeditor5-dev-build-tools' ),
+		ckeditor5DevBuildTools: ckeditor5DevBuildToolsVersion,
 		eslintConfigCkeditor5: getPackageVersion( 'eslint-config-ckeditor5' ),
 		stylelintConfigCkeditor5: getPackageVersion( 'stylelint-config-ckeditor5' ),
 		packageTools: dev ?
