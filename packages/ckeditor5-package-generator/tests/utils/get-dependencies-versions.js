@@ -31,6 +31,7 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 		stubs.getPackageVersion.withArgs( 'ckeditor5' ).returns( '30.0.0' );
 		stubs.getPackageVersion.withArgs( '@ckeditor/ckeditor5-package-tools' ).returns( '1.0.0' );
 		stubs.getPackageVersion.withArgs( '@ckeditor/ckeditor5-inspector' ).returns( '4.0.0' );
+		stubs.getPackageVersion.withArgs( '@ckeditor/ckeditor5-dev-build-tools' ).returns( '7.0.0' );
 		stubs.getPackageVersion.withArgs( 'eslint-config-ckeditor5' ).returns( '5.0.0' );
 		stubs.getPackageVersion.withArgs( 'stylelint-config-ckeditor5' ).returns( '3.0.0' );
 
@@ -58,7 +59,12 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 		expect( returnedValue.ckeditor5 ).to.equal( '30.0.0' );
 	} );
 
-	it( 'returns an object with a version of the "eslint-config-ckeditor5', () => {
+	it( 'returns an object with a last compatible version of the "@ckeditor/ckeditor5-dev-build-tools" instead of the latest one', () => {
+		const returnedValue = getDependenciesVersions( stubs.logger, false );
+		expect( returnedValue.ckeditor5DevBuildTools ).to.equal( '43.0.0' );
+	} );
+
+	it( 'returns an object with a version of the "eslint-config-ckeditor5"', () => {
 		const returnedValue = getDependenciesVersions( stubs.logger, false );
 		expect( returnedValue.eslintConfigCkeditor5 ).to.equal( '5.0.0' );
 	} );
