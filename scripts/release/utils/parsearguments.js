@@ -29,7 +29,7 @@ module.exports = function parseArguments( cliArguments ) {
 
 		default: {
 			packages: null,
-			branch: 'master',
+			branch: 'master-v2',
 			'npm-tag': null,
 			ci: false,
 			'compile-only': false,
