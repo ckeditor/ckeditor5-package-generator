@@ -1,6 +1,26 @@
 Changelog
 =========
 
+## [2.1.1](https://github.com/ckeditor/ckeditor5-package-generator/compare/v2.1.0...v2.1.1) (2024-09-30)
+
+### Other changes
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Lock to the last compatible version of the `@ckeditor/ckeditor5-dev-build-tools` package due to the upcoming release of breaking changes in the `@ckeditor/ckeditor5-dev-*` packages. Closes [#191](https://github.com/ckeditor/ckeditor5-package-generator/issues/191). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/d031bb0321b4d66e9a97cf4b16475c40c773ad9f))
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Other releases:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/2.1.1): v2.1.0 => v2.1.1
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/2.1.1): v2.1.0 => v2.1.1
+</details>
+
+
 ## [3.0.0-alpha.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v2.1.0...v3.0.0-alpha.0) (2024-09-19)
 
 ### MINOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
