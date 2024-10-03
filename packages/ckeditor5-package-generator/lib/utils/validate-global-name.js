@@ -3,9 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
-const chalk = require( 'chalk' );
+import chalk from 'chalk';
 
 /**
  * If the global name is not valid, prints the error.
@@ -13,7 +11,7 @@ const chalk = require( 'chalk' );
  * @param {Logger} logger
  * @param {String} globalName
  */
-module.exports = function validateGlobalName( logger, globalName ) {
+export default function validateGlobalName( logger, globalName ) {
 	const validationError = validator( globalName );
 
 	if ( !validationError ) {
@@ -25,7 +23,7 @@ module.exports = function validateGlobalName( logger, globalName ) {
 
 	logger.info( 'The provided global name:    ' + chalk.red( globalName ) );
 	logger.info( 'Allowed characters list:     ' + chalk.blue( '0-9 A-Z a-z _ - / @' ) );
-};
+}
 
 /**
  * Checks if the global name is valid.

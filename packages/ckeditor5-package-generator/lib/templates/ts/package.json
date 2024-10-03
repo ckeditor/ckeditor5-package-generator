@@ -40,7 +40,7 @@
     "@typescript-eslint/parser": "^5.18.0",
     "@vitest/coverage-istanbul": "^2.0.5",
     "@vitest/browser": "^2.0.5",
-    "ckeditor5": "latest",
+    "ckeditor5": "nightly",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": ">=<%= packageVersions.eslintConfigCkeditor5 %>",
     "http-server": "^14.1.0",
@@ -60,7 +60,7 @@
   "scripts": {
     "build:dist": "node ./scripts/build-dist.mjs",
     "ts:build": "tsc -p ./tsconfig.release.json",
-    "ts:clear": "npx rimraf \"src/**/*.@(js|d.ts)\"",
+    "ts:clear": "npx rimraf --glob \"src/**/*.@(js|d.ts)\"",
     "lint": "eslint \"**/*.{js,ts}\" --quiet",
     "start": "ckeditor5-package-tools start",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",

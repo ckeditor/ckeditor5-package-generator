@@ -3,50 +3,31 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import webpack from 'webpack';
+import webpackDevServer from 'webpack-dev-server';
+import getWebpackConfigServer from '../../lib/utils/get-webpack-config-server.js';
+import startTask from '../../lib/tasks/start.js';
 
-const sinon = require( 'sinon' );
-const expect = require( 'chai' ).expect;
-const mockery = require( 'mockery' );
+vi.mock( 'webpack' );
+vi.mock( 'webpack-dev-server' );
+vi.mock( '../../lib/utils/get-webpack-config-server.js' );
 
 describe( 'lib/tasks/start', () => {
-	let startTask, stubs;
+	let stubs;
 
 	beforeEach( () => {
-		mockery.enable( {
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
-		} );
-
 		stubs = {
-			webpackDevServerArguments: null,
-
-			webpack: sinon.stub(),
-			webpackConfig: sinon.stub(),
 			server: {
-				start: sinon.stub()
+				start: vi.fn()
 			}
 		};
 
-		mockery.registerMock( 'webpack', stubs.webpack );
-		mockery.registerMock( 'webpack-dev-server', function( ...args ) {
-			stubs.webpackDevServerArguments = args;
-
-			return stubs.server;
-		} );
-		mockery.registerMock( '../utils/get-webpack-config-server', stubs.webpackConfig );
-
-		startTask = require( '../../lib/tasks/start' );
-	} );
-
-	afterEach( () => {
-		sinon.restore();
-		mockery.disable();
+		vi.mocked( webpackDevServer ).mockReturnValue( stubs.server );
 	} );
 
 	it( 'should be a function', () => {
-		expect( startTask ).to.be.a( 'function' );
+		expect( startTask ).toBeTypeOf( 'function' );
 	} );
 
 	it( 'should run webpack and enable server with the live-reloading mechanism', () => {
@@ -69,24 +50,25 @@ describe( 'lib/tasks/start', () => {
 		};
 
 		// Mock reading the configuration.
-		stubs.webpackConfig.returns( webpackConfig );
+		vi.mocked( getWebpackConfigServer ).mockReturnValue( webpackConfig );
 
 		// Webpack returns a compiler instance if callback is not specified.
-		stubs.webpack.returns( compiler );
+		vi.mocked( webpack ).mockReturnValue( compiler );
 
 		// Execute the task.
 		startTask( taskOptions );
 
 		// Verify arguments passed to webpack-dev-server.
-		expect( stubs.webpackDevServerArguments ).to.be.an( 'array' );
-		expect( stubs.webpackDevServerArguments[ 0 ] ).to.deep.equal( {
-			port: 9000,
-			open: true
-		} );
-		expect( stubs.webpackDevServerArguments[ 1 ] ).to.equal( compiler );
+		expect( webpackDevServer ).toHaveBeenCalledWith(
+			{
+				port: 9000,
+				open: true
+			},
+			compiler
+		);
 
 		// Verify whether the server was started.
-		expect( stubs.server.start.calledOnce ).to.equal( true );
+		expect( stubs.server.start ).toHaveBeenCalledTimes( 1 );
 	} );
 
 	it( 'should not open the browser if the open option is set to false', () => {
@@ -109,19 +91,21 @@ describe( 'lib/tasks/start', () => {
 		};
 
 		// Mock reading the configuration.
-		stubs.webpackConfig.returns( webpackConfig );
+		vi.mocked( getWebpackConfigServer ).mockReturnValue( webpackConfig );
 
 		// Webpack returns a compiler instance if callback is not specified.
-		stubs.webpack.returns( compiler );
+		vi.mocked( webpack ).mockReturnValue( compiler );
 
 		// Execute the task.
 		startTask( taskOptions );
 
 		// Verify arguments passed to webpack-dev-server.
-		expect( stubs.webpackDevServerArguments ).to.be.an( 'array' );
-		expect( stubs.webpackDevServerArguments[ 0 ] ).to.deep.equal( {
-			port: 9000,
-			open: false
-		} );
+		expect( webpackDevServer ).toHaveBeenCalledWith(
+			{
+				port: 9000,
+				open: false
+			},
+			compiler
+		);
 	} );
 } );

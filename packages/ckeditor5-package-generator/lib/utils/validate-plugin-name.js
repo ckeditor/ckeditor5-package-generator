@@ -3,9 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
-const chalk = require( 'chalk' );
+import chalk from 'chalk';
 
 /**
  * If the plugin name is not valid, prints the error and exits the process.
@@ -13,7 +11,7 @@ const chalk = require( 'chalk' );
  * @param {Logger} logger
  * @param {String|undefined} pluginName
  */
-module.exports = function validatePluginName( logger, pluginName ) {
+export default function validatePluginName( logger, pluginName ) {
 	// Custom plugin name is optional.
 	if ( !pluginName ) {
 		return;
@@ -34,7 +32,7 @@ module.exports = function validatePluginName( logger, pluginName ) {
 	logger.info( 'Allowed characters list:     ' + chalk.blue( '0-9 A-Z a-z' ) );
 
 	process.exit( 1 );
-};
+}
 
 /**
  * Checks if the plugin name is valid.

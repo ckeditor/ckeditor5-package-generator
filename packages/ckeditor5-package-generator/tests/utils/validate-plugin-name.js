@@ -3,103 +3,91 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import validatePluginName from '../../lib/utils/validate-plugin-name.js';
 
-const mockery = require( 'mockery' );
-const sinon = require( 'sinon' );
-const { expect } = require( 'chai' );
+vi.mock( 'chalk', () => ( {
+	default: {
+		red: vi.fn( str => str ),
+		blue: vi.fn( str => str )
+	}
+} ) );
 
 describe( 'lib/utils/validate-plugin-name', () => {
-	let stubs, validatePluginName;
+	let stubs;
 
 	beforeEach( () => {
-		mockery.enable( {
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
-		} );
+		vi.spyOn( process, 'exit' ).mockImplementation( () => {} );
 
 		stubs = {
 			logger: {
-				process: sinon.stub(),
-				error: sinon.stub(),
-				info: sinon.stub()
-			},
-			process: {
-				exit: sinon.stub( process, 'exit' )
-			},
-			chalk: {
-				red: sinon.stub().callsFake( str => str ),
-				blue: sinon.stub().callsFake( str => str )
+				error: vi.fn(),
+				info: vi.fn(),
+				process: vi.fn()
 			}
 		};
-
-		mockery.registerMock( 'chalk', stubs.chalk );
-
-		validatePluginName = require( '../../lib/utils/validate-plugin-name' );
-	} );
-
-	afterEach( () => {
-		mockery.deregisterAll();
-		sinon.restore();
 	} );
 
 	it( 'should be a function', () => {
-		expect( validatePluginName ).to.be.an( 'function' );
+		expect( validatePluginName ).toBeTypeOf( 'function' );
 	} );
 
 	it( 'does nothing if the plugin name is not provided', () => {
 		validatePluginName( stubs.logger );
 
-		expect( stubs.logger.process.called ).to.equal( false );
-		expect( stubs.logger.error.called ).to.equal( false );
-		expect( stubs.logger.info.called ).to.equal( false );
-		expect( stubs.process.exit.called ).to.equal( false );
+		expect( stubs.logger.process ).not.toHaveBeenCalled();
+		expect( stubs.logger.error ).not.toHaveBeenCalled();
+		expect( stubs.logger.info ).not.toHaveBeenCalled();
+		expect( process.exit ).not.toHaveBeenCalled();
 	} );
 
 	it( 'logs the process if the plugin name is provided', () => {
 		validatePluginName( stubs.logger, 'Foo' );
 
-		expect( stubs.logger.process.calledOnce ).to.equal( true );
-		expect( stubs.logger.process.firstCall.firstArg ).to.equal( 'Verifying the specified plugin name.' );
+		expect( stubs.logger.process ).toHaveBeenCalledTimes( 1 );
+		expect( stubs.logger.process ).toHaveBeenCalledWith( 'Verifying the specified plugin name.' );
 	} );
 
 	it( 'logs info about correct plugin name format in case of incorrect name', () => {
 		validatePluginName( stubs.logger, '#abc' );
 
-		expect( stubs.logger.error.calledTwice ).to.equal( true );
-		expect( stubs.logger.error.getCall( 0 ).firstArg ).to.equal( '❗ Found an error while verifying the provided plugin name:' );
+		expect( stubs.logger.error ).toHaveBeenCalledTimes( 2 );
+		expect( stubs.logger.error ).toHaveBeenNthCalledWith(
+			1,
+			'❗ Found an error while verifying the provided plugin name:',
+			{ startWithNewLine: true }
+		);
 
-		expect( stubs.logger.info.calledTwice ).to.equal( true );
-		expect( stubs.logger.info.getCall( 0 ).firstArg ).to.equal( 'The provided plugin name:    #abc' );
-		expect( stubs.logger.info.getCall( 1 ).firstArg ).to.equal( 'Allowed characters list:     0-9 A-Z a-z' );
+		expect( stubs.logger.info ).toHaveBeenCalledTimes( 2 );
+		expect( stubs.logger.info ).toHaveBeenNthCalledWith( 1, 'The provided plugin name:    #abc' );
+		expect( stubs.logger.info ).toHaveBeenNthCalledWith( 2, 'Allowed characters list:     0-9 A-Z a-z' );
 	} );
 
 	it( 'rejects plugin names containing non-allowed characters', () => {
 		validatePluginName( stubs.logger, '#abc' );
 
-		expect( stubs.process.exit.called ).to.equal( true );
-		expect( stubs.logger.error.getCall( 1 ).firstArg ).to.equal( 'The plugin name contains non-allowed characters.' );
+		expect( process.exit ).toHaveBeenCalled();
+		expect( stubs.logger.error ).toHaveBeenNthCalledWith( 2, 'The plugin name contains non-allowed characters.' );
 	} );
 
 	it( 'rejects plugin names that do not start with a letter', () => {
 		validatePluginName( stubs.logger, '9Abc' );
 
-		expect( stubs.process.exit.called ).to.equal( true );
-		expect( stubs.logger.error.getCall( 1 ).firstArg ).to.equal( 'The plugin name can not start with a digit.' );
+		expect( process.exit ).toHaveBeenCalled();
+		expect( stubs.logger.error ).toHaveBeenNthCalledWith( 2, 'The plugin name can not start with a digit.' );
 	} );
 
 	it( 'accepts plugin names that only contain letters', () => {
 		validatePluginName( stubs.logger, 'FooBar' );
 
-		expect( stubs.process.exit.called ).to.equal( false );
-		expect( stubs.logger.error.called ).to.equal( false );
+		expect( process.exit ).not.toHaveBeenCalled();
+		expect( stubs.logger.error ).not.toHaveBeenCalled();
 	} );
 
 	it( 'accepts plugin names that contain a number', () => {
 		validatePluginName( stubs.logger, 'Foo9bar' );
 
-		expect( stubs.process.exit.called ).to.equal( false );
-		expect( stubs.logger.error.called ).to.equal( false );
+		expect( process.exit ).not.toHaveBeenCalled();
+		expect( stubs.logger.error ).not.toHaveBeenCalled();
 	} );
 } );

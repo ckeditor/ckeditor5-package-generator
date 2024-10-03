@@ -3,8 +3,6 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
 const PARTS_REGEXP = /[0-9]+|[A-Za-z][a-z]*/g;
 
 /**
@@ -16,12 +14,12 @@ const PARTS_REGEXP = /[0-9]+|[A-Za-z][a-z]*/g;
  * @param {String|undefined} pluginName
  * @returns {FormattedNames}
  */
-module.exports = function getPackageNameFormats( packageName, pluginName ) {
+export default function getPackageNameFormats( packageName, pluginName ) {
 	return {
 		package: format( packageName ),
 		plugin: format( pluginName || packageName )
 	};
-};
+}
 
 /**
  * @param {String} name

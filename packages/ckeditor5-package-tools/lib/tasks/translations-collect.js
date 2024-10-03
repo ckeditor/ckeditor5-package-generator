@@ -3,13 +3,11 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import path from 'path';
+import glob from 'glob';
+import { createPotFiles } from '@ckeditor/ckeditor5-dev-transifex';
 
-const path = require( 'path' );
-const glob = require( 'glob' );
-const { createPotFiles } = require( '@ckeditor/ckeditor5-dev-transifex' );
-
-module.exports = options => {
+export default options => {
 	// Glob handles posix paths.
 	const sourceFilesGlob = path.join( options.cwd, 'src', '**', '*.[jt]s' ).split( /[\\/]/g ).join( '/' );
 

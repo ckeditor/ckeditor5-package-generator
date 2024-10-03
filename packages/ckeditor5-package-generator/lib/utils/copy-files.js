@@ -3,14 +3,16 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import chalk from 'chalk';
+import fs from 'fs';
+import glob from 'glob';
+import mkdirp from 'mkdirp';
+import path from 'path';
+import { template } from 'lodash-es';
+import { fileURLToPath } from 'url';
 
-const chalk = require( 'chalk' );
-const fs = require( 'fs' );
-const glob = require( 'glob' );
-const mkdirp = require( 'mkdirp' );
-const path = require( 'path' );
-const { template } = require( 'lodash' );
+const __filename = fileURLToPath( import.meta.url );
+const __dirname = path.dirname( __filename );
 
 const TEMPLATE_PATH = path.join( __dirname, '..', 'templates' );
 
@@ -28,7 +30,7 @@ const TEMPLATE_PATH = path.join( __dirname, '..', 'templates' );
  * @param {String} options.installationMethodOfPackage
  * @param {String} options.validatedGlobalName
  */
-module.exports = function copyFiles( logger, options ) {
+export default function copyFiles( logger, options ) {
 	logger.process( 'Copying files...' );
 
 	const supportsLegacyMethods = options.installationMethodOfPackage !== 'current';
@@ -58,7 +60,7 @@ module.exports = function copyFiles( logger, options ) {
 
 		copyTemplate( templatePath, options.directoryPath, data );
 	}
-};
+}
 
 /**
  * Copies all files into the package directory. If any file has any template placeholders, they are filled.

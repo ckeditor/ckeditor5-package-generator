@@ -3,31 +3,27 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
-const chalk = require( 'chalk' );
-
-const Logger = require( './utils/logger' );
-
-const chooseInstallationMethods = require( './utils/choose-installation-methods' );
-const choosePackageManager = require( './utils/choose-package-manager' );
-const chooseProgrammingLanguage = require( './utils/choose-programming-language' );
-const setGlobalName = require( './utils/set-global-name' );
-const copyFiles = require( './utils/copy-files' );
-const createDirectory = require( './utils/create-directory' );
-const getDependenciesVersions = require( './utils/get-dependencies-versions' );
-const getPackageNameFormats = require( './utils/get-package-name-formats' );
-const initializeGitRepository = require( './utils/initialize-git-repository' );
-const installDependencies = require( './utils/install-dependencies' );
-const installGitHooks = require( './utils/install-git-hooks' );
-const validatePackageName = require( './utils/validate-package-name' );
-const validatePluginName = require( './utils/validate-plugin-name' );
+import chalk from 'chalk';
+import Logger from './utils/logger.js';
+import chooseInstallationMethods from './utils/choose-installation-methods.js';
+import choosePackageManager from './utils/choose-package-manager.js';
+import chooseProgrammingLanguage from './utils/choose-programming-language.js';
+import setGlobalName from './utils/set-global-name.js';
+import copyFiles from './utils/copy-files.js';
+import createDirectory from './utils/create-directory.js';
+import getDependenciesVersions from './utils/get-dependencies-versions.js';
+import getPackageNameFormats from './utils/get-package-name-formats.js';
+import initializeGitRepository from './utils/initialize-git-repository.js';
+import installDependencies from './utils/install-dependencies.js';
+import installGitHooks from './utils/install-git-hooks.js';
+import validatePackageName from './utils/validate-package-name.js';
+import validatePluginName from './utils/validate-plugin-name.js';
 
 /**
  * @param {String|undefined} packageName
  * @param {CKeditor5PackageGeneratorOptions} options
  */
-module.exports = async function init( packageName, options ) {
+export default async function init( packageName, options ) {
 	const { dev, verbose, useNpm, useYarn, installationMethods, lang, pluginName, globalName } = options;
 
 	const logger = new Logger( verbose );
@@ -95,7 +91,7 @@ module.exports = async function init( packageName, options ) {
 			''
 		].join( '\n' ), { startWithNewLine: true } );
 	}
-};
+}
 
 /**
  * @typedef {Object} CKeditor5PackageGeneratorOptions

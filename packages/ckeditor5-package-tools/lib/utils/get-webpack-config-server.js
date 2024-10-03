@@ -3,19 +3,21 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
 /* eslint-env node */
 
-const fs = require( 'fs' );
-const path = require( 'path' );
-const webpack = require( 'webpack' );
-const { CKEditorTranslationsPlugin } = require( '@ckeditor/ckeditor5-dev-translations' );
-const { loaderDefinitions, getModuleResolutionPaths } = require( './webpack-utils' );
+import fs from 'fs';
+import path from 'path';
+import webpack from 'webpack';
+import { CKEditorTranslationsPlugin } from '@ckeditor/ckeditor5-dev-translations';
+import { loaderDefinitions, getModuleResolutionPaths } from './webpack-utils.js';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath( import.meta.url );
+const __dirname = path.dirname( __filename );
 
 const PACKAGE_ROOT_DIR = path.join( __dirname, '..', '..' );
 
-module.exports = options => {
+export default options => {
 	const webpackPlugins = [
 		new webpack.DefinePlugin( {
 			EDITOR_LANGUAGE: JSON.stringify( options.language )

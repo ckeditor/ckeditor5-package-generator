@@ -3,55 +3,37 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { execSync } from 'child_process';
+import getPackageVersion from '../../lib/utils/get-package-version.js';
 
-const sinon = require( 'sinon' );
-const expect = require( 'chai' ).expect;
-const mockery = require( 'mockery' );
+vi.mock( 'child_process' );
 
 describe( 'lib/utils/get-package-version', () => {
-	let getPackageVersion, execSyncStub;
-
 	beforeEach( () => {
-		mockery.enable( {
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
-		} );
-
-		execSyncStub = sinon.stub().returns( Buffer.from( '30.0.0' ) );
-
-		mockery.registerMock( 'child_process', {
-			execSync: execSyncStub
-		} );
-
-		getPackageVersion = require( '../../lib/utils/get-package-version' );
-	} );
-
-	afterEach( () => {
-		mockery.disable();
-		sinon.restore();
+		vi.mocked( execSync ).mockReturnValue( Buffer.from( '30.0.0' ) );
 	} );
 
 	it( 'should be a function', () => {
-		expect( getPackageVersion ).to.be.an( 'function' );
+		expect( getPackageVersion ).toBeTypeOf( 'function' );
 	} );
 
 	it( 'returns a string', () => {
 		const returnedValue = getPackageVersion( 'ckeditor5' );
 
-		expect( returnedValue ).to.be.a( 'string' );
+		expect( returnedValue ).toBeTypeOf( 'string' );
 	} );
 
 	it( 'calls "npm show" to determine the version', () => {
 		getPackageVersion( 'ckeditor5' );
 
-		expect( execSyncStub.firstCall.firstArg ).to.equal( 'npm view ckeditor5 version' );
+		expect( execSync ).toHaveBeenCalledTimes( 1 );
+		expect( execSync ).toHaveBeenCalledWith( 'npm view ckeditor5 version' );
 	} );
 
 	it( 'returns a version matching semantic versioning specification', () => {
 		const returnedValue = getPackageVersion( 'ckeditor5' );
 
-		expect( returnedValue ).to.equal( '30.0.0' );
+		expect( returnedValue ).toEqual( '30.0.0' );
 	} );
 } );

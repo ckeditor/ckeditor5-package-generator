@@ -3,13 +3,13 @@
  * For licensing, see LICENSE.md.
  */
 
-const mockery = require( 'mockery' );
-const sinon = require( 'sinon' );
-const { expect } = require( 'chai' );
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import inquirer from 'inquirer';
+import chooseInstallationMethods from '../../lib/utils/choose-installation-methods.js';
+
+vi.mock( 'inquirer' );
 
 describe( 'lib/utils/choose-installation-methods', () => {
-	let stubs, chooseInstallationMethods;
-
 	const INSTALLATION_METHODS = [
 		{
 			value: 'current',
@@ -23,41 +23,18 @@ describe( 'lib/utils/choose-installation-methods', () => {
 	];
 
 	beforeEach( () => {
-		mockery.enable( {
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
-		} );
-
-		stubs = {
-			inquirer: {
-				prompt: sinon.stub()
-			},
-			logger: {
-				error: sinon.stub()
-			}
-		};
-
-		stubs.inquirer.prompt.resolves( { installationMethod: INSTALLATION_METHODS[ 0 ].displayName } );
-
-		mockery.registerMock( 'inquirer', stubs.inquirer );
-
-		chooseInstallationMethods = require( '../../lib/utils/choose-installation-methods' );
-	} );
-
-	afterEach( () => {
-		mockery.disable();
+		vi.mocked( inquirer.prompt ).mockResolvedValue( { installationMethod: INSTALLATION_METHODS[ 0 ].displayName } );
 	} );
 
 	it( 'should be a function', () => {
-		expect( chooseInstallationMethods ).to.be.a( 'function' );
+		expect( chooseInstallationMethods ).toBeTypeOf( 'function' );
 	} );
 
 	it( 'calls prompt() with correct arguments', async () => {
-		await chooseInstallationMethods( stubs.logger );
+		await chooseInstallationMethods( vi.fn() );
 
-		expect( stubs.inquirer.prompt.callCount ).to.equal( 1 );
-		expect( stubs.inquirer.prompt.firstCall.firstArg ).to.deep.equal( [ {
+		expect( inquirer.prompt ).toHaveBeenCalledTimes( 1 );
+		expect( inquirer.prompt ).toHaveBeenCalledWith( [ {
 			prefix: '📍',
 			name: 'installationMethod',
 			message: 'Which installation methods of CKEditor 5 do you want to support?',
@@ -67,34 +44,39 @@ describe( 'lib/utils/choose-installation-methods', () => {
 	} );
 
 	it( 'returns correct value when user picks "Current"', async () => {
-		const result = await chooseInstallationMethods( stubs.logger );
+		const result = await chooseInstallationMethods( vi.fn() );
 
-		expect( result ).to.equal( 'current' );
+		expect( result ).toEqual( 'current' );
 	} );
 
 	it( 'returns correct value when user picks "Current and legacy methods with DLLs"', async () => {
-		stubs.inquirer.prompt.resolves( { installationMethod: INSTALLATION_METHODS[ 1 ].displayName } );
+		vi.mocked( inquirer.prompt ).mockResolvedValue( { installationMethod: INSTALLATION_METHODS[ 1 ].displayName } );
 
-		const result = await chooseInstallationMethods( stubs.logger );
+		const result = await chooseInstallationMethods( vi.fn() );
 
-		expect( result ).to.equal( 'current-and-legacy' );
+		expect( result ).toEqual( 'current-and-legacy' );
 	} );
 
 	it( 'returns installation method option if it defines a supported value', async () => {
-		const result = await chooseInstallationMethods( stubs.logger, 'current' );
+		const result = await chooseInstallationMethods( vi.fn(), 'current' );
 
-		expect( result ).to.equal( 'current' );
+		expect( result ).toEqual( 'current' );
 
-		expect( stubs.inquirer.prompt.callCount ).to.equal( 0 );
+		expect( inquirer.prompt ).not.toHaveBeenCalled();
 	} );
 
 	it( 'falls back to user input when installation method option has invalid value', async () => {
-		stubs.inquirer.prompt.resolves( { installationMethod: INSTALLATION_METHODS[ 1 ].displayName } );
+		const logger = {
+			error: vi.fn()
+		};
 
-		const result = await chooseInstallationMethods( stubs.logger, 'foobar' );
+		vi.mocked( inquirer.prompt ).mockResolvedValue( { installationMethod: INSTALLATION_METHODS[ 1 ].displayName } );
 
-		expect( result ).to.equal( 'current-and-legacy' );
+		const result = await chooseInstallationMethods( logger, 'foobar' );
 
-		expect( stubs.inquirer.prompt.callCount ).to.equal( 1 );
+		expect( result ).toEqual( 'current-and-legacy' );
+
+		expect( inquirer.prompt ).toHaveBeenCalledTimes( 1 );
+		expect( logger.error ).toHaveBeenCalledTimes( 1 );
 	} );
 } );

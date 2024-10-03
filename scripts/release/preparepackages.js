@@ -7,15 +7,14 @@
 
 /* eslint-env node */
 
-'use strict';
-
-const { Listr } = require( 'listr2' );
-const releaseTools = require( '@ckeditor/ckeditor5-dev-release-tools' );
-const parseArguments = require( './utils/parsearguments' );
-const getListrOptions = require( './utils/getlistroptions' );
-const { PACKAGE_GENERATOR_ROOT, PACKAGES_DIRECTORY, RELEASE_DIRECTORY } = require( './utils/constants' );
-const upath = require( 'upath' );
-const { globSync } = require( 'glob' );
+import fs from 'fs-extra';
+import { globSync } from 'glob';
+import { Listr } from 'listr2';
+import upath from 'upath';
+import * as releaseTools from '@ckeditor/ckeditor5-dev-release-tools';
+import parseArguments from './utils/parsearguments.js';
+import getListrOptions from './utils/getlistroptions.js';
+import { PACKAGE_GENERATOR_ROOT, PACKAGES_DIRECTORY, RELEASE_DIRECTORY } from './utils/constants.js';
 
 const cliArguments = parseArguments( process.argv.slice( 2 ) );
 const latestVersion = releaseTools.getLastFromChangelog();
@@ -25,7 +24,7 @@ const PACKAGE_GENERATOR_PACKAGES_NAMES = globSync( '*/', {
 	cwd: upath.join( PACKAGE_GENERATOR_ROOT, PACKAGES_DIRECTORY ),
 	absolute: true
 } ).map( packagePath => {
-	return require( upath.join( packagePath, 'package.json' ) ).name;
+	return fs.readJsonSync( upath.join( packagePath, 'package.json' ) ).name;
 } );
 
 const tasks = new Listr( [

@@ -3,9 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
-const chalk = require( 'chalk' );
+import chalk from 'chalk';
 
 const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
 
@@ -15,7 +13,7 @@ const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
  * @param {Logger} logger
  * @param {String|undefined} packageName
  */
-module.exports = function validatePackageName( logger, packageName ) {
+export default function validatePackageName( logger, packageName ) {
 	logger.process( 'Verifying the specified package name.' );
 
 	const validationError = validator( packageName );
@@ -32,7 +30,7 @@ module.exports = function validatePackageName( logger, packageName ) {
 	logger.info( 'Allowed characters list:     ' + chalk.blue( '0-9 a-z - . _' ) );
 
 	process.exit( 1 );
-};
+}
 
 /**
  * Checks if the package name is valid for the npm package, and if it follows the "@scope/ckeditor5-name" format.

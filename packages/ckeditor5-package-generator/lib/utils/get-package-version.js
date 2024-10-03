@@ -3,9 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
-const { execSync } = require( 'child_process' );
+import { execSync } from 'child_process';
 
 /**
  * Returns version of the specified package.
@@ -13,6 +11,6 @@ const { execSync } = require( 'child_process' );
  * @param packageName Name of the package to check the version of.
  * @return {String}
  */
-module.exports = function getPackageVersion( packageName ) {
+export default function getPackageVersion( packageName ) {
 	return execSync( `npm view ${ packageName } version` ).toString().trim();
-};
+}

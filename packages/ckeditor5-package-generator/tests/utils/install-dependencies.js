@@ -3,81 +3,60 @@
  * For licensing, see LICENSE.md.
  */
 
-const mockery = require( 'mockery' );
-const sinon = require( 'sinon' );
-const { expect } = require( 'chai' );
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { spawn } from 'child_process';
+import { tools } from '@ckeditor/ckeditor5-dev-utils';
+import installDependencies from '../../lib/utils/install-dependencies.js';
+
+vi.mock( 'chalk', () => ( {
+	default: {
+		gray: {
+			italic: vi.fn( str => str )
+		}
+	}
+} ) );
+vi.mock( 'child_process' );
+vi.mock( '@ckeditor/ckeditor5-dev-utils' );
 
 describe( 'lib/utils/install-dependencies', () => {
-	let defaultDirectoryPath, stubs, installDependencies;
+	let defaultDirectoryPath, stubs;
 
 	beforeEach( () => {
-		mockery.enable( {
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
-		} );
-
 		defaultDirectoryPath = 'directory/path/foo';
 
 		stubs = {
-			devUtils: {
-				tools: {
-					createSpinner: sinon.stub()
-				}
-			},
 			spinner: {
-				start: sinon.stub(),
-				finish: sinon.stub()
-			},
-			chalk: {
-				gray: {
-					italic: sinon.stub().callsFake( str => str )
-				}
-			},
-			childProcess: {
-				spawn: sinon.stub()
+				start: vi.fn(),
+				finish: vi.fn()
 			},
 			installTask: {
-				on: sinon.stub()
+				on: vi.fn()
 			}
 		};
 
-		stubs.devUtils.tools.createSpinner.returns( stubs.spinner );
-		stubs.childProcess.spawn.returns( stubs.installTask );
-
-		mockery.registerMock( '@ckeditor/ckeditor5-dev-utils', stubs.devUtils );
-		mockery.registerMock( 'chalk', stubs.chalk );
-		mockery.registerMock( 'child_process', stubs.childProcess );
-
-		installDependencies = require( '../../lib/utils/install-dependencies' );
-	} );
-
-	afterEach( () => {
-		mockery.disable();
+		vi.mocked( tools.createSpinner ).mockReturnValue( stubs.spinner );
+		vi.mocked( spawn ).mockReturnValue( stubs.installTask );
 	} );
 
 	it( 'should be a function', () => {
-		expect( installDependencies ).to.be.a( 'function' );
+		expect( installDependencies ).toBeTypeOf( 'function' );
 	} );
 
 	it( 'creates and removes the spinner', async () => {
 		await runTest( {} );
 
-		expect( stubs.devUtils.tools.createSpinner.callCount ).to.equal( 1 );
-		expect( stubs.spinner.start.callCount ).to.equal( 1 );
-		expect( stubs.spinner.finish.callCount ).to.equal( 1 );
+		expect( stubs.spinner.start ).toHaveBeenCalledTimes( 1 );
+		expect( stubs.spinner.finish ).toHaveBeenCalledTimes( 1 );
 
-		expect( stubs.devUtils.tools.createSpinner.getCall( 0 ).args ).to.deep.equal( [
-			'Installing dependencies... It takes a while.',
-			{ isDisabled: false }
-		] );
+		expect( tools.createSpinner ).toHaveBeenCalledTimes( 1 );
+		expect( tools.createSpinner ).toHaveBeenCalledWith( 'Installing dependencies... It takes a while.', { isDisabled: false } );
 	} );
 
 	it( 'installs dependencies using yarn', async () => {
 		await runTest( {} );
 
-		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
-		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
+		expect( spawn ).toHaveBeenCalledTimes( 1 );
+		expect( spawn ).toHaveBeenCalledWith(
 			'yarnpkg',
 			[],
 			{
@@ -86,14 +65,14 @@ describe( 'lib/utils/install-dependencies', () => {
 				cwd: defaultDirectoryPath,
 				stderr: 'inherit'
 			}
-		] );
+		);
 	} );
 
 	it( 'installs dependencies using yarn in verbose mode', async () => {
 		await runTest( { verbose: true } );
 
-		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
-		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
+		expect( spawn ).toHaveBeenCalledTimes( 1 );
+		expect( spawn ).toHaveBeenCalledWith(
 			'yarnpkg',
 			[],
 			{
@@ -103,36 +82,32 @@ describe( 'lib/utils/install-dependencies', () => {
 				stderr: 'inherit',
 				stdio: 'inherit'
 			}
-		] );
+		);
 	} );
 
 	it( 'installs dependencies using npm', async () => {
 		await runTest( { packageManager: 'npm' } );
 
-		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
-		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
+		expect( spawn ).toHaveBeenCalledTimes( 1 );
+		expect( spawn ).toHaveBeenCalledWith(
 			'npm',
-			[
-				'install'
-			],
+			[ 'install' ],
 			{
 				encoding: 'utf8',
 				shell: true,
 				cwd: defaultDirectoryPath,
 				stderr: 'inherit'
 			}
-		] );
+		);
 	} );
 
 	it( 'installs dependencies using npm in verbose mode', async () => {
 		await runTest( { packageManager: 'npm', verbose: true } );
 
-		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
-		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
+		expect( spawn ).toHaveBeenCalledTimes( 1 );
+		expect( spawn ).toHaveBeenCalledWith(
 			'npm',
-			[
-				'install'
-			],
+			[ 'install' ],
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -140,13 +115,17 @@ describe( 'lib/utils/install-dependencies', () => {
 				stderr: 'inherit',
 				stdio: 'inherit'
 			}
-		] );
+		);
 	} );
 
 	it( 'uses --install-links flag using npm in dev mode', async () => {
 		await runTest( { packageManager: 'npm', verbose: true, dev: true } );
 
-		expect( stubs.childProcess.spawn.getCall( 0 ).args[ 1 ].includes( '--install-links' ) ).to.equal( true );
+		expect( spawn ).toHaveBeenCalledWith(
+			'npm',
+			[ 'install', '--install-links' ],
+			expect.any( Object )
+		);
 	} );
 
 	it( 'throws an error when install task closes with error exit code', () => {
@@ -155,7 +134,7 @@ describe( 'lib/utils/install-dependencies', () => {
 				throw new Error( 'Expected to throw.' );
 			} )
 			.catch( err => {
-				expect( err.message ).to.equal( 'Installing dependencies finished with an error.' );
+				expect( err.message ).toEqual( 'Installing dependencies finished with an error.' );
 			} );
 	} );
 
@@ -171,7 +150,7 @@ describe( 'lib/utils/install-dependencies', () => {
 	 */
 	async function runTest( { packageManager = 'yarn', exitCode = 0, verbose = false, dev = false } ) {
 		const promise = installDependencies( defaultDirectoryPath, packageManager, verbose, dev );
-		const installTaskCloseCallback = stubs.installTask.on.getCall( 0 ).args[ 1 ];
+		const [ , installTaskCloseCallback ] = stubs.installTask.on.mock.calls[ 0 ];
 		await installTaskCloseCallback( exitCode );
 
 		return promise;

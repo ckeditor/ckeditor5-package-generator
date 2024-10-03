@@ -3,117 +3,88 @@
  * For licensing, see LICENSE.md.
  */
 
-const mockery = require( 'mockery' );
-const sinon = require( 'sinon' );
-const { expect } = require( 'chai' );
+import { describe, it, expect, vi } from 'vitest';
+import Logger from '../../lib/utils/logger.js';
+
+vi.stubGlobal( 'console', {
+	log: vi.fn()
+} );
+
+vi.mock( 'chalk', () => ( {
+	default: {
+		red: vi.fn( str => `red:[${ str }]` )
+	}
+} ) );
 
 describe( 'lib/utils/logger', () => {
-	let stubs,
-		Logger;
-
-	beforeEach( () => {
-		mockery.enable( {
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
-		} );
-
-		stubs = {
-			chalk: {
-				red: sinon.stub().callsFake( str => `red:[${ str }]` )
-			},
-			console: {
-				log: sinon.stub( console, 'log' )
-			},
-			_genericLog: sinon.stub()
-		};
-
-		mockery.registerMock( 'chalk', stubs.chalk );
-
-		Logger = require( '../../lib/utils/logger' );
-	} );
-
-	afterEach( () => {
-		mockery.deregisterAll();
-		mockery.disable();
-		sinon.restore();
-	} );
-
 	it( 'should be a function', () => {
-		expect( Logger ).to.be.a( 'function' );
+		expect( Logger ).toBeTypeOf( 'function' );
 	} );
 
 	describe( 'process()', () => {
 		it( 'calls the _genericLog() with correct arguments', () => {
 			const logger = new Logger( true );
-			logger._genericLog = stubs._genericLog;
+
+			vi.spyOn( logger, '_genericLog' ).mockImplementation( () => {} );
 
 			logger.process( 'Executing the task...', { startWithNewLine: true } );
 
-			expect( stubs.console.log.callCount ).to.equal( 0 );
-			expect( stubs._genericLog.callCount ).to.equal( 1 );
-			expect( stubs._genericLog.getCall( 0 ).args ).to.deep.equal( [
-				'📍 Executing the task...',
-				{ startWithNewLine: true }
-			] );
+			expect( console.log ).not.toHaveBeenCalled();
+			expect( logger._genericLog ).toHaveBeenCalledTimes( 1 );
+			expect( logger._genericLog ).toHaveBeenCalledWith( '📍 Executing the task...', { startWithNewLine: true } );
 		} );
 	} );
 
 	describe( 'info()', () => {
 		it( 'calls the _genericLog() with correct arguments', () => {
 			const logger = new Logger( true );
-			logger._genericLog = stubs._genericLog;
+
+			vi.spyOn( logger, '_genericLog' ).mockImplementation( () => {} );
 
 			logger.info( 'Logging some information...', { startWithNewLine: false } );
 
-			expect( stubs.console.log.callCount ).to.equal( 0 );
-			expect( stubs._genericLog.callCount ).to.equal( 1 );
-			expect( stubs._genericLog.getCall( 0 ).args ).to.deep.equal( [
-				'Logging some information...',
-				{ startWithNewLine: false }
-			] );
+			expect( console.log ).not.toHaveBeenCalled();
+			expect( logger._genericLog ).toHaveBeenCalledTimes( 1 );
+			expect( logger._genericLog ).toHaveBeenCalledWith( 'Logging some information...', { startWithNewLine: false } );
 		} );
 	} );
 
 	describe( 'verboseInfo()', () => {
 		it( 'calls the _genericLog() with correct arguments', () => {
 			const logger = new Logger( true );
-			logger._genericLog = stubs._genericLog;
+
+			vi.spyOn( logger, '_genericLog' ).mockImplementation( () => {} );
 
 			logger.verboseInfo( 'Logging some information...', { startWithNewLine: true } );
 
-			expect( stubs.console.log.callCount ).to.equal( 0 );
-			expect( stubs._genericLog.callCount ).to.equal( 1 );
-			expect( stubs._genericLog.getCall( 0 ).args ).to.deep.equal( [
-				'Logging some information...',
-				{ startWithNewLine: true }
-			] );
+			expect( console.log ).not.toHaveBeenCalled();
+			expect( logger._genericLog ).toHaveBeenCalledTimes( 1 );
+			expect( logger._genericLog ).toHaveBeenCalledWith( 'Logging some information...', { startWithNewLine: true } );
 		} );
 
 		it( 'does nothing if logger instance was created in non-verbose mode', () => {
 			const logger = new Logger( false );
-			logger._genericLog = stubs._genericLog;
+
+			vi.spyOn( logger, '_genericLog' ).mockImplementation( () => {} );
 
 			logger.verboseInfo( 'Logging some information...', { startWithNewLine: true } );
 
-			expect( stubs.console.log.callCount ).to.equal( 0 );
-			expect( stubs._genericLog.callCount ).to.equal( 0 );
+			expect( console.log ).not.toHaveBeenCalled();
+			expect( logger._genericLog ).not.toHaveBeenCalled();
 		} );
 	} );
 
 	describe( 'error()', () => {
 		it( 'calls the _genericLog() with correct arguments', () => {
 			const logger = new Logger( true );
-			logger._genericLog = stubs._genericLog;
+
+			vi.spyOn( logger, '_genericLog' ).mockImplementation( () => {} );
 
 			logger.error( 'Logging some error...', { startWithNewLine: false } );
 
-			expect( stubs.console.log.callCount ).to.equal( 0 );
-			expect( stubs._genericLog.callCount ).to.equal( 1 );
-			expect( stubs._genericLog.getCall( 0 ).args ).to.deep.equal( [
-				'red:[Logging some error...]',
-				{ startWithNewLine: false }
-			] );
+			expect( console.log ).not.toHaveBeenCalled();
+			expect( logger._genericLog ).toHaveBeenCalledTimes( 1 );
+			expect( logger._genericLog ).toHaveBeenCalledWith( 'red:[Logging some error...]', { startWithNewLine: false } );
 		} );
 	} );
 
@@ -123,8 +94,8 @@ describe( 'lib/utils/logger', () => {
 
 			logger._genericLog( 'The message', { startWithNewLine: false } );
 
-			expect( stubs.console.log.callCount ).to.equal( 1 );
-			expect( stubs.console.log.getCall( 0 ).args[ 0 ] ).to.equal( 'The message' );
+			expect( console.log ).toHaveBeenCalledTimes( 1 );
+			expect( console.log ).toHaveBeenCalledWith( 'The message' );
 		} );
 
 		it( 'prints empty line before the message if startWithNewLine option is true', () => {
@@ -132,9 +103,9 @@ describe( 'lib/utils/logger', () => {
 
 			logger._genericLog( 'The message', { startWithNewLine: true } );
 
-			expect( stubs.console.log.callCount ).to.equal( 2 );
-			expect( stubs.console.log.getCall( 0 ).args[ 0 ] ).to.equal();
-			expect( stubs.console.log.getCall( 1 ).args[ 0 ] ).to.equal( 'The message' );
+			expect( console.log ).toHaveBeenCalledTimes( 2 );
+			expect( console.log ).toHaveBeenNthCalledWith( 1 );
+			expect( console.log ).toHaveBeenNthCalledWith( 2, 'The message' );
 		} );
 
 		it( 'prints the message when no options were passed', () => {
@@ -142,8 +113,8 @@ describe( 'lib/utils/logger', () => {
 
 			logger._genericLog( 'The message' );
 
-			expect( stubs.console.log.callCount ).to.equal( 1 );
-			expect( stubs.console.log.getCall( 0 ).args[ 0 ] ).to.equal( 'The message' );
+			expect( console.log ).toHaveBeenCalledTimes( 1 );
+			expect( console.log ).toHaveBeenCalledWith( 'The message' );
 		} );
 	} );
 } );

@@ -3,92 +3,73 @@
  * For licensing, see LICENSE.md.
  */
 
-const mockery = require( 'mockery' );
-const sinon = require( 'sinon' );
-const { expect } = require( 'chai' );
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import fs from 'fs';
+import mkdirp from 'mkdirp';
+import createDirectory from '../../lib/utils/create-directory.js';
+
+vi.mock( 'chalk', () => ( {
+	default: {
+		cyan: str => str
+	}
+} ) );
+vi.mock( 'path', () => ( {
+	default: {
+		resolve: ( ...chunks ) => [ 'resolved', ...chunks ].join( '/' )
+	}
+} ) );
+vi.mock( 'fs' );
+vi.mock( 'mkdirp' );
 
 describe( 'lib/utils/create-directory', () => {
-	let stubs,
-		createDirectory;
+	let stubs;
 
 	beforeEach( () => {
-		mockery.enable( {
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
-		} );
+		vi.spyOn( process, 'exit' ).mockImplementation( () => {} );
 
 		stubs = {
-			chalk: {
-				cyan: sinon.stub().callsFake( str => str )
-			},
-			fs: {
-				existsSync: sinon.stub().returns( false )
-			},
-			mkdirp: {
-				sync: sinon.stub()
-			},
-			path: {
-				resolve: sinon.stub().callsFake( ( ...args ) => [ 'resolved', ...args ].join( '/' ) )
-			},
 			logger: {
-				process: sinon.stub(),
-				error: sinon.stub()
-			},
-			process: {
-				exit: sinon.stub( process, 'exit' )
+				process: vi.fn(),
+				error: vi.fn()
 			}
 		};
-
-		mockery.registerMock( 'chalk', stubs.chalk );
-		mockery.registerMock( 'fs', stubs.fs );
-		mockery.registerMock( 'mkdirp', stubs.mkdirp );
-		mockery.registerMock( 'path', stubs.path );
-
-		createDirectory = require( '../../lib/utils/create-directory' );
-	} );
-
-	afterEach( () => {
-		mockery.deregisterAll();
-		mockery.disable();
-		sinon.restore();
 	} );
 
 	it( 'should be a function', () => {
-		expect( createDirectory ).to.be.a( 'function' );
+		expect( createDirectory ).toBeTypeOf( 'function' );
 	} );
 
 	it( 'logs the process', () => {
 		createDirectory( stubs.logger, '@foo/ckeditor5-bar' );
 
-		expect( stubs.logger.process.callCount ).to.equal( 2 );
-		expect( stubs.logger.process.getCall( 0 ).args[ 0 ] ).to.equal( 'Checking whether the "ckeditor5-bar" directory can be created.' );
-		expect( stubs.logger.process.getCall( 1 ).args[ 0 ] ).to.equal( 'Creating the directory "resolved/ckeditor5-bar".' );
+		expect( stubs.logger.process ).toHaveBeenCalledTimes( 2 );
+		expect( stubs.logger.process ).toHaveBeenNthCalledWith( 1, 'Checking whether the "ckeditor5-bar" directory can be created.' );
+		expect( stubs.logger.process ).toHaveBeenNthCalledWith( 2, 'Creating the directory "resolved/ckeditor5-bar".' );
 	} );
 
 	it( 'creates the directory', () => {
 		createDirectory( stubs.logger, '@foo/ckeditor5-bar' );
 
-		expect( stubs.mkdirp.sync.callCount ).to.equal( 1 );
-		expect( stubs.mkdirp.sync.getCall( 0 ).args[ 0 ] ).to.equal( 'resolved/ckeditor5-bar' );
+		expect( mkdirp.sync ).toHaveBeenCalledTimes( 1 );
+		expect( mkdirp.sync ).toHaveBeenCalledWith( 'resolved/ckeditor5-bar' );
 	} );
 
 	it( 'logs an error and exits the process if the directory already exists', () => {
-		stubs.fs.existsSync.returns( true );
+		vi.mocked( fs.existsSync ).mockReturnValue( true );
 
 		createDirectory( stubs.logger, '@foo/ckeditor5-bar' );
 
-		expect( stubs.logger.error.callCount ).to.equal( 2 );
-		expect( stubs.logger.error.getCall( 0 ).args[ 0 ] ).to.equal( 'Cannot create a directory as the location is already taken.' );
-		expect( stubs.logger.error.getCall( 1 ).args[ 0 ] ).to.equal( 'Aborting.' );
+		expect( stubs.logger.error ).toHaveBeenCalledTimes( 2 );
+		expect( stubs.logger.error ).toHaveBeenNthCalledWith( 1, 'Cannot create a directory as the location is already taken.' );
+		expect( stubs.logger.error ).toHaveBeenNthCalledWith( 2, 'Aborting.' );
 
-		expect( stubs.process.exit.callCount ).to.equal( 1 );
+		expect( process.exit ).toHaveBeenCalledTimes( 1 );
 	} );
 
 	it( 'returns directory name and path', () => {
 		const result = createDirectory( stubs.logger, '@foo/ckeditor5-bar' );
 
-		expect( result ).to.deep.equal( {
+		expect( result ).toEqual( {
 			directoryName: 'ckeditor5-bar',
 			directoryPath: 'resolved/ckeditor5-bar'
 		} );

@@ -3,26 +3,19 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
-const { expect } = require( 'chai' );
+import { describe, it, expect } from 'vitest';
+import getPackageNameFormats from '../../lib/utils/get-package-name-formats.js';
 
 describe( 'lib/utils/get-package-name-formats', () => {
-	let getPackageNameFormats;
-
-	beforeEach( () => {
-		getPackageNameFormats = require( '../../lib/utils/get-package-name-formats' );
-	} );
-
 	it( 'should be a function', () => {
-		expect( getPackageNameFormats ).to.be.an( 'function' );
+		expect( getPackageNameFormats ).toBeTypeOf( 'function' );
 	} );
 
 	describe( 'without custom plugin name', () => {
 		it( 'returns correct package names for single word package names', () => {
 			const result = getPackageNameFormats( '@foo/ckeditor5-bar', undefined );
 
-			expect( result ).to.deep.equal( {
+			expect( result ).toEqual( {
 				package: {
 					raw: 'bar',
 					fullName: '@foo/ckeditor5-bar',
@@ -41,13 +34,13 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				}
 			} );
 
-			expect( result.package ).to.deep.equal( result.plugin );
+			expect( result.package ).toEqual( result.plugin );
 		} );
 
 		it( 'returns correct package names for package names with dot', () => {
 			const result = getPackageNameFormats( '@foo/ckeditor5-bar.baz', undefined );
 
-			expect( result ).to.deep.equal( {
+			expect( result ).toEqual( {
 				package: {
 					raw: 'bar.baz',
 					fullName: '@foo/ckeditor5-bar.baz',
@@ -66,13 +59,13 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				}
 			} );
 
-			expect( result.package ).to.deep.equal( result.plugin );
+			expect( result.package ).toEqual( result.plugin );
 		} );
 
 		it( 'returns correct package names for package names with dash', () => {
 			const result = getPackageNameFormats( '@foo/ckeditor5-bar-baz', undefined );
 
-			expect( result ).to.deep.equal( {
+			expect( result ).toEqual( {
 				package: {
 					raw: 'bar-baz',
 					fullName: '@foo/ckeditor5-bar-baz',
@@ -91,13 +84,13 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				}
 			} );
 
-			expect( result.package ).to.deep.equal( result.plugin );
+			expect( result.package ).toEqual( result.plugin );
 		} );
 
 		it( 'returns correct package names for package names with underscore', () => {
 			const result = getPackageNameFormats( '@foo/ckeditor5-bar_baz', undefined );
 
-			expect( result ).to.deep.equal( {
+			expect( result ).toEqual( {
 				package: {
 					raw: 'bar_baz',
 					fullName: '@foo/ckeditor5-bar_baz',
@@ -116,13 +109,13 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				}
 			} );
 
-			expect( result.package ).to.deep.equal( result.plugin );
+			expect( result.package ).toEqual( result.plugin );
 		} );
 
 		it( 'returns correct package names for package names with numbers', () => {
 			const result = getPackageNameFormats( '@foo/ckeditor5-bar99baz', undefined );
 
-			expect( result ).to.deep.equal( {
+			expect( result ).toEqual( {
 				package: {
 					raw: 'bar99baz',
 					fullName: '@foo/ckeditor5-bar99baz',
@@ -141,13 +134,13 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				}
 			} );
 
-			expect( result.package ).to.deep.equal( result.plugin );
+			expect( result.package ).toEqual( result.plugin );
 		} );
 
 		it( 'returns correct package names for package names with complex combinations', () => {
 			const result = getPackageNameFormats( '@foo/ckeditor5-bar-1.2baz__33baw', undefined );
 
-			expect( result ).to.deep.equal( {
+			expect( result ).toEqual( {
 				package: {
 					raw: 'bar-1.2baz__33baw',
 					fullName: '@foo/ckeditor5-bar-1.2baz__33baw',
@@ -166,7 +159,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				}
 			} );
 
-			expect( result.package ).to.deep.equal( result.plugin );
+			expect( result.package ).toEqual( result.plugin );
 		} );
 	} );
 
@@ -174,7 +167,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 		it( 'returns correct package names for single word package names', () => {
 			const result = getPackageNameFormats( '@foo/ckeditor5-xyz', 'Bar' );
 
-			expect( result ).to.deep.equal( {
+			expect( result ).toEqual( {
 				package: {
 					raw: 'xyz',
 					fullName: '@foo/ckeditor5-xyz',
@@ -193,13 +186,13 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				}
 			} );
 
-			expect( result.package ).to.not.deep.equal( result.plugin );
+			expect( result.package ).not.toEqual( result.plugin );
 		} );
 
 		it( 'returns correct package names for a two word package name', () => {
 			const result = getPackageNameFormats( '@foo/ckeditor5-xyz', 'BarBaz' );
 
-			expect( result ).to.deep.equal( {
+			expect( result ).toEqual( {
 				package: {
 					raw: 'xyz',
 					fullName: '@foo/ckeditor5-xyz',
@@ -218,13 +211,13 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				}
 			} );
 
-			expect( result.package ).to.not.deep.equal( result.plugin );
+			expect( result.package ).not.toEqual( result.plugin );
 		} );
 
 		it( 'returns correct package names for a three word package name', () => {
 			const result = getPackageNameFormats( '@foo/ckeditor5-xyz', 'BarBazBaw' );
 
-			expect( result ).to.deep.equal( {
+			expect( result ).toEqual( {
 				package: {
 					raw: 'xyz',
 					fullName: '@foo/ckeditor5-xyz',
@@ -243,13 +236,13 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				}
 			} );
 
-			expect( result.package ).to.not.deep.equal( result.plugin );
+			expect( result.package ).not.toEqual( result.plugin );
 		} );
 
 		it( 'returns correct package names for a package name with numbers', () => {
 			const result = getPackageNameFormats( '@foo/ckeditor5-xyz', 'Bar1baz22Baw' );
 
-			expect( result ).to.deep.equal( {
+			expect( result ).toEqual( {
 				package: {
 					raw: 'xyz',
 					fullName: '@foo/ckeditor5-xyz',
@@ -268,7 +261,7 @@ describe( 'lib/utils/get-package-name-formats', () => {
 				}
 			} );
 
-			expect( result.package ).to.not.deep.equal( result.plugin );
+			expect( result.package ).not.toEqual( result.plugin );
 		} );
 	} );
 } );

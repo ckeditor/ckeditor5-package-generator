@@ -3,17 +3,15 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
-const { prompt } = require( 'inquirer' );
-const isYarnInstalled = require( './is-yarn-installed' );
+import inquirer from 'inquirer';
+import isYarnInstalled from './is-yarn-installed.js';
 
 /**
  * @param {Boolean} useNpm
  * @param {Boolean} useYarn
  * @returns {Promise<'npm'|'yarn'>}
  */
-module.exports = async function choosePackageManager( useNpm, useYarn ) {
+export default async function choosePackageManager( useNpm, useYarn ) {
 	const yarnInstalled = isYarnInstalled();
 
 	if ( useYarn && !yarnInstalled ) {
@@ -37,13 +35,13 @@ module.exports = async function choosePackageManager( useNpm, useYarn ) {
 	}
 
 	return await askUserToChoosePackageManager();
-};
+}
 
 /**
  * @returns {Promise<'npm'|'yarn'>}
  */
 async function askUserToChoosePackageManager() {
-	const { packageManager } = await prompt( [ {
+	const { packageManager } = await inquirer.prompt( [ {
 		prefix: '📍',
 		name: 'packageManager',
 		message: 'Choose the package manager:',

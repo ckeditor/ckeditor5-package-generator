@@ -49,7 +49,7 @@ The `translations:download` and `translations:upload` tasks require the `--trans
 Available scripts can be called manually as Node scripts, e.g.:
 
 ```js
-const packageTools = require( '@ckeditor/ckeditor5-package-tools' );
+import packageTools from '@ckeditor/ckeditor5-package-tools';
 
 packageTools[ 'dll:build' ]( /* Ckeditor5PackageToolsOptions */ );
 ```

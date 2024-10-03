@@ -16,24 +16,26 @@
   "author": "CKSource (http://cksource.com/)",
   "license": "MIT",
   "homepage": "https://ckeditor.com/ckeditor-5",
+  "type": "module",
   "devDependencies": {
-    "@ckeditor/ckeditor5-dev-bump-year": "^42.0.0",
-    "@ckeditor/ckeditor5-dev-ci": "^42.0.0",
-    "@ckeditor/ckeditor5-dev-release-tools": "^42.0.0",
-    "@ckeditor/ckeditor5-dev-web-crawler": "^42.0.0",
-    "chalk": "^4.1.2",
+    "@ckeditor/ckeditor5-dev-bump-year": "^44.0.0",
+    "@ckeditor/ckeditor5-dev-ci": "^44.0.0",
+    "@ckeditor/ckeditor5-dev-release-tools": "^44.0.0",
+    "@ckeditor/ckeditor5-dev-web-crawler": "^44.0.0",
+    "@vitest/coverage-v8": "^2.1.1",
+    "chalk": "^5.0.0",
     "coveralls": "^3.1.1",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": "^6.0.0",
+    "fs-extra": "^11.2.0",
     "glob": "^10.2.5",
     "husky": "^8.0.2",
     "lint-staged": "^10.5.4",
     "minimist": "^1.2.8",
-    "mocha": "^10.7.3",
-    "nyc": "^15.1.0",
     "semver": "^7.0.0",
     "strip-ansi": "^6.0.1",
-    "upath": "^2.0.1"
+    "upath": "^2.0.1",
+    "vitest": "^2.0.5"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -41,37 +43,18 @@
   "scripts": {
     "postinstall": "node ./scripts/postinstall.js",
     "changelog": "node scripts/release/changelog.js",
-    "coverage": "nyc yarn run test",
     "lint": "eslint --quiet \"**/*.js\"",
     "precommit": "lint-staged",
     "release:prepare-packages": "node scripts/release/preparepackages.js",
     "release:publish-packages": "node scripts/release/publishpackages.js",
-    "test": "mocha 'packages/*/tests/**/*.js'",
-    "clean": "npx rimraf package-lock.json yarn.lock ./**/node_modules",
+    "test": "vitest run --config vitest.config.js",
+    "coverage": "vitest run --config vitest.config.js --coverage",
+    "clean": "npx rimraf --glob package-lock.json yarn.lock ./**/node_modules",
     "reinstall": "yarn run clean && yarn install"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/ckeditor/ckeditor5-package-generator.git"
-  },
-  "nyc": {
-    "reporter": [
-      "text-summary",
-      "lcov"
-    ],
-    "include": [
-      "packages/**/lib"
-    ],
-    "exclude": [
-      "packages/ckeditor5-package-generator/lib/templates"
-    ],
-    "cache": false,
-    "all": true,
-    "check-coverage": true,
-    "lines": 100,
-    "branches": 100,
-    "functions": 100,
-    "statements": 100
   },
   "lint-staged": {
     "**/*.js": [

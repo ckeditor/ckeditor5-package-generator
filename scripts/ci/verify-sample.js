@@ -7,15 +7,13 @@
 
 /* eslint-env node */
 
-'use strict';
-
-const { runCrawler } = require( '@ckeditor/ckeditor5-dev-web-crawler' );
+import { runCrawler } from '@ckeditor/ckeditor5-dev-web-crawler';
 
 // The crawler uses `process.exit()` to finish its work, so it needs to be executed in
 // a separated process to avoid canceling a build if the verification is in the middle of tasks
 // to verification.
 //
-// The ``process.argv` array structure:
+// The `process.argv` array structure:
 //
 // [0] = 'node'
 // [1] = './verify-sample.js'

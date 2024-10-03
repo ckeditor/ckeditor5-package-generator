@@ -5,13 +5,16 @@
  * For licensing, see LICENSE.md.
  */
 
-const fs = require( 'fs' );
-const path = require( 'path' );
-const { Command } = require( 'commander' );
+import fs from 'fs-extra';
+import path from 'path';
+import { Command } from 'commander';
+import { fileURLToPath } from 'url';
+import init from '../lib/index.js';
 
-const packageJson = require( '../package.json' );
+const __filename = fileURLToPath( import.meta.url );
+const __dirname = path.dirname( __filename );
 
-const init = require( '../lib/index' );
+const packageJson = fs.readJsonSync( path.join( __dirname, '..', 'package.json' ) );
 
 new Command( packageJson.name )
 	.argument( '[packageName]', 'name of the package (@scope/ckeditor5-*)' )

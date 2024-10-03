@@ -3,93 +3,72 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import fs from 'fs';
+import { CKEditorTranslationsPlugin } from '@ckeditor/ckeditor5-dev-translations';
+import { loaderDefinitions, getModuleResolutionPaths } from '../../lib/utils/webpack-utils.js';
+import getWebpackConfigServer from '../../lib/utils/get-webpack-config-server.js';
 
-const mockery = require( 'mockery' );
-const sinon = require( 'sinon' );
-const expect = require( 'chai' ).expect;
-const path = require( 'path' );
+const stubs = vi.hoisted( () => {
+	return {
+		definePlugin: vi.fn(),
+		providePlugin: vi.fn()
+	};
+} );
+
+vi.mock( 'path', () => ( {
+	default: {
+		dirname: () => '/packages/ckeditor5-package-tools/lib/utils',
+		join: ( ...chunks ) => chunks.join( '/' )
+	}
+} ) );
+vi.mock( 'webpack', () => ( {
+	default: {
+		DefinePlugin: class {
+			constructor( ...args ) {
+				stubs.definePlugin( ...args );
+			}
+		},
+		ProvidePlugin: class {
+			constructor( ...args ) {
+				stubs.providePlugin( ...args );
+			}
+		}
+	}
+} ) );
+vi.mock( 'fs' );
+vi.mock( '@ckeditor/ckeditor5-dev-translations' );
+vi.mock( '../../lib/utils/webpack-utils.js' );
 
 describe( 'lib/utils/get-webpack-config-server', () => {
-	let getWebpackConfigServer, stubs;
-
 	const cwd = '/process/cwd';
 
 	beforeEach( () => {
-		mockery.enable( {
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
+		vi.mocked( fs.readdirSync ).mockImplementation( dirPath => {
+			if ( dirPath === '/process/cwd/sample' ) {
+				return [
+					'ckeditor.js',
+					'dll.html',
+					'index.html'
+				];
+			}
 		} );
 
-		stubs = {
-			packageJson: {
-				name: '@ckeditor/ckeditor5-foo'
-			},
-			fs: {
-				readdirSync: sinon.stub()
-			},
-			path: {
-				join: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) ),
-				resolve: sinon.stub().callsFake( file => `/process/cwd/${ file }` )
-			},
-			webpack: sinon.stub(),
-			providePlugin: sinon.stub(),
-			definePlugin: sinon.stub(),
-			devTranslations: {
-				CKEditorTranslationsPlugin: sinon.stub()
-			},
-			webpackUtils: {
-				loaderDefinitions: {
-					raw: sinon.stub(),
-					styles: sinon.stub(),
-					typescript: sinon.stub()
-				},
-				getModuleResolutionPaths: sinon.stub()
-			}
-		};
+		vi.mocked( loaderDefinitions.raw ).mockReturnValue( 'raw-loader' );
+		vi.mocked( loaderDefinitions.typescript ).mockReturnValue( 'typescript-loader' );
+		vi.mocked( loaderDefinitions.styles ).mockReturnValue( 'styles-loader' );
 
-		stubs.webpackUtils.loaderDefinitions.raw.returns( 'raw-loader' );
-		stubs.webpackUtils.loaderDefinitions.typescript.returns( 'typescript-loader' );
-		stubs.webpackUtils.loaderDefinitions.styles.withArgs( cwd ).returns( 'styles-loader' );
-		stubs.webpackUtils.getModuleResolutionPaths.returns( 'loader-resolution-paths' );
-
-		stubs.fs.readdirSync.withArgs( '/process/cwd/sample' ).returns( [
-			'ckeditor.js',
-			'dll.html',
-			'index.html'
-		] );
-
-		stubs.webpack.ProvidePlugin = function( ...args ) {
-			return stubs.providePlugin( ...args );
-		};
-
-		stubs.webpack.DefinePlugin = function( ...args ) {
-			return stubs.definePlugin( ...args );
-		};
-
-		mockery.registerMock( 'fs', stubs.fs );
-		mockery.registerMock( 'path', stubs.path );
-		mockery.registerMock( 'webpack', stubs.webpack );
-		mockery.registerMock( './webpack-utils', stubs.webpackUtils );
-		mockery.registerMock( '@ckeditor/ckeditor5-dev-translations', stubs.devTranslations );
-
-		getWebpackConfigServer = require( '../../lib/utils/get-webpack-config-server' );
-	} );
-
-	afterEach( () => {
-		sinon.restore();
-		mockery.disable();
+		vi.mocked( getModuleResolutionPaths ).mockReturnValue( 'loader-resolution-paths' );
 	} );
 
 	it( 'should be a function', () => {
-		expect( getWebpackConfigServer ).to.be.a( 'function' );
+		expect( getWebpackConfigServer ).toBeTypeOf( 'function' );
 	} );
 
 	it( 'uses correct loaders', () => {
 		const config = getWebpackConfigServer( { cwd } );
 
-		expect( config.module.rules ).to.deep.equal( [
+		expect( config.module.rules ).toEqual( [
 			'raw-loader',
 			'styles-loader',
 			'typescript-loader'
@@ -99,65 +78,70 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 	it( 'passes the "cwd" directory to TypeScript loader', () => {
 		getWebpackConfigServer( { cwd } );
 
-		expect( stubs.webpackUtils.loaderDefinitions.typescript.callCount ).to.equal( 1 );
-		expect( stubs.webpackUtils.loaderDefinitions.typescript.firstCall.args[ 0 ] ).to.equal( cwd );
+		expect( loaderDefinitions.typescript ).toHaveBeenCalledTimes( 1 );
+		expect( loaderDefinitions.typescript ).toHaveBeenCalledWith( cwd );
 	} );
 
 	it( 'passes the "cwd" directory to Styles loader', () => {
 		getWebpackConfigServer( { cwd } );
 
-		expect( stubs.webpackUtils.loaderDefinitions.styles.callCount ).to.equal( 1 );
-		expect( stubs.webpackUtils.loaderDefinitions.styles.firstCall.args[ 0 ] ).to.equal( cwd );
+		expect( loaderDefinitions.styles ).toHaveBeenCalledTimes( 1 );
+		expect( loaderDefinitions.styles ).toHaveBeenCalledWith( cwd );
 	} );
 
 	it( 'resolves correct file extensions', () => {
 		const config = getWebpackConfigServer( { cwd } );
 
-		expect( config.resolve.extensions ).to.deep.equal( [ '.ts', '...' ] );
+		expect( config.resolve.extensions ).toEqual( [ '.ts', '...' ] );
 	} );
 
 	it( 'resolves correct module paths', () => {
 		const config = getWebpackConfigServer( { cwd } );
 
-		expect( config.resolve ).to.have.property( 'modules', 'loader-resolution-paths' );
+		expect( config.resolve ).toHaveProperty( 'modules', 'loader-resolution-paths' );
 	} );
 
 	it( 'resolves correct loader paths', () => {
 		const config = getWebpackConfigServer( { cwd } );
 
-		expect( config.resolveLoader ).to.have.property( 'modules', 'loader-resolution-paths' );
+		expect( config.resolveLoader ).toHaveProperty( 'modules', 'loader-resolution-paths' );
 	} );
 
 	it( 'calls "getModuleResolutionPaths" with correct arguments', () => {
 		getWebpackConfigServer( { cwd } );
 
-		expect( stubs.webpackUtils.getModuleResolutionPaths.callCount ).to.equal( 1 );
-		const normalizedArgument = stubs.webpackUtils.getModuleResolutionPaths.firstCall.firstArg
-			.split( path.sep ).join( path.posix.sep );
-		expect( normalizedArgument.endsWith( '/packages/ckeditor5-package-tools/lib/utils/../..' ) ).to.equal( true );
+		expect( getModuleResolutionPaths ).toHaveBeenCalledTimes( 1 );
+
+		const [ firstArgument ] = getModuleResolutionPaths.mock.calls[ 0 ];
+
+		expect( firstArgument.endsWith( '/packages/ckeditor5-package-tools/lib/utils/../..' ) ).toEqual( true );
 	} );
 
 	it( 'processes the "ckeditor.js" file', () => {
 		const config = getWebpackConfigServer( { cwd } );
 
-		expect( config.entry ).to.equal( '/process/cwd/sample/ckeditor.js' );
-		expect( config.output ).to.deep.equal( {
+		expect( config.entry ).toEqual( '/process/cwd/sample/ckeditor.js' );
+		expect( config.output ).toEqual( {
 			filename: 'ckeditor.dist.js',
 			path: '/process/cwd/sample'
 		} );
 	} );
 
 	it( 'processes the "ckeditor.ts" file', () => {
-		stubs.fs.readdirSync.withArgs( '/process/cwd/sample' ).returns( [
-			'ckeditor.ts',
-			'dll.html',
-			'index.html'
-		] );
+		vi.mocked( fs.readdirSync ).mockImplementation( dirPath => {
+			if ( dirPath === '/process/cwd/sample' ) {
+				return [
+					'ckeditor.ts',
+					'dll.html',
+					'index.html'
+				];
+			}
+		} );
 
 		const config = getWebpackConfigServer( { cwd } );
 
-		expect( config.entry ).to.equal( '/process/cwd/sample/ckeditor.ts' );
-		expect( config.output ).to.deep.equal( {
+		expect( config.entry ).toEqual( '/process/cwd/sample/ckeditor.ts' );
+		expect( config.output ).toEqual( {
 			filename: 'ckeditor.dist.js',
 			path: '/process/cwd/sample'
 		} );
@@ -166,24 +150,25 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 	it( 'loads "process" polyfill for webpack 5', () => {
 		getWebpackConfigServer( { cwd } );
 
-		expect( stubs.providePlugin.calledOnce ).to.equal( true );
-		expect( stubs.providePlugin.firstCall.firstArg ).to.be.an( 'object' );
-		expect( stubs.providePlugin.firstCall.firstArg ).to.have.property( 'process', 'process/browser' );
+		expect( stubs.providePlugin ).toHaveBeenCalledTimes( 1 );
+		expect( stubs.providePlugin ).toHaveBeenCalledWith( expect.objectContaining( {
+			process: 'process/browser'
+		} ) );
 	} );
 
 	it( 'loads "Buffer" polyfill for webpack 5', () => {
 		getWebpackConfigServer( { cwd } );
 
-		expect( stubs.providePlugin.calledOnce ).to.equal( true );
-		expect( stubs.providePlugin.firstCall.firstArg ).to.be.an( 'object' );
-		expect( stubs.providePlugin.firstCall.firstArg ).to.have.property( 'Buffer' );
-		expect( stubs.providePlugin.firstCall.firstArg.Buffer ).to.deep.equal( [ 'buffer', 'Buffer' ] );
+		expect( stubs.providePlugin ).toHaveBeenCalledTimes( 1 );
+		expect( stubs.providePlugin ).toHaveBeenCalledWith( expect.objectContaining( {
+			Buffer: [ 'buffer', 'Buffer' ]
+		} ) );
 	} );
 
 	it( 'defines the configuration for an HTTP server', () => {
 		const config = getWebpackConfigServer( { cwd } );
 
-		expect( config.devServer ).to.deep.equal( {
+		expect( config.devServer ).toEqual( {
 			static: {
 				directory: '/process/cwd/sample'
 			},
@@ -194,21 +179,21 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 	it( 'defines the development mode by default for an HTTP server', () => {
 		const config = getWebpackConfigServer( { cwd } );
 
-		expect( config.mode ).to.equal( 'development' );
+		expect( config.mode ).toEqual( 'development' );
 	} );
 
 	it( 'defines the production mode for an HTTP server', () => {
 		const config = getWebpackConfigServer( { cwd, production: true } );
 
-		expect( config.mode ).to.equal( 'production' );
+		expect( config.mode ).toEqual( 'production' );
 	} );
 
 	describe( 'sample language', () => {
 		it( 'passes the specified language directly to source file', () => {
 			getWebpackConfigServer( { cwd, language: 'en' } );
 
-			expect( stubs.definePlugin.calledOnce ).to.equal( true );
-			expect( stubs.definePlugin.firstCall.firstArg ).to.deep.equal( {
+			expect( stubs.definePlugin ).toHaveBeenCalledTimes( 1 );
+			expect( stubs.definePlugin ).toHaveBeenCalledWith( {
 				EDITOR_LANGUAGE: '"en"'
 			} );
 		} );
@@ -216,13 +201,13 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		it( 'enables producing translations for non-English editors', () => {
 			getWebpackConfigServer( { cwd, language: 'pl' } );
 
-			expect( stubs.definePlugin.calledOnce ).to.equal( true );
-			expect( stubs.definePlugin.firstCall.firstArg ).to.deep.equal( {
+			expect( stubs.definePlugin ).toHaveBeenCalledTimes( 1 );
+			expect( stubs.definePlugin ).toHaveBeenCalledWith( {
 				EDITOR_LANGUAGE: '"pl"'
 			} );
 
-			expect( stubs.devTranslations.CKEditorTranslationsPlugin.calledOnce ).to.equal( true );
-			expect( stubs.devTranslations.CKEditorTranslationsPlugin.firstCall.firstArg ).to.deep.equal( {
+			expect( CKEditorTranslationsPlugin ).toHaveBeenCalledTimes( 1 );
+			expect( CKEditorTranslationsPlugin ).toHaveBeenCalledWith( {
 				language: 'pl',
 				sourceFilesPattern: /src[/\\].+\.[jt]s$/
 			} );
