@@ -40,7 +40,7 @@
     "@typescript-eslint/parser": "^5.18.0",
     "@vitest/coverage-istanbul": "^2.0.5",
     "@vitest/browser": "^2.0.5",
-    "ckeditor5": "latest",
+    "ckeditor5": "nightly",
     "eslint": "^7.32.0",
     "eslint-config-ckeditor5": ">=<%= packageVersions.eslintConfigCkeditor5 %>",
     "http-server": "^14.1.0",
