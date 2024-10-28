@@ -5,13 +5,13 @@
 
 import path from 'path';
 import glob from 'glob';
-import { createPotFiles } from '@ckeditor/ckeditor5-dev-transifex';
+import { synchronizeTranslations } from '@ckeditor/ckeditor5-dev-translations';
 
 export default options => {
 	// Glob handles posix paths.
 	const sourceFilesGlob = path.join( options.cwd, 'src', '**', '*.[jt]s' ).split( /[\\/]/g ).join( '/' );
 
-	return createPotFiles( {
+	return synchronizeTranslations( {
 		// An array containing absolute paths the package sources.
 		sourceFiles: glob.sync( sourceFilesGlob ),
 
@@ -24,8 +24,8 @@ export default options => {
 		// Ignore unused from the core package, as the shared context may but does not have to be used.
 		ignoreUnusedCorePackageContexts: true,
 
-		// Where to save translation files.
-		translationsDirectory: path.join( options.cwd, 'tmp', '.transifex' ),
+		// Whether to validate the translations contexts against the source messages only. No files will be updated.
+		validateOnly: options.validateOnly,
 
 		// Skip the license header.
 		skipLicenseHeader: true
