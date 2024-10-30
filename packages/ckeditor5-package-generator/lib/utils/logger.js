@@ -3,9 +3,9 @@
  * For licensing, see LICENSE.md.
  */
 
-const chalk = require( 'chalk' );
+import chalk from 'chalk';
 
-module.exports = class Logger {
+export default class Logger {
 	/**
 	 * @param {boolean} verbose
 	 */
@@ -60,7 +60,7 @@ module.exports = class Logger {
 
 		console.log( message );
 	}
-};
+}
 
 /**
  * @typedef {Object} Options

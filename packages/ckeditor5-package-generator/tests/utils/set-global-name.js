@@ -3,70 +3,61 @@
  * For licensing, see LICENSE.md.
  */
 
-const mockery = require( 'mockery' );
-const sinon = require( 'sinon' );
-const { expect, config } = require( 'chai' );
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import inquirer from 'inquirer';
+import validateGlobalName from '../../lib/utils/validate-global-name.js';
+import setGlobalName from '../../lib/utils/set-global-name.js';
 
-config.truncateThreshold = 0;
+vi.mock( 'inquirer' );
+vi.mock( '../../lib/utils/validate-global-name.js' );
 
 describe( 'lib/utils/set-global-name', () => {
-	let stubs, setGlobalName;
+	let stubs;
 
 	beforeEach( () => {
-		mockery.enable( {
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
-		} );
+		vi.mocked( inquirer.prompt ).mockResolvedValue( 'GLOBAL' );
+		vi.mocked( validateGlobalName ).mockReturnValue( true );
 
 		stubs = {
-			inquirer: {
-				prompt: sinon.stub()
-			},
 			logger: {
-				info: sinon.stub(),
-				error: sinon.stub()
-			},
-			validateGlobalName: sinon.stub()
+				error: vi.fn()
+			}
 		};
-
-		stubs.inquirer.prompt.resolves( 'GLOBAL' );
-
-		mockery.registerMock( 'inquirer', stubs.inquirer );
-
-		setGlobalName = require( '../../lib/utils/set-global-name' );
-	} );
-
-	afterEach( () => {
-		mockery.disable();
 	} );
 
 	it( 'should be a function', () => {
-		expect( setGlobalName ).to.be.a( 'function' );
+		expect( setGlobalName ).toBeTypeOf( 'function' );
 	} );
 
 	it( 'calls prompt() with correct arguments', async () => {
 		await setGlobalName( stubs.logger );
 
-		expect( stubs.inquirer.prompt.callCount ).to.equal( 1 );
-		expect( stubs.inquirer.prompt.firstCall.firstArg.required ).to.equal( true );
-		expect( stubs.inquirer.prompt.firstCall.firstArg.message ).to.equal( 'Enter the global name for plugin for UMD build' );
-		expect( stubs.inquirer.prompt.firstCall.firstArg.type ).to.equal( 'input' );
-		expect( stubs.inquirer.prompt.firstCall.firstArg.name ).to.equal( 'globalName' );
-		expect( stubs.inquirer.prompt.firstCall.firstArg.validate ).to.be.a( 'function' );
+		expect( inquirer.prompt ).toHaveBeenCalledTimes( 1 );
+		expect( inquirer.prompt ).toHaveBeenCalledWith( {
+			required: true,
+			message: 'Enter the global name for plugin for UMD build',
+			type: 'input',
+			name: 'globalName',
+			validate: expect.any( Function )
+		} );
 	} );
 
 	it( 'returns correct value when user input "GLOBAL"', async () => {
 		const result = await setGlobalName( stubs.logger, 'GLOBAL' );
 
-		expect( result ).to.equal( 'GLOBAL' );
+		expect( result ).toEqual( 'GLOBAL' );
 	} );
 
 	it( 'falls back to user input when global name has invalid value', async () => {
+		vi.mocked( validateGlobalName ).mockReturnValue( false );
+
 		const result = await setGlobalName( stubs.logger, '1234foobar' );
 
-		expect( result ).to.equal( undefined );
+		expect( result ).toEqual( undefined );
 
-		expect( stubs.inquirer.prompt.callCount ).to.equal( 1 );
+		expect( inquirer.prompt ).toHaveBeenCalledTimes( 1 );
+
+		expect( stubs.logger.error ).toHaveBeenCalledTimes( 1 );
+		expect( stubs.logger.error ).toHaveBeenCalledWith( '--global-name does not match the pattern. Falling back to manual choice.' );
 	} );
 } );

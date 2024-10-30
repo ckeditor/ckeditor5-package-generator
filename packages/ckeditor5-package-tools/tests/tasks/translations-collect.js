@@ -3,48 +3,26 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import glob from 'glob';
+import { createPotFiles } from '@ckeditor/ckeditor5-dev-transifex';
+import translationsCollect from '../../lib/tasks/translations-collect.js';
 
-const sinon = require( 'sinon' );
-const expect = require( 'chai' ).expect;
-const mockery = require( 'mockery' );
+vi.mock( 'path', () => ( {
+	default: {
+		join: ( ...chunks ) => chunks.join( '/' )
+	}
+} ) );
+vi.mock( 'glob' );
+vi.mock( '@ckeditor/ckeditor5-dev-transifex' );
 
 describe( 'lib/tasks/translations-collect', () => {
-	let translationsCollect, stubs;
-
 	beforeEach( () => {
-		mockery.enable( {
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
-		} );
-
-		stubs = {
-			transifex: {
-				createPotFiles: sinon.stub()
-			},
-			path: {
-				join: sinon.stub().callsFake( ( ...chunks ) => chunks.join( '/' ) )
-			},
-			glob: {
-				sync: sinon.stub()
-			}
-		};
-
-		mockery.registerMock( 'path', stubs.path );
-		mockery.registerMock( 'glob', stubs.glob );
-		mockery.registerMock( '@ckeditor/ckeditor5-dev-transifex', stubs.transifex );
-
-		translationsCollect = require( '../../lib/tasks/translations-collect' );
-	} );
-
-	afterEach( () => {
-		sinon.restore();
-		mockery.disable();
+		vi.mocked( createPotFiles ).mockReturnValue( 'OK' );
 	} );
 
 	it( 'should be a function', () => {
-		expect( translationsCollect ).to.be.a( 'function' );
+		expect( translationsCollect ).toBeTypeOf( 'function' );
 	} );
 
 	it( 'creates translation files (JavaScript)', () => {
@@ -53,20 +31,19 @@ describe( 'lib/tasks/translations-collect', () => {
 			'/workspace/ckeditor5-foo/src/myplugin.js'
 		];
 
-		stubs.glob.sync.returns( sourceFiles );
-		stubs.transifex.createPotFiles.returns( 'OK' );
+		vi.mocked( glob.sync ).mockReturnValue( sourceFiles );
 
 		const results = translationsCollect( {
 			cwd: '/workspace'
 		} );
 
-		expect( results ).to.equal( 'OK' );
+		expect( results ).toEqual( 'OK' );
 
-		expect( stubs.glob.sync.calledOnce ).to.equal( true );
-		expect( stubs.glob.sync.firstCall.firstArg ).to.equal( '/workspace/src/**/*.[jt]s' );
+		expect( glob.sync ).toHaveBeenCalledTimes( 1 );
+		expect( glob.sync ).toHaveBeenCalledWith( '/workspace/src/**/*.[jt]s' );
 
-		expect( stubs.transifex.createPotFiles.calledOnce ).to.equal( true );
-		expect( stubs.transifex.createPotFiles.firstCall.firstArg ).to.deep.equal( {
+		expect( createPotFiles ).toHaveBeenCalledTimes( 1 );
+		expect( createPotFiles ).toHaveBeenCalledWith( {
 			// Verify results returned by `glob.sync()`.
 			sourceFiles,
 			// Verify a path to the `@ckeditor/ckeditor5-core` package.
@@ -90,20 +67,19 @@ describe( 'lib/tasks/translations-collect', () => {
 			'/workspace/ckeditor5-foo/src/myplugin.ts'
 		];
 
-		stubs.glob.sync.returns( sourceFiles );
-		stubs.transifex.createPotFiles.returns( 'OK' );
+		vi.mocked( glob.sync ).mockReturnValue( sourceFiles );
 
 		const results = translationsCollect( {
 			cwd: '/workspace'
 		} );
 
-		expect( results ).to.equal( 'OK' );
+		expect( results ).toEqual( 'OK' );
 
-		expect( stubs.glob.sync.calledOnce ).to.equal( true );
-		expect( stubs.glob.sync.firstCall.firstArg ).to.equal( '/workspace/src/**/*.[jt]s' );
+		expect( glob.sync ).toHaveBeenCalledTimes( 1 );
+		expect( glob.sync ).toHaveBeenCalledWith( '/workspace/src/**/*.[jt]s' );
 
-		expect( stubs.transifex.createPotFiles.calledOnce ).to.equal( true );
-		expect( stubs.transifex.createPotFiles.firstCall.firstArg ).to.deep.equal( {
+		expect( createPotFiles ).toHaveBeenCalledTimes( 1 );
+		expect( createPotFiles ).toHaveBeenCalledWith( {
 			// Verify results returned by `glob.sync()`.
 			sourceFiles,
 			// Verify a path to the `@ckeditor/ckeditor5-core` package.
@@ -122,15 +98,13 @@ describe( 'lib/tasks/translations-collect', () => {
 	} );
 
 	it( 'passes posix paths to glob', () => {
-		stubs.transifex.createPotFiles.returns( 'OK' );
-
 		const results = translationsCollect( {
 			cwd: 'C:\\workspace'
 		} );
 
-		expect( results ).to.equal( 'OK' );
+		expect( results ).toEqual( 'OK' );
 
-		expect( stubs.glob.sync.calledOnce ).to.equal( true );
-		expect( stubs.glob.sync.firstCall.firstArg ).to.equal( 'C:/workspace/src/**/*.[jt]s' );
+		expect( glob.sync ).toHaveBeenCalledTimes( 1 );
+		expect( glob.sync ).toHaveBeenCalledWith( 'C:/workspace/src/**/*.[jt]s' );
 	} );
 } );

@@ -3,16 +3,14 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
-const { spawn } = require( 'child_process' );
+import { spawn } from 'child_process';
 
 /**
  * @param {string} directoryPath
  * @param {Logger} logger
  * @param {CKeditor5PackageGeneratorOptions} options
  */
-module.exports = function installGitHooks( directoryPath, logger, verbose ) {
+export default function installGitHooks( directoryPath, logger, verbose ) {
 	logger.process( 'Installing Git hooks...' );
 
 	return new Promise( ( resolve, reject ) => {
@@ -40,4 +38,4 @@ module.exports = function installGitHooks( directoryPath, logger, verbose ) {
 			return resolve();
 		} );
 	} );
-};
+}

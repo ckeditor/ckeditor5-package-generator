@@ -3,22 +3,24 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
 /* eslint-env node */
 
-const path = require( 'path' );
-const fs = require( 'fs' );
+import path from 'path';
+import fs from 'fs-extra';
 
-const webpack = require( 'webpack' );
-const TerserPlugin = require( 'terser-webpack-plugin' );
-const { CKEditorTranslationsPlugin } = require( '@ckeditor/ckeditor5-dev-translations' );
-const { loaderDefinitions, getModuleResolutionPaths } = require( './webpack-utils' );
+import webpack from 'webpack';
+import TerserPlugin from 'terser-webpack-plugin';
+import { CKEditorTranslationsPlugin } from '@ckeditor/ckeditor5-dev-translations';
+import { loaderDefinitions, getModuleResolutionPaths } from './webpack-utils.js';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath( import.meta.url );
+const __dirname = path.dirname( __filename );
 
 const PACKAGE_ROOT_DIR = path.join( __dirname, '..', '..' );
 
-module.exports = options => {
-	const pkgJson = require( path.join( options.cwd, 'package.json' ) );
+export default options => {
+	const pkgJson = fs.readJsonSync( path.join( options.cwd, 'package.json' ) );
 
 	// `dllName` is a short package name without the scope and the `ckeditor5-` prefix.
 	// E.g. for the package called `@ckeditor/ckeditor5-example-package`, the short name is `example-package`.
@@ -35,7 +37,7 @@ module.exports = options => {
 
 	const webpackPlugins = [
 		new webpack.DllReferencePlugin( {
-			manifest: require( ckeditor5manifestPath ),
+			manifest: fs.readJsonSync( ckeditor5manifestPath ),
 			scope: 'ckeditor5/src',
 			name: 'CKEditor5.dll'
 		} ),

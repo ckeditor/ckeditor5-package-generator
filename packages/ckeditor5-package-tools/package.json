@@ -10,22 +10,21 @@
     "lib"
   ],
   "main": "lib/index.js",
+  "type": "module",
   "dependencies": {
-    "@ckeditor/ckeditor5-dev-transifex": "^40.0.1",
-    "@ckeditor/ckeditor5-dev-translations": "^40.0.1",
-    "@ckeditor/ckeditor5-dev-utils": "^40.0.1",
+    "@ckeditor/ckeditor5-dev-transifex": "^44.0.0",
+    "@ckeditor/ckeditor5-dev-translations": "^44.0.0",
+    "@ckeditor/ckeditor5-dev-utils": "^44.0.0",
     "buffer": "^6.0.3",
-    "chai": "^4.3.4",
-    "chalk": "^4.1.2",
+    "chalk": "^5.0.0",
     "css-loader": "^5.2.7",
+    "fs-extra": "^11.2.0",
+    "glob": "^7.1.7",
     "minimist": "^1.2.5",
-    "mocha": "^10.7.3",
     "postcss": "^8.4.12",
     "postcss-loader": "^4.3.0",
     "process": "^0.11.10",
     "raw-loader": "^4.0.2",
-    "sinon": "^9.2.4",
-    "sinon-chai": "^3.7.0",
     "style-loader": "^2.0.0",
     "stylelint": "^16.6.1",
     "stylelint-config-ckeditor5": "^2.0.1",
@@ -37,8 +36,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "devDependencies": {
-    "chai": "^4.3.4",
-    "mockery": "^2.1.0"
+    "vitest": "^2.0.5"
   },
   "bin": {
     "ckeditor5-package-tools": "bin/index.js"

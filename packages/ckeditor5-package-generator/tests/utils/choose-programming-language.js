@@ -3,49 +3,26 @@
  * For licensing, see LICENSE.md.
  */
 
-const mockery = require( 'mockery' );
-const sinon = require( 'sinon' );
-const { expect } = require( 'chai' );
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import inquirer from 'inquirer';
+import chooseProgrammingLanguage from '../../lib/utils/choose-programming-language.js';
+
+vi.mock( 'inquirer' );
 
 describe( 'lib/utils/choose-programming-language', () => {
-	let stubs, chooseProgrammingLanguage;
-
 	beforeEach( () => {
-		mockery.enable( {
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
-		} );
-
-		stubs = {
-			inquirer: {
-				prompt: sinon.stub()
-			},
-			logger: {
-				error: sinon.stub()
-			}
-		};
-
-		stubs.inquirer.prompt.resolves( { programmingLanguage: 'JavaScript' } );
-
-		mockery.registerMock( 'inquirer', stubs.inquirer );
-
-		chooseProgrammingLanguage = require( '../../lib/utils/choose-programming-language' );
-	} );
-
-	afterEach( () => {
-		mockery.disable();
+		vi.mocked( inquirer.prompt ).mockResolvedValue( { programmingLanguage: 'JavaScript' } );
 	} );
 
 	it( 'should be a function', () => {
-		expect( chooseProgrammingLanguage ).to.be.a( 'function' );
+		expect( chooseProgrammingLanguage ).toBeTypeOf( 'function' );
 	} );
 
 	it( 'calls prompt() with correct arguments', async () => {
-		await chooseProgrammingLanguage( stubs.logger );
+		await chooseProgrammingLanguage( vi.fn() );
 
-		expect( stubs.inquirer.prompt.callCount ).to.equal( 1 );
-		expect( stubs.inquirer.prompt.firstCall.firstArg ).to.deep.equal( [ {
+		expect( inquirer.prompt ).toHaveBeenCalledTimes( 1 );
+		expect( inquirer.prompt ).toHaveBeenCalledWith( [ {
 			prefix: '📍',
 			name: 'programmingLanguage',
 			message: 'Choose your programming language:',
@@ -55,34 +32,39 @@ describe( 'lib/utils/choose-programming-language', () => {
 	} );
 
 	it( 'returns correct value when user picks JavaScript', async () => {
-		const result = await chooseProgrammingLanguage( stubs.logger );
+		const result = await chooseProgrammingLanguage( vi.fn() );
 
-		expect( result ).to.equal( 'js' );
+		expect( result ).toEqual( 'js' );
 	} );
 
 	it( 'returns correct value when user picks TypeScript', async () => {
-		stubs.inquirer.prompt.resolves( { programmingLanguage: 'TypeScript' } );
+		vi.mocked( inquirer.prompt ).mockResolvedValue( { programmingLanguage: 'TypeScript' } );
 
-		const result = await chooseProgrammingLanguage( stubs.logger );
+		const result = await chooseProgrammingLanguage( vi.fn() );
 
-		expect( result ).to.equal( 'ts' );
+		expect( result ).toEqual( 'ts' );
 	} );
 
 	it( 'returns lang option if it defines a supported value', async () => {
-		const result = await chooseProgrammingLanguage( stubs.logger, 'ts' );
+		const result = await chooseProgrammingLanguage( vi.fn(), 'ts' );
 
-		expect( result ).to.equal( 'ts' );
+		expect( result ).toEqual( 'ts' );
 
-		expect( stubs.inquirer.prompt.callCount ).to.equal( 0 );
+		expect( inquirer.prompt ).not.toHaveBeenCalled();
 	} );
 
 	it( 'falls back to user input when lang option has invalid value', async () => {
-		stubs.inquirer.prompt.resolves( { programmingLanguage: 'TypeScript' } );
+		const logger = {
+			error: vi.fn()
+		};
 
-		const result = await chooseProgrammingLanguage( stubs.logger, 'python' );
+		vi.mocked( inquirer.prompt ).mockResolvedValue( { programmingLanguage: 'TypeScript' } );
 
-		expect( result ).to.equal( 'ts' );
+		const result = await chooseProgrammingLanguage( logger, 'python' );
 
-		expect( stubs.inquirer.prompt.callCount ).to.equal( 1 );
+		expect( result ).toEqual( 'ts' );
+
+		expect( inquirer.prompt ).toHaveBeenCalledTimes( 1 );
+		expect( logger.error ).toHaveBeenCalledTimes( 1 );
 	} );
 } );

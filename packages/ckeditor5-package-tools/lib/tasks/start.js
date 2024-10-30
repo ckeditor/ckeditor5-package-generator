@@ -3,14 +3,12 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import webpack from 'webpack';
+import WebpackDevServer from 'webpack-dev-server';
 
-const webpack = require( 'webpack' );
-const WebpackDevServer = require( 'webpack-dev-server' );
+import getWebpackConfigServer from '../utils/get-webpack-config-server.js';
 
-const getWebpackConfigServer = require( '../utils/get-webpack-config-server' );
-
-module.exports = options => {
+export default options => {
 	const webpackConfig = getWebpackConfigServer( options );
 	const compiler = webpack( webpackConfig );
 	const serverOptions = {

@@ -3,10 +3,12 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import path from 'path';
+import getPackageVersion from './get-package-version.js';
+import { fileURLToPath } from 'url';
 
-const path = require( 'path' );
-const getPackageVersion = require( './get-package-version' );
+const __filename = fileURLToPath( import.meta.url );
+const __dirname = path.dirname( __filename );
 
 /**
  * Returns an object containing version for the packages listed below:
@@ -27,20 +29,14 @@ const getPackageVersion = require( './get-package-version' );
  * @param {Boolean} dev
  * @returns {Object}
  */
-module.exports = function getDependenciesVersions( logger, dev ) {
+export default function getDependenciesVersions( logger, dev ) {
 	logger.process( 'Collecting the latest CKEditor 5 packages versions...' );
-
-	// Due to the release of breaking changes in the `@ckeditor/ckeditor5-dev-*` packages, package generator must lock
-	// a version of the `@ckeditor/ckeditor5-dev-build-tools` package to the last compatible version: ^43.0.0.
-	// Package generator will be able to use latest stable version of the `@ckeditor/ckeditor5-dev-build-tools` when
-	// all blockers specified in https://github.com/ckeditor/ckeditor5-package-generator/issues/192 are resolved.
-	const ckeditor5DevBuildToolsVersion = '43.0.0';
 
 	return {
 		ckeditor5: getPackageVersion( 'ckeditor5' ),
 		ckeditor5PremiumFeatures: getPackageVersion( 'ckeditor5-premium-features' ),
 		ckeditor5Inspector: getPackageVersion( '@ckeditor/ckeditor5-inspector' ),
-		ckeditor5DevBuildTools: ckeditor5DevBuildToolsVersion,
+		ckeditor5DevBuildTools: getPackageVersion( '@ckeditor/ckeditor5-dev-build-tools' ),
 		eslintConfigCkeditor5: getPackageVersion( 'eslint-config-ckeditor5' ),
 		stylelintConfigCkeditor5: getPackageVersion( 'stylelint-config-ckeditor5' ),
 		packageTools: dev ?
@@ -48,4 +44,4 @@ module.exports = function getDependenciesVersions( logger, dev ) {
 			'file:' + path.resolve( __dirname, '..', '..', '..', 'ckeditor5-package-tools' ).split( path.sep ).join( path.posix.sep ) :
 			'^' + getPackageVersion( '@ckeditor/ckeditor5-package-tools' )
 	};
-};
+}

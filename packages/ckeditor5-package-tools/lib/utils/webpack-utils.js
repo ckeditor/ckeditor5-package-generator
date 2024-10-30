@@ -3,70 +3,68 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
+import path from 'path';
+import getThemePath from './get-theme-path.js';
+import { styles } from '@ckeditor/ckeditor5-dev-utils';
 
-const path = require( 'path' );
-const getThemePath = require( './get-theme-path' );
-const { getPostCssConfig } = require( '@ckeditor/ckeditor5-dev-utils' ).styles;
+export const loaderDefinitions = {
+	raw: () => {
+		return {
+			test: /\.(svg|txt|html|rtf)$/,
+			loader: 'raw-loader'
+		};
+	},
 
-module.exports = {
-	loaderDefinitions: {
-		raw: () => {
-			return {
-				test: /\.(svg|txt|html|rtf)$/,
-				loader: 'raw-loader'
-			};
-		},
+	/**
+	 * @param {String} cwd
+	 * @param {String} [tsconfigName='tsconfig.json'] The TypeScript configuration that should be used
+	 * by the `ts-loader` when processing TypeScript files.
+	 * @returns {Object}
+	 */
+	typescript: ( cwd, tsconfigName = 'tsconfig.json' ) => {
+		return {
+			test: /\.ts$/,
+			loader: 'ts-loader',
+			options: {
+				configFile: path.join( cwd, tsconfigName )
+			}
+		};
+	},
 
-		/**
-		 * @param {String} cwd
-		 * @param {String} [tsconfigName='tsconfig.json'] The TypeScript configuration that should be used
-		 * by the `ts-loader` when processing TypeScript files.
-		 * @returns {Object}
-		 */
-		typescript: ( cwd, tsconfigName = 'tsconfig.json' ) => {
-			return {
-				test: /\.ts$/,
-				loader: 'ts-loader',
-				options: {
-					configFile: path.join( cwd, tsconfigName )
-				}
-			};
-		},
-
-		styles: cwd => {
-			return {
-				test: /\.css$/,
-				use: [
-					{
-						loader: 'style-loader',
-						options: {
-							injectType: 'singletonStyleTag',
-							attributes: {
-								'data-cke': true
-							}
-						}
-					},
-					'css-loader',
-					{
-						loader: 'postcss-loader',
-						options: {
-							postcssOptions: getPostCssConfig( {
-								themeImporter: {
-									themePath: getThemePath( cwd )
-								},
-								minify: true
-							} )
+	styles: cwd => {
+		return {
+			test: /\.css$/,
+			use: [
+				{
+					loader: 'style-loader',
+					options: {
+						injectType: 'singletonStyleTag',
+						attributes: {
+							'data-cke': true
 						}
 					}
-				]
-			};
-		}
-	},
-	getModuleResolutionPaths: packageRootDir => {
-		return [
-			'node_modules',
-			path.resolve( packageRootDir, 'node_modules' )
-		];
+				},
+				'css-loader',
+				{
+					loader: 'postcss-loader',
+					options: {
+						postcssOptions: styles.getPostCssConfig( {
+							themeImporter: {
+								themePath: getThemePath( cwd )
+							},
+							minify: true
+						} )
+					}
+				}
+			]
+		};
 	}
 };
+
+export function getModuleResolutionPaths( packageRootDir ) {
+	return [
+		'node_modules',
+		path.resolve( packageRootDir, 'node_modules' )
+	];
+}
+

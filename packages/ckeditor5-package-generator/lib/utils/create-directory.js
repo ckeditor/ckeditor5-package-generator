@@ -3,12 +3,10 @@
  * For licensing, see LICENSE.md.
  */
 
-'use strict';
-
-const chalk = require( 'chalk' );
-const fs = require( 'fs' );
-const mkdirp = require( 'mkdirp' );
-const path = require( 'path' );
+import chalk from 'chalk';
+import fs from 'fs';
+import mkdirp from 'mkdirp';
+import path from 'path';
 
 /**
  * Checks whether its possible to create a directory, and either creates it or ends the process with an error.
@@ -16,7 +14,7 @@ const path = require( 'path' );
  * @param {Logger} logger
  * @param {String} packageName
  */
-module.exports = function createDirectory( logger, packageName ) {
+export default function createDirectory( logger, packageName ) {
 	const directoryName = packageName.split( '/' )[ 1 ];
 	const directoryPath = path.resolve( directoryName );
 
@@ -34,4 +32,4 @@ module.exports = function createDirectory( logger, packageName ) {
 	mkdirp.sync( directoryPath );
 
 	return { directoryName, directoryPath };
-};
+}

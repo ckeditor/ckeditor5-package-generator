@@ -3,85 +3,64 @@
  * For licensing, see LICENSE.md.
  */
 
-const mockery = require( 'mockery' );
-const sinon = require( 'sinon' );
-const { expect } = require( 'chai' );
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { spawn } from 'child_process';
+import installGitHooks from '../../lib/utils/install-git-hooks.js';
+
+vi.mock( 'child_process' );
 
 describe( 'lib/utils/install-git-hooks', () => {
-	let defaultDirectoryPath, stubs, installGitHooks;
+	let defaultDirectoryPath, stubs;
 
 	beforeEach( () => {
-		mockery.enable( {
-			useCleanCache: true,
-			warnOnReplace: false,
-			warnOnUnregistered: false
-		} );
-
 		defaultDirectoryPath = 'directory/path/foo';
 
 		stubs = {
-			childProcess: {
-				spawn: sinon.stub()
-			},
 			logger: {
-				process: sinon.stub()
+				process: vi.fn()
 			},
 			rebuildTask: {
-				on: sinon.stub()
+				on: vi.fn()
 			}
 		};
 
-		stubs.childProcess.spawn.returns( stubs.rebuildTask );
-
-		mockery.registerMock( 'child_process', stubs.childProcess );
-
-		installGitHooks = require( '../../lib/utils/install-git-hooks' );
-	} );
-
-	afterEach( () => {
-		mockery.disable();
+		vi.mocked( spawn ).mockReturnValue( stubs.rebuildTask );
 	} );
 
 	it( 'should be a function', () => {
-		expect( installGitHooks ).to.be.a( 'function' );
+		expect( installGitHooks ).toBeTypeOf( 'function' );
 	} );
 
 	it( 'logs the process', async () => {
 		await runTest( {} );
 
-		expect( stubs.logger.process.callCount ).to.equal( 1 );
-		expect( stubs.logger.process.getCall( 0 ).args[ 0 ] ).to.equal( 'Installing Git hooks...' );
+		expect( stubs.logger.process ).toHaveBeenCalledTimes( 1 );
+		expect( stubs.logger.process ).toHaveBeenCalledWith( 'Installing Git hooks...' );
 	} );
 
 	it( 'installs git hooks', async () => {
 		await runTest( {} );
 
-		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
-		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
+		expect( spawn ).toHaveBeenCalledTimes( 1 );
+		expect( spawn ).toHaveBeenCalledWith(
 			'npm',
-			[
-				'rebuild',
-				'husky'
-			],
+			[ 'rebuild', 'husky' ],
 			{
 				encoding: 'utf8',
 				shell: true,
 				cwd: defaultDirectoryPath,
 				stderr: 'inherit'
 			}
-		] );
+		);
 	} );
 
 	it( 'installs git hooks in verbose mode', async () => {
 		await runTest( { verbose: true } );
 
-		expect( stubs.childProcess.spawn.callCount ).to.equal( 1 );
-		expect( stubs.childProcess.spawn.getCall( 0 ).args ).to.deep.equal( [
+		expect( spawn ).toHaveBeenCalledTimes( 1 );
+		expect( spawn ).toHaveBeenCalledWith(
 			'npm',
-			[
-				'rebuild',
-				'husky'
-			],
+			[ 'rebuild', 'husky' ],
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -89,7 +68,7 @@ describe( 'lib/utils/install-git-hooks', () => {
 				stderr: 'inherit',
 				stdio: 'inherit'
 			}
-		] );
+		);
 	} );
 
 	it( 'throws an error when install task closes with error exit code', () => {
@@ -98,7 +77,7 @@ describe( 'lib/utils/install-git-hooks', () => {
 				throw new Error( 'Expected to throw.' );
 			} )
 			.catch( err => {
-				expect( err.message ).to.equal( 'Rebuilding finished with an error.' );
+				expect( err.message ).toEqual( 'Rebuilding finished with an error.' );
 			} );
 	} );
 
@@ -114,7 +93,7 @@ describe( 'lib/utils/install-git-hooks', () => {
 	 */
 	async function runTest( { verbose = false, exitCode = 0 } ) {
 		const promise = installGitHooks( defaultDirectoryPath, stubs.logger, verbose );
-		const rebuildTaskCloseCallback = stubs.rebuildTask.on.getCall( 0 ).args[ 1 ];
+		const [ , rebuildTaskCloseCallback ] = stubs.rebuildTask.on.mock.calls[ 0 ];
 		await rebuildTaskCloseCallback( exitCode );
 
 		return promise;

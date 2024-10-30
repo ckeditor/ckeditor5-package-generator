@@ -5,15 +5,13 @@
 
 /* eslint-env node */
 
-'use strict';
-
-const minimist = require( 'minimist' );
+import minimist from 'minimist';
 
 /**
  * @param {Array.<String>} cliArguments
  * @returns {VerificationOptions} options
  */
-module.exports = function parseArguments( cliArguments ) {
+export default function parseArguments( cliArguments ) {
 	const config = {
 		string: [
 			'language',
@@ -55,7 +53,7 @@ module.exports = function parseArguments( cliArguments ) {
 	delete options[ 'global-name' ];
 
 	return options;
-};
+}
 
 /**
  * @typedef {Object} VerificationOptions

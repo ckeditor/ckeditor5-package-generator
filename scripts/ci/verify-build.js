@@ -7,15 +7,17 @@
 
 /* eslint-env node */
 
-'use strict';
+import { spawn, spawnSync } from 'child_process';
+import path from 'path';
+import fs from 'fs';
+import chalk from 'chalk';
+import stripAnsiEscapeCodes from 'strip-ansi';
+import parseArguments from './utils/parsearguments.js';
+import { EXPECTED_PUBLISH_FILES, EXPECTED_LEGACY_PUBLISH_FILES, EXPECTED_SRC_DIR_FILES } from './utils/expectedFiles.js';
+import { fileURLToPath } from 'url';
 
-const { spawn, spawnSync } = require( 'child_process' );
-const path = require( 'path' );
-const fs = require( 'fs' );
-const chalk = require( 'chalk' );
-const stripAnsiEscapeCodes = require( 'strip-ansi' );
-const parseArguments = require( './utils/parsearguments' );
-const { EXPECTED_PUBLISH_FILES, EXPECTED_LEGACY_PUBLISH_FILES, EXPECTED_SRC_DIR_FILES } = require( './utils/expectedFiles' );
+const __filename = fileURLToPath( import.meta.url );
+const __dirname = path.dirname( __filename );
 
 const REPOSITORY_DIRECTORY = path.join( __dirname, '..', '..' );
 const NEW_PACKAGE_DIRECTORY = path.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-test-package' );
@@ -290,7 +292,7 @@ function logProcess( message ) {
  * @param {Object} expectedPublishFiles
  */
 function checkFileList( output, expectedPublishFiles ) {
-	const match = output.match( /Tarball Contents.+\n(?<lines>[\s\S]+)\n.+Tarball Details/ );
+	const match = output.match( /Tarball Contents.*\n(?<lines>[\s\S]+)\n.*Tarball Details/ );
 
 	if ( !match ) {
 		console.log( chalk.red( 'Command "npm publish" finished with an unexpected output.' ) );
