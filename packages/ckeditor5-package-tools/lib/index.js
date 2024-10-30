@@ -5,9 +5,7 @@
 
 import start from './tasks/start.js';
 import dllBuild from './tasks/dll-build.js';
-import translationsCollect from './tasks/translations-collect.js';
-import translationsUpload from './tasks/translations-upload.js';
-import translationsDownload from './tasks/translations-download.js';
+import synchronizeTranslations from './tasks/synchronize-translations.js';
 import exportPackageAsJavaScript from './tasks/export-package-as-javascript.js';
 import exportPackageAsTypeScript from './tasks/export-package-as-typescript.js';
 
@@ -20,16 +18,8 @@ export default {
 		return dllBuild( options );
 	},
 
-	'translations:collect'( options ) {
-		return translationsCollect( options );
-	},
-
-	'translations:upload'( options ) {
-		return translationsUpload( options );
-	},
-
-	'translations:download'( options ) {
-		return translationsDownload( options );
+	'translations:synchronize'( options ) {
+		return synchronizeTranslations( options );
 	},
 
 	'export-package-as-javascript'( options ) {

@@ -57,9 +57,8 @@
     "test": "vitest",
     "test:debug": "vitest --inspect-brk --no-file-parallelism --browser.headless=false",
     "prepare": "<%= packageManager %> run build:dist",
-    "translations:collect": "ckeditor5-package-tools translations:collect",
-    "translations:download": "ckeditor5-package-tools translations:download",
-    "translations:upload": "ckeditor5-package-tools translations:upload"
+    "translations:synchronize": "ckeditor5-package-tools translations:synchronize",
+    "translations:validate": "ckeditor5-package-tools translations:synchronize --validate-only"
   },
   "lint-staged": {
     "**/*.js": [

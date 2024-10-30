@@ -98,7 +98,7 @@ async function verifyBuild( { language, packageManager, customPluginName, instal
 	executeCommand( [ 'yarn', 'run', 'stylelint' ], { cwd: NEW_PACKAGE_DIRECTORY } );
 
 	logProcess( 'Verifying translations...' );
-	executeCommand( [ 'yarn', 'run', 'translations:collect' ], { cwd: NEW_PACKAGE_DIRECTORY } );
+	executeCommand( [ 'yarn', 'run', 'translations:validate' ], { cwd: NEW_PACKAGE_DIRECTORY } );
 
 	logProcess( 'Verifying release process...' );
 	const { stderr } = executeCommand( [ 'npm', 'publish', '--dry-run' ], { cwd: NEW_PACKAGE_DIRECTORY, pipeStderr: true } );

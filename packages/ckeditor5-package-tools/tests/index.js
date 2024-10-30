@@ -6,18 +6,14 @@
 import { describe, it, expect, vi } from 'vitest';
 import start from '../lib/tasks/start.js';
 import dllBuild from '../lib/tasks/dll-build.js';
-import translationsCollect from '../lib/tasks/translations-collect.js';
-import translationsUpload from '../lib/tasks/translations-upload.js';
-import translationsDownload from '../lib/tasks/translations-download.js';
+import synchronizeTranslations from '../lib/tasks/synchronize-translations.js';
 import exportPackageAsJavaScript from '../lib/tasks/export-package-as-javascript.js';
 import exportPackageAsTypeScript from '../lib/tasks/export-package-as-typescript.js';
 import tasks from '../lib/index.js';
 
 vi.mock( '../lib/tasks/start.js' );
 vi.mock( '../lib/tasks/dll-build.js' );
-vi.mock( '../lib/tasks/translations-collect.js' );
-vi.mock( '../lib/tasks/translations-upload.js' );
-vi.mock( '../lib/tasks/translations-download.js' );
+vi.mock( '../lib/tasks/synchronize-translations.js' );
 vi.mock( '../lib/tasks/export-package-as-javascript.js' );
 vi.mock( '../lib/tasks/export-package-as-typescript.js' );
 
@@ -64,60 +60,22 @@ describe( 'lib/index', () => {
 		} );
 	} );
 
-	describe( '#translations:collect', () => {
+	describe( '#translations:synchronize', () => {
 		it( 'is available', () => {
-			expect( tasks[ 'translations:collect' ] ).toBeTypeOf( 'function' );
+			expect( tasks[ 'translations:synchronize' ] ).toBeTypeOf( 'function' );
 		} );
 
 		it( 'executes the proper function from the "tasks/" directory', () => {
-			tasks[ 'translations:collect' ]();
+			tasks[ 'translations:synchronize' ]();
 
-			expect( translationsCollect ).toBeCalledTimes( 1 );
+			expect( synchronizeTranslations ).toBeCalledTimes( 1 );
 		} );
 
 		it( 'passes arguments directly to the function', () => {
 			const options = { foo: 1, bar: true };
-			tasks[ 'translations:collect' ]( options );
+			tasks[ 'translations:synchronize' ]( options );
 
-			expect( translationsCollect ).toHaveBeenCalledWith( options );
-		} );
-	} );
-
-	describe( '#translations:download', () => {
-		it( 'is available', () => {
-			expect( tasks[ 'translations:download' ] ).toBeTypeOf( 'function' );
-		} );
-
-		it( 'executes the proper function from the "tasks/" directory', () => {
-			tasks[ 'translations:download' ]();
-
-			expect( translationsDownload ).toBeCalledTimes( 1 );
-		} );
-
-		it( 'passes arguments directly to the function', () => {
-			const options = { foo: 1, bar: true };
-			tasks[ 'translations:download' ]( options );
-
-			expect( translationsDownload ).toHaveBeenCalledWith( options );
-		} );
-	} );
-
-	describe( '#translations:upload', () => {
-		it( 'is available', () => {
-			expect( tasks[ 'translations:upload' ] ).toBeTypeOf( 'function' );
-		} );
-
-		it( 'executes the proper function from the "tasks/" directory', () => {
-			tasks[ 'translations:upload' ]();
-
-			expect( translationsUpload ).toBeCalledTimes( 1 );
-		} );
-
-		it( 'passes arguments directly to the function', () => {
-			const options = { foo: 1, bar: true };
-			tasks[ 'translations:upload' ]( options );
-
-			expect( translationsUpload ).toHaveBeenCalledWith( options );
+			expect( synchronizeTranslations ).toHaveBeenCalledWith( options );
 		} );
 	} );
 

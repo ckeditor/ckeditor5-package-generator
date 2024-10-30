@@ -12,9 +12,8 @@ This package was created by the [ckeditor5-package-generator](https://www.npmjs.
   * [`lint`](#lint)
   * [`stylelint`](#stylelint)
   * [`build:dist`](#builddist)
-  * [`translations:collect`](#translationscollect)
-  * [`translations:download`](#translationsdownload)
-  * [`translations:upload`](#translationsupload)
+  * [`translations:synchronize`](#translationssynchronize)
+  * [`translations:validate`](#translationsvalidate)
   * [`ts:build` and `ts:clear`](#tsbuild-and-tsclear)
 * [License](#license)
 
@@ -98,48 +97,37 @@ Examples:
 npm run build:dist
 ```
 
-### `translations:collect`
+### `translations:synchronize`
 
-Collects translation messages (arguments of the `t()` function) and context files, then validates whether the provided values do not interfere with the values specified in the `@ckeditor/ckeditor5-core` package.
+Synchronizes translation messages (arguments of the `t()` function) by performing the following steps:
+
+ * Collect all translation messages from the package by finding `t()` calls in source files.
+ * Detect if translation context is valid, i.e. whether the provided values do not interfere with the values specified in the `@ckeditor/ckeditor5-core` package.
+ * If there are no validation errors, update all translation files (`*.po` files) to be in sync with the context file:
+   * unused translation entries are removed,
+   * missing translation entries are added with empty string as the message translation,
+   * missing translation files are created for languages that do not have own `*.po` file yet.
 
 The task may end with an error if one of the following conditions is met:
 
 * Found the `Unused context` error &ndash; entries specified in the `lang/contexts.json` file are not used in source files. They should be removed.
-* Found the `Context is duplicated for the id` error &ndash; some of the entries are duplicated. Consider removing them from the `lang/contexts.json` file, or rewrite them.
-* Found the `Context for the message id is missing` error &ndash; entries specified in source files are not described in the `lang/contexts.json` file. They should be added.
+* Found the `Duplicated contex` error &ndash; some of the entries are duplicated. Consider removing them from the `lang/contexts.json` file, or rewriting them.
+* Found the `Missing context` error &ndash; entries specified in source files are not described in the `lang/contexts.json` file. They should be added.
 
 Examples:
 
 ```bash
-<%= packageManager %> run translations:collect
+<%= packageManager %> run translations:synchronize
 ```
 
-### `translations:download`
+### `translations:validate`
 
-Download translations from the Transifex server. Depending on users' activity in the project, it creates translation files used for building the editor.
-
-The task requires passing the URL to Transifex API. Usually, it matches the following format: `https://www.transifex.com/api/2/project/[PROJECT_SLUG]`.
-
-To avoid passing the `--transifex` option whenever you call the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:download` command.
+Peforms only validation steps as described in [`translations:synchronize`](#translationssynchronize) script, but without modifying any files. It only checks the correctness of the context file against the `t()` function calls.
 
 Examples:
 
 ```bash
-<%= packageManager %> run translations:download <%= cliSeparator %>--transifex [API URL]
-```
-
-### `translations:upload`
-
-Uploads translation messages onto the Transifex server. It allows users to create translations into other languages using the Transifex platform.
-
-The task requires passing the URL to the Transifex API. Usually, it matches the following format: `https://www.transifex.com/api/2/project/[PROJECT_SLUG]`.
-
-To avoid passing the `--transifex` option whenever you call the command, you can store it in `package.json`, next to the `ckeditor5-package-tools translations:upload` command.
-
-Examples:
-
-```bash
-<%= packageManager %> run translations:upload <%= cliSeparator %>--transifex [API URL]
+<%= packageManager %> run translations:validate
 ```
 
 ### `ts:build` and `ts:clear`

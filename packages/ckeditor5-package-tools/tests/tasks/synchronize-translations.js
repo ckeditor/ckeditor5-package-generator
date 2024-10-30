@@ -3,10 +3,10 @@
  * For licensing, see LICENSE.md.
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import glob from 'glob';
-import { createPotFiles } from '@ckeditor/ckeditor5-dev-transifex';
-import translationsCollect from '../../lib/tasks/translations-collect.js';
+import * as devTranslations from '@ckeditor/ckeditor5-dev-translations';
+import synchronizeTranslations from '../../lib/tasks/synchronize-translations.js';
 
 vi.mock( 'path', () => ( {
 	default: {
@@ -14,18 +14,14 @@ vi.mock( 'path', () => ( {
 	}
 } ) );
 vi.mock( 'glob' );
-vi.mock( '@ckeditor/ckeditor5-dev-transifex' );
+vi.mock( '@ckeditor/ckeditor5-dev-translations' );
 
-describe( 'lib/tasks/translations-collect', () => {
-	beforeEach( () => {
-		vi.mocked( createPotFiles ).mockReturnValue( 'OK' );
-	} );
-
+describe( 'lib/tasks/synchronize-translations', () => {
 	it( 'should be a function', () => {
-		expect( translationsCollect ).toBeTypeOf( 'function' );
+		expect( synchronizeTranslations ).toBeTypeOf( 'function' );
 	} );
 
-	it( 'creates translation files (JavaScript)', () => {
+	it( 'synchronizes translation messages (JavaScript)', () => {
 		const sourceFiles = [
 			'/workspace/ckeditor5-foo/src/index.js',
 			'/workspace/ckeditor5-foo/src/myplugin.js'
@@ -33,17 +29,16 @@ describe( 'lib/tasks/translations-collect', () => {
 
 		vi.mocked( glob.sync ).mockReturnValue( sourceFiles );
 
-		const results = translationsCollect( {
-			cwd: '/workspace'
+		synchronizeTranslations( {
+			cwd: '/workspace',
+			validateOnly: false
 		} );
-
-		expect( results ).toEqual( 'OK' );
 
 		expect( glob.sync ).toHaveBeenCalledTimes( 1 );
 		expect( glob.sync ).toHaveBeenCalledWith( '/workspace/src/**/*.[jt]s' );
 
-		expect( createPotFiles ).toHaveBeenCalledTimes( 1 );
-		expect( createPotFiles ).toHaveBeenCalledWith( {
+		expect( devTranslations.synchronizeTranslations ).toHaveBeenCalledTimes( 1 );
+		expect( devTranslations.synchronizeTranslations ).toHaveBeenCalledWith( {
 			// Verify results returned by `glob.sync()`.
 			sourceFiles,
 			// Verify a path to the `@ckeditor/ckeditor5-core` package.
@@ -56,12 +51,12 @@ describe( 'lib/tasks/translations-collect', () => {
 			],
 			// Verify the license header in translation files.
 			skipLicenseHeader: true,
-			// Verify a path where translations will be stored.
-			translationsDirectory: '/workspace/tmp/.transifex'
+			// Verify the validation-only mode.
+			validateOnly: false
 		} );
 	} );
 
-	it( 'creates translation files (TypeScript)', () => {
+	it( 'synchronizes translation messages (TypeScript)', () => {
 		const sourceFiles = [
 			'/workspace/ckeditor5-foo/src/index.ts',
 			'/workspace/ckeditor5-foo/src/myplugin.ts'
@@ -69,17 +64,16 @@ describe( 'lib/tasks/translations-collect', () => {
 
 		vi.mocked( glob.sync ).mockReturnValue( sourceFiles );
 
-		const results = translationsCollect( {
-			cwd: '/workspace'
+		synchronizeTranslations( {
+			cwd: '/workspace',
+			validateOnly: false
 		} );
-
-		expect( results ).toEqual( 'OK' );
 
 		expect( glob.sync ).toHaveBeenCalledTimes( 1 );
 		expect( glob.sync ).toHaveBeenCalledWith( '/workspace/src/**/*.[jt]s' );
 
-		expect( createPotFiles ).toHaveBeenCalledTimes( 1 );
-		expect( createPotFiles ).toHaveBeenCalledWith( {
+		expect( devTranslations.synchronizeTranslations ).toHaveBeenCalledTimes( 1 );
+		expect( devTranslations.synchronizeTranslations ).toHaveBeenCalledWith( {
 			// Verify results returned by `glob.sync()`.
 			sourceFiles,
 			// Verify a path to the `@ckeditor/ckeditor5-core` package.
@@ -92,17 +86,27 @@ describe( 'lib/tasks/translations-collect', () => {
 			],
 			// Verify the license header in translation files.
 			skipLicenseHeader: true,
-			// Verify a path where translations will be stored.
-			translationsDirectory: '/workspace/tmp/.transifex'
+			// Verify the validation-only mode.
+			validateOnly: false
 		} );
 	} );
 
-	it( 'passes posix paths to glob', () => {
-		const results = translationsCollect( {
-			cwd: 'C:\\workspace'
+	it( 'validates translation messages', () => {
+		synchronizeTranslations( {
+			validateOnly: true
 		} );
 
-		expect( results ).toEqual( 'OK' );
+		expect( devTranslations.synchronizeTranslations ).toHaveBeenCalledTimes( 1 );
+		expect( devTranslations.synchronizeTranslations ).toHaveBeenCalledWith( expect.objectContaining( {
+			// Verify the validation-only mode.
+			validateOnly: true
+		} ) );
+	} );
+
+	it( 'passes posix paths to glob', () => {
+		synchronizeTranslations( {
+			cwd: 'C:\\workspace'
+		} );
 
 		expect( glob.sync ).toHaveBeenCalledTimes( 1 );
 		expect( glob.sync ).toHaveBeenCalledWith( 'C:/workspace/src/**/*.[jt]s' );

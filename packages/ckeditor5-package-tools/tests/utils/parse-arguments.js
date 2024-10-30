@@ -21,9 +21,7 @@ describe( 'lib/utils/parse-arguments', () => {
 		expect( options.watch ).toEqual( false );
 		expect( options.open ).toEqual( true );
 		expect( options.language ).toEqual( 'en' );
-		expect( options.organization ).toEqual( null );
-		expect( options.project ).toEqual( null );
-		expect( options.transifex ).toEqual( undefined );
+		expect( options.validateOnly ).toEqual( false );
 	} );
 
 	it( 'assigns the current work directory as the "#cwd" property', () => {
@@ -97,15 +95,9 @@ describe( 'lib/utils/parse-arguments', () => {
 		expect( options.language ).toEqual( 'pl' );
 	} );
 
-	it( 'allows specifying the organization option', () => {
-		const options = parseArguments( [ 'task-to-execute', '--organization', 'bar' ] );
+	it( 'allows specifying the validate-only mode option', () => {
+		const options = parseArguments( [ 'task-to-execute', '--validate-only' ] );
 
-		expect( options.organization ).toEqual( 'bar' );
-	} );
-
-	it( 'allows specifying the project option', () => {
-		const options = parseArguments( [ 'task-to-execute', '--project', 'foo' ] );
-
-		expect( options.project ).toEqual( 'foo' );
+		expect( options.validateOnly ).toEqual( true );
 	} );
 } );

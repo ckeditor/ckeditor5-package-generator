@@ -8,15 +8,15 @@ import minimist from 'minimist';
 export default args => {
 	const config = {
 		string: [
-			'organization',
-			'project'
+			'language'
 		],
 
 		boolean: [
 			'open',
 			'production',
 			'verbose',
-			'watch'
+			'watch',
+			'validate-only'
 		],
 
 		alias: {
@@ -28,14 +28,16 @@ export default args => {
 			open: true,
 			language: 'en',
 			verbose: false,
-			organization: null,
 			production: false,
-			project: null,
-			watch: false
+			watch: false,
+			'validate-only': false
 		}
 	};
 
 	const options = minimist( args, config );
+
+	// Convert to camelCase.
+	replaceKebabCaseWithCamelCase( options, [ 'validate-only' ] );
 
 	// Delete all aliases because we do not want to use them in the code.
 	// They are useful when calling a command from CLI point of view.
@@ -52,14 +54,21 @@ export default args => {
 	return options;
 };
 
+function replaceKebabCaseWithCamelCase( options, keys ) {
+	for ( const key of keys ) {
+		const camelCaseKey = key.replace( /-./g, match => match[ 1 ].toUpperCase() );
+
+		options[ camelCaseKey ] = options[ key ];
+		delete options[ key ];
+	}
+}
+
 /**
  * @typedef {Object} Ckeditor5PackageToolsOptions
  *
  * @property {String} cwd An absolute path to the root directory which contains the main `package.json` file.
  *
  * @property {String} task A name of a task to execute.
- *
- * @property {String|null} transifex An end-point API URL to upload/download translations from the Transifex service.
  *
  * @property {Array.<String>} _ Additional modifiers for the executed task that could not be matched with the supported options.
  *
@@ -68,6 +77,8 @@ export default args => {
  * @property {Boolean} [verbose=false] Whether to display additional logs by tasks.
  *
  * @property {Boolean} [production=false] Whether to prepare an optimized build.
+ *
+ * @property {Boolean} [validateOnly=false] Whether to validate the translations contexts against the source messages only.
  *
  * @property {String} [language='en'] Language that will be used to build an editor when starting the development server.
  *
