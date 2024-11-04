@@ -44,21 +44,6 @@ const tasks = new Listr( [
 		retry: 3
 	},
 	{
-		title: 'Checking if packages that returned E409 error code were uploaded correctly.',
-		task: async ( _, task ) => {
-			return releaseTools.verifyPackagesPublishedCorrectly( {
-				packagesDirectory: 'release',
-				version: latestVersion,
-				onSuccess: text => {
-					task.output = text;
-				}
-			} );
-		},
-		options: {
-			persistentOutput: true
-		}
-	},
-	{
 		title: 'Pushing changes.',
 		task: () => {
 			return releaseTools.push( {
