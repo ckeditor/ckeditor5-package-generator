@@ -96,6 +96,7 @@
 
 	CKEditor5.editorClassic.ClassicEditor
 		.create( document.querySelector( '#editor' ), {
+			licenseKey: 'GPL',
 			plugins: [
 				CKEditor5[ '<%= formattedNames.package.camelCase %>' ].<%= formattedNames.plugin.pascalCase %>,
 				CKEditor5.essentials.Essentials,
