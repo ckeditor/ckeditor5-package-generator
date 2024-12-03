@@ -23,6 +23,7 @@ import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.p
 
 ClassicEditor
 	.create( document.querySelector( '#editor' ), {
+		licenseKey: 'GPL',
 		plugins: [
 			<%= formattedNames.plugin.pascalCase %>,
 			Essentials,
