@@ -30,15 +30,16 @@ describe( 'lib/utils/set-global-name', () => {
 	} );
 
 	it( 'calls prompt() with correct arguments', async () => {
-		await setGlobalName( stubs.logger );
+		await setGlobalName( stubs.logger, '', 'CKCustomPlugin' );
 
 		expect( inquirer.prompt ).toHaveBeenCalledTimes( 1 );
 		expect( inquirer.prompt ).toHaveBeenCalledWith( {
 			required: true,
-			message: 'Enter the global name for plugin for UMD build',
+			message: 'Enter the global name for UMD build:',
 			type: 'input',
 			name: 'globalName',
-			validate: expect.any( Function )
+			validate: expect.any( Function ),
+			default: 'CKCustomPlugin'
 		} );
 	} );
 

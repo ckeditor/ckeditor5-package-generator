@@ -35,7 +35,10 @@ export default async function init( packageName, options ) {
 	const packageManager = await choosePackageManager( useNpm, useYarn );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
 	const installationMethodOfPackage = await chooseInstallationMethods( logger, installationMethods );
-	const validatedGlobalName = await setGlobalName( logger, globalName );
+
+	const defaultGlobalName = 'CK' + formattedNames.plugin.pascalCase;
+	const validatedGlobalName = await setGlobalName( logger, globalName, defaultGlobalName );
+
 	const packageVersions = getDependenciesVersions( logger, dev );
 
 	copyFiles( logger, {

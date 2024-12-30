@@ -199,7 +199,7 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( setGlobalName ).toHaveBeenCalledTimes( 1 );
-		expect( setGlobalName ).toHaveBeenCalledWith( expect.any( Logger ), 'GLOBAL' );
+		expect( setGlobalName ).toHaveBeenCalledWith( expect.any( Logger ), 'GLOBAL', 'CKBarBaz' );
 	} );
 
 	it( 'gets the versions of the dependencies', async () => {
