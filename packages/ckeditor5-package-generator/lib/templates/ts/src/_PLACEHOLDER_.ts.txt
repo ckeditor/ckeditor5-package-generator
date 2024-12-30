@@ -12,8 +12,8 @@ export default class <%= formattedNames.plugin.pascalCase %> extends Plugin {
 		const t = editor.t;
 		const model = editor.model;
 
-		// Add the "<%= formattedNames.plugin.camelCase %>Button" to feature components.
-		editor.ui.componentFactory.add( '<%= formattedNames.plugin.camelCase %>Button', locale => {
+		// Register the "<%= formattedNames.plugin.camelCase %>" button, so it can be displayed in the toolbar.
+		editor.ui.componentFactory.add( '<%= formattedNames.plugin.camelCase %>', locale => {
 			const view = new ButtonView( locale );
 
 			view.set( {

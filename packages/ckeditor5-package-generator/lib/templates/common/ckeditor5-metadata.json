@@ -7,7 +7,7 @@
       "path": "src/<%= formattedNames.plugin.lowerCaseMerged %>.<%= programmingLanguage %>",
       "uiComponents": [
         {
-          "name": "<%= formattedNames.plugin.camelCase %>Button",
+          "name": "<%= formattedNames.plugin.camelCase %>",
           "type": "Button",
           "iconPath": "theme/icons/ckeditor.svg"
         }

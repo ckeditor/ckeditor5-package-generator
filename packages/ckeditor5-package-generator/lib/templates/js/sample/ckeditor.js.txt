@@ -62,7 +62,7 @@ ClassicEditor
 			'undo',
 			'redo',
 			'|',
-			'<%= formattedNames.plugin.camelCase %>Button',
+			'<%= formattedNames.plugin.camelCase %>',
 			'|',
 			'heading',
 			'|',
