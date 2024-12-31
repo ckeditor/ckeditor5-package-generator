@@ -13,9 +13,10 @@ import validateGlobalName from './validate-global-name.js';
  *
  * @param {Logger} logger
  * @param {String} globalName
+ * @param {String} defaultGlobalName
  * @returns {Promise.<String>}
  */
-export default async function setGlobalName( logger, globalName ) {
+export default async function setGlobalName( logger, globalName, defaultGlobalName ) {
 	if ( globalName ) {
 		if ( validateGlobalName( logger, globalName ) ) {
 			return globalName;
@@ -28,10 +29,11 @@ export default async function setGlobalName( logger, globalName ) {
 
 	const globalNameFromInput = await inquirer.prompt( {
 		required: true,
-		message: 'Enter the global name for plugin for UMD build',
+		message: 'Enter the global name for UMD build:',
 		type: 'input',
 		name: 'globalName',
-		validate: validateGlobalName.bind( this, logger )
+		validate: validateGlobalName.bind( this, logger ),
+		default: defaultGlobalName
 	} );
 
 	return globalNameFromInput.globalName;
