@@ -53,7 +53,7 @@ ClassicEditor
 			Base64UploadAdapter
 		],
 		toolbar: [
-			'<%= formattedNames.plugin.camelCase %>Button',
+			'<%= formattedNames.plugin.camelCase %>',
 			'|',
 			'heading',
 			'|',

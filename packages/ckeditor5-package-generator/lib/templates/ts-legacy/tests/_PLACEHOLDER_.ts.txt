@@ -26,7 +26,7 @@ describe( '<%= formattedNames.plugin.pascalCase %>', () => {
 					<%= formattedNames.plugin.pascalCase %>
 				],
 				toolbar: [
-					'<%= formattedNames.plugin.camelCase %>Button'
+					'<%= formattedNames.plugin.camelCase %>'
 				]
 			} );
 		} );
@@ -43,11 +43,11 @@ describe( '<%= formattedNames.plugin.pascalCase %>', () => {
 		} );
 
 		it( 'should add an icon to the toolbar', () => {
-			expect( editor.ui.componentFactory.has( '<%= formattedNames.plugin.camelCase %>Button' ) ).to.equal( true );
+			expect( editor.ui.componentFactory.has( '<%= formattedNames.plugin.camelCase %>' ) ).to.equal( true );
 		} );
 
 		it( 'should add a text into the editor after clicking the icon', () => {
-			const icon = editor.ui.componentFactory.create( '<%= formattedNames.plugin.camelCase %>Button' );
+			const icon = editor.ui.componentFactory.create( '<%= formattedNames.plugin.camelCase %>' );
 
 			expect( editor.getData() ).to.equal( '' );
 
