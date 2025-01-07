@@ -1,6 +1,28 @@
 Changelog
 =========
 
+## [3.0.1](https://github.com/ckeditor/ckeditor5-package-generator/compare/v3.0.0...v3.0.1) (2025-01-07)
+
+### Other changes
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: The package generator prompt displays the suggested name for the UMD build. The name is created from the plugin name and prefixed with the `CK`. Closes [#207](https://github.com/ckeditor/ckeditor5-package-generator/issues/207). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/36849a89fc813b0bb40b107dad2239320fea9967))
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Aligned the UI component name from the generated package to naming convention in CKEditor 5. Closes [#209](https://github.com/ckeditor/ckeditor5-package-generator/issues/209). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/bac30e56a166ab10765918f25d3219a16e3150d8))
+* **[package-generator](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-package-generator)**: Added `GPL` licenseKey to the packages created by the generator. Closes [#201](https://github.com/ckeditor/ckeditor5-package-generator/issues/201). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/da1f2dec8b26e9e26b8c1c9fbe28deed5377be9f))
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Other releases:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/3.0.1): v3.0.0 => v3.0.1
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/3.0.1): v3.0.0 => v3.0.1
+</details>
+
+
 ## [3.0.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v2.1.1...v3.0.0) (2024-11-04)
 
 We are excited to announce an update to the package generator for CKEditor 5 plugins. Starting this release, the created packages use [Vitest](https://vitest.dev/) as a testing environment for automated tests.
@@ -113,30 +135,6 @@ Other releases:
 
 * [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/2.1.0): v2.0.0 => v2.1.0
 * [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/2.1.0): v2.0.0 => v2.1.0
-</details>
-
-
-## [2.0.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v2.0.0-alpha.0...v2.0.0) (2024-06-26)
-
-We are excited to announce an update to the package generator for CKEditor 5 plugins. Now the new package generator fully supports the [latest installation methods](https://github.com/ckeditor/ckeditor5/releases/tag/v42.0.0) in CKEditor 5.
-
-With this update, you will be prompted to choose whether you want to generate a plugin that supports only the current methods or both current and legacy methods. For more details on migrating custom plugins, please refer to the [documentation](https://ckeditor.com/docs/ckeditor5/latest/updating/nim-migration/custom-plugins.html).
-
-### Features
-
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: New flag `--installation-methods` that should allow to generate package with current installation methods of CKEditor 5 or with current and legacy methods with DLLs. See https://github.com/ckeditor/ckeditor5/issues/15502, https://github.com/ckeditor/ckeditor5/issues/15739. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/360afe0b2b77a3363b843dcd2574b1d89bc87c3b))
-
-### Released packages
-
-Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
-
-<details>
-<summary>Released packages (summary)</summary>
-
-Releases containing new features:
-
-* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/2.0.0): v2.0.0-alpha.0 => v2.0.0
-* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/2.0.0): v2.0.0-alpha.0 => v2.0.0
 </details>
 
 ---
