@@ -7,7 +7,7 @@ Changelog
 
 * **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: The package generator prompt displays the suggested name for the UMD build. The name is created from the plugin name and prefixed with the `CK`. Closes [#207](https://github.com/ckeditor/ckeditor5-package-generator/issues/207). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/36849a89fc813b0bb40b107dad2239320fea9967))
 * **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Aligned the UI component name from the generated package to naming convention in CKEditor 5. Closes [#209](https://github.com/ckeditor/ckeditor5-package-generator/issues/209). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/bac30e56a166ab10765918f25d3219a16e3150d8))
-* **[package-generator](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-package-generator)**: Added `GPL` licenseKey to the packages created by the generator. Closes [#201](https://github.com/ckeditor/ckeditor5-package-generator/issues/201). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/da1f2dec8b26e9e26b8c1c9fbe28deed5377be9f))
+* **[package-generator](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-package-generator)**: Added `GPL` license key to the packages created by the generator. Closes [#201](https://github.com/ckeditor/ckeditor5-package-generator/issues/201). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/da1f2dec8b26e9e26b8c1c9fbe28deed5377be9f))
 
 ### Released packages
 
