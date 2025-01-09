@@ -1,7 +1,7 @@
 Software License Agreement
 ==========================
 
-Copyright (c) 2020-2024, [CKSource](http://cksource.com) Holding sp. z o.o. All rights reserved.
+Copyright (c) 2020-2025, [CKSource](http://cksource.com) Holding sp. z o.o. All rights reserved.
 
 Licensed under the terms of [MIT license](https://opensource.org/licenses/MIT).
 
