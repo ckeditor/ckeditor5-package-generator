@@ -35,7 +35,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "devDependencies": {
-    "vitest": "^2.0.5"
+    "vitest": "^2.1.9"
   },
   "bin": {
     "ckeditor5-package-tools": "bin/index.js"
