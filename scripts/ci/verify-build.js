@@ -7,11 +7,11 @@
 
 /* eslint-env node */
 
-import { spawn, spawnSync } from 'child_process';
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
+import { spawn, spawnSync } from 'child_process';
+import { stripVTControlCharacters } from 'util';
 import chalk from 'chalk';
-import stripAnsiEscapeCodes from 'strip-ansi';
 import parseArguments from './utils/parsearguments.js';
 import { EXPECTED_PUBLISH_FILES, EXPECTED_LEGACY_PUBLISH_FILES, EXPECTED_SRC_DIR_FILES } from './utils/expectedFiles.js';
 import { fileURLToPath } from 'url';
@@ -193,7 +193,7 @@ function startDevelopmentServer( cwd ) {
 		// Webpack prints the "hidden modules..." string when finished processing the file.
 		// Hence, we can assume that the server is live at this stage.
 		sampleServer.stdout.on( 'data', data => {
-			const content = stripAnsiEscapeCodes( data.toString() ).slice( 0, -1 );
+			const content = stripVTControlCharacters( data.toString() ).slice( 0, -1 );
 			const endMatch = /webpack \d+\.\d+\.\d+ compiled successfully in \d+ ms/.test( content );
 			const errorMatch = content.indexOf( 'ERROR' ) !== -1;
 
@@ -231,7 +231,7 @@ function startDevelopmentServerForDllBuild( cwd ) {
 
 		// The `http-server` package prints the URL with colors, which have to be removed before searching for the server URL.
 		sampleServer.stdout.on( 'data', data => {
-			const content = stripAnsiEscapeCodes( data.toString() );
+			const content = stripVTControlCharacters( data.toString() );
 			const urlMatch = content.match( /http:\/\/127.0.0.1:\d+/ );
 
 			if ( urlMatch ) {
