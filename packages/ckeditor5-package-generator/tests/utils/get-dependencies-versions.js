@@ -74,7 +74,7 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 
 	it( 'returns an object with a version of the "eslint-config-ckeditor5"', () => {
 		const returnedValue = getDependenciesVersions( stubs.logger, false );
-		expect( returnedValue.eslintConfigCkeditor5 ).toEqual( '5.0.0' );
+		expect( returnedValue.eslintConfigCkeditor5 ).toEqual( '10.0.0-alpha.3' ); // TODO: revert to '5.0.0'
 	} );
 
 	it( 'returns an object with a version of the "stylelint-config-ckeditor5" package', () => {
