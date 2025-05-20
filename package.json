@@ -30,6 +30,7 @@
     "eslint-plugin-ckeditor5-rules": "^10.0.0-alpha.3",
     "fs-extra": "^11.2.0",
     "glob": "^10.2.5",
+    "globals": "^16.1.0",
     "husky": "^8.0.2",
     "lint-staged": "^10.5.4",
     "minimist": "^1.2.8",
