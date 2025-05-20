@@ -19,8 +19,6 @@ import { Base64UploadAdapter } from '@ckeditor/ckeditor5-upload';
 
 import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>.js';
 
-/* global document, window */
-
 ClassicEditor
 	.create( document.querySelector( '#editor' ), {
 		licenseKey: 'GPL',

@@ -2,8 +2,6 @@ import { describe, expect, it, beforeEach, afterEach } from 'vitest';
 import { ClassicEditor, Essentials, Paragraph, Heading } from 'ckeditor5';
 import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>.js';
 
-/* global document */
-
 describe( '<%= formattedNames.plugin.pascalCase %>', () => {
 	it( 'should be named', () => {
 		expect( <%= formattedNames.plugin.pascalCase %>.pluginName ).to.equal( '<%= formattedNames.plugin.pascalCase %>' );
