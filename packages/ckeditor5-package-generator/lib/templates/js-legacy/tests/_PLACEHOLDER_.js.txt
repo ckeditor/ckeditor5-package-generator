@@ -5,8 +5,6 @@ import { Heading } from '@ckeditor/ckeditor5-heading';
 import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
 import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>.js';
 
-/* global document */
-
 describe( '<%= formattedNames.plugin.pascalCase %>', () => {
 	it( 'should be named', () => {
 		expect( <%= formattedNames.plugin.pascalCase %>.pluginName ).to.equal( '<%= formattedNames.plugin.pascalCase %>' );

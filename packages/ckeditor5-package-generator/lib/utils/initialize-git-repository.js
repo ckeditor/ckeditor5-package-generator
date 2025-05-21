@@ -24,7 +24,7 @@ export default function initializeGitRepository( directoryPath, logger ) {
 	try {
 		execSync( 'git add -A', options );
 		execSync( 'git commit -m "Initialize the repository using CKEditor 5 Package Generator."', options );
-	} catch ( error ) {
+	} catch {
 		// Remove the `.git` directory in case of an error. It may happen that the developer didn't configure Git yet.
 		// We could have resolved the error ourselves.
 		// See: https://github.com/ember-cli/ember-cli/blob/3192a441e13ec7e88c71d480778971d81bfa436c/lib/tasks/git-init.js#L49-L66.

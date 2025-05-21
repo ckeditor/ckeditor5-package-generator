@@ -29,8 +29,6 @@ import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.p
 
 import 'ckeditor5/ckeditor5.css';
 
-/* global document, window */
-
 ClassicEditor
 	.create( document.querySelector( '#editor' ), {
 		licenseKey: 'GPL',
