@@ -5,8 +5,6 @@
  * For licensing, see LICENSE.md.
  */
 
-/* eslint-env node */
-
 const EXPECTED_DIST_PUBLISH_FILES = [
 	'dist/browser/index-content.css',
 	'dist/browser/index-editor.css',
