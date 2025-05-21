@@ -29,10 +29,6 @@
     "./package.json": "./package.json"
   },
   "license": "MIT",
-  "engines": {
-    "node": ">=22.0.0",
-    "npm": ">=5.7.1"
-  },
   "files": [
     "dist",
     "lang",

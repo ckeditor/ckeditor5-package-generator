@@ -46,7 +46,7 @@ export default defineConfig( [
 	{
 		name: 'NodeJS environment config',
 		files: [
-			'./scripts/**/*.mjs'
+			'./scripts/**/*.{js,mjs,cjs}'
 		],
 		languageOptions: {
 			globals: {
@@ -57,9 +57,9 @@ export default defineConfig( [
 	{
 		name: 'Browser environment config',
 		files: [
-			'./sample/**/*.ts',
-			'./src/**/*.ts',
-			'./tests/**/*.ts',
+			'./sample/**/*.{ts,mts,cts}',
+			'./src/**/*.{ts,mts,cts}',
+			'./tests/**/*.{ts,mts,cts}',
 			'./typings/**/*.d.ts'
 		],
 		languageOptions: {
@@ -71,8 +71,8 @@ export default defineConfig( [
 	{
 		name: 'Sample and tests config',
 		files: [
-			'sample/**/*.ts',
-			'tests/**/*.ts'
+			'sample/**/*.{ts,mts,cts}',
+			'tests/**/*.{ts,mts,cts}'
 		],
 		rules: {
 			// To write complex tests, you may need to import files that are not exported in DLL files by default.
