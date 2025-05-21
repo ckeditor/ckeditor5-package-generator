@@ -13,8 +13,7 @@ export default defineConfig( [
 	{
 		name: 'Ignored files config',
 		ignores: [
-			'coverage/**',
-			'packages/*/node_modules/**'
+			'coverage/**'
 		]
 	},
 	{

@@ -37,7 +37,10 @@ export default function getDependenciesVersions( logger, dev ) {
 		ckeditor5PremiumFeatures: getPackageVersion( 'ckeditor5-premium-features' ),
 		ckeditor5Inspector: getPackageVersion( '@ckeditor/ckeditor5-inspector' ),
 		ckeditor5DevBuildTools: getPackageVersion( '@ckeditor/ckeditor5-dev-build-tools' ),
-		eslintConfigCkeditor5: '10.0.0-alpha.3', // TODO: revert
+		// eslintConfigCkeditor5: getPackageVersion( 'eslint-config-ckeditor5' ),
+		// eslintPluginCkeditor5Rules: getPackageVersion( 'eslint-plugin-ckeditor5-rules' ),
+		eslintConfigCkeditor5: '10.0.0-alpha.3', // TODO: Remove lines with hardcoded values, and uncomment lines above.
+		eslintPluginCkeditor5Rules: '10.0.0-alpha.3',
 		stylelintConfigCkeditor5: getPackageVersion( 'stylelint-config-ckeditor5' ),
 		packageTools: dev ?
 			// Windows accepts unix-like paths in `package.json`, so let's unify it to avoid errors with paths.
