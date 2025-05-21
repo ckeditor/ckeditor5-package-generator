@@ -45,7 +45,7 @@
     "webdriverio": "^9.0.7"
   },
   "peerDependencies": {
-    "ckeditor5": "^42.0.0 || ^0.0.0-nightly"
+    "ckeditor5": ">=42.0.0 || ^0.0.0-nightly"
   },
   "scripts": {
     "build:dist": "node ./scripts/build-dist.mjs",
