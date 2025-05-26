@@ -38,6 +38,9 @@
     "upath": "^2.0.1",
     "vitest": "^3.0.0"
   },
+  "resolutions": {
+    "string-width": "^4.0.0"
+  },
   "engines": {
     "node": ">=22.0.0"
   },
