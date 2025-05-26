@@ -5,8 +5,6 @@
  * For licensing, see LICENSE.md.
  */
 
-/* eslint-env node */
-
 import fs from 'fs';
 import path from 'path';
 import { spawn, spawnSync } from 'child_process';

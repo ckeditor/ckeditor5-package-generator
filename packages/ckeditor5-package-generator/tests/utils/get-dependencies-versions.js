@@ -39,6 +39,10 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 				return '5.0.0';
 			}
 
+			if ( packageName === 'eslint-plugin-ckeditor5-rules' ) {
+				return '5.0.0';
+			}
+
 			if ( packageName === 'stylelint-config-ckeditor5' ) {
 				return '3.0.0';
 			}
@@ -75,6 +79,11 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 	it( 'returns an object with a version of the "eslint-config-ckeditor5"', () => {
 		const returnedValue = getDependenciesVersions( stubs.logger, false );
 		expect( returnedValue.eslintConfigCkeditor5 ).toEqual( '5.0.0' );
+	} );
+
+	it( 'returns an object with a version of the "eslint-plugin-ckeditor5-rules"', () => {
+		const returnedValue = getDependenciesVersions( stubs.logger, false );
+		expect( returnedValue.eslintPluginCkeditor5Rules ).toEqual( '5.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "stylelint-config-ckeditor5" package', () => {

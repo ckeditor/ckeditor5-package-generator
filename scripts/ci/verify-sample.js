@@ -5,8 +5,6 @@
  * For licensing, see LICENSE.md.
  */
 
-/* eslint-env node */
-
 import { runCrawler } from '@ckeditor/ckeditor5-dev-web-crawler';
 
 // The crawler uses `process.exit()` to finish its work, so it needs to be executed in

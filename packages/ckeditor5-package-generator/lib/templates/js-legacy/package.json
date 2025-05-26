@@ -23,10 +23,6 @@
     "./package.json": "./package.json"
   },
   "license": "MIT",
-  "engines": {
-    "node": ">=20.0.0",
-    "npm": ">=5.7.1"
-  },
   "files": [
     "dist",
     "lang",
@@ -37,18 +33,20 @@
   ],
   "devDependencies": {
     "@ckeditor/ckeditor5-dev-build-tools": "<%= packageVersions.ckeditor5DevBuildTools %>",
-    "@ckeditor/ckeditor5-inspector": ">=<%= packageVersions.ckeditor5Inspector %>",
+    "@ckeditor/ckeditor5-inspector": "^<%= packageVersions.ckeditor5Inspector %>",
     "@ckeditor/ckeditor5-package-tools": "<%= packageVersions.packageTools %>",
     "@vitest/coverage-istanbul": "^2.0.5",
     "@vitest/browser": "^2.0.5",
     "ckeditor5": "latest",
-    "eslint": "^7.32.0",
-    "eslint-config-ckeditor5": ">=<%= packageVersions.eslintConfigCkeditor5 %>",
+    "eslint": "^9.27.0",
+    "eslint-config-ckeditor5": "^<%= packageVersions.eslintConfigCkeditor5 %>",
+    "eslint-plugin-ckeditor5-rules": "^<%= packageVersions.eslintPluginCkeditor5Rules %>",
+    "globals": "^16.1.0",
     "http-server": "^14.1.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.6",
     "stylelint": "^13.13.1",
-    "stylelint-config-ckeditor5": ">=<%= packageVersions.stylelintConfigCkeditor5 %>",
+    "stylelint-config-ckeditor5": "^<%= packageVersions.stylelintConfigCkeditor5 %>",
     "vite-plugin-svgo": "~1.4.0",
     "vitest": "^2.0.5",
     "webdriverio": "^9.0.7"
@@ -60,7 +58,7 @@
     "build:dist": "node ./scripts/build-dist.mjs",
     "dll:build": "ckeditor5-package-tools dll:build",
     "dll:serve": "http-server ./ -o sample/dll.html",
-    "lint": "eslint \"**/*.js\" --quiet",
+    "lint": "eslint",
     "start": "ckeditor5-package-tools start",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
     "test": "vitest",
@@ -70,8 +68,8 @@
     "translations:validate": "ckeditor5-package-tools translations:synchronize --validate-only"
   },
   "lint-staged": {
-    "**/*.js": [
-      "eslint --quiet"
+    "**/*": [
+      "eslint"
     ],
     "**/*.css": [
       "stylelint --quiet --allow-empty-input"
