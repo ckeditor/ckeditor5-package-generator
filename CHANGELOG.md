@@ -1,6 +1,32 @@
 Changelog
 =========
 
+## [4.0.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v3.0.1...v4.0.0) (2025-06-04)
+
+### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
+
+* Updated the required version of Node.js to 22.
+
+### Other changes
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: The Stylelint version in the generated packages has been bumped to v16.x. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/f6f56b2c5fdab9fddcdd67bf0c9094c6153c8e4c))
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: The ESLint version in the generated packages has been bumped to v9.x. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/0167c222d2145f5b4f8140944e2a80faf8d40b5d))
+* The development environment of the CKEditor 5 package generator now uses ESLint v9. Therefore, the required Node.js version has been upgraded to 22 to match the ESLint requirements. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/0167c222d2145f5b4f8140944e2a80faf8d40b5d))
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Other releases:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/4.0.0): v3.0.1 => v4.0.0
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/4.0.0): v3.0.1 => v4.0.0
+</details>
+
+
 ## [3.0.1](https://github.com/ckeditor/ckeditor5-package-generator/compare/v3.0.0...v3.0.1) (2025-01-07)
 
 ### Other changes
@@ -108,33 +134,6 @@ Other releases:
 
 * [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/3.0.0-alpha.0): v2.1.0 => v3.0.0-alpha.0
 * [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/3.0.0-alpha.0): v2.1.0 => v3.0.0-alpha.0
-</details>
-
-
-## [2.1.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v2.0.0...v2.1.0) (2024-08-07)
-
-### MINOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
-
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: The global names for the `ckeditor5` and `ckeditor5-premium-features` packages in the UMD builds have been changed to `CKEDITOR` and `CKEDITOR_PREMIUM_FEATURES` respectively.
-
-### Bug fixes
-
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: New flag `--global-name` to define a global name of the package to be used in the UMD build. See https://github.com/ckeditor/ckeditor5/issues/16798. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/0bc5128710e4246ea72c1f06b02f0fbba5be9624))
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Each package template should have own `README.md` based on what commands can be executed in it. Closes https://github.com/ckeditor/ckeditor5-package-generator/issues/174. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/e7538509015e17c63332764e1d2fc6565509ff4b))
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Updated the `exports` field in `package.json` templates to fix issues with loading CSS and translations in older bundlers. See https://github.com/ckeditor/ckeditor5/issues/16638. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/b98672e4a4f2a65b7602f3ff8c305cb384c74647))
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Changed the path to the types in the `package.json` in `ts` templates. See https://github.com/ckeditor/ckeditor5/issues/16684. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/84ff608360e67f6d0184e7491682c3593d335045))
-
-### Released packages
-
-Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
-
-<details>
-<summary>Released packages (summary)</summary>
-
-Other releases:
-
-* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/2.1.0): v2.0.0 => v2.1.0
-* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/2.1.0): v2.0.0 => v2.1.0
 </details>
 
 ---
