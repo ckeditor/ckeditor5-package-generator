@@ -82,9 +82,14 @@ export default options => {
 
 		module: {
 			rules: [
-				loaderDefinitions.raw(),
-				loaderDefinitions.styles( options.cwd ),
-				loaderDefinitions.typescript( options.cwd )
+				{
+					oneOf: [
+						loaderDefinitions.raw(),
+						loaderDefinitions.rawWithQuery(),
+						loaderDefinitions.styles( options.cwd ),
+						loaderDefinitions.typescript( options.cwd )
+					]
+				}
 			]
 		}
 	};

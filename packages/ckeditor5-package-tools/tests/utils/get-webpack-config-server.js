@@ -3,10 +3,10 @@
  * For licensing, see LICENSE.md.
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import fs from 'fs';
 import { CKEditorTranslationsPlugin } from '@ckeditor/ckeditor5-dev-translations';
-import { loaderDefinitions, getModuleResolutionPaths } from '../../lib/utils/webpack-utils.js';
+import { getModuleResolutionPaths, loaderDefinitions } from '../../lib/utils/webpack-utils.js';
 import getWebpackConfigServer from '../../lib/utils/get-webpack-config-server.js';
 
 const stubs = vi.hoisted( () => {
@@ -55,6 +55,7 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		} );
 
 		vi.mocked( loaderDefinitions.raw ).mockReturnValue( 'raw-loader' );
+		vi.mocked( loaderDefinitions.rawWithQuery ).mockReturnValue( 'raw-loader?query=true' );
 		vi.mocked( loaderDefinitions.typescript ).mockReturnValue( 'typescript-loader' );
 		vi.mocked( loaderDefinitions.styles ).mockReturnValue( 'styles-loader' );
 
@@ -68,11 +69,16 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 	it( 'uses correct loaders', () => {
 		const config = getWebpackConfigServer( { cwd } );
 
-		expect( config.module.rules ).toEqual( [
-			'raw-loader',
-			'styles-loader',
-			'typescript-loader'
-		] );
+		expect( config.module.rules ).toEqual( expect.arrayContaining( [
+			expect.objectContaining( ( {
+				oneOf: [
+					'raw-loader',
+					'raw-loader?query=true',
+					'styles-loader',
+					'typescript-loader'
+				]
+			} ) )
+		] ) );
 	} );
 
 	it( 'passes the "cwd" directory to TypeScript loader', () => {

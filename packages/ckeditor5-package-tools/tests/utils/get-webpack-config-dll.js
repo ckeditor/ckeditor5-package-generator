@@ -72,6 +72,7 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 		vi.mocked( fs.existsSync ).mockReturnValue( false );
 
 		vi.mocked( loaderDefinitions.raw ).mockReturnValue( 'raw-loader' );
+		vi.mocked( loaderDefinitions.rawWithQuery ).mockReturnValue( 'raw-loader?query=true' );
 		vi.mocked( loaderDefinitions.typescript ).mockReturnValue( 'typescript-loader' );
 		vi.mocked( loaderDefinitions.styles ).mockReturnValue( 'styles-loader' );
 
@@ -85,11 +86,16 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 	it( 'uses correct loaders', () => {
 		const config = getWebpackConfigDll( { cwd } );
 
-		expect( config.module.rules ).toEqual( [
-			'raw-loader',
-			'styles-loader',
-			'typescript-loader'
-		] );
+		expect( config.module.rules ).toEqual( expect.arrayContaining( [
+			expect.objectContaining( ( {
+				oneOf: [
+					'raw-loader',
+					'raw-loader?query=true',
+					'styles-loader',
+					'typescript-loader'
+				]
+			} ) )
+		] ) );
 	} );
 
 	it( 'passes the "cwd" directory to TypeScript loader', () => {

@@ -8,12 +8,15 @@ import getThemePath from './get-theme-path.js';
 import { styles } from '@ckeditor/ckeditor5-dev-utils';
 
 export const loaderDefinitions = {
-	raw: () => {
-		return {
-			test: /\.(svg|txt|html|rtf)$/,
-			loader: 'raw-loader'
-		};
-	},
+	raw: () => ( {
+		test: /\.(svg|txt|html|rtf)$/,
+		loader: 'raw-loader'
+	} ),
+
+	rawWithQuery: () => ( {
+		resourceQuery: /raw/,
+		loader: 'raw-loader'
+	} ),
 
 	/**
 	 * @param {String} cwd
