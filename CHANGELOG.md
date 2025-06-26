@@ -1,6 +1,26 @@
 Changelog
 =========
 
+## [4.0.1](https://github.com/ckeditor/ckeditor5-package-generator/compare/v4.0.0...v4.0.1) (2025-06-26)
+
+### Other changes
+
+* **[package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-package-tools)**: Add support for importing raw file content by appending `?raw` query parameter to import path. Closes [#235](https://github.com/ckeditor/ckeditor5-package-generator/issues/235). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/9fd42b92280ac1e00e1724f619ed774721dcb9bc))
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Other releases:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/4.0.1): v4.0.0 => v4.0.1
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/4.0.1): v4.0.0 => v4.0.1
+</details>
+
+
 ## [4.0.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v3.0.1...v4.0.0) (2025-06-04)
 
 ### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
@@ -107,33 +127,6 @@ Other releases:
 
 * [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/2.1.1): v2.1.0 => v2.1.1
 * [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/2.1.1): v2.1.0 => v2.1.1
-</details>
-
-
-## [3.0.0-alpha.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v2.1.0...v3.0.0-alpha.0) (2024-09-19)
-
-### MINOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
-
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: The generated package no longer uses Karma as the test runner. Instead, Vitest is used.
-* **[tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: The `test` script is removed, because unit tests in the generated package are executed directly by Vitest. Hence, the previous custom support for the `--coverage` (`-c`) and `--source-map` (`-s`) flags is no longer needed and has been also removed. The `yarn run test` (or `npm run test`) script is still available in the generated package, but it executes Vitest. See [CLI flags](https://vitest.dev/guide/cli.html) supported in Vitest.
-
-### Other changes
-
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Replaced Karma with Vitest as the testing framework in the generated package. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/7e7c6afd1aa80f30394b37475dea9129ed11dbfe))
-* **[tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: Removed support for the `--coverage` (`-c`) and `--source-map` (`-s`) flags. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/7e7c6afd1aa80f30394b37475dea9129ed11dbfe))
-* **[tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: Removed `test` script from the tools, because unit tests in the generated package are executed now directly by Vitest. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/7e7c6afd1aa80f30394b37475dea9129ed11dbfe))
-
-### Released packages
-
-Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
-
-<details>
-<summary>Released packages (summary)</summary>
-
-Other releases:
-
-* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/3.0.0-alpha.0): v2.1.0 => v3.0.0-alpha.0
-* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/3.0.0-alpha.0): v2.1.0 => v3.0.0-alpha.0
 </details>
 
 ---
