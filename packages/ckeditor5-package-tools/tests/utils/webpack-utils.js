@@ -72,6 +72,26 @@ describe( 'lib/utils/webpack-utils', () => {
 			} );
 		} );
 
+		describe( 'rawWithQuery()', () => {
+			let loader;
+
+			beforeEach( () => {
+				loader = webpackUtils.loaderDefinitions.rawWithQuery();
+			} );
+
+			it( 'uses "raw-loader" for providing files', () => {
+				expect( loader.loader ).toEqual( 'raw-loader' );
+			} );
+
+			it( 'loads paths that end with the "?raw" suffix', () => {
+				expect( '/Users/ckeditor/ckeditor5-foo/assets/ckeditor.css?raw' ).toMatch( loader.resourceQuery );
+				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\assets\\ckeditor.css?raw' ).toMatch( loader.resourceQuery );
+
+				expect( '/Users/ckeditor/ckeditor5-foo/theme/icons/ckeditor.css' ).not.toMatch( loader.resourceQuery );
+				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\theme\\icons\\ckeditor.css' ).not.toMatch( loader.resourceQuery );
+			} );
+		} );
+
 		describe( 'typescript()', () => {
 			let loader;
 
