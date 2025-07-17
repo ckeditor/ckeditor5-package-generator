@@ -4,6 +4,7 @@
  */
 
 import { describe, it, expect, vi } from 'vitest';
+import path from 'path';
 import glob from 'glob';
 import * as devTranslations from '@ckeditor/ckeditor5-dev-translations';
 import synchronizeTranslations from '../../lib/tasks/synchronize-translations.js';
@@ -19,6 +20,13 @@ vi.mock( 'path', async importOriginal => {
 		}
 	};
 } );
+
+vi.mock( 'module', () => ( {
+	default: {
+		createRequire: () => ( { resolve: () => path.resolve( process.cwd(), 'node_modules/@ckeditor/ckeditor5-core/package.json' ) } )
+	}
+} ) );
+
 vi.mock( 'glob' );
 vi.mock( '@ckeditor/ckeditor5-dev-translations' );
 
