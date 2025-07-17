@@ -9,12 +9,8 @@ import glob from 'glob';
 import mkdirp from 'mkdirp';
 import path from 'path';
 import { template } from 'lodash-es';
-import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath( import.meta.url );
-const __dirname = path.dirname( __filename );
-
-const TEMPLATE_PATH = path.join( __dirname, '..', 'templates' );
+const TEMPLATE_PATH = path.join( import.meta.dirname, '..', 'templates' );
 
 /**
  * If the package name is not valid, prints the error and exits the process.

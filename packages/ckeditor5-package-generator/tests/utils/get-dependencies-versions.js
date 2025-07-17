@@ -5,12 +5,8 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import getPackageVersion from '../../lib/utils/get-package-version.js';
 import getDependenciesVersions from '../../lib/utils/get-dependencies-versions.js';
-
-const __filename = fileURLToPath( import.meta.url );
-const __dirname = path.dirname( __filename );
 
 vi.mock( '../../lib/utils/get-package-version.js' );
 
@@ -104,7 +100,7 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 	it( 'it returns an absolute path to the "@ckeditor/ckeditor5-package-tools" package if the "dev" option is enabled', () => {
 		const returnedValue = getDependenciesVersions( stubs.logger, true );
 
-		const PROJECT_ROOT_DIRECTORY = path.join( __dirname, '..', '..', '..' );
+		const PROJECT_ROOT_DIRECTORY = path.join( import.meta.dirname, '..', '..', '..' );
 		let packageTools = 'file:' + path.resolve( PROJECT_ROOT_DIRECTORY, 'ckeditor5-package-tools' );
 		packageTools = packageTools.split( path.sep ).join( path.posix.sep );
 

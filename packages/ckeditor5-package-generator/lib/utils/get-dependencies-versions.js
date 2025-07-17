@@ -5,10 +5,6 @@
 
 import path from 'path';
 import getPackageVersion from './get-package-version.js';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath( import.meta.url );
-const __dirname = path.dirname( __filename );
 
 /**
  * Returns an object containing version for the packages listed below:
@@ -42,7 +38,8 @@ export default function getDependenciesVersions( logger, dev ) {
 		stylelintConfigCkeditor5: getPackageVersion( 'stylelint-config-ckeditor5' ),
 		packageTools: dev ?
 			// Windows accepts unix-like paths in `package.json`, so let's unify it to avoid errors with paths.
-			'file:' + path.resolve( __dirname, '..', '..', '..', 'ckeditor5-package-tools' ).split( path.sep ).join( path.posix.sep ) :
+			// eslint-disable-next-line @stylistic/max-len
+			'file:' + path.resolve( import.meta.dirname, '..', '..', '..', 'ckeditor5-package-tools' ).split( path.sep ).join( path.posix.sep ) :
 			'^' + getPackageVersion( '@ckeditor/ckeditor5-package-tools' )
 	};
 }

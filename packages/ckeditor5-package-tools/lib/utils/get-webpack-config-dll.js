@@ -4,7 +4,6 @@
  */
 
 import path from 'path';
-import { fileURLToPath } from 'url';
 import fs from 'fs-extra';
 import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
@@ -12,10 +11,7 @@ import { CKEditorTranslationsPlugin } from '@ckeditor/ckeditor5-dev-translations
 import { loaderDefinitions, getModuleResolutionPaths } from './webpack-utils.js';
 import { getMainManifestPath } from './get-path.js';
 
-const __filename = fileURLToPath( import.meta.url );
-const __dirname = path.dirname( __filename );
-
-const PACKAGE_ROOT_DIR = path.join( __dirname, '..', '..' );
+const PACKAGE_ROOT_DIR = path.join( import.meta.dirname, '..', '..' );
 
 export default options => {
 	const pkgJson = fs.readJsonSync( path.join( options.cwd, 'package.json' ) );
