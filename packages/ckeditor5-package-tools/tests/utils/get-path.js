@@ -7,7 +7,7 @@ import { describe, it, expect, vi } from 'vitest';
 import module from 'module';
 import { getThemePath, getCorePath, getMainManifestPath } from '../../lib/utils/get-path.js';
 
-describe.only( 'lib/utils/get-path', () => {
+describe( 'lib/utils/get-path', () => {
 	describe( 'getThemePath', () => {
 		it( 'should be a function', () => {
 			expect( getThemePath ).toBeTypeOf( 'function' );
