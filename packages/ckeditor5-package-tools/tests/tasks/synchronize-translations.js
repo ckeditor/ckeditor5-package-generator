@@ -8,11 +8,17 @@ import glob from 'glob';
 import * as devTranslations from '@ckeditor/ckeditor5-dev-translations';
 import synchronizeTranslations from '../../lib/tasks/synchronize-translations.js';
 
-vi.mock( 'path', () => ( {
-	default: {
-		join: ( ...chunks ) => chunks.join( '/' )
-	}
-} ) );
+vi.mock( 'path', async importOriginal => {
+	const mod = await importOriginal();
+
+	return {
+		...mod,
+		default: {
+			...mod.default,
+			join: ( ...chunks ) => chunks.join( '/' )
+		}
+	};
+} );
 vi.mock( 'glob' );
 vi.mock( '@ckeditor/ckeditor5-dev-translations' );
 
