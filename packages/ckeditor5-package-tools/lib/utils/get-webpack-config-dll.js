@@ -5,17 +5,13 @@
 
 import path from 'path';
 import fs from 'fs-extra';
-
 import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
 import { CKEditorTranslationsPlugin } from '@ckeditor/ckeditor5-dev-translations';
 import { loaderDefinitions, getModuleResolutionPaths } from './webpack-utils.js';
-import { fileURLToPath } from 'url';
+import { getMainManifestPath } from './get-path.js';
 
-const __filename = fileURLToPath( import.meta.url );
-const __dirname = path.dirname( __filename );
-
-const PACKAGE_ROOT_DIR = path.join( __dirname, '..', '..' );
+const PACKAGE_ROOT_DIR = path.join( import.meta.dirname, '..', '..' );
 
 export default options => {
 	const pkgJson = fs.readJsonSync( path.join( options.cwd, 'package.json' ) );
@@ -30,12 +26,9 @@ export default options => {
 	// its DLL file will be available under the `window.CKEditor5.examplePackage` variable.
 	const dllWindowKey = dllName.replace( /-([a-z])/g, ( match, p1 ) => p1.toUpperCase() );
 
-	// An absolute path to the manifest file that the `DllReferencePlugin` plugin uses for mapping dependencies.
-	const ckeditor5manifestPath = path.join( options.cwd, 'node_modules', 'ckeditor5', 'build', 'ckeditor5-dll.manifest.json' );
-
 	const webpackPlugins = [
 		new webpack.DllReferencePlugin( {
-			manifest: fs.readJsonSync( ckeditor5manifestPath ),
+			manifest: fs.readJsonSync( getMainManifestPath() ),
 			scope: 'ckeditor5/src',
 			name: 'CKEditor5.dll'
 		} ),

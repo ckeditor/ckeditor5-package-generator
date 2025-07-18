@@ -8,20 +8,16 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { Command } from 'commander';
-import { fileURLToPath } from 'url';
 import init from '../lib/index.js';
 
-const __filename = fileURLToPath( import.meta.url );
-const __dirname = path.dirname( __filename );
-
-const packageJson = fs.readJsonSync( path.join( __dirname, '..', 'package.json' ) );
+const packageJson = fs.readJsonSync( path.join( import.meta.dirname, '..', 'package.json' ) );
 
 new Command( packageJson.name )
 	.argument( '[packageName]', 'name of the package (@scope/ckeditor5-*)' )
 	.option( '-v, --verbose', 'output additional logs', false )
 	.option( '--dev', 'execution of the script in the development mode', () => {
 		// An absolute path to the repository that tracks the package.
-		const rootRepositoryPath = path.join( __dirname, '..', '..', '..' );
+		const rootRepositoryPath = path.join( import.meta.dirname, '..', '..', '..' );
 
 		// The assumption here is that if the `--dev` flag was used, the entire repository is cloned.
 		// Otherwise, the executable was downloaded from npm, and it can't be executed in dev-mode.

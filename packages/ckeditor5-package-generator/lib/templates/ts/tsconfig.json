@@ -21,10 +21,10 @@
     "target": "es2019",
     "sourceMap": true,
     "allowJs": true,
-	"moduleDetection": "force",
-	"moduleResolution": "NodeNext",
-	"module": "NodeNext",
-	"skipLibCheck": true,
+    "moduleDetection": "force",
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext",
+    "skipLibCheck": true,
     "typeRoots": [
       "typings",
       "node_modules/@types"

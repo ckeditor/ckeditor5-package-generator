@@ -6,7 +6,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import path from 'path';
 import { styles } from '@ckeditor/ckeditor5-dev-utils';
-import getThemePath from '../../lib/utils/get-theme-path.js';
+import { getThemePath } from '../../lib/utils/get-path.js';
 import * as webpackUtils from '../../lib/utils/webpack-utils.js';
 
 vi.mock( 'path', () => ( {
@@ -16,7 +16,7 @@ vi.mock( 'path', () => ( {
 	}
 } ) );
 vi.mock( '@ckeditor/ckeditor5-dev-utils' );
-vi.mock( '../../lib/utils/get-theme-path.js' );
+vi.mock( '../../lib/utils/get-path.js' );
 
 describe( 'lib/utils/webpack-utils', () => {
 	const cwd = '/process/cwd';

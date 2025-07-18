@@ -4,15 +4,29 @@
  */
 
 import { describe, it, expect, vi } from 'vitest';
+import path from 'path';
 import glob from 'glob';
 import * as devTranslations from '@ckeditor/ckeditor5-dev-translations';
 import synchronizeTranslations from '../../lib/tasks/synchronize-translations.js';
 
-vi.mock( 'path', () => ( {
+vi.mock( 'path', async importOriginal => {
+	const mod = await importOriginal();
+
+	return {
+		...mod,
+		default: {
+			...mod.default,
+			join: ( ...chunks ) => chunks.join( '/' )
+		}
+	};
+} );
+
+vi.mock( 'module', () => ( {
 	default: {
-		join: ( ...chunks ) => chunks.join( '/' )
+		createRequire: () => ( { resolve: () => path.resolve( process.cwd(), 'node_modules/@ckeditor/ckeditor5-core/package.json' ) } )
 	}
 } ) );
+
 vi.mock( 'glob' );
 vi.mock( '@ckeditor/ckeditor5-dev-translations' );
 

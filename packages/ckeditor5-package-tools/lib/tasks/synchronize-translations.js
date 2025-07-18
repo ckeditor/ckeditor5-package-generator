@@ -6,6 +6,7 @@
 import path from 'path';
 import glob from 'glob';
 import { synchronizeTranslations } from '@ckeditor/ckeditor5-dev-translations';
+import { getCorePath } from '../utils/get-path.js';
 
 export default options => {
 	// Glob handles posix paths.
@@ -19,7 +20,7 @@ export default options => {
 		packagePaths: [ options.cwd ],
 
 		// A relative path to the `@ckeditor/ckeditor5-core` package where common translations are located.
-		corePackagePath: path.join( 'node_modules', '@ckeditor', 'ckeditor5-core' ),
+		corePackagePath: getCorePath(),
 
 		// Ignore unused from the core package, as the shared context may but does not have to be used.
 		ignoreUnusedCorePackageContexts: true,

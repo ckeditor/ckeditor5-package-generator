@@ -4,7 +4,7 @@
  */
 
 import path from 'path';
-import getThemePath from './get-theme-path.js';
+import { getThemePath } from './get-path.js';
 import { styles } from '@ckeditor/ckeditor5-dev-utils';
 
 export const loaderDefinitions = {

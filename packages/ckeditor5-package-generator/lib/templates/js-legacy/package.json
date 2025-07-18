@@ -19,7 +19,7 @@
     "./*": "./dist/*",
     "./browser/*": null,
     "./build/*": "./build/*",
-		"./src/*": "./src/*",
+    "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
   "license": "MIT",
