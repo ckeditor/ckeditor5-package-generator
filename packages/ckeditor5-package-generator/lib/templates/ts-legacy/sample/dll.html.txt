@@ -72,21 +72,21 @@
     </ul>
 </div>
 
-<!-- DLL builds are served from the `node_modules/` directory -->
-<script src="../node_modules/ckeditor5/build/ckeditor5-dll.js"></script>
-<script src="../node_modules/@ckeditor/ckeditor5-editor-classic/build/editor-classic.js"></script>
-<script src="../node_modules/@ckeditor/ckeditor5-code-block/build/code-block.js"></script>
-<script src="../node_modules/@ckeditor/ckeditor5-essentials/build/essentials.js"></script>
-<script src="../node_modules/@ckeditor/ckeditor5-basic-styles/build/basic-styles.js"></script>
-<script src="../node_modules/@ckeditor/ckeditor5-heading/build/heading.js"></script>
-<script src="../node_modules/@ckeditor/ckeditor5-autoformat/build/autoformat.js"></script>
-<script src="../node_modules/@ckeditor/ckeditor5-block-quote/build/block-quote.js"></script>
-<script src="../node_modules/@ckeditor/ckeditor5-image/build/image.js"></script>
-<script src="../node_modules/@ckeditor/ckeditor5-link/build/link.js"></script>
-<script src="../node_modules/@ckeditor/ckeditor5-indent/build/indent.js"></script>
-<script src="../node_modules/@ckeditor/ckeditor5-media-embed/build/media-embed.js"></script>
-<script src="../node_modules/@ckeditor/ckeditor5-list/build/list.js"></script>
-<script src="../node_modules/@ckeditor/ckeditor5-table/build/table.js"></script>
+<!-- DLL builds are loaded via CKEditor 5 CDN -->
+<script src="https://cdn.ckeditor.com/ckeditor5/<%= packageVersions.ckeditor5 %>/dll/ckeditor5-dll/ckeditor5-dll.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/<%= packageVersions.ckeditor5 %>/dll/editor-classic/editor-classic.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/<%= packageVersions.ckeditor5 %>/dll/code-block/code-block.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/<%= packageVersions.ckeditor5 %>/dll/essentials/essentials.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/<%= packageVersions.ckeditor5 %>/dll/basic-styles/basic-styles.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/<%= packageVersions.ckeditor5 %>/dll/heading/heading.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/<%= packageVersions.ckeditor5 %>/dll/autoformat/autoformat.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/<%= packageVersions.ckeditor5 %>/dll/block-quote/block-quote.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/<%= packageVersions.ckeditor5 %>/dll/image/image.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/<%= packageVersions.ckeditor5 %>/dll/link/link.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/<%= packageVersions.ckeditor5 %>/dll/indent/indent.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/<%= packageVersions.ckeditor5 %>/dll/media-embed/media-embed.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/<%= packageVersions.ckeditor5 %>/dll/list/list.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/<%= packageVersions.ckeditor5 %>/dll/table/table.js"></script>
 
 <!-- The "<%= packageName %>" package DLL build is served from the `build/` directory -->
 <script src="../build/<%= formattedNames.package.raw %>.js"></script>
