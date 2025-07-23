@@ -1,6 +1,26 @@
 Changelog
 =========
 
+## [4.0.2](https://github.com/ckeditor/ckeditor5-package-generator/compare/v4.0.1...v4.0.2) (July 23, 2025)
+
+### Bug fixes
+
+* **[tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: Fixed various errors thrown when generating packages in a monorepo environment. Closes [ckeditor/ckeditor5-package-generator#132](https://github.com/ckeditor/ckeditor5-package-generator/issues/132).
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Other releases:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/4.0.2): v4.0.1 => v4.0.2
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/4.0.2): v4.0.1 => v4.0.2
+</details>
+
+
 ## [4.0.1](https://github.com/ckeditor/ckeditor5-package-generator/compare/v4.0.0...v4.0.1) (2025-06-26)
 
 ### Other changes
@@ -107,26 +127,6 @@ Other releases:
 
 * [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/3.0.0): v2.1.1 => v3.0.0
 * [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/3.0.0): v2.1.1 => v3.0.0
-</details>
-
-
-## [2.1.1](https://github.com/ckeditor/ckeditor5-package-generator/compare/v2.1.0...v2.1.1) (2024-09-30)
-
-### Other changes
-
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Lock to the last compatible version of the `@ckeditor/ckeditor5-dev-build-tools` package due to the upcoming release of breaking changes in the `@ckeditor/ckeditor5-dev-*` packages. Closes [#191](https://github.com/ckeditor/ckeditor5-package-generator/issues/191). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/d031bb0321b4d66e9a97cf4b16475c40c773ad9f))
-
-### Released packages
-
-Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
-
-<details>
-<summary>Released packages (summary)</summary>
-
-Other releases:
-
-* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/2.1.1): v2.1.0 => v2.1.1
-* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/2.1.1): v2.1.0 => v2.1.1
 </details>
 
 ---
