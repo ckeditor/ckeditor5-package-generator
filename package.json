@@ -56,8 +56,10 @@
     "release:publish-packages": "node scripts/release/publishpackages.js",
     "test": "vitest run --config vitest.config.js",
     "coverage": "vitest run --config vitest.config.js --coverage",
-    "clean": "npx rimraf --glob package-lock.json yarn.lock ./**/node_modules",
-    "reinstall": "yarn run clean && yarn install"
+    "clean": "pnpm dlx rimraf --glob ./**/node_modules",
+    "install:lock": "pnpm install --frozen-lockfile=false --resolution-only",
+    "reinstall": "yarn run clean && pnpm install",
+    "reinstall:lock": "pnpm run clean && pnpm run install:lock && pnpm install"
   },
   "repository": {
     "type": "git",
@@ -66,11 +68,6 @@
   "lint-staged": {
     "**/*": [
       "eslint --quiet"
-    ]
-  },
-  "workspaces": {
-    "packages": [
-      "packages/*"
     ]
   }
 }
