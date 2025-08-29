@@ -20,7 +20,9 @@ commands:
     steps:
       - run:
           name: "Install pnpm"
-          command: npm i -g pnpm@^10
+          command: |
+            npm install pnpm@10 --prefix .pnpm
+            export PATH="$PWD/.pnpm/bin:$PATH"
       - install_ssh_keys_command
       - run:
           name: Install dependencies
