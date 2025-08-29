@@ -34,6 +34,7 @@
     "globals": "^16.1.0",
     "husky": "^8.0.2",
     "lint-staged": "^10.5.4",
+    "listr2": "^8.2.5",
     "minimist": "^1.2.8",
     "semver": "^7.0.0",
     "upath": "^2.0.1",
