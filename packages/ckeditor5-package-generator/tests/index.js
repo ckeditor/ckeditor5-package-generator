@@ -114,6 +114,7 @@ describe( 'lib/index', () => {
 			verbose: true,
 			useYarn: true,
 			useNpm: false,
+			usePnpm: false,
 			installationMethods: 'current',
 			pluginName: 'FooBar',
 			lang: 'js',
@@ -178,7 +179,40 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( choosePackageManager ).toHaveBeenCalledTimes( 1 );
-		expect( choosePackageManager ).toHaveBeenCalledWith( false, true );
+		expect( choosePackageManager ).toHaveBeenCalledWith( false, true, false );
+	} );
+
+	it( 'chooses npx for npm package manager', async () => {
+		vi.mocked( choosePackageManager ).mockResolvedValue( 'npm' );
+
+		await index( packageName, options );
+
+		expect( copyFiles ).toHaveBeenCalledWith(
+			expect.any( Logger ),
+			expect.objectContaining( { npxByPackageManager: 'npx' } )
+		);
+	} );
+
+	it( 'chooses npx for yarn package manager', async () => {
+		vi.mocked( choosePackageManager ).mockResolvedValue( 'yarn' );
+
+		await index( packageName, options );
+
+		expect( copyFiles ).toHaveBeenCalledWith(
+			expect.any( Logger ),
+			expect.objectContaining( { npxByPackageManager: 'npx' } )
+		);
+	} );
+
+	it( 'chooses pnpm dlx for pnpm package manager', async () => {
+		vi.mocked( choosePackageManager ).mockResolvedValue( 'pnpm' );
+
+		await index( packageName, options );
+
+		expect( copyFiles ).toHaveBeenCalledWith(
+			expect.any( Logger ),
+			expect.objectContaining( { npxByPackageManager: 'pnpm dlx' } )
+		);
 	} );
 
 	it( 'chooses the programming language', async () => {
@@ -237,6 +271,7 @@ describe( 'lib/index', () => {
 					}
 				},
 				packageManager: 'yarn',
+				npxByPackageManager: 'npx',
 				directoryPath: 'directoryPath',
 				packageVersions: {
 					ckeditor5: '30.0.0'
