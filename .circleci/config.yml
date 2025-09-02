@@ -175,6 +175,20 @@ jobs:
           name: Verify build (JavaScript, yarn, current and legacy installation methods)
           command: node scripts/ci/verify-build -l js -p yarn -m current-and-legacy -g GLOBAL_NAME
 
+  package_js_pnpm_both_install_methods:
+    docker:
+      - image: cimg/node:22.12.0-browsers
+    environment:
+      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
+      NODE_OPTIONS: --openssl-legacy-provider
+    steps:
+      - checkout
+      - bootstrap_repository_command
+      - browser-tools/install_chrome
+      - run:
+          name: Verify build (JavaScript, pnpm, current and legacy installation methods)
+          command: node scripts/ci/verify-build -l js -p pnpm -m current-and-legacy -g GLOBAL_NAME
+
   package_js_npm_current_install_methods:
     docker:
       - image: cimg/node:22.12.0-browsers
@@ -202,6 +216,20 @@ jobs:
       - run:
           name: Verify build (JavaScript, yarn, current installation methods)
           command: node scripts/ci/verify-build -l js -p yarn -m current -g GLOBAL_NAME
+
+  package_js_pnpm_current_install_methods:
+    docker:
+      - image: cimg/node:22.12.0-browsers
+    environment:
+      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
+      NODE_OPTIONS: --openssl-legacy-provider
+    steps:
+      - checkout
+      - bootstrap_repository_command
+      - browser-tools/install_chrome
+      - run:
+          name: Verify build (JavaScript, pnpm, current installation methods)
+          command: node scripts/ci/verify-build -l js -p pnpm -m current -g GLOBAL_NAME
 
   package_ts_npm_both_install_methods_custom_name:
     docker:
@@ -231,6 +259,33 @@ jobs:
           name: Verify build (TypeScript, npm, current installation methods, custom plugin name)
           command: node scripts/ci/verify-build -l ts -p npm -m current -n CustomPluginName -g GLOBAL_NAME
 
+  package_ts_pnpm_both_install_methods_custom_name:
+    docker:
+      - image: cimg/node:22.12.0-browsers
+    environment:
+      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
+      NODE_OPTIONS: --openssl-legacy-provider
+    steps:
+      - checkout
+      - bootstrap_repository_command
+      - browser-tools/install_chrome
+      - run:
+          name: Verify build (TypeScript, pnpm, current and legacy installation methods, custom plugin name)
+          command: node scripts/ci/verify-build -l ts -p pnpm -m current-and-legacy -n CustomPluginName -g GLOBAL_NAME
+
+  package_ts_pnpm_current_install_methods_custom_name:
+    docker:
+      - image: cimg/node:22.12.0-browsers
+    environment:
+      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
+      NODE_OPTIONS: --openssl-legacy-provider
+    steps:
+      - checkout
+      - bootstrap_repository_command
+      - browser-tools/install_chrome
+      - run:
+          name: Verify build (TypeScript, pnpm, current installation methods, custom plugin name)
+          command: node scripts/ci/verify-build -l ts -p pnpm -m current -n CustomPluginName -g GLOBAL_NAME
 
   package_js_yarn_both_install_methods_custom_name:
     docker:
@@ -392,13 +447,17 @@ workflows:
       - validate_and_tests
       - package_js_npm_both_install_methods
       - package_js_yarn_both_install_methods
+      - package_js_pnpm_both_install_methods
       - package_js_npm_current_install_methods
       - package_js_yarn_current_install_methods
+      - package_js_pnpm_current_install_methods
       - package_ts_npm_both_install_methods_custom_name
       - package_ts_npm_current_install_methods_custom_name
       - package_js_yarn_both_install_methods_custom_name
       - package_js_yarn_current_install_methods_custom_name
       - package_ts_yarn_both_install_methods
+      - package_ts_pnpm_both_install_methods_custom_name
+      - package_ts_pnpm_current_install_methods_custom_name
       - release_prepare
       - trigger_release_process:
           requires:
@@ -406,13 +465,17 @@ workflows:
             - release_prepare
             - package_js_npm_both_install_methods
             - package_js_yarn_both_install_methods
+            - package_js_pnpm_both_install_methods
             - package_js_npm_current_install_methods
             - package_js_yarn_current_install_methods
+            - package_js_pnpm_current_install_methods
             - package_ts_npm_both_install_methods_custom_name
             - package_ts_npm_current_install_methods_custom_name
             - package_js_yarn_both_install_methods_custom_name
             - package_js_yarn_current_install_methods_custom_name
             - package_ts_yarn_both_install_methods
+            - package_ts_pnpm_both_install_methods_custom_name
+            - package_ts_pnpm_current_install_methods_custom_name
           filters:
             branches:
               only:
@@ -444,12 +507,16 @@ workflows:
       - validate_and_tests
       - package_js_npm_both_install_methods
       - package_js_yarn_both_install_methods
+      - package_js_pnpm_both_install_methods
       - package_js_npm_current_install_methods
       - package_js_yarn_current_install_methods
+      - package_js_pnpm_current_install_methods
       - package_ts_npm_both_install_methods_custom_name
       - package_ts_npm_current_install_methods_custom_name
       - package_js_yarn_both_install_methods_custom_name
       - package_js_yarn_current_install_methods_custom_name
+      - package_ts_pnpm_both_install_methods_custom_name
+      - package_ts_pnpm_current_install_methods_custom_name
       - package_ts_yarn_both_install_methods
       - notify_ci_failure:
           hideAuthor: "true"

@@ -24,7 +24,7 @@ import validatePluginName from './utils/validate-plugin-name.js';
  * @param {CKeditor5PackageGeneratorOptions} options
  */
 export default async function init( packageName, options ) {
-	const { dev, verbose, useNpm, useYarn, installationMethods, lang, pluginName, globalName } = options;
+	const { dev, verbose, useNpm, useYarn, usePnpm, installationMethods, lang, pluginName, globalName } = options;
 
 	const logger = new Logger( verbose );
 
@@ -32,7 +32,7 @@ export default async function init( packageName, options ) {
 	validatePluginName( logger, pluginName );
 	const formattedNames = getPackageNameFormats( packageName, pluginName );
 	const { directoryName, directoryPath } = createDirectory( logger, packageName );
-	const packageManager = await choosePackageManager( useNpm, useYarn );
+	const packageManager = await choosePackageManager( useNpm, useYarn, usePnpm );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
 	const installationMethodOfPackage = await chooseInstallationMethods( logger, installationMethods );
 
@@ -41,11 +41,14 @@ export default async function init( packageName, options ) {
 
 	const packageVersions = getDependenciesVersions( logger, dev );
 
+	const npxByPackageManager = packageManager === 'pnpm' ? 'pnpm dlx' : 'npx';
+
 	copyFiles( logger, {
 		packageName,
 		formattedNames,
 		directoryPath,
 		packageManager,
+		npxByPackageManager,
 		programmingLanguage,
 		packageVersions,
 		installationMethodOfPackage,
@@ -104,6 +107,8 @@ export default async function init( packageName, options ) {
  * @property {Boolean} [useNpm=false]
  *
  * @property {Boolean} [useYarn=false]
+ *
+ * @property {Boolean} [usePnpm=false]
  *
  * @property {String} installationMethods
  *
