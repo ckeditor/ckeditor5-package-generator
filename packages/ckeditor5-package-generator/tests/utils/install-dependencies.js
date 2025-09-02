@@ -128,6 +128,49 @@ describe( 'lib/utils/install-dependencies', () => {
 		);
 	} );
 
+	it( 'installs dependencies using pnpm', async () => {
+		await runTest( { packageManager: 'pnpm' } );
+
+		expect( spawn ).toHaveBeenCalledTimes( 1 );
+		expect( spawn ).toHaveBeenCalledWith(
+			'pnpm',
+			[ 'install' ],
+			{
+				encoding: 'utf8',
+				shell: true,
+				cwd: defaultDirectoryPath,
+				stderr: 'inherit'
+			}
+		);
+	} );
+
+	it( 'installs dependencies using pnpm in verbose mode', async () => {
+		await runTest( { packageManager: 'pnpm', verbose: true } );
+
+		expect( spawn ).toHaveBeenCalledTimes( 1 );
+		expect( spawn ).toHaveBeenCalledWith(
+			'pnpm',
+			[ 'install' ],
+			{
+				encoding: 'utf8',
+				shell: true,
+				cwd: defaultDirectoryPath,
+				stderr: 'inherit',
+				stdio: 'inherit'
+			}
+		);
+	} );
+
+	it( 'installs dependencies using pnpm in dev mode', async () => {
+		await runTest( { packageManager: 'pnpm', dev: true } );
+
+		expect( spawn ).toHaveBeenCalledWith(
+			'pnpm',
+			[ 'install' ],
+			expect.any( Object )
+		);
+	} );
+
 	it( 'throws an error when install task closes with error exit code', () => {
 		return runTest( { exitCode: 1 } )
 			.then( () => {
@@ -136,6 +179,15 @@ describe( 'lib/utils/install-dependencies', () => {
 			.catch( err => {
 				expect( err.message ).toEqual( 'Installing dependencies finished with an error.' );
 			} );
+	} );
+
+	it( 'throws an error for unhandled package manager', async () => {
+		try {
+			await installDependencies( defaultDirectoryPath, 'unknown', false, false );
+			throw new Error( 'Expected to throw.' );
+		} catch ( err ) {
+			expect( err.message ).toEqual( 'Unhandled package manager unknown' );
+		}
 	} );
 
 	/**

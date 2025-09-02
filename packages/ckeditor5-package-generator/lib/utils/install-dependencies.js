@@ -9,7 +9,7 @@ import { spawn } from 'child_process';
 
 /**
  * @param {String} directoryPath
- * @param {'npm'|'yarn'} packageManager
+ * @param {'npm'|'yarn'|'pnpm'} packageManager
  * @param {Boolean} verbose
  * @param {Boolean} dev
  * @returns {Promise}
@@ -28,7 +28,7 @@ export default async function installDependencies( directoryPath, packageManager
 
 /**
  * @param {String} directoryPath
- * @param {'npm'|'yarn'} packageManager
+ * @param {'npm'|'yarn'|'pnpm'} packageManager
  * @param {Boolean} verbose
  * @param {Boolean} dev
  * @returns {Promise}
