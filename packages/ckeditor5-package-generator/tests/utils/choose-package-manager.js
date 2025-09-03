@@ -54,12 +54,12 @@ describe( 'lib/utils/choose-package-manager', () => {
 		expect( result ).toEqual( 'yarn' );
 	} );
 
-	it( 'should return npm when yarn is not installed and arguments false', async () => {
+	it( 'should call prompt when yarn is not installed and arguments are false', async () => {
 		vi.mocked( isYarnInstalled ).mockReturnValue( false );
 
-		const result = await choosePackageManager( false, false, false );
+		await choosePackageManager( false, false, false );
 
-		expect( result ).toEqual( 'npm' );
+		expect( inquirer.prompt ).toHaveBeenCalled();
 	} );
 
 	it( 'should return yarn when prompt returns yarn, yarn is installed and arguments are false', async () => {
@@ -74,14 +74,6 @@ describe( 'lib/utils/choose-package-manager', () => {
 		const result = await choosePackageManager( false, false, false );
 
 		expect( result ).toEqual( 'npm' );
-	} );
-
-	it( 'should not call prompt when yarn is not installed', async () => {
-		vi.mocked( isYarnInstalled ).mockReturnValue( false );
-
-		await choosePackageManager( false, false, false );
-
-		expect( inquirer.prompt ).not.toHaveBeenCalled();
 	} );
 
 	it( 'should not call prompt when yarn is installed and npm flag used', async () => {
@@ -114,12 +106,12 @@ describe( 'lib/utils/choose-package-manager', () => {
 			} );
 	} );
 
-	it( 'should return npm when pnpm is not installed and arguments false', async () => {
+	it( 'should call prompt when pnpm is not installed and arguments false', async () => {
 		vi.mocked( isPnpmInstalled ).mockReturnValue( false );
 
-		const result = await choosePackageManager( false, false, false );
+		await choosePackageManager( false, false, false );
 
-		expect( result ).toEqual( 'npm' );
+		expect( inquirer.prompt ).toHaveBeenCalled();
 	} );
 
 	it( 'should return pnpm when prompt returns pnpm, pnpm is installed and arguments are false', async () => {

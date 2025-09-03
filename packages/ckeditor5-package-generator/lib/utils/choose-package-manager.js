@@ -25,10 +25,6 @@ export default async function choosePackageManager( useNpm, useYarn, usePnpm ) {
 		throw new Error( 'Detected --use-pnpm option but pnpm is not installed.' );
 	}
 
-	if ( !yarnInstalled || !pnpmInstalled ) {
-		return 'npm';
-	}
-
 	if ( useNpm && useYarn || useNpm && usePnpm || usePnpm && useYarn || useNpm && usePnpm && useYarn ) {
 		return await askUserToChoosePackageManager();
 	}
