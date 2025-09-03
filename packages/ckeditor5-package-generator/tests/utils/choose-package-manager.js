@@ -128,13 +128,25 @@ describe( 'lib/utils/choose-package-manager', () => {
 		expect( inquirer.prompt ).not.toHaveBeenCalled();
 	} );
 
-	it( 'should call prompt when multiple package managers are specified', async () => {
+	it( 'should call prompt when multiple package managers are specified (npm & yarn)', async () => {
 		await choosePackageManager( true, true, false );
 
 		expect( inquirer.prompt ).toHaveBeenCalled();
 	} );
 
-	it( 'should call prompt when all package managers are specified', async () => {
+	it( 'should call prompt when multiple package managers are specified (npm & pnpm)', async () => {
+		await choosePackageManager( true, false, true );
+
+		expect( inquirer.prompt ).toHaveBeenCalled();
+	} );
+
+	it( 'should call prompt when multiple package managers are specified (yarn & pnpm)', async () => {
+		await choosePackageManager( false, true, true );
+
+		expect( inquirer.prompt ).toHaveBeenCalled();
+	} );
+
+	it( 'should call prompt when all package managers are specified (npm & yarn & pnpm)', async () => {
 		await choosePackageManager( true, true, true );
 
 		expect( inquirer.prompt ).toHaveBeenCalled();

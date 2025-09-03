@@ -25,7 +25,7 @@ export default async function choosePackageManager( useNpm, useYarn, usePnpm ) {
 		throw new Error( 'Detected --use-pnpm option but pnpm is not installed.' );
 	}
 
-	if ( useNpm && useYarn || useNpm && usePnpm || usePnpm && useYarn || useNpm && usePnpm && useYarn ) {
+	if ( useNpm && usePnpm && useYarn || useNpm && useYarn || useNpm && usePnpm || usePnpm && useYarn ) {
 		return await askUserToChoosePackageManager();
 	}
 
