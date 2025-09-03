@@ -99,7 +99,7 @@ async function verifyBuild( { language, packageManager, customPluginName, instal
 	executeCommand( [ 'pnpm', 'run', 'translations:validate' ], { cwd: NEW_PACKAGE_DIRECTORY } );
 
 	logProcess( 'Verifying release process...' );
-	const { stderr } = executeCommand( [ 'pnpm', 'publish', '--dry-run' ], { cwd: NEW_PACKAGE_DIRECTORY, pipeStderr: true } );
+	const { stderr } = executeCommand( [ 'npm', 'publish', '--dry-run' ], { cwd: NEW_PACKAGE_DIRECTORY, pipeStderr: true } );
 	console.log( stderr );
 	checkFileList( stderr, expectedPublishFiles );
 
