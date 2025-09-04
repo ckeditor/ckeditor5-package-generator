@@ -59,7 +59,7 @@
     "coverage": "vitest run --config vitest.config.js --coverage",
     "clean": "pnpm dlx rimraf --glob ./**/node_modules",
     "install:lock": "pnpm install --frozen-lockfile=false --resolution-only",
-    "reinstall": "yarn run clean && pnpm install",
+    "reinstall": "pnpm run clean && pnpm install",
     "reinstall:lock": "pnpm run clean && pnpm run install:lock && pnpm install"
   },
   "repository": {

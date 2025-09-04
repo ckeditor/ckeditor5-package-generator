@@ -28,7 +28,7 @@ _If you have ideas, you can list them here. Otherwise, you can delete this secti
 ## 📃 Other details
 
 * Node: …
-* Npm / Yarn: …
+* Npm / Yarn / Pnpm: …
 * First affected version: …
 
 ---
