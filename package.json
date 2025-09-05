@@ -45,7 +45,8 @@
     "string-width": "^4.0.0"
   },
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=22.0.0",
+    "pnpm": ">=10.14.0"
   },
   "scripts": {
     "nice": "ckeditor5-dev-changelog-create-entry",

@@ -60,7 +60,7 @@ describe( 'lib/utils/copy-files', () => {
 
 		vi.mocked( glob.sync ).mockImplementation( pattern => {
 			if ( pattern === 'common/**/*' ) {
-				return [ 'common/LICENSE.md', 'common/lang/contexts.json' ];
+				return [ 'common/LICENSE.md', 'common/lang/contexts.json', 'common/pnpm-workspace.yaml' ];
 			}
 
 			if ( pattern === 'js/**/*' ) {
@@ -81,6 +81,10 @@ describe( 'lib/utils/copy-files', () => {
 		} );
 
 		vi.mocked( fs.readFileSync ).mockImplementation( path => {
+			if ( path.endsWith( 'templates/common/pnpm-workspace.yaml' ) ) {
+				return '# pnpm workspace file';
+			}
+
 			if ( path.endsWith( 'templates/common/LICENSE.md' ) ) {
 				return 'Copyright (c) <%= now.getFullYear() %>. All rights reserved.\n';
 			}
@@ -584,6 +588,39 @@ describe( 'lib/utils/copy-files', () => {
 			4,
 			'directory/path/foo/src/index.js',
 			'/* JS CODE */'
+		);
+	} );
+
+	it( 'copies "pnpm-workspace.yaml" for pnpm', () => {
+		options.packageManager = 'pnpm';
+
+		copyFiles( stubs.logger, options );
+
+		expect( fs.writeFileSync ).toHaveBeenCalledWith(
+			expect.stringContaining( 'pnpm-workspace.yaml' ),
+			expect.any( String )
+		);
+	} );
+
+	it( 'does not copy "pnpm-workspace.yaml" for npm', () => {
+		options.packageManager = 'npm';
+
+		copyFiles( stubs.logger, options );
+
+		expect( fs.writeFileSync ).not.toHaveBeenCalledWith(
+			expect.stringContaining( 'pnpm-workspace.yaml' ),
+			expect.any( String )
+		);
+	} );
+
+	it( 'does not copy "pnpm-workspace.yaml" for yarn', () => {
+		options.packageManager = 'yarn';
+
+		copyFiles( stubs.logger, options );
+
+		expect( fs.writeFileSync ).not.toHaveBeenCalledWith(
+			expect.stringContaining( 'pnpm-workspace.yaml' ),
+			expect.any( String )
 		);
 	} );
 } );
