@@ -18,18 +18,11 @@ commands:
   bootstrap_repository_command:
     description: "Bootstrap the repository"
     steps:
-#      - run:
-#          name: Enable Corepack
-#          command: corepack enable
-#      - run:
-#          name: Prepare pnpm 10.14.0
-#          command: corepack prepare pnpm@10.14.0 --activate
       - run:
           name: Install pnpm
           command: |
             npm install -g pnpm@10.14.0 --prefix .pnpm
             echo 'export PATH="$PWD/.pnpm/bin:$PATH"' >> $BASH_ENV
-#            export PATH="$PWD/.pnpm/bin:$PATH"
       - run:
           name: Verify pnpm version
           command: pnpm --version
