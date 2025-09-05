@@ -4,8 +4,6 @@
  */
 
 import inquirer from 'inquirer';
-import isYarnInstalled from './is-yarn-installed.js';
-import isPnpmInstalled from './is-pnpm-installed.js';
 
 /**
  * @param {Boolean} useNpm
@@ -14,18 +12,9 @@ import isPnpmInstalled from './is-pnpm-installed.js';
  * @returns {Promise<'npm'|'yarn'|'pnpm'>}
  */
 export default async function choosePackageManager( useNpm, useYarn, usePnpm ) {
-	const yarnInstalled = isYarnInstalled();
-	const pnpmInstalled = isPnpmInstalled();
+	const selected = [ useNpm, useYarn, usePnpm ].filter( Boolean ).length;
 
-	if ( useYarn && !yarnInstalled ) {
-		throw new Error( 'Detected --use-yarn option but yarn is not installed.' );
-	}
-
-	if ( usePnpm && !pnpmInstalled ) {
-		throw new Error( 'Detected --use-pnpm option but pnpm is not installed.' );
-	}
-
-	if ( useNpm && usePnpm && useYarn || useNpm && useYarn || useNpm && usePnpm || usePnpm && useYarn ) {
+	if ( selected > 1 ) {
 		return await askUserToChoosePackageManager();
 	}
 
