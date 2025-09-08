@@ -58,7 +58,7 @@
     "release:publish-packages": "node scripts/release/publishpackages.js",
     "test": "vitest run --config vitest.config.js",
     "coverage": "vitest run --config vitest.config.js --coverage",
-    "clean": "pnpm dlx rimraf --glob ./**/node_modules",
+    "clean": "pnpm dlx rimraf --glob \"./**/node_modules\"",
     "install:lock": "pnpm install --frozen-lockfile=false --resolution-only",
     "reinstall": "pnpm run clean && pnpm install",
     "reinstall:lock": "pnpm run clean && pnpm run install:lock && pnpm install"
