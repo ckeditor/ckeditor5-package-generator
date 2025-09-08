@@ -16,6 +16,7 @@ import isPnpmInstalled from './is-pnpm-installed.js';
 export default async function choosePackageManager( useNpm, useYarn, usePnpm ) {
 	const yarnInstalled = isYarnInstalled();
 	const pnpmInstalled = isPnpmInstalled();
+	const selected = [ useNpm, useYarn, usePnpm ].filter( Boolean ).length;
 
 	if ( useYarn && !yarnInstalled ) {
 		throw new Error( 'Detected --use-yarn option but yarn is not installed.' );
@@ -25,7 +26,7 @@ export default async function choosePackageManager( useNpm, useYarn, usePnpm ) {
 		throw new Error( 'Detected --use-pnpm option but pnpm is not installed.' );
 	}
 
-	if ( useNpm && usePnpm && useYarn || useNpm && useYarn || useNpm && usePnpm || usePnpm && useYarn ) {
+	if ( selected > 1 ) {
 		return await askUserToChoosePackageManager();
 	}
 
