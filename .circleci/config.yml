@@ -123,9 +123,6 @@ jobs:
   validate_and_tests:
     docker:
       - image: cimg/node:22.12.0-browsers
-    environment:
-      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
-      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
       - bootstrap_repository_command
@@ -158,9 +155,6 @@ jobs:
   package_js_npm_both_install_methods:
     docker:
       - image: cimg/node:22.12.0-browsers
-    environment:
-      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
-      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
       - bootstrap_repository_command
@@ -172,9 +166,6 @@ jobs:
   package_js_yarn_both_install_methods:
     docker:
       - image: cimg/node:22.12.0-browsers
-    environment:
-      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
-      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
       - bootstrap_repository_command
@@ -186,9 +177,6 @@ jobs:
   package_js_pnpm_both_install_methods:
     docker:
       - image: cimg/node:22.12.0-browsers
-    environment:
-      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
-      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
       - bootstrap_repository_command
@@ -200,9 +188,6 @@ jobs:
   package_js_npm_current_install_methods:
     docker:
       - image: cimg/node:22.12.0-browsers
-    environment:
-      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
-      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
       - bootstrap_repository_command
@@ -214,9 +199,6 @@ jobs:
   package_js_yarn_current_install_methods:
     docker:
       - image: cimg/node:22.12.0-browsers
-    environment:
-      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
-      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
       - bootstrap_repository_command
@@ -228,9 +210,6 @@ jobs:
   package_js_pnpm_current_install_methods:
     docker:
       - image: cimg/node:22.12.0-browsers
-    environment:
-      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
-      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
       - bootstrap_repository_command
@@ -242,9 +221,6 @@ jobs:
   package_ts_npm_both_install_methods_custom_name:
     docker:
       - image: cimg/node:22.12.0-browsers
-    environment:
-      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
-      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
       - bootstrap_repository_command
@@ -256,9 +232,6 @@ jobs:
   package_ts_npm_current_install_methods_custom_name:
     docker:
       - image: cimg/node:22.12.0-browsers
-    environment:
-      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
-      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
       - bootstrap_repository_command
@@ -270,9 +243,6 @@ jobs:
   package_ts_pnpm_both_install_methods_custom_name:
     docker:
       - image: cimg/node:22.12.0-browsers
-    environment:
-      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
-      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
       - bootstrap_repository_command
@@ -284,9 +254,6 @@ jobs:
   package_ts_pnpm_current_install_methods_custom_name:
     docker:
       - image: cimg/node:22.12.0-browsers
-    environment:
-      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
-      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
       - bootstrap_repository_command
@@ -298,9 +265,6 @@ jobs:
   package_js_yarn_both_install_methods_custom_name:
     docker:
       - image: cimg/node:22.12.0-browsers
-    environment:
-      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
-      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
       - bootstrap_repository_command
@@ -312,9 +276,6 @@ jobs:
   package_js_yarn_current_install_methods_custom_name:
     docker:
       - image: cimg/node:22.12.0-browsers
-    environment:
-      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
-      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
       - bootstrap_repository_command
@@ -326,9 +287,6 @@ jobs:
   package_ts_yarn_both_install_methods:
     docker:
       - image: cimg/node:22.12.0-browsers
-    environment:
-      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
-      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
       - bootstrap_repository_command
@@ -340,9 +298,6 @@ jobs:
   package_ts_yarn_current_install_methods:
     docker:
       - image: cimg/node:22.12.0-browsers
-    environment:
-      # To address the "error:0308010C:digital envelope routines::unsupported" issue.
-      NODE_OPTIONS: --openssl-legacy-provider
     steps:
       - checkout
       - bootstrap_repository_command
