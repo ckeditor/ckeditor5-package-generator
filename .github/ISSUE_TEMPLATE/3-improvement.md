@@ -14,7 +14,7 @@ _How the feature works now and what you'd like to change_?
 ## 📃 Other details
 
 * Node: …
-* Npm / Yarn: …
+* Npm / Yarn / Pnpm: …
 * First affected version: …
 
 ---

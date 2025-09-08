@@ -37,13 +37,15 @@ export default function copyFiles( logger, options ) {
 		templatePatternToCopy
 	];
 
-	const templatesToCopy = templateGlobs.flatMap( globPattern => {
-		return glob.sync( globPattern, {
-			cwd: TEMPLATE_PATH,
-			dot: true,
-			nodir: true
-		} );
-	} );
+	const templatesToCopy = templateGlobs
+		.flatMap( globPattern => {
+			return glob.sync( globPattern, {
+				cwd: TEMPLATE_PATH,
+				dot: true,
+				nodir: true
+			} );
+		} )
+		.filter( file => options.packageManager !== 'pnpm' ? !file.includes( 'pnpm-workspace.yaml' ) : true );
 
 	for ( const templatePath of templatesToCopy ) {
 		logger.verboseInfo( `* Copying "${ chalk.gray( templatePath ) }"...` );

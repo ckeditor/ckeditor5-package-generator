@@ -59,7 +59,7 @@ This repository follows the mono-repository structure. It contains multiple npm 
 ## Developing the `ckeditor5-package-generator` repository
 
 * Clone the repository: `git clone git@github.com:ckeditor/ckeditor5-package-generator.git`
-* Install required dependencies: `yarn install`
+* Install required dependencies: `pnpm install`
 
 ### Creating a package
 
@@ -70,7 +70,7 @@ The tool will create a new directory called `ckeditor5-package` with an example 
 To use a local version of the `@ckeditor/ckeditor5-package-tools` package, use the `--dev` option when executing the command.
 
 ```bash
-node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--dev] [--use-npm] [--use-yarn] [--installation-methods <current|current-and-legacy>] [--global-name <...>] [--plugin-name <...>] [--lang <js|ts>] [--verbose]
+node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--dev] [--use-npm] [--use-yarn] [--use-pnpm] [--installation-methods <current|current-and-legacy>] [--global-name <...>] [--plugin-name <...>] [--lang <js|ts>] [--verbose]
 ```
 
 #### Options
@@ -78,6 +78,7 @@ node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--d
 * `--dev` &ndash; whether to execute in the development mode. It means that the `@ckeditor/ckeditor5-package-tools` will not be installed from npm, but from the local file system.
 * `--use-npm` &ndash; use `npm` to install dependencies in a newly created package.
 * `--use-yarn` &ndash; use `yarn` to install dependencies in a newly created package.
+* `--use-pnpm` &ndash; use `pnpm` to install dependencies in a newly created package.
 * `--installation-methods` &ndash; (values: `current` | `current-and-legacy`) choose which installation methods of CKEditor 5 do you want to support? If omitted, the script will ask the user to choose manually.
 * `--global-name` &ndash; define a global name of the package to be used in UMD build.
 * `--plugin-name` &ndash; define a class name to be different from the package name.
@@ -101,11 +102,11 @@ However, applying changes in the local repository does not impact an already cre
 ```bash
 # The assumption here is your current working directory points to the root directory in the repository.
 cd packages/ckeditor5-package-tools
-yarn link
+pnpm link
 
 # Then, go to the newly created package.
 cd /path/to/new/package/ckeditor5-foo
-yarn link @ckeditor/ckeditor5-package-tools
+pnpm link @ckeditor/ckeditor5-package-tools
 ```
 
 Now, the newly created package uses changes from the local repository.
@@ -118,7 +119,7 @@ Before you start, you need to prepare the changelog entries.
 
 1. Make sure the `#master` branch is up-to-date: `git fetch && git checkout master && git pull`.
 1. Prepare a release branch: `git checkout -b release-[YYYYMMDD]` where `YYYYMMDD` is the current day.
-1. Generate the changelog entries: `yarn run release:prepare-changelog`.
+1. Generate the changelog entries: `pnpm run release:prepare-changelog`.
 	* You can specify the release date by passing the `--date` option, e.g., `--date=2025-06-11`.
 	* By passing the `--dry-run` option, you can check what the script will do without actually modifying the files.
 	* Read all the entries, correct poor wording and other issues, wrap code names in backticks to format them, etc.

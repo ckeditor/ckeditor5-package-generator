@@ -34,6 +34,7 @@
     "globals": "^16.1.0",
     "husky": "^8.0.2",
     "lint-staged": "^10.5.4",
+    "listr2": "^8.2.5",
     "minimist": "^1.2.8",
     "semver": "^7.0.0",
     "upath": "^2.0.1",
@@ -44,7 +45,8 @@
     "string-width": "^4.0.0"
   },
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=22.0.0",
+    "pnpm": ">=10.14.0"
   },
   "scripts": {
     "nice": "ckeditor5-dev-changelog-create-entry",
@@ -56,8 +58,10 @@
     "release:publish-packages": "node scripts/release/publishpackages.js",
     "test": "vitest run --config vitest.config.js",
     "coverage": "vitest run --config vitest.config.js --coverage",
-    "clean": "npx rimraf --glob package-lock.json yarn.lock ./**/node_modules",
-    "reinstall": "yarn run clean && yarn install"
+    "clean": "pnpm dlx rimraf --glob \"./**/node_modules\"",
+    "install:lock": "pnpm install --frozen-lockfile=false --resolution-only",
+    "reinstall": "pnpm run clean && pnpm install",
+    "reinstall:lock": "pnpm run clean && pnpm run install:lock && pnpm install"
   },
   "repository": {
     "type": "git",
@@ -66,11 +70,6 @@
   "lint-staged": {
     "**/*": [
       "eslint --quiet"
-    ]
-  },
-  "workspaces": {
-    "packages": [
-      "packages/*"
     ]
   }
 }

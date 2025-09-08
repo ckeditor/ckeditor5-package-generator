@@ -14,14 +14,14 @@ The `ckeditor5-package-generator` is a tool dedicated for developers. It creates
 
 The minimal version of `Node.js` required by CKEditor 5 is `18`.
 
-While not necessary, it is also nice to have the latest version of `yarn 1.x` installed globally.
+While not necessary, it is also nice to have the latest version of `yarn 1.x` or `pnpm` installed globally.
 
 ## Creating a package
 
 To create a new package without installing the tool, simply execute the following command:
 
 ```bash
-npx ckeditor5-package-generator <packageName> [--use-npm] [--use-yarn] [--installation-methods <current|current-and-legacy>] [--plugin-name <...>] [--lang <js|ts>] [--global-name <...>] [--verbose]
+npx ckeditor5-package-generator <packageName> [--use-npm] [--use-yarn] [--use-pnpm] [--installation-methods <current|current-and-legacy>] [--plugin-name <...>] [--lang <js|ts>] [--global-name <...>] [--verbose]
 ```
 
 The `<packageName>` argument is required and  must follow these rules:
@@ -41,6 +41,7 @@ As a result of executing the command, a new directory with a package in it will 
 
 * `--use-npm` &ndash; use `npm` to install dependencies in a newly created package.
 * `--use-yarn` &ndash; use `yarn` to install dependencies in a newly created package.
+* `--use-pnpm` &ndash; use `pnpm` to install dependencies in a newly created package.
 * `--installation-methods` &ndash; (values: `current` | `current-and-legacy`) choose which installation methods of CKEditor 5 do you want to support? If omitted, the script will ask the user to choose manually.
 * `--global-name` &ndash; define a global name of the package to be used in UMD build.
 * `--plugin-name` &ndash; define a class name to be different from the package name.

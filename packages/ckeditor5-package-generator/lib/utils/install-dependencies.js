@@ -9,7 +9,7 @@ import { spawn } from 'child_process';
 
 /**
  * @param {String} directoryPath
- * @param {'npm'|'yarn'} packageManager
+ * @param {'npm'|'yarn'|'pnpm'} packageManager
  * @param {Boolean} verbose
  * @param {Boolean} dev
  * @returns {Promise}
@@ -28,7 +28,7 @@ export default async function installDependencies( directoryPath, packageManager
 
 /**
  * @param {String} directoryPath
- * @param {'npm'|'yarn'} packageManager
+ * @param {'npm'|'yarn'|'pnpm'} packageManager
  * @param {Boolean} verbose
  * @param {Boolean} dev
  * @returns {Promise}
@@ -59,8 +59,12 @@ function installPackages( directoryPath, packageManager, verbose, dev ) {
 			}
 
 			installTask = spawn( 'npm', npmArguments, spawnOptions );
-		} else {
+		} else if ( packageManager === 'yarn' ) {
 			installTask = spawn( 'yarnpkg', [], spawnOptions );
+		} else if ( packageManager === 'pnpm' ) {
+			installTask = spawn( 'pnpm', [ 'install' ], spawnOptions );
+		} else {
+			throw new Error( 'Unhandled package manager ' + packageManager );
 		}
 
 		installTask.on( 'close', exitCode => {

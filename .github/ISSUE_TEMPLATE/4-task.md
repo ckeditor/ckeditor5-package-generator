@@ -14,5 +14,5 @@ _What steps should be taken to fulfill the task?_
 ## 📃 Other details
 
 * Node: …
-* Npm / Yarn: …
+* Npm / Yarn / Pnpm: …
 * First affected version: …
