@@ -37,6 +37,8 @@ async function start() {
 		console.log( '\n' + chalk.red( 'Found errors during the verification. Please, review the log above.' ) );
 	}
 
+	console.log( { foundError } );
+
 	process.exit( foundError ? 1 : 0 );
 }
 
@@ -155,7 +157,7 @@ function executeCommand( command, options ) {
 		]
 	} );
 
-	console.log( { newProcess } );
+	console.log( { status: newProcess.status } );
 
 	if ( newProcess.status ) {
 		foundError = true;
