@@ -19,11 +19,12 @@ commands:
     description: "Bootstrap the repository"
     steps:
       - run:
-          name: Install pnpm
+          name: Install package managers
           command: |
             sudo corepack disable
-            npm install -g pnpm@10 --prefix .pnpm
-            echo 'export PATH="$PWD/.pnpm/bin:$PATH"' >> $BASH_ENV
+            npm install -g pnpm@10
+            npm install -g yarn
+#            echo 'export PATH="$PWD/.pnpm/bin:$PATH"' >> $BASH_ENV
       - run:
           name: Verify pnpm version
           command: pnpm --version
