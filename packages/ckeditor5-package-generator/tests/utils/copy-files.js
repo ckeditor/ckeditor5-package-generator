@@ -5,7 +5,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import fs from 'fs';
-import glob from 'glob';
+import { globSync } from 'glob';
 import copyFiles from '../../lib/utils/copy-files.js';
 
 vi.mock( 'chalk', () => ( {
@@ -58,7 +58,7 @@ describe( 'lib/utils/copy-files', () => {
 			toFake: [ 'Date' ]
 		} );
 
-		vi.mocked( glob.sync ).mockImplementation( pattern => {
+		vi.mocked( globSync ).mockImplementation( pattern => {
 			if ( pattern === 'common/**/*' ) {
 				return [ 'common/LICENSE.md', 'common/lang/contexts.json', 'common/pnpm-workspace.yaml' ];
 			}
@@ -289,9 +289,9 @@ describe( 'lib/utils/copy-files', () => {
 	} );
 
 	it( 'replaces placeholder filenames', () => {
-		const globSyncMock = vi.mocked( glob.sync ).getMockImplementation();
+		const globSyncMock = vi.mocked( globSync ).getMockImplementation();
 
-		vi.mocked( glob.sync ).mockImplementation( pattern => {
+		vi.mocked( globSync ).mockImplementation( pattern => {
 			if ( pattern === 'js/**/*' ) {
 				return [
 					'js/package.json',
@@ -314,9 +314,9 @@ describe( 'lib/utils/copy-files', () => {
 	} );
 
 	it( 'removes ".txt" extension from filenames', () => {
-		const globSyncMock = vi.mocked( glob.sync ).getMockImplementation();
+		const globSyncMock = vi.mocked( globSync ).getMockImplementation();
 
-		vi.mocked( glob.sync ).mockImplementation( pattern => {
+		vi.mocked( globSync ).mockImplementation( pattern => {
 			if ( pattern === 'js/**/*' ) {
 				return [
 					'js/package.json',

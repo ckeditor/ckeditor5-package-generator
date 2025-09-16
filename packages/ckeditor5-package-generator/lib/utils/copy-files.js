@@ -5,7 +5,7 @@
 
 import chalk from 'chalk';
 import fs from 'fs';
-import glob from 'glob';
+import { globSync } from 'glob';
 import mkdirp from 'mkdirp';
 import path from 'path';
 import { template } from 'lodash-es';
@@ -39,7 +39,7 @@ export default function copyFiles( logger, options ) {
 
 	const templatesToCopy = templateGlobs
 		.flatMap( globPattern => {
-			return glob.sync( globPattern, {
+			return globSync( globPattern, {
 				cwd: TEMPLATE_PATH,
 				dot: true,
 				nodir: true

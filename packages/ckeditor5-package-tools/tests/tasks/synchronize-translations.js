@@ -5,7 +5,7 @@
 
 import { describe, it, expect, vi } from 'vitest';
 import path from 'path';
-import glob from 'glob';
+import { globSync } from 'glob';
 import * as devTranslations from '@ckeditor/ckeditor5-dev-translations';
 import synchronizeTranslations from '../../lib/tasks/synchronize-translations.js';
 
@@ -41,19 +41,19 @@ describe( 'lib/tasks/synchronize-translations', () => {
 			'/workspace/ckeditor5-foo/src/myplugin.js'
 		];
 
-		vi.mocked( glob.sync ).mockReturnValue( sourceFiles );
+		vi.mocked( globSync ).mockReturnValue( sourceFiles );
 
 		synchronizeTranslations( {
 			cwd: '/workspace',
 			validateOnly: false
 		} );
 
-		expect( glob.sync ).toHaveBeenCalledTimes( 1 );
-		expect( glob.sync ).toHaveBeenCalledWith( '/workspace/src/**/*.[jt]s' );
+		expect( globSync ).toHaveBeenCalledTimes( 1 );
+		expect( globSync ).toHaveBeenCalledWith( '/workspace/src/**/*.[jt]s' );
 
 		expect( devTranslations.synchronizeTranslations ).toHaveBeenCalledTimes( 1 );
 		expect( devTranslations.synchronizeTranslations ).toHaveBeenCalledWith( {
-			// Verify results returned by `glob.sync()`.
+			// Verify results returned by `globSync()`.
 			sourceFiles,
 			// Verify a path to the `@ckeditor/ckeditor5-core` package.
 			corePackagePath: 'node_modules/@ckeditor/ckeditor5-core',
@@ -76,19 +76,19 @@ describe( 'lib/tasks/synchronize-translations', () => {
 			'/workspace/ckeditor5-foo/src/myplugin.ts'
 		];
 
-		vi.mocked( glob.sync ).mockReturnValue( sourceFiles );
+		vi.mocked( globSync ).mockReturnValue( sourceFiles );
 
 		synchronizeTranslations( {
 			cwd: '/workspace',
 			validateOnly: false
 		} );
 
-		expect( glob.sync ).toHaveBeenCalledTimes( 1 );
-		expect( glob.sync ).toHaveBeenCalledWith( '/workspace/src/**/*.[jt]s' );
+		expect( globSync ).toHaveBeenCalledTimes( 1 );
+		expect( globSync ).toHaveBeenCalledWith( '/workspace/src/**/*.[jt]s' );
 
 		expect( devTranslations.synchronizeTranslations ).toHaveBeenCalledTimes( 1 );
 		expect( devTranslations.synchronizeTranslations ).toHaveBeenCalledWith( {
-			// Verify results returned by `glob.sync()`.
+			// Verify results returned by `globSync()`.
 			sourceFiles,
 			// Verify a path to the `@ckeditor/ckeditor5-core` package.
 			corePackagePath: 'node_modules/@ckeditor/ckeditor5-core',
@@ -122,7 +122,7 @@ describe( 'lib/tasks/synchronize-translations', () => {
 			cwd: 'C:\\workspace'
 		} );
 
-		expect( glob.sync ).toHaveBeenCalledTimes( 1 );
-		expect( glob.sync ).toHaveBeenCalledWith( 'C:/workspace/src/**/*.[jt]s' );
+		expect( globSync ).toHaveBeenCalledTimes( 1 );
+		expect( globSync ).toHaveBeenCalledWith( 'C:/workspace/src/**/*.[jt]s' );
 	} );
 } );
