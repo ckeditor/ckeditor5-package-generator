@@ -20,6 +20,8 @@ const __dirname = path.dirname( __filename );
 const REPOSITORY_DIRECTORY = path.join( __dirname, '..', '..' );
 const NEW_PACKAGE_DIRECTORY = path.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-test-package' );
 
+const VERIFICATION_TIMEOUT = 5 * 60 * 1000;
+
 // A flag that determines whether any of the executed commands resulted in an error.
 let foundError = false;
 
@@ -31,7 +33,7 @@ start();
 async function start() {
 	const options = parseArguments( process.argv.slice( 2 ) );
 
-	await verifyBuild( options );
+	await withTimeout( verifyBuild( options ), VERIFICATION_TIMEOUT );
 
 	if ( foundError ) {
 		console.log( '\n' + chalk.red( 'Found errors during the verification. Please, review the log above.' ) );
@@ -381,4 +383,21 @@ function getExpectedFiles( expectedFilesObject, lang, customPluginName ) {
 	}
 
 	return expectedFilesObject[ lang ].map( filename => filename.replace( 'testpackage', customPluginName.toLowerCase() ) );
+}
+
+/**
+ * Ensures that waiting for a promise will take no longer than the specified timeout.
+ *
+ * @param {Promise} promise Promise to wait for.
+ * @param {Number} timeout Maximum time to wait in milliseconds.
+ * @returns {Promise}
+ */
+function withTimeout( promise, timeout ) {
+	const timeoutPromise = new Promise( ( _, reject ) => {
+		setTimeout( () => {
+			reject( new Error( `Timeout after ${ timeout / 60 / 1000 } min, aborting.` ) );
+		}, timeout );
+	} );
+
+	return Promise.race( [ promise, timeoutPromise ] );
 }
