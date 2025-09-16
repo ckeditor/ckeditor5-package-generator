@@ -155,6 +155,8 @@ function executeCommand( command, options ) {
 		]
 	} );
 
+	console.log( { newProcess } );
+
 	if ( newProcess.status ) {
 		foundError = true;
 	}
