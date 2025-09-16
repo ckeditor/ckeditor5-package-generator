@@ -22,9 +22,8 @@ commands:
           name: Install package managers
           command: |
             sudo corepack disable
-            npm install -g pnpm@10
-            npm install -g yarn
-#            echo 'export PATH="$PWD/.pnpm/bin:$PATH"' >> $BASH_ENV
+            sudo npm install -g pnpm@10
+            sudo npm install -g yarn
       - run:
           name: Verify pnpm version
           command: pnpm --version
