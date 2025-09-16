@@ -4,7 +4,7 @@
  */
 
 import path from 'path';
-import glob from 'glob';
+import { globSync } from 'glob';
 import { synchronizeTranslations } from '@ckeditor/ckeditor5-dev-translations';
 import { getCorePath } from '../utils/get-path.js';
 
@@ -14,7 +14,7 @@ export default options => {
 
 	return synchronizeTranslations( {
 		// An array containing absolute paths the package sources.
-		sourceFiles: glob.sync( sourceFilesGlob ),
+		sourceFiles: globSync( sourceFilesGlob ),
 
 		// An absolute path to the package.
 		packagePaths: [ options.cwd ],
