@@ -21,6 +21,7 @@ commands:
       - run:
           name: Install pnpm
           command: |
+            sudo corepack disable
             npm install -g pnpm@10 --prefix .pnpm
             echo 'export PATH="$PWD/.pnpm/bin:$PATH"' >> $BASH_ENV
       - run:
