@@ -127,7 +127,6 @@ jobs:
     steps:
       - checkout
       - bootstrap_repository_command
-      - browser-tools/install_chrome
       - run:
           name: Execute ESLint
           command: pnpm run lint
