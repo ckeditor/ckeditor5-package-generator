@@ -7,8 +7,7 @@ Changelog
 
 * **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Added comprehensive support for `pnpm` alongside existing `npm` and `yarn` options in the CKEditor 5 package generator. Closes [#247](https://github.com/ckeditor/ckeditor5-package-generator/issues/247).
 
-  Features added:
-  - New `--use-pnpm` CLI flag for specifying pnpm as package manager.
+  You can now use the `--use-pnpm` CLI flag to specify `pnpm` as your package manager when generating a new package.
 
 ### Released packages
 
