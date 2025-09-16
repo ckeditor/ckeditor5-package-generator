@@ -12,8 +12,8 @@
   "main": "lib/index.js",
   "type": "module",
   "dependencies": {
-    "@ckeditor/ckeditor5-dev-translations": "^50.0.0",
-    "@ckeditor/ckeditor5-dev-utils": "^50.0.0",
+    "@ckeditor/ckeditor5-dev-translations": "^53.2.0",
+    "@ckeditor/ckeditor5-dev-utils": "^53.2.0",
     "buffer": "^6.0.3",
     "chalk": "^5.0.0",
     "css-loader": "^5.2.7",

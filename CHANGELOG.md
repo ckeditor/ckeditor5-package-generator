@@ -1,6 +1,31 @@
 Changelog
 =========
 
+## [4.1.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v4.0.2...v4.1.0) (September 16, 2025)
+
+### Features
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Added comprehensive support for `pnpm` alongside existing `npm` and `yarn` options in the CKEditor 5 package generator. Closes [#247](https://github.com/ckeditor/ckeditor5-package-generator/issues/247).
+
+  You can now use the `--use-pnpm` CLI flag to specify `pnpm` as your package manager when generating a new package.
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Releases containing new features:
+
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/4.1.0): v4.0.2 => v4.1.0
+
+Other releases:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/4.1.0): v4.0.2 => v4.1.0
+</details>
+
+
 ## [4.0.2](https://github.com/ckeditor/ckeditor5-package-generator/compare/v4.0.1...v4.0.2) (July 23, 2025)
 
 ### Bug fixes
@@ -86,47 +111,6 @@ Other releases:
 
 * [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/3.0.1): v3.0.0 => v3.0.1
 * [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/3.0.1): v3.0.0 => v3.0.1
-</details>
-
-
-## [3.0.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v2.1.1...v3.0.0) (2024-11-04)
-
-We are excited to announce an update to the package generator for CKEditor 5 plugins. Starting this release, the created packages use [Vitest](https://vitest.dev/) as a testing environment for automated tests.
-
-Taking the occasion, we decided to drop the Transifex integration. Right now, translation entries (if needed) can be modified via pull requests instead of an external service. This change reflects the translation updates in CKEditor 5.
-
-Last but not least, the generator follows the ESM standard. However, this change should not affect the integrators, as the [`@ckeditor/ckeditor5-package-tools`](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools) package exposes a binary script that is aligned to the new API.
-
-### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
-
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Removed the `translations:collect`, `translations:download` and `translations:upload` scripts from the generated package. Instead, the `translations:synchronize` and `translations:validate` scripts are introduced. These two new scripts do not provide an integration with Transifex service anymore, but they help preparing translation files (`*.po` files) which must be handled by the integrator himself.
-* **[tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: Removed the `translations:collect`, `translations:download` and `translations:upload` tasks. Instead, the `translations:synchronize` task is introduced. It helps preparing translation files (`*.po` files) in the generated package.
-
-### MINOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
-
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: The generated package no longer uses Karma as the test runner. Instead, Vitest is used.
-* **[tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: The `test` script is removed, because unit tests in the generated package are executed directly by Vitest. Hence, the previous custom support for the `--coverage` (`-c`) and `--source-map` (`-s`) flags is no longer needed and has been also removed. The `yarn run test` (or `npm run test`) script is still available in the generated package, but it executes Vitest. See [CLI flags](https://vitest.dev/guide/cli.html) supported in Vitest.
-
-### Other changes
-
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Lock to the last compatible version of the `@ckeditor/ckeditor5-dev-build-tools` package due to the upcoming release of breaking changes in the `@ckeditor/ckeditor5-dev-*` packages. Closes [#191](https://github.com/ckeditor/ckeditor5-package-generator/issues/191). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/c5beffb74f5a481c3d51fed0db78fd64e6110728))
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Replaced Karma with Vitest as the testing framework in the generated package. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/7e7c6afd1aa80f30394b37475dea9129ed11dbfe))
-* **[tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: Removed support for the `--coverage` (`-c`) and `--source-map` (`-s`) flags. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/7e7c6afd1aa80f30394b37475dea9129ed11dbfe))
-* **[tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: Removed `test` script from the tools, because unit tests in the generated package are executed now directly by Vitest. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/7e7c6afd1aa80f30394b37475dea9129ed11dbfe))
-* The generated package no longer integrates with the Transifex service. Thanks to that, a community can provide translation entries directly via pull requests. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/c812fa0502f31e0534814dda06bbb05174e89a21))
-* Converted the project repository to ESM. Closes [#192](https://github.com/ckeditor/ckeditor5-package-generator/issues/192). ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/30f0ada815ba196e6069e04dc316ef567bbb0f3c))
-
-### Released packages
-
-Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
-
-<details>
-<summary>Released packages (summary)</summary>
-
-Other releases:
-
-* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/3.0.0): v2.1.1 => v3.0.0
-* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/3.0.0): v2.1.1 => v3.0.0
 </details>
 
 ---
