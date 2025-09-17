@@ -38,6 +38,9 @@ export default class Logger {
 			return;
 		}
 
+		message = chalk.italic( message );
+		message = chalk.gray( message );
+
 		this._genericLog( message, options );
 	}
 
