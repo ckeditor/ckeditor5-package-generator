@@ -12,7 +12,9 @@ vi.stubGlobal( 'console', {
 
 vi.mock( 'chalk', () => ( {
 	default: {
-		red: vi.fn( str => `red:[${ str }]` )
+		red: vi.fn( str => `red:[${ str }]` ),
+		gray: vi.fn( str => `gray:[${ str }]` ),
+		italic: vi.fn( str => `italic:[${ str }]` )
 	}
 } ) );
 
@@ -59,7 +61,7 @@ describe( 'lib/utils/logger', () => {
 
 			expect( console.log ).not.toHaveBeenCalled();
 			expect( logger._genericLog ).toHaveBeenCalledTimes( 1 );
-			expect( logger._genericLog ).toHaveBeenCalledWith( 'Logging some information...', { startWithNewLine: true } );
+			expect( logger._genericLog ).toHaveBeenCalledWith( 'gray:[italic:[Logging some information...]]', { startWithNewLine: true } );
 		} );
 
 		it( 'does nothing if logger instance was created in non-verbose mode', () => {

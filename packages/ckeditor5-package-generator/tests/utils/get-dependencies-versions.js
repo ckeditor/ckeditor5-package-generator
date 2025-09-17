@@ -46,7 +46,8 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 
 		stubs = {
 			logger: {
-				process: vi.fn()
+				process: vi.fn(),
+				verboseInfo: vi.fn()
 			}
 		};
 	} );
@@ -56,54 +57,74 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 	} );
 
 	it( 'logs the process', () => {
-		getDependenciesVersions( stubs.logger, false );
+		getDependenciesVersions( stubs.logger, { dev: false } );
 
 		expect( stubs.logger.process ).toHaveBeenCalledTimes( 1 );
 		expect( stubs.logger.process ).toHaveBeenCalledWith( 'Collecting the latest CKEditor 5 packages versions...' );
 	} );
 
 	it( 'returns an object with a version of the "ckeditor5" package', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, false );
+		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.ckeditor5 ).toEqual( '30.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "ckeditor5-dev-build-tools" package', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, false );
+		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.ckeditor5DevBuildTools ).to.equal( '7.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "eslint-config-ckeditor5"', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, false );
+		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.eslintConfigCkeditor5 ).toEqual( '5.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "eslint-plugin-ckeditor5-rules"', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, false );
+		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.eslintPluginCkeditor5Rules ).toEqual( '5.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "stylelint-config-ckeditor5" package', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, false );
+		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.stylelintConfigCkeditor5 ).toEqual( '3.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "@ckeditor/ckeditor5-package-tools" package', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, false );
+		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.ckeditor5Inspector ).toEqual( '4.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "@ckeditor/ckeditor5-package-tools" package if the "dev" option is disabled', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, false );
+		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.packageTools ).toEqual( '^1.0.0' );
 	} );
 
-	it( 'it returns an absolute path to the "@ckeditor/ckeditor5-package-tools" package if the "dev" option is enabled', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, true );
+	it( 'returns an absolute path to the "@ckeditor/ckeditor5-package-tools" package if the "dev" option is enabled', () => {
+		const returnedValue = getDependenciesVersions( stubs.logger, { dev: true } );
 
 		const PROJECT_ROOT_DIRECTORY = path.join( import.meta.dirname, '..', '..', '..' );
 		let packageTools = 'file:' + path.resolve( PROJECT_ROOT_DIRECTORY, 'ckeditor5-package-tools' );
 		packageTools = packageTools.split( path.sep ).join( path.posix.sep );
 
 		expect( returnedValue.packageTools ).toEqual( packageTools );
+	} );
+
+	// eslint-disable-next-line @stylistic/max-len
+	it( 'returns an absolute path to the `release/` directory for `@ckeditor/ckeditor5-package-tools` with `--use-release-directory` and `--dev', () => {
+		const returnedValue = getDependenciesVersions( stubs.logger, { dev: true, useReleaseDirectory: true } );
+
+		const PROJECT_ROOT_DIRECTORY = path.join( import.meta.dirname, '..', '..', '..', '..', 'release' );
+		let packageTools = 'file:' + path.resolve( PROJECT_ROOT_DIRECTORY, 'ckeditor5-package-tools' );
+		packageTools = packageTools.split( path.sep ).join( path.posix.sep );
+
+		expect( returnedValue.packageTools ).toEqual( packageTools );
+	} );
+
+	it( 'prints a verbose log when using `--use-release-directory` and `--dev', () => {
+		getDependenciesVersions( stubs.logger, { dev: true, useReleaseDirectory: true } );
+
+		expect( stubs.logger.verboseInfo ).toHaveBeenCalledTimes( 1 );
+		expect( stubs.logger.verboseInfo ).toHaveBeenCalledWith(
+			'Using the `release/` directory for `ckeditor5-package-tools`. Ensure it exists and is up-to-date.'
+		);
 	} );
 } );

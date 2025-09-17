@@ -15,17 +15,11 @@ const packageJson = fs.readJsonSync( path.join( import.meta.dirname, '..', 'pack
 new Command( packageJson.name )
 	.argument( '[packageName]', 'name of the package (@scope/ckeditor5-*)' )
 	.option( '-v, --verbose', 'output additional logs', false )
-	.option( '--dev', 'execution of the script in the development mode', () => {
-		// An absolute path to the repository that tracks the package.
-		const rootRepositoryPath = path.join( import.meta.dirname, '..', '..', '..' );
-
-		// The assumption here is that if the `--dev` flag was used, the entire repository is cloned.
-		// Otherwise, the executable was downloaded from npm, and it can't be executed in dev-mode.
-		return fs.existsSync( path.join( rootRepositoryPath, '.git' ) );
-	}, false )
+	.option( '--dev', 'execution of the script in the development mode', isInsideGitRepositoryCallback, false )
 	.option( '--use-npm', 'whether use npm to install packages', false )
 	.option( '--use-yarn', 'whether use yarn to install packages', false )
 	.option( '--use-pnpm', 'whether use pnpm to install packages', false )
+	.option( '--use-release-directory', 'whether to use `release/` directory with `--dev` modifier', isInsideGitRepositoryCallback, false )
 	.option( '--lang <lang>', 'programming language to use' )
 	.option( '--plugin-name <name>', 'optional custom plugin name' )
 	.option( '--installation-methods <method>', 'supported method of installation' )
@@ -35,3 +29,12 @@ new Command( packageJson.name )
 	.addHelpText( 'after', `\nVersion: ${ packageJson.version }` )
 	.action( ( packageName, options ) => init( packageName, options ) )
 	.parse( process.argv );
+
+function isInsideGitRepositoryCallback() {
+	// An absolute path to the repository that tracks the package.
+	const rootRepositoryPath = path.join( import.meta.dirname, '..', '..', '..' );
+
+	// The assumption here is that if the `--dev` flag was used, the entire repository is cloned.
+	// Otherwise, the executable was downloaded from npm, and it can't be executed in dev-mode.
+	return fs.existsSync( path.join( rootRepositoryPath, '.git' ) );
+}
