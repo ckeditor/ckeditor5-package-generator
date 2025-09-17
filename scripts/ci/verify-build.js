@@ -20,7 +20,7 @@ const __dirname = path.dirname( __filename );
 const REPOSITORY_DIRECTORY = path.join( __dirname, '..', '..' );
 const NEW_PACKAGE_DIRECTORY = path.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-test-package' );
 
-const VERIFICATION_TIMEOUT = 5 * 60 * 1000;
+const VERIFICATION_TIMEOUT = 3 * 60 * 1000;
 
 // A flag that determines whether any of the executed commands resulted in an error.
 let foundError = false;
