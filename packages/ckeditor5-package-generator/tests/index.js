@@ -119,7 +119,8 @@ describe( 'lib/index', () => {
 			pluginName: 'FooBar',
 			lang: 'js',
 			dev: false,
-			globalName: 'GLOBAL'
+			globalName: 'GLOBAL',
+			useReleaseDirectory: false
 		};
 	} );
 
@@ -240,7 +241,23 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( getDependenciesVersions ).toHaveBeenCalledTimes( 1 );
-		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ), false );
+		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ), { dev: false, useReleaseDirectory: false } );
+	} );
+
+	it( 'gets the versions of the dependencies (`--dev`)', async () => {
+		options.dev = true;
+		await index( packageName, options );
+
+		expect( getDependenciesVersions ).toHaveBeenCalledTimes( 1 );
+		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ), { dev: true, useReleaseDirectory: false } );
+	} );
+
+	it( 'gets the versions of the dependencies (`--use-release-directory`)', async () => {
+		options.useReleaseDirectory = true;
+		await index( packageName, options );
+
+		expect( getDependenciesVersions ).toHaveBeenCalledTimes( 1 );
+		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ), { dev: false, useReleaseDirectory: true } );
 	} );
 
 	it( 'copies the files', async () => {

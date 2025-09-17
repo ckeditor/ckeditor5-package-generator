@@ -22,10 +22,12 @@ import getPackageVersion from './get-package-version.js';
  *   * `false` - the latest version published on npm.
  *
  * @param {Logger} logger
- * @param {Boolean} dev
+ * @param {Object} options
+ * @param {Boolean} options.dev
+ * @param {Boolean} [options.useReleaseDirectory=false]
  * @returns {Object}
  */
-export default function getDependenciesVersions( logger, dev ) {
+export default function getDependenciesVersions( logger, { dev, useReleaseDirectory = false } ) {
 	logger.process( 'Collecting the latest CKEditor 5 packages versions...' );
 
 	return {
@@ -36,10 +38,40 @@ export default function getDependenciesVersions( logger, dev ) {
 		eslintConfigCkeditor5: getPackageVersion( 'eslint-config-ckeditor5' ),
 		eslintPluginCkeditor5Rules: getPackageVersion( 'eslint-plugin-ckeditor5-rules' ),
 		stylelintConfigCkeditor5: getPackageVersion( 'stylelint-config-ckeditor5' ),
-		packageTools: dev ?
-			// Windows accepts unix-like paths in `package.json`, so let's unify it to avoid errors with paths.
-			// eslint-disable-next-line @stylistic/max-len
-			'file:' + path.resolve( import.meta.dirname, '..', '..', '..', 'ckeditor5-package-tools' ).split( path.sep ).join( path.posix.sep ) :
-			'^' + getPackageVersion( '@ckeditor/ckeditor5-package-tools' )
+		packageTools: resolvePackageToolsDependency( logger, { dev, useReleaseDirectory } )
 	};
+}
+
+function resolvePackageToolsDependency( logger, { dev, useReleaseDirectory } ) {
+	if ( !dev ) {
+		return '^' + getPackageVersion( '@ckeditor/ckeditor5-package-tools' );
+	}
+
+	// Controls how `ckeditor5-package-tools` is linked:
+	// - `useReleaseDirectory=true` → `/root/release/ckeditor5-package-tools`
+	// - `useReleaseDirectory=false` → `/root/packages/ckeditor5-package-tools`
+	//
+	// The repository defaults to `pnpm`, whose dependency layout is not fully compatible with Yarn.
+	// To avoid traversing `node_modules/` (which may contain symlinks), enabling `useReleaseDirectory`
+	// ensures a clean package structure without external modules.
+	//
+	// See: https://github.com/ckeditor/ckeditor5-package-generator/issues/253.
+	const packageToolsPath = [
+		import.meta.dirname,
+		'..',
+		'..',
+		'..'
+	];
+
+	if ( useReleaseDirectory ) {
+		logger.verboseInfo( 'Using the `release/` directory for `ckeditor5-package-tools`. Ensure it exists and is up-to-date.' );
+
+		packageToolsPath.push( '..' );
+		packageToolsPath.push( 'release' );
+	}
+
+	packageToolsPath.push( 'ckeditor5-package-tools' );
+
+	// Windows accepts unix-like paths in `package.json`, so let's unify it to avoid errors with paths.
+	return 'file:' + path.resolve( ...packageToolsPath ).split( path.sep ).join( path.posix.sep );
 }

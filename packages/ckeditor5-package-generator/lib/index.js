@@ -24,7 +24,18 @@ import validatePluginName from './utils/validate-plugin-name.js';
  * @param {CKeditor5PackageGeneratorOptions} options
  */
 export default async function init( packageName, options ) {
-	const { dev, verbose, useNpm, useYarn, usePnpm, installationMethods, lang, pluginName, globalName } = options;
+	const {
+		dev,
+		verbose,
+		useNpm,
+		useYarn,
+		usePnpm,
+		installationMethods,
+		lang,
+		pluginName,
+		globalName,
+		useReleaseDirectory
+	} = options;
 
 	const logger = new Logger( verbose );
 
@@ -39,7 +50,7 @@ export default async function init( packageName, options ) {
 	const defaultGlobalName = 'CK' + formattedNames.plugin.pascalCase;
 	const validatedGlobalName = await setGlobalName( logger, globalName, defaultGlobalName );
 
-	const packageVersions = getDependenciesVersions( logger, dev );
+	const packageVersions = getDependenciesVersions( logger, { dev, useReleaseDirectory } );
 
 	const npxByPackageManager = packageManager === 'pnpm' ? 'pnpm dlx' : 'npx';
 
@@ -113,6 +124,8 @@ export default async function init( packageName, options ) {
  * @property {String} installationMethods
  *
  * @property {Boolean} [dev=false]
+ *
+ * @property {Boolean} [useReleaseDirectory=false]
  *
  * @property {String} lang
  *
