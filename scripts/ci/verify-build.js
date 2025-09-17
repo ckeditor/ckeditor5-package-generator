@@ -99,14 +99,14 @@ async function verifyBuild( { language, packageManager, customPluginName, instal
 	executeCommand( packageBuildCommand, { cwd: path.join( REPOSITORY_DIRECTORY, '..' ) } );
 
 	logProcess( 'Executing tests...' );
-	executeCommand( [ 'pnpm', 'run', 'test' ], { cwd: NEW_PACKAGE_DIRECTORY } );
+	executeCommand( [ 'npm', 'run', 'test' ], { cwd: NEW_PACKAGE_DIRECTORY } );
 
 	logProcess( 'Executing linters...' );
-	executeCommand( [ 'pnpm', 'run', 'lint' ], { cwd: NEW_PACKAGE_DIRECTORY } );
-	executeCommand( [ 'pnpm', 'run', 'stylelint' ], { cwd: NEW_PACKAGE_DIRECTORY } );
+	executeCommand( [ 'npm', 'run', 'lint' ], { cwd: NEW_PACKAGE_DIRECTORY } );
+	executeCommand( [ 'npm', 'run', 'stylelint' ], { cwd: NEW_PACKAGE_DIRECTORY } );
 
 	logProcess( 'Verifying translations...' );
-	executeCommand( [ 'pnpm', 'run', 'translations:validate' ], { cwd: NEW_PACKAGE_DIRECTORY } );
+	executeCommand( [ 'npm', 'run', 'translations:validate' ], { cwd: NEW_PACKAGE_DIRECTORY } );
 
 	logProcess( 'Verifying release process...' );
 	const { stderr } = executeCommand( [ 'npm', 'publish', '--dry-run' ], { cwd: NEW_PACKAGE_DIRECTORY, pipeStderr: true } );
@@ -180,7 +180,7 @@ function executeCommand( command, options ) {
  */
 function startDevelopmentServer( cwd ) {
 	return new Promise( ( resolve, reject ) => {
-		const sampleServer = spawn( 'pnpm', [ 'run', 'start', '--no-open' ], {
+		const sampleServer = spawn( 'npm', [ 'run', 'start', '--', '--no-open' ], {
 			cwd,
 			encoding: 'utf8',
 			shell: true
