@@ -4,7 +4,7 @@
  */
 
 import fs from 'fs';
-import path from 'path';
+import upath from 'upath';
 import { execSync } from 'child_process';
 
 /**
@@ -28,6 +28,6 @@ export default function initializeGitRepository( directoryPath, logger ) {
 		// Remove the `.git` directory in case of an error. It may happen that the developer didn't configure Git yet.
 		// We could have resolved the error ourselves.
 		// See: https://github.com/ember-cli/ember-cli/blob/3192a441e13ec7e88c71d480778971d81bfa436c/lib/tasks/git-init.js#L49-L66.
-		fs.rmSync( path.join( directoryPath, '.git' ), { recursive: true, force: true } );
+		fs.rmSync( upath.join( directoryPath, '.git' ), { recursive: true, force: true } );
 	}
 }

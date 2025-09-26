@@ -3,14 +3,14 @@
  * For licensing, see LICENSE.md.
  */
 
-import path from 'path';
+import upath from 'upath';
 import { globSync } from 'glob';
 import { synchronizeTranslations } from '@ckeditor/ckeditor5-dev-translations';
 import { getCorePath } from '../utils/get-path.js';
 
 export default options => {
 	// Glob handles posix paths.
-	const sourceFilesGlob = path.join( options.cwd, 'src', '**', '*.[jt]s' ).split( /[\\/]/g ).join( '/' );
+	const sourceFilesGlob = upath.join( options.cwd, 'src', '**', '*.[jt]s' );
 
 	return synchronizeTranslations( {
 		// An array containing absolute paths the package sources.

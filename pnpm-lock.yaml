@@ -175,6 +175,9 @@ importers:
       typescript:
         specifier: 5.0.4
         version: 5.0.4
+      upath:
+        specifier: ^2.0.1
+        version: 2.0.1
       webpack:
         specifier: ^5.94.0
         version: 5.101.3

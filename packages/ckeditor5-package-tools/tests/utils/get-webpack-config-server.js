@@ -16,12 +16,6 @@ const stubs = vi.hoisted( () => {
 	};
 } );
 
-vi.mock( 'path', () => ( {
-	default: {
-		dirname: () => '/packages/ckeditor5-package-tools/lib/utils',
-		join: ( ...chunks ) => chunks.join( '/' )
-	}
-} ) );
 vi.mock( 'webpack', () => ( {
 	default: {
 		DefinePlugin: class {
@@ -120,7 +114,7 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 
 		const [ firstArgument ] = getModuleResolutionPaths.mock.calls[ 0 ];
 
-		expect( firstArgument.endsWith( '/packages/ckeditor5-package-tools/lib/utils/../..' ) ).toEqual( true );
+		expect( firstArgument.endsWith( '/packages/ckeditor5-package-tools' ) ).toEqual( true );
 	} );
 
 	it( 'processes the "ckeditor.js" file', () => {

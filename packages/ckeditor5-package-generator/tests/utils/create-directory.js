@@ -13,7 +13,7 @@ vi.mock( 'chalk', () => ( {
 		cyan: str => str
 	}
 } ) );
-vi.mock( 'path', () => ( {
+vi.mock( 'upath', () => ( {
 	default: {
 		resolve: ( ...chunks ) => [ 'resolved', ...chunks ].join( '/' )
 	}

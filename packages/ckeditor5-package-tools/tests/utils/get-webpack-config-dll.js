@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import path from 'path';
+import upath from 'upath';
 import fs from 'fs-extra';
 import { CKEditorTranslationsPlugin } from '@ckeditor/ckeditor5-dev-translations';
 import { loaderDefinitions, getModuleResolutionPaths } from '../../lib/utils/webpack-utils.js';
@@ -17,15 +17,14 @@ const stubs = vi.hoisted( () => {
 	};
 } );
 
-vi.mock( 'path', async importOriginal => {
+vi.mock( 'upath', async importOriginal => {
 	const mod = await importOriginal();
 
 	return {
 		...mod,
 		default: {
-			...mod,
-			dirname: () => '/packages/ckeditor5-package-tools/lib/utils',
-			join: ( ...chunks ) => chunks.join( '/' )
+			...mod.default,
+			dirname: () => '/packages/ckeditor5-package-tools/lib/utils'
 		}
 	};
 } );
@@ -45,7 +44,7 @@ vi.mock( 'webpack', () => ( {
 } ) );
 vi.mock( 'module', () => ( {
 	default: {
-		createRequire: () => ( { resolve: () => path.resolve( process.cwd(), 'node_modules/@ckeditor/ckeditor5-core/package.json' ) } )
+		createRequire: () => ( { resolve: () => upath.resolve( process.cwd(), 'node_modules/@ckeditor/ckeditor5-core/package.json' ) } )
 	}
 } ) );
 vi.mock( 'fs-extra' );
@@ -149,7 +148,7 @@ describe( 'lib/utils/get-webpack-config-dll', () => {
 
 		const [ firstArgument ] = getModuleResolutionPaths.mock.calls[ 0 ];
 
-		expect( firstArgument.endsWith( '/packages/ckeditor5-package-tools/lib/utils/../..' ) ).toEqual( true );
+		expect( firstArgument.endsWith( '/packages/ckeditor5-package-tools' ) ).toEqual( true );
 	} );
 
 	it( 'processes the "index.js" file', () => {
