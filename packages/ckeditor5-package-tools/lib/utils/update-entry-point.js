@@ -3,11 +3,11 @@
  * For licensing, see LICENSE.md.
  */
 
-import path from 'path';
+import upath from 'upath';
 import { tools } from '@ckeditor/ckeditor5-dev-utils';
 
 export default ( options, lang ) => {
-	const pkgJsonPath = path.join( options.cwd, 'package.json' );
+	const pkgJsonPath = upath.join( options.cwd, 'package.json' );
 
 	tools.updateJSONFile( pkgJsonPath, json => {
 		json.main = json.main.replace( /(?<=\.)[tj]s$/, lang );

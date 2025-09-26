@@ -7,10 +7,10 @@ import chalk from 'chalk';
 import fs from 'fs';
 import { globSync } from 'glob';
 import mkdirp from 'mkdirp';
-import path from 'path';
+import upath from 'upath';
 import { template } from 'lodash-es';
 
-const TEMPLATE_PATH = path.join( import.meta.dirname, '..', 'templates' );
+const TEMPLATE_PATH = upath.join( import.meta.dirname, '..', 'templates' );
 
 /**
  * If the package name is not valid, prints the error and exits the process.
@@ -68,7 +68,7 @@ export default function copyFiles( logger, options ) {
  * @param {Object} data The data to fill in the template file.
  */
 function copyTemplate( templatePath, packagePath, data ) {
-	const rawFile = fs.readFileSync( path.join( TEMPLATE_PATH, templatePath ), 'utf-8' );
+	const rawFile = fs.readFileSync( upath.join( TEMPLATE_PATH, templatePath ), 'utf-8' );
 	const filledFile = template( rawFile )( data );
 
 	const processedTemplatePath = templatePath
@@ -79,9 +79,9 @@ function copyTemplate( templatePath, packagePath, data ) {
 		// Replace placeholder filenames with the class name.
 		.replace( /_PLACEHOLDER_/, data.formattedNames.plugin.lowerCaseMerged );
 
-	const destinationPath = path.join( packagePath, processedTemplatePath );
+	const destinationPath = upath.join( packagePath, processedTemplatePath );
 
 	// Make sure that the destination directory exists.
-	mkdirp.sync( path.dirname( destinationPath ) );
+	mkdirp.sync( upath.dirname( destinationPath ) );
 	fs.writeFileSync( destinationPath, filledFile );
 }

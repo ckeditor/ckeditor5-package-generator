@@ -4,12 +4,12 @@
  */
 
 import fs from 'fs';
-import path from 'path';
+import upath from 'upath';
 import webpack from 'webpack';
 import { CKEditorTranslationsPlugin } from '@ckeditor/ckeditor5-dev-translations';
 import { loaderDefinitions, getModuleResolutionPaths } from './webpack-utils.js';
 
-const PACKAGE_ROOT_DIR = path.join( import.meta.dirname, '..', '..' );
+const PACKAGE_ROOT_DIR = upath.join( import.meta.dirname, '..', '..' );
 
 export default options => {
 	const webpackPlugins = [
@@ -31,7 +31,7 @@ export default options => {
 		);
 	}
 
-	const entryFileName = fs.readdirSync( path.join( options.cwd, 'sample' ) )
+	const entryFileName = fs.readdirSync( upath.join( options.cwd, 'sample' ) )
 		.find( filePath => /^ckeditor\.[jt]s$/.test( filePath ) );
 
 	const moduleResolutionPaths = getModuleResolutionPaths( PACKAGE_ROOT_DIR );
@@ -43,11 +43,11 @@ export default options => {
 			hints: false
 		},
 
-		entry: path.join( options.cwd, 'sample', entryFileName ),
+		entry: upath.join( options.cwd, 'sample', entryFileName ),
 
 		output: {
 			filename: 'ckeditor.dist.js',
-			path: path.join( options.cwd, 'sample' )
+			path: upath.join( options.cwd, 'sample' )
 		},
 
 		optimization: {
@@ -58,7 +58,7 @@ export default options => {
 
 		devServer: {
 			static: {
-				directory: path.join( options.cwd, 'sample' )
+				directory: upath.join( options.cwd, 'sample' )
 			},
 			compress: true
 		},

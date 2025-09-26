@@ -6,7 +6,7 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import mkdirp from 'mkdirp';
-import path from 'path';
+import upath from 'upath';
 
 /**
  * Checks whether its possible to create a directory, and either creates it or ends the process with an error.
@@ -16,7 +16,7 @@ import path from 'path';
  */
 export default function createDirectory( logger, packageName ) {
 	const directoryName = packageName.split( '/' )[ 1 ];
-	const directoryPath = path.resolve( directoryName );
+	const directoryPath = upath.resolve( directoryName );
 
 	logger.process( `Checking whether the "${ chalk.cyan( directoryName ) }" directory can be created.` );
 

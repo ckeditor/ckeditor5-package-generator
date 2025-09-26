@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import path from 'path';
+import upath from 'upath';
 import getPackageVersion from '../../lib/utils/get-package-version.js';
 import getDependenciesVersions from '../../lib/utils/get-dependencies-versions.js';
 
@@ -101,9 +101,8 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 	it( 'returns an absolute path to the "@ckeditor/ckeditor5-package-tools" package if the "dev" option is enabled', () => {
 		const returnedValue = getDependenciesVersions( stubs.logger, { dev: true } );
 
-		const PROJECT_ROOT_DIRECTORY = path.join( import.meta.dirname, '..', '..', '..' );
-		let packageTools = 'file:' + path.resolve( PROJECT_ROOT_DIRECTORY, 'ckeditor5-package-tools' );
-		packageTools = packageTools.split( path.sep ).join( path.posix.sep );
+		const PROJECT_ROOT_DIRECTORY = upath.join( import.meta.dirname, '..', '..', '..' );
+		const packageTools = 'file:' + upath.resolve( PROJECT_ROOT_DIRECTORY, 'ckeditor5-package-tools' );
 
 		expect( returnedValue.packageTools ).toEqual( packageTools );
 	} );
@@ -112,9 +111,8 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 	it( 'returns an absolute path to the `release/` directory for `@ckeditor/ckeditor5-package-tools` with `--use-release-directory` and `--dev', () => {
 		const returnedValue = getDependenciesVersions( stubs.logger, { dev: true, useReleaseDirectory: true } );
 
-		const PROJECT_ROOT_DIRECTORY = path.join( import.meta.dirname, '..', '..', '..', '..', 'release' );
-		let packageTools = 'file:' + path.resolve( PROJECT_ROOT_DIRECTORY, 'ckeditor5-package-tools' );
-		packageTools = packageTools.split( path.sep ).join( path.posix.sep );
+		const PROJECT_ROOT_DIRECTORY = upath.join( import.meta.dirname, '..', '..', '..', '..', 'release' );
+		const packageTools = 'file:' + upath.resolve( PROJECT_ROOT_DIRECTORY, 'ckeditor5-package-tools' );
 
 		expect( returnedValue.packageTools ).toEqual( packageTools );
 	} );

@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import path from 'path';
+import upath from 'upath';
 import getPackageVersion from './get-package-version.js';
 
 /**
@@ -72,6 +72,6 @@ function resolvePackageToolsDependency( logger, { dev, useReleaseDirectory } ) {
 
 	packageToolsPath.push( 'ckeditor5-package-tools' );
 
-	// Windows accepts unix-like paths in `package.json`, so let's unify it to avoid errors with paths.
-	return 'file:' + path.resolve( ...packageToolsPath ).split( path.sep ).join( path.posix.sep );
+	// Windows accepts unix-like paths in `package.json`.
+	return 'file:' + upath.resolve( ...packageToolsPath );
 }

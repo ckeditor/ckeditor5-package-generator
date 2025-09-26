@@ -6,7 +6,7 @@
  */
 
 import fs from 'fs';
-import path from 'path';
+import upath from 'upath';
 import { spawn, spawnSync } from 'child_process';
 import { stripVTControlCharacters } from 'util';
 import chalk from 'chalk';
@@ -15,10 +15,10 @@ import { EXPECTED_PUBLISH_FILES, EXPECTED_LEGACY_PUBLISH_FILES, EXPECTED_SRC_DIR
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath( import.meta.url );
-const __dirname = path.dirname( __filename );
+const __dirname = upath.dirname( __filename );
 
-const REPOSITORY_DIRECTORY = path.join( __dirname, '..', '..' );
-const NEW_PACKAGE_DIRECTORY = path.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-test-package' );
+const REPOSITORY_DIRECTORY = upath.join( __dirname, '..', '..' );
+const NEW_PACKAGE_DIRECTORY = upath.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-test-package' );
 
 const VERIFICATION_TIMEOUT = 3 * 60 * 1000;
 
@@ -52,7 +52,7 @@ async function verifyBuild( { language, packageManager, customPluginName, instal
 
 	const supportsLegacyMethods = installationMethod !== 'current';
 
-	const projectRootName = path.basename( process.cwd() );
+	const projectRootName = upath.basename( process.cwd() );
 	const packageBuildCommand = [
 		'node',
 		`${ projectRootName }/packages/ckeditor5-package-generator/bin/index.js`,
@@ -96,7 +96,7 @@ async function verifyBuild( { language, packageManager, customPluginName, instal
 	logProcess( testSetupInfoMessage + '.' );
 
 	logProcess( 'Creating new package: "@ckeditor/ckeditor5-test-package"...' );
-	executeCommand( packageBuildCommand, { cwd: path.join( REPOSITORY_DIRECTORY, '..' ) } );
+	executeCommand( packageBuildCommand, { cwd: upath.join( REPOSITORY_DIRECTORY, '..' ) } );
 
 	logProcess( 'Executing tests...' );
 	executeCommand( [ 'npm', 'run', 'test' ], { cwd: NEW_PACKAGE_DIRECTORY } );
@@ -127,7 +127,7 @@ async function verifyBuild( { language, packageManager, customPluginName, instal
 	await Promise.all( listOfDevelopmentServers )
 		.then( optionsList => {
 			optionsList.forEach( options => {
-				executeCommand( [ 'node', path.join( 'scripts', 'ci', 'verify-sample.js' ), options.url ], { cwd: REPOSITORY_DIRECTORY } );
+				executeCommand( [ 'node', upath.join( 'scripts', 'ci', 'verify-sample.js' ), options.url ], { cwd: REPOSITORY_DIRECTORY } );
 			} );
 
 			return optionsList;
@@ -346,7 +346,7 @@ function checkFileList( output, expectedPublishFiles ) {
  */
 function verifyPublishCleanup( lang, expectedSrcDirFiles, supportsLegacyMethods ) {
 	// "package.json" check.
-	const pkgJsonPath = path.join( NEW_PACKAGE_DIRECTORY, 'package.json' );
+	const pkgJsonPath = upath.join( NEW_PACKAGE_DIRECTORY, 'package.json' );
 	const pkgJsonRaw = fs.readFileSync( pkgJsonPath, 'utf-8' );
 	const pkgJsonContent = JSON.parse( pkgJsonRaw );
 
@@ -360,7 +360,7 @@ function verifyPublishCleanup( lang, expectedSrcDirFiles, supportsLegacyMethods 
 	}
 
 	// "src" directory check.
-	const srcDirPath = path.join( NEW_PACKAGE_DIRECTORY, 'src' );
+	const srcDirPath = upath.join( NEW_PACKAGE_DIRECTORY, 'src' );
 	const excessFiles = fs.readdirSync( srcDirPath )
 		.filter( file => !expectedSrcDirFiles.includes( file ) );
 

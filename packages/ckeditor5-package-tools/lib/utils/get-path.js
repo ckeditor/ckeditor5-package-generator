@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import path from 'path';
+import upath from 'upath';
 import module from 'module';
 
 function getRequire() {
@@ -26,9 +26,9 @@ export function getThemePath( cwd ) {
  * @returns {string}
  */
 export function getCorePath() {
-	return path.relative(
+	return upath.relative(
 		process.cwd(),
-		path.dirname( getRequire().resolve( '@ckeditor/ckeditor5-core/package.json' ) )
+		upath.dirname( getRequire().resolve( '@ckeditor/ckeditor5-core/package.json' ) )
 	);
 }
 

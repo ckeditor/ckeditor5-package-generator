@@ -7,11 +7,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { tools } from '@ckeditor/ckeditor5-dev-utils';
 import updateEntryPoint from '../../lib/utils/update-entry-point.js';
 
-vi.mock( 'path', () => ( {
-	default: {
-		join: ( ...chunks ) => chunks.join( '/' ).replace( '/./', '/' )
-	}
-} ) );
 vi.mock( '@ckeditor/ckeditor5-dev-utils' );
 
 describe( 'lib/utils/update-entry-point', () => {
