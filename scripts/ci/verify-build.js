@@ -12,12 +12,8 @@ import { stripVTControlCharacters } from 'util';
 import chalk from 'chalk';
 import parseArguments from './utils/parsearguments.js';
 import { EXPECTED_PUBLISH_FILES, EXPECTED_LEGACY_PUBLISH_FILES, EXPECTED_SRC_DIR_FILES } from './utils/expectedFiles.js';
-import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath( import.meta.url );
-const __dirname = upath.dirname( __filename );
-
-const REPOSITORY_DIRECTORY = upath.join( __dirname, '..', '..' );
+const REPOSITORY_DIRECTORY = upath.join( import.meta.dirname, '..', '..' );
 const NEW_PACKAGE_DIRECTORY = upath.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-test-package' );
 
 const VERIFICATION_TIMEOUT = 3 * 60 * 1000;

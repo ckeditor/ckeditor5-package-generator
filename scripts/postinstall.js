@@ -5,12 +5,8 @@
 
 import upath from 'upath';
 import fs from 'fs-extra';
-import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath( import.meta.url );
-const __dirname = upath.dirname( __filename );
-
-const ROOT_DIRECTORY = upath.join( __dirname, '..' );
+const ROOT_DIRECTORY = upath.join( import.meta.dirname, '..' );
 
 ( async () => {
 	// When installing a repository as a dependency, the `.git` directory does not exist.
