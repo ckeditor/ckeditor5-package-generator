@@ -13,12 +13,6 @@ vi.mock( 'chalk', () => ( {
 		gray: vi.fn()
 	}
 } ) );
-vi.mock( 'path', () => ( {
-	default: {
-		dirname: () => '.',
-		join: ( ...chunks ) => chunks.join( '/' )
-	}
-} ) );
 vi.mock( 'fs' );
 vi.mock( 'glob' );
 vi.mock( 'mkdirp' );

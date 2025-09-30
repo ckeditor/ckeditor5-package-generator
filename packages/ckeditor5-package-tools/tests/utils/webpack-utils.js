@@ -4,12 +4,12 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import path from 'path';
+import upath from 'upath';
 import { styles } from '@ckeditor/ckeditor5-dev-utils';
 import { getThemePath } from '../../lib/utils/get-path.js';
 import * as webpackUtils from '../../lib/utils/webpack-utils.js';
 
-vi.mock( 'path', () => ( {
+vi.mock( 'upath', () => ( {
 	default: {
 		join: vi.fn( ( ...chunks ) => chunks.join( '/' ) ),
 		resolve: vi.fn( ( ...chunks ) => chunks.join( '/' ) )
@@ -203,8 +203,8 @@ describe( 'lib/utils/webpack-utils', () => {
 		it( 'loads "node_modules" from root of the "ckeditor5-package-tools" package', () => {
 			expect( moduleResolutionPaths[ 1 ] ).toEqual( 'root/directory/node_modules' );
 
-			expect( path.resolve ).toHaveBeenCalledTimes( 1 );
-			expect( path.resolve ).toHaveBeenCalledWith( 'root/directory', 'node_modules' );
+			expect( upath.resolve ).toHaveBeenCalledTimes( 1 );
+			expect( upath.resolve ).toHaveBeenCalledWith( 'root/directory', 'node_modules' );
 		} );
 	} );
 } );

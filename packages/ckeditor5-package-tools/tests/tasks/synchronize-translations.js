@@ -4,26 +4,14 @@
  */
 
 import { describe, it, expect, vi } from 'vitest';
-import path from 'path';
+import upath from 'upath';
 import { globSync } from 'glob';
 import * as devTranslations from '@ckeditor/ckeditor5-dev-translations';
 import synchronizeTranslations from '../../lib/tasks/synchronize-translations.js';
 
-vi.mock( 'path', async importOriginal => {
-	const mod = await importOriginal();
-
-	return {
-		...mod,
-		default: {
-			...mod.default,
-			join: ( ...chunks ) => chunks.join( '/' )
-		}
-	};
-} );
-
 vi.mock( 'module', () => ( {
 	default: {
-		createRequire: () => ( { resolve: () => path.resolve( process.cwd(), 'node_modules/@ckeditor/ckeditor5-core/package.json' ) } )
+		createRequire: () => ( { resolve: () => upath.resolve( process.cwd(), 'node_modules/@ckeditor/ckeditor5-core/package.json' ) } )
 	}
 } ) );
 
@@ -107,6 +95,7 @@ describe( 'lib/tasks/synchronize-translations', () => {
 
 	it( 'validates translation messages', () => {
 		synchronizeTranslations( {
+			cwd: '/workspace',
 			validateOnly: true
 		} );
 

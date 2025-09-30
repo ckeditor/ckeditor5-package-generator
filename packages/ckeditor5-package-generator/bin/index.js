@@ -6,11 +6,11 @@
  */
 
 import fs from 'fs-extra';
-import path from 'path';
+import upath from 'upath';
 import { Command } from 'commander';
 import init from '../lib/index.js';
 
-const packageJson = fs.readJsonSync( path.join( import.meta.dirname, '..', 'package.json' ) );
+const packageJson = fs.readJsonSync( upath.join( import.meta.dirname, '..', 'package.json' ) );
 
 new Command( packageJson.name )
 	.argument( '[packageName]', 'name of the package (@scope/ckeditor5-*)' )
@@ -32,9 +32,9 @@ new Command( packageJson.name )
 
 function isInsideGitRepositoryCallback() {
 	// An absolute path to the repository that tracks the package.
-	const rootRepositoryPath = path.join( import.meta.dirname, '..', '..', '..' );
+	const rootRepositoryPath = upath.join( import.meta.dirname, '..', '..', '..' );
 
 	// The assumption here is that if the `--dev` flag was used, the entire repository is cloned.
 	// Otherwise, the executable was downloaded from npm, and it can't be executed in dev-mode.
-	return fs.existsSync( path.join( rootRepositoryPath, '.git' ) );
+	return fs.existsSync( upath.join( rootRepositoryPath, '.git' ) );
 }

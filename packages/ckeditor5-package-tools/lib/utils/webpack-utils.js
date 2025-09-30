@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import path from 'path';
+import upath from 'upath';
 import { getThemePath } from './get-path.js';
 import { styles } from '@ckeditor/ckeditor5-dev-utils';
 
@@ -29,7 +29,7 @@ export const loaderDefinitions = {
 			test: /\.ts$/,
 			loader: 'ts-loader',
 			options: {
-				configFile: path.join( cwd, tsconfigName )
+				configFile: upath.join( cwd, tsconfigName )
 			}
 		};
 	},
@@ -67,7 +67,7 @@ export const loaderDefinitions = {
 export function getModuleResolutionPaths( packageRootDir ) {
 	return [
 		'node_modules',
-		path.resolve( packageRootDir, 'node_modules' )
+		upath.resolve( packageRootDir, 'node_modules' )
 	];
 }
 

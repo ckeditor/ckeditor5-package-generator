@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import path from 'path';
+import upath from 'upath';
 import fs from 'fs-extra';
 import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
@@ -11,10 +11,10 @@ import { CKEditorTranslationsPlugin } from '@ckeditor/ckeditor5-dev-translations
 import { loaderDefinitions, getModuleResolutionPaths } from './webpack-utils.js';
 import { getMainManifestPath } from './get-path.js';
 
-const PACKAGE_ROOT_DIR = path.join( import.meta.dirname, '..', '..' );
+const PACKAGE_ROOT_DIR = upath.join( import.meta.dirname, '..', '..' );
 
 export default options => {
-	const pkgJson = fs.readJsonSync( path.join( options.cwd, 'package.json' ) );
+	const pkgJson = fs.readJsonSync( upath.join( options.cwd, 'package.json' ) );
 
 	// `dllName` is a short package name without the scope and the `ckeditor5-` prefix.
 	// E.g. for the package called `@ckeditor/ckeditor5-example-package`, the short name is `example-package`.
@@ -40,7 +40,7 @@ export default options => {
 
 	// If the package contains localization for the English language, which is the default option for the DLL build,
 	// include the CKEditor 5 Webpack plugin that produces translation files.
-	if ( fs.existsSync( path.join( options.cwd, 'lang', 'translations', 'en.po' ) ) ) {
+	if ( fs.existsSync( upath.join( options.cwd, 'lang', 'translations', 'en.po' ) ) ) {
 		webpackPlugins.push(
 			new CKEditorTranslationsPlugin( {
 				language: 'en',
@@ -51,7 +51,7 @@ export default options => {
 		);
 	}
 
-	const entryFileName = fs.readdirSync( path.join( options.cwd, 'src' ) )
+	const entryFileName = fs.readdirSync( upath.join( options.cwd, 'src' ) )
 		.find( filePath => /^index\.[jt]s$/.test( filePath ) );
 
 	const moduleResolutionPaths = getModuleResolutionPaths( PACKAGE_ROOT_DIR );
@@ -63,12 +63,12 @@ export default options => {
 			hints: false
 		},
 
-		entry: path.join( options.cwd, 'src', entryFileName ),
+		entry: upath.join( options.cwd, 'src', entryFileName ),
 
 		output: {
 			filename: dllName + '.js',
 			library: [ 'CKEditor5', dllWindowKey ],
-			path: path.join( options.cwd, 'build' ),
+			path: upath.join( options.cwd, 'build' ),
 			libraryTarget: 'window'
 		},
 

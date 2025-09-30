@@ -8,11 +8,6 @@ import fs from 'fs';
 import { execSync } from 'child_process';
 import initializeGitRepository from '../../lib/utils/initialize-git-repository.js';
 
-vi.mock( 'path', () => ( {
-	default: {
-		join: ( ...chunks ) => chunks.join( '/' )
-	}
-} ) );
 vi.mock( 'fs' );
 vi.mock( 'child_process' );
 
