@@ -9,6 +9,7 @@ import isPnpmInstalled from './is-pnpm-installed.js';
 import chalk from 'chalk';
 
 /**
+ * @param {Logger} logger
  * @param {Boolean} useNpm
  * @param {Boolean} useYarn
  * @param {Boolean} usePnpm
@@ -20,7 +21,7 @@ export default async function choosePackageManager( logger, useNpm, useYarn, use
 	const selected = [ useNpm, useYarn, usePnpm ].filter( Boolean ).length;
 
 	if ( !yarnInstalled && !pnpmInstalled ) {
-		logger.info( chalk.yellow( 'Using npm, because no other supported package manager is installed.' ) );
+		logger.info( chalk.yellow( 'Using npm as no other supported package manager is installed.' ) );
 
 		return 'npm';
 	}
