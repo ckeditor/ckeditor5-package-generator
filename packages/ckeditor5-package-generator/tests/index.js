@@ -180,7 +180,7 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( choosePackageManager ).toHaveBeenCalledTimes( 1 );
-		expect( choosePackageManager ).toHaveBeenCalledWith( false, true, false );
+		expect( choosePackageManager ).toHaveBeenCalledWith( expect.any( Logger ), false, true, false );
 	} );
 
 	it( 'chooses npx for npm package manager', async () => {

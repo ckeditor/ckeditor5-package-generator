@@ -6,6 +6,7 @@
 import inquirer from 'inquirer';
 import isYarnInstalled from './is-yarn-installed.js';
 import isPnpmInstalled from './is-pnpm-installed.js';
+import chalk from 'chalk';
 
 /**
  * @param {Boolean} useNpm
@@ -13,10 +14,16 @@ import isPnpmInstalled from './is-pnpm-installed.js';
  * @param {Boolean} usePnpm
  * @returns {Promise<'npm'|'yarn'|'pnpm'>}
  */
-export default async function choosePackageManager( useNpm, useYarn, usePnpm ) {
+export default async function choosePackageManager( logger, useNpm, useYarn, usePnpm ) {
 	const yarnInstalled = isYarnInstalled();
 	const pnpmInstalled = isPnpmInstalled();
 	const selected = [ useNpm, useYarn, usePnpm ].filter( Boolean ).length;
+
+	if ( !yarnInstalled && !pnpmInstalled ) {
+		logger.info( chalk.yellow( 'Using npm, because no other supported package manager is installed.' ) );
+
+		return 'npm';
+	}
 
 	if ( useYarn && !yarnInstalled ) {
 		throw new Error( 'Detected --use-yarn option but yarn is not installed.' );
@@ -27,7 +34,7 @@ export default async function choosePackageManager( useNpm, useYarn, usePnpm ) {
 	}
 
 	if ( selected > 1 ) {
-		return await askUserToChoosePackageManager();
+		return await askUserToChoosePackageManager( { yarnInstalled, pnpmInstalled } );
 	}
 
 	if ( useNpm ) {
@@ -42,19 +49,25 @@ export default async function choosePackageManager( useNpm, useYarn, usePnpm ) {
 		return 'pnpm';
 	}
 
-	return await askUserToChoosePackageManager();
+	return await askUserToChoosePackageManager( { yarnInstalled, pnpmInstalled } );
 }
 
 /**
  * @returns {Promise<'npm'|'yarn'|'pnpm'>}
  */
-async function askUserToChoosePackageManager() {
+async function askUserToChoosePackageManager( { yarnInstalled, pnpmInstalled } ) {
+	const choices = [
+		'npm',
+		yarnInstalled && 'yarn',
+		pnpmInstalled && 'pnpm'
+	].filter( Boolean );
+
 	const { packageManager } = await inquirer.prompt( [ {
 		prefix: '📍',
 		name: 'packageManager',
 		message: 'Choose the package manager:',
 		type: 'list',
-		choices: [ 'yarn', 'npm', 'pnpm' ]
+		choices
 	} ] );
 
 	return packageManager;

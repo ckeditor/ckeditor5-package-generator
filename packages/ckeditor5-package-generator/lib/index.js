@@ -43,7 +43,7 @@ export default async function init( packageName, options ) {
 	validatePluginName( logger, pluginName );
 	const formattedNames = getPackageNameFormats( packageName, pluginName );
 	const { directoryName, directoryPath } = createDirectory( logger, packageName );
-	const packageManager = await choosePackageManager( useNpm, useYarn, usePnpm );
+	const packageManager = await choosePackageManager( logger, useNpm, useYarn, usePnpm );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
 	const installationMethodOfPackage = await chooseInstallationMethods( logger, installationMethods );
 
