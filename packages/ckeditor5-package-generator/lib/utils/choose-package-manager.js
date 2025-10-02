@@ -10,12 +10,10 @@ import chalk from 'chalk';
 
 /**
  * @param {Logger} logger
- * @param {Boolean} useNpm
- * @param {Boolean} useYarn
- * @param {Boolean} usePnpm
+ * @param {ChoosePackageManagerOptions} options
  * @returns {Promise<'npm'|'yarn'|'pnpm'>}
  */
-export default async function choosePackageManager( logger, useNpm, useYarn, usePnpm ) {
+export default async function choosePackageManager( logger, { useNpm, useYarn, usePnpm } ) {
 	const yarnInstalled = isYarnInstalled();
 	const pnpmInstalled = isPnpmInstalled();
 	const selected = [ useNpm, useYarn, usePnpm ].filter( Boolean ).length;
@@ -74,3 +72,9 @@ async function askUserToChoosePackageManager( { yarnInstalled, pnpmInstalled } )
 	return packageManager;
 }
 
+/**
+ * @typedef {Object} ChoosePackageManagerOptions
+ * @property {boolean} useNpm Whether to use npm.
+ * @property {boolean} useYarn Whether to use yarn.
+ * @property {boolean} usePnpm Whether to use pnpm.
+ */
