@@ -91,7 +91,7 @@ describe( 'lib/utils/choose-package-manager', () => {
 
 		expect( result ).toEqual( 'npm' );
 		expect( inquirer.prompt ).not.toHaveBeenCalled();
-		expect( logger.info ).toHaveBeenCalledWith( 'Using npm, because no other supported package manager is installed.' );
+		expect( logger.info ).toHaveBeenCalledWith( 'Using npm as no other supported package manager is installed.' );
 	} );
 
 	it( 'should call prompt with correct arguments when yarn installed and pnpm not installed', async () => {
