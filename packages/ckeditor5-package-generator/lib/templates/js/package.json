@@ -28,8 +28,8 @@
     "@ckeditor/ckeditor5-dev-build-tools": "<%= packageVersions.ckeditor5DevBuildTools %>",
     "@ckeditor/ckeditor5-inspector": "^<%= packageVersions.ckeditor5Inspector %>",
     "@ckeditor/ckeditor5-package-tools": "<%= packageVersions.packageTools %>",
-    "@vitest/coverage-istanbul": "^2.0.5",
-    "@vitest/browser": "^2.0.5",
+    "@vitest/coverage-istanbul": "^3.0.0",
+    "@vitest/browser": "^3.0.0",
     "chalk": "^5.6.0",
     "css-loader": "^7.1.2",
     "ckeditor5": "latest",
@@ -47,7 +47,7 @@
     "stylelint-config-ckeditor5": "^<%= packageVersions.stylelintConfigCkeditor5 %>",
     "upath": "^2.0.1",
     "vite-plugin-svgo": "~1.4.0",
-    "vitest": "^2.0.5",
+    "vitest": "^3.0.0",
     "webdriverio": "^9.0.7"
   },
   "peerDependencies": {
