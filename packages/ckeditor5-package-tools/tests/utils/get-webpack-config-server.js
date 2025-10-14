@@ -3,8 +3,9 @@
  * For licensing, see LICENSE.md.
  */
 
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 import fs from 'fs';
+import path from 'path';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { CKEditorTranslationsPlugin } from '@ckeditor/ckeditor5-dev-translations';
 import { getModuleResolutionPaths, loaderDefinitions } from '../../lib/utils/webpack-utils.js';
 import getWebpackConfigServer from '../../lib/utils/get-webpack-config-server.js';
@@ -179,6 +180,26 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		expect( config.devServer ).toEqual( {
 			static: {
 				directory: '/process/cwd/sample'
+			},
+			compress: true
+		} );
+	} );
+
+	it( 'defines the devServer directory on Windows-style paths', async () => {
+		vi.spyOn( path, 'sep', 'get' ).mockImplementation( () => '\\' );
+
+		vi.mocked( fs.readdirSync ).mockImplementation( dirPath => {
+			const normalized = String( dirPath ).replace( /\\/g, '/' );
+			if ( normalized === 'C:/process/cwd/sample' ) {
+				return [ 'ckeditor.js', 'dll.html', 'index.html' ];
+			}
+		} );
+
+		const config = getWebpackConfigServer( { cwd: 'C:\\process\\cwd' } );
+
+		expect( config.devServer ).toEqual( {
+			static: {
+				directory: 'C:\\process\\cwd\\sample'
 			},
 			compress: true
 		} );

@@ -4,6 +4,7 @@
  */
 
 import fs from 'fs';
+import path from 'path';
 import upath from 'upath';
 import webpack from 'webpack';
 import { CKEditorTranslationsPlugin } from '@ckeditor/ckeditor5-dev-translations';
@@ -58,7 +59,9 @@ export default options => {
 
 		devServer: {
 			static: {
-				directory: upath.join( options.cwd, 'sample' )
+				// Convert POSIX-style path from upath to a native OS path (needed for Windows).
+				// `webpack-dev-server` checks if a path starts with `[a-z]:/`.If so, it treats it as URL and emits an error.
+				directory: upath.join( options.cwd, 'sample' ).split( '/' ).join( path.sep )
 			},
 			compress: true
 		},
