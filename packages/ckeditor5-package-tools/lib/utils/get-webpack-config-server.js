@@ -85,7 +85,8 @@ export default options => {
 						loaderDefinitions.styles( options.cwd ),
 						loaderDefinitions.typescript( options.cwd )
 					]
-				}
+				},
+				loaderDefinitions.js()
 			]
 		}
 	};

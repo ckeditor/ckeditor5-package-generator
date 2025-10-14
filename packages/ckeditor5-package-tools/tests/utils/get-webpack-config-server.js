@@ -52,6 +52,7 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		vi.mocked( loaderDefinitions.rawWithQuery ).mockReturnValue( 'raw-loader?query=true' );
 		vi.mocked( loaderDefinitions.typescript ).mockReturnValue( 'typescript-loader' );
 		vi.mocked( loaderDefinitions.styles ).mockReturnValue( 'styles-loader' );
+		vi.mocked( loaderDefinitions.js ).mockReturnValue( 'js-loader' );
 
 		vi.mocked( getModuleResolutionPaths ).mockReturnValue( 'loader-resolution-paths' );
 	} );
@@ -73,6 +74,13 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 				]
 			} ) )
 		] ) );
+	} );
+
+	it( 'adds the ESM JS rule as a separate top-level rule', () => {
+		const config = getWebpackConfigServer( { cwd } );
+
+		expect( loaderDefinitions.js ).toHaveBeenCalledTimes( 1 );
+		expect( config.module.rules ).toEqual( expect.arrayContaining( [ 'js-loader' ] ) );
 	} );
 
 	it( 'passes the "cwd" directory to TypeScript loader', () => {
