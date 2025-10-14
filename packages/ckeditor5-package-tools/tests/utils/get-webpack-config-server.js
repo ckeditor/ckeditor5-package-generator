@@ -3,8 +3,9 @@
  * For licensing, see LICENSE.md.
  */
 
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 import fs from 'fs';
+import path from 'path';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { CKEditorTranslationsPlugin } from '@ckeditor/ckeditor5-dev-translations';
 import { getModuleResolutionPaths, loaderDefinitions } from '../../lib/utils/webpack-utils.js';
 import getWebpackConfigServer from '../../lib/utils/get-webpack-config-server.js';
@@ -52,6 +53,7 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		vi.mocked( loaderDefinitions.rawWithQuery ).mockReturnValue( 'raw-loader?query=true' );
 		vi.mocked( loaderDefinitions.typescript ).mockReturnValue( 'typescript-loader' );
 		vi.mocked( loaderDefinitions.styles ).mockReturnValue( 'styles-loader' );
+		vi.mocked( loaderDefinitions.js ).mockReturnValue( 'js-loader' );
 
 		vi.mocked( getModuleResolutionPaths ).mockReturnValue( 'loader-resolution-paths' );
 	} );
@@ -73,6 +75,13 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 				]
 			} ) )
 		] ) );
+	} );
+
+	it( 'adds the ESM JS rule as a separate top-level rule', () => {
+		const config = getWebpackConfigServer( { cwd } );
+
+		expect( loaderDefinitions.js ).toHaveBeenCalledTimes( 1 );
+		expect( config.module.rules ).toEqual( expect.arrayContaining( [ 'js-loader' ] ) );
 	} );
 
 	it( 'passes the "cwd" directory to TypeScript loader', () => {
@@ -171,6 +180,26 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		expect( config.devServer ).toEqual( {
 			static: {
 				directory: '/process/cwd/sample'
+			},
+			compress: true
+		} );
+	} );
+
+	it( 'defines the devServer directory on Windows-style paths', async () => {
+		vi.spyOn( path, 'sep', 'get' ).mockImplementation( () => '\\' );
+
+		vi.mocked( fs.readdirSync ).mockImplementation( dirPath => {
+			const normalized = String( dirPath ).replace( /\\/g, '/' );
+			if ( normalized === 'C:/process/cwd/sample' ) {
+				return [ 'ckeditor.js', 'dll.html', 'index.html' ];
+			}
+		} );
+
+		const config = getWebpackConfigServer( { cwd: 'C:\\process\\cwd' } );
+
+		expect( config.devServer ).toEqual( {
+			static: {
+				directory: 'C:\\process\\cwd\\sample'
 			},
 			compress: true
 		} );

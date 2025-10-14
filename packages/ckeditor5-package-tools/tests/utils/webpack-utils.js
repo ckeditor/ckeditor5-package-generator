@@ -187,6 +187,34 @@ describe( 'lib/utils/webpack-utils', () => {
 				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\theme\\icons\\ckeditor.html' ).not.toMatch( loader.test );
 			} );
 		} );
+
+		describe( 'js()', () => {
+			let loader;
+
+			beforeEach( () => {
+				loader = webpackUtils.loaderDefinitions.js();
+			} );
+
+			it( 'disables "fullySpecified" to allow extension-less ESM imports', () => {
+				expect( loader ).toBeTypeOf( 'object' );
+				expect( loader ).toHaveProperty( 'resolve' );
+				expect( loader.resolve ).toEqual( { fullySpecified: false } );
+			} );
+
+			it( 'targets .js and .mjs files', () => {
+				// .js
+				expect( '/Users/ckeditor/ckeditor5-foo/src/index.js' ).toMatch( loader.test );
+				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\src\\index.js' ).toMatch( loader.test );
+
+				// .mjs
+				expect( '/Users/ckeditor/ckeditor5-foo/src/index.mjs' ).toMatch( loader.test );
+				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\src\\index.mjs' ).toMatch( loader.test );
+
+				// Should not match other extensions
+				expect( '/Users/ckeditor/ckeditor5-foo/src/index.ts' ).not.toMatch( loader.test );
+				expect( 'C:\\Users\\ckeditor\\ckeditor5-foo\\src\\index.ts' ).not.toMatch( loader.test );
+			} );
+		} );
 	} );
 
 	describe( 'getModuleResolutionPaths()', () => {
