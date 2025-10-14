@@ -61,6 +61,17 @@ export const loaderDefinitions = {
 				}
 			]
 		};
+	},
+
+	js: () => {
+		return {
+			// Allow extension-less ESM imports (e.g., `import x from './file'`)
+			// by disabling fully specified resolution for `.js`/`.mjs` files.
+			test: /\.m?js$/,
+			resolve: {
+				fullySpecified: false
+			}
+		};
 	}
 };
 
