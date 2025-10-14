@@ -27,6 +27,12 @@ importers:
       '@ckeditor/ckeditor5-dev-web-crawler':
         specifier: ^53.2.0
         version: 53.2.0(typescript@5.0.4)
+      '@inquirer/prompts':
+        specifier: ^7.5.0
+        version: 7.8.4(@types/node@24.3.0)
+      '@listr2/prompt-adapter-inquirer':
+        specifier: ^2.0.16
+        version: 2.0.22(@inquirer/prompts@7.8.4(@types/node@24.3.0))
       '@vitest/coverage-v8':
         specifier: ^3.0.0
         version: 3.2.4(vitest@3.2.4(@types/node@24.3.0)(jiti@2.5.1)(terser@5.44.0))
@@ -779,6 +785,10 @@ packages:
       '@types/node':
         optional: true
 
+  '@inquirer/type@1.5.5':
+    resolution: {integrity: sha512-MzICLu4yS7V8AA61sANROZ9vT1H3ooca5dSmI1FjZkzq7o/koMsRfQSzRtFo+F3Ao4Sf1C0bpLKejpKB/+j6MA==}
+    engines: {node: '>=18'}
+
   '@inquirer/type@3.0.8':
     resolution: {integrity: sha512-lg9Whz8onIHRthWaN1Q9EGLa/0LFJjyM8mEUbL1eTi6yMGvBf8gvyDLtxSXztQsxMvhxxNpJYrwa1YHdq+w4Jw==}
     engines: {node: '>=18'}
@@ -874,6 +884,12 @@ packages:
 
   '@leichtgewicht/ip-codec@2.0.5':
     resolution: {integrity: sha512-Vo+PSpZG2/fmgmiNzYK9qWRh8h/CHrwD0mo1h1DzL4yzHNSfWYujGTYsWGreD000gcgmZ7K4Ys6Tx9TxtsKdDw==}
+
+  '@listr2/prompt-adapter-inquirer@2.0.22':
+    resolution: {integrity: sha512-hV36ZoY+xKL6pYOt1nPNnkciFkn89KZwqLhAFzJvYysAvL5uBQdiADZx/8bIDXIukzzwG0QlPYolgMzQUtKgpQ==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@inquirer/prompts': '>= 3 < 8'
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -3186,6 +3202,10 @@ packages:
     resolution: {integrity: sha512-2eznPJP8z2BFLX50tf0LuODrpINqP1RVIm/CObbTcBRITQgmC/TjcREF1NeTBzIcR5XO/ukWo+YHOjBbFwIupg==}
     hasBin: true
 
+  mute-stream@1.0.0:
+    resolution: {integrity: sha512-avsJQhyd+680gKXyG/sQc0nXaC6rBkPOfyHYcFb9+hdkqQkR9bdnkJ0AMZhke0oesPqIO+mFFJ+IdBc7mst4IA==}
+    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
+
   mute-stream@2.0.0:
     resolution: {integrity: sha512-WWdIxpyjEn+FhQJQQv9aQAYlHoNVdzIzUySNV1gHUPDSdZJ3yZn7pAAbQcV7B56Mvu881q9FZV+0Vx2xC44VWA==}
     engines: {node: ^18.17.0 || >=20.5.0}
@@ -5276,6 +5296,10 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.3.0
 
+  '@inquirer/type@1.5.5':
+    dependencies:
+      mute-stream: 1.0.0
+
   '@inquirer/type@3.0.8(@types/node@24.3.0)':
     optionalDependencies:
       '@types/node': 24.3.0
@@ -5371,6 +5395,11 @@ snapshots:
   '@kwsites/promise-deferred@1.1.1': {}
 
   '@leichtgewicht/ip-codec@2.0.5': {}
+
+  '@listr2/prompt-adapter-inquirer@2.0.22(@inquirer/prompts@7.8.4(@types/node@24.3.0))':
+    dependencies:
+      '@inquirer/prompts': 7.8.4(@types/node@24.3.0)
+      '@inquirer/type': 1.5.5
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -7883,6 +7912,8 @@ snapshots:
     dependencies:
       dns-packet: 5.6.1
       thunky: 1.1.0
+
+  mute-stream@1.0.0: {}
 
   mute-stream@2.0.0: {}
 
