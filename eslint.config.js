@@ -3,10 +3,15 @@
  * For licensing, see LICENSE.md.
  */
 
+import { readdirSync } from 'fs';
 import globals from 'globals';
 import { defineConfig } from 'eslint/config';
 import eslintConfigCKEditor5 from 'eslint-config-ckeditor5';
 import eslintPluginCKEditor5Rules from 'eslint-plugin-ckeditor5-rules';
+
+const projectPackages = readdirSync( './packages', { withFileTypes: true } )
+	.filter( dirent => dirent.isDirectory() )
+	.map( dirent => dirent.name );
 
 export default defineConfig( [
 	eslintConfigCKEditor5,
@@ -66,7 +71,8 @@ export default defineConfig( [
 
 		rules: {
 			'ckeditor5-rules/validate-changelog-entry': [ 'error', {
-				repositoryType: 'single'
+				allowedScopes: projectPackages,
+				repositoryType: 'mono'
 			} ]
 		}
 	}
