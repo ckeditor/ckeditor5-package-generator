@@ -32,6 +32,7 @@ export default defineConfig( [
 		plugins: {
 			'ckeditor5-rules': eslintPluginCKEditor5Rules
 		},
+		files: [ '**/*.{js,cjs,mjs,ts}' ],
 		rules: {
 			'no-console': 'off',
 			'ckeditor5-rules/license-header': [ 'error', { headerLines: [
@@ -50,6 +51,23 @@ export default defineConfig( [
 		files: [ './packages/ckeditor5-package-generator/lib/templates/**/*.{js,cjs,ts}' ],
 		rules: {
 			'ckeditor5-rules/license-header': 'off'
+		}
+	},
+
+	// Rules specific to changelog files.
+	{
+		extends: eslintConfigCKEditor5,
+
+		files: [ '.changelog/**/*.md' ],
+
+		plugins: {
+			'ckeditor5-rules': eslintPluginCKEditor5Rules
+		},
+
+		rules: {
+			'ckeditor5-rules/validate-changelog-entry': [ 'error', {
+				repositoryType: 'single'
+			} ]
 		}
 	}
 ] );
