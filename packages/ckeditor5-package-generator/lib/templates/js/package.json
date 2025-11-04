@@ -53,6 +53,9 @@
   "peerDependencies": {
     "ckeditor5": ">=42.0.0 || ^0.0.0-nightly"
   },
+  "overrides": {
+    "sugarss": "^5.0.1"
+  },
   "scripts": {
     "build:dist": "node ./scripts/build-dist.mjs",
     "lint": "eslint",
