@@ -56,8 +56,7 @@
     "typescript": "5.0.4",
     "upath": "^2.0.1",
     "vite-plugin-svgo": "^2.0.0",
-    "vitest": "^4.0.6",
-    "webdriverio": "^9.19.2"
+    "vitest": "^4.0.6"
   },
   "peerDependencies": {
     "ckeditor5": ">=42.0.0 || ^0.0.0-nightly"
