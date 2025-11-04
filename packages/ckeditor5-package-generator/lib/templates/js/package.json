@@ -47,7 +47,8 @@
     "stylelint-config-ckeditor5": "^<%= packageVersions.stylelintConfigCkeditor5 %>",
     "upath": "^2.0.1",
     "vite-plugin-svgo": "^2.0.0",
-    "vitest": "^4.0.6"
+    "vitest": "^4.0.6",
+    "webdriverio": "^9.19.2"
   },
   "peerDependencies": {
     "ckeditor5": ">=42.0.0 || ^0.0.0-nightly"
