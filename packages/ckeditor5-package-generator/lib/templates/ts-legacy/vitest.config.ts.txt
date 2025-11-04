@@ -3,6 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
+import { webdriverio } from '@vitest/browser-webdriverio';
 import { defineConfig } from 'vitest/config';
 import svg from 'vite-plugin-svgo';
 
@@ -13,9 +14,10 @@ export default defineConfig( {
 	test: {
 		browser: {
 			enabled: true,
-			name: 'chrome',
-			provider: 'webdriverio',
-			providerOptions: {},
+			instances: [
+				{ browser: 'chrome' }
+			],
+			provider: webdriverio(),
 			headless: true,
 			ui: false
 		},
