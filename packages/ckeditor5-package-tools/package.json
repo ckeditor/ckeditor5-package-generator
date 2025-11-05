@@ -5,10 +5,9 @@
   "author": "CKSource (http://cksource.com/)",
   "license": "MIT",
   "homepage": "https://ckeditor.com/ckeditor-5",
-  "files": [
-    "bin",
-    "lib"
-  ],
+  "engines": {
+    "node": ">=24.11.0"
+  },
   "main": "lib/index.js",
   "type": "module",
   "dependencies": {
@@ -41,6 +40,10 @@
   "bin": {
     "ckeditor5-package-tools": "bin/index.js"
   },
+  "files": [
+    "bin",
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/ckeditor/ckeditor5-package-generator.git",
