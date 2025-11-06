@@ -5,7 +5,7 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import webpack from 'webpack';
-import webpackDevServer from 'webpack-dev-server';
+import WebpackDevServer from 'webpack-dev-server';
 import getWebpackConfigServer from '../../lib/utils/get-webpack-config-server.js';
 import startTask from '../../lib/tasks/start.js';
 
@@ -14,16 +14,12 @@ vi.mock( 'webpack-dev-server' );
 vi.mock( '../../lib/utils/get-webpack-config-server.js' );
 
 describe( 'lib/tasks/start', () => {
-	let stubs;
-
 	beforeEach( () => {
-		stubs = {
-			server: {
-				start: vi.fn()
+		vi.mocked( WebpackDevServer ).mockImplementation(
+			class MockWebpackDevServer {
+				start() {};
 			}
-		};
-
-		vi.mocked( webpackDevServer ).mockReturnValue( stubs.server );
+		);
 	} );
 
 	it( 'should be a function', () => {
@@ -59,7 +55,8 @@ describe( 'lib/tasks/start', () => {
 		startTask( taskOptions );
 
 		// Verify arguments passed to webpack-dev-server.
-		expect( webpackDevServer ).toHaveBeenCalledWith(
+		expect( WebpackDevServer ).toHaveBeenCalledTimes( 1 );
+		expect( WebpackDevServer ).toHaveBeenCalledWith(
 			{
 				port: 9000,
 				open: true
@@ -68,7 +65,7 @@ describe( 'lib/tasks/start', () => {
 		);
 
 		// Verify whether the server was started.
-		expect( stubs.server.start ).toHaveBeenCalledTimes( 1 );
+		expect( vi.mocked( WebpackDevServer ).mock.instances[ 0 ].start ).toHaveBeenCalledTimes( 1 );
 	} );
 
 	it( 'should not open the browser if the open option is set to false', () => {
@@ -100,7 +97,8 @@ describe( 'lib/tasks/start', () => {
 		startTask( taskOptions );
 
 		// Verify arguments passed to webpack-dev-server.
-		expect( webpackDevServer ).toHaveBeenCalledWith(
+		expect( WebpackDevServer ).toHaveBeenCalledTimes( 1 );
+		expect( WebpackDevServer ).toHaveBeenCalledWith(
 			{
 				port: 9000,
 				open: false
