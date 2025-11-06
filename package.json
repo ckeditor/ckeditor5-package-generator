@@ -41,10 +41,6 @@
     "upath": "^2.0.1",
     "vitest": "^4.0.6"
   },
-  "resolutions": {
-    "string-width": "^4.0.0",
-    "esbuild": "^0.25.0"
-  },
   "engines": {
     "node": ">=24.11.0",
     "pnpm": ">=10.14.0"
