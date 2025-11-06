@@ -42,9 +42,8 @@
     "vitest": "^4.0.6"
   },
   "resolutions": {
-    "esbuild": "^0.25.0",
     "string-width": "^4.0.0",
-    "tar@^7.0.0": "^7.5.2"
+    "esbuild": "^0.25.0"
   },
   "engines": {
     "node": ">=24.11.0",
