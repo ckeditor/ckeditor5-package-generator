@@ -1,6 +1,30 @@
 Changelog
 =========
 
+## [5.0.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v4.1.1...v5.0.0) (November 13, 2025)
+
+### MINOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator), [tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: Updated the required version of Node.js to **v24.11**.
+
+### Other changes
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Generated packages now output with testing suite using Vitest v4. Closes [#265](https://github.com/ckeditor/ckeditor5-package-generator/issues/265).
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Minor releases (contain minor breaking changes):
+
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/5.0.0): v4.1.1 => v5.0.0
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/5.0.0): v4.1.1 => v5.0.0
+</details>
+
+
 ## [4.1.1](https://github.com/ckeditor/ckeditor5-package-generator/compare/v4.1.0...v4.1.1) (October 14, 2025)
 
 ### Other changes
@@ -83,32 +107,6 @@ Other releases:
 
 * [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/4.0.1): v4.0.0 => v4.0.1
 * [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/4.0.1): v4.0.0 => v4.0.1
-</details>
-
-
-## [4.0.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v3.0.1...v4.0.0) (2025-06-04)
-
-### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
-
-* Updated the required version of Node.js to 22.
-
-### Other changes
-
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: The Stylelint version in the generated packages has been bumped to v16.x. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/f6f56b2c5fdab9fddcdd67bf0c9094c6153c8e4c))
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: The ESLint version in the generated packages has been bumped to v9.x. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/0167c222d2145f5b4f8140944e2a80faf8d40b5d))
-* The development environment of the CKEditor 5 package generator now uses ESLint v9. Therefore, the required Node.js version has been upgraded to 22 to match the ESLint requirements. ([commit](https://github.com/ckeditor/ckeditor5-package-generator/commit/0167c222d2145f5b4f8140944e2a80faf8d40b5d))
-
-### Released packages
-
-Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
-
-<details>
-<summary>Released packages (summary)</summary>
-
-Other releases:
-
-* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/4.0.0): v3.0.1 => v4.0.0
-* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/4.0.0): v3.0.1 => v4.0.0
 </details>
 
 ---
