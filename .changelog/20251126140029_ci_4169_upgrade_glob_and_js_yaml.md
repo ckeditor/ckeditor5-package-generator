@@ -2,4 +2,4 @@
 type: Other
 ---
 
-Upgrade `glob` and `js-yaml` dependencies.
+Upgrade `glob`, `js-yaml` and `@ckeditor/ckeditor5-dev-*` dependencies.
