@@ -5,7 +5,7 @@
 
 import { tools } from '@ckeditor/ckeditor5-dev-utils';
 import chalk from 'chalk';
-import { spawn } from 'child_process';
+import { spawn } from 'node:child_process';
 
 /**
  * @param {String} directoryPath

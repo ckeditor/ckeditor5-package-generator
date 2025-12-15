@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect, vi } from 'vitest';
-import module from 'module';
+import module from 'node:module';
 import { getThemePath, getCorePath, getMainManifestPath } from '../../lib/utils/get-path.js';
 
 describe( 'lib/utils/get-path', () => {

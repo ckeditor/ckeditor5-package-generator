@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import { readdirSync } from 'fs';
+import { readdirSync } from 'node:fs';
 import globals from 'globals';
 import { defineConfig } from 'eslint/config';
 import eslintConfigCKEditor5 from 'eslint-config-ckeditor5';

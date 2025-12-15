@@ -3,9 +3,9 @@
  * For licensing, see LICENSE.md.
  */
 
-import fs from 'fs';
+import fs from 'node:fs';
 import upath from 'upath';
-import { execSync } from 'child_process';
+import { execSync } from 'node:child_process';
 
 /**
  * @param {string} directoryPath

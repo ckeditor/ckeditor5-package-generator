@@ -4,7 +4,7 @@
  */
 
 import upath from 'upath';
-import module from 'module';
+import module from 'node:module';
 
 function getRequire() {
 	return module.createRequire( import.meta.url );

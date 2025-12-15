@@ -3,8 +3,8 @@
  * For licensing, see LICENSE.md.
  */
 
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import upath from 'upath';
 import webpack from 'webpack';
 import { CKEditorTranslationsPlugin } from '@ckeditor/ckeditor5-dev-translations';
