@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { spawn } from 'child_process';
+import { spawn } from 'node:child_process';
 import installGitHooks from '../../lib/utils/install-git-hooks.js';
 
 vi.mock( 'child_process' );

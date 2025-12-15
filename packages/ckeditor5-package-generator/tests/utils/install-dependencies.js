@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { spawn } from 'child_process';
+import { spawn } from 'node:child_process';
 import { tools } from '@ckeditor/ckeditor5-dev-utils';
 import installDependencies from '../../lib/utils/install-dependencies.js';
 

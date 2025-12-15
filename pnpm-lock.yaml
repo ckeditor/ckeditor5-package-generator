@@ -39,11 +39,11 @@ importers:
         specifier: ^9.38.0
         version: 9.38.0(jiti@2.6.1)
       eslint-config-ckeditor5:
-        specifier: ^12.2.0
-        version: 12.2.0(eslint@9.38.0(jiti@2.6.1))(typescript@5.0.4)
+        specifier: ^13.0.0
+        version: 13.0.0(eslint@9.38.0(jiti@2.6.1))(typescript@5.0.4)
       eslint-plugin-ckeditor5-rules:
-        specifier: ^12.2.0
-        version: 12.2.0
+        specifier: ^13.0.0
+        version: 13.0.0
       fs-extra:
         specifier: ^11.2.0
         version: 11.3.2
@@ -2097,14 +2097,16 @@ packages:
     engines: {node: '>=6.0'}
     hasBin: true
 
-  eslint-config-ckeditor5@12.2.0:
-    resolution: {integrity: sha512-/TQsJuSkTZDVK8srm29tt0kicMEqAyusad1aH6EIXhBjNiQnsagYRNBZjAKiBGdofhjXy4sAD4g+gNa2igO9NA==}
+  eslint-config-ckeditor5@13.0.0:
+    resolution: {integrity: sha512-kJfQ+UJBWrBKGEmfkWlqP6RSEeIn7ursIzZx1E0F/J7fdz0ItKFIKZXZxxqETDQAWnZWKmzj5tx1wbnMkRBFlw==}
+    engines: {node: '>=24.11.0'}
     peerDependencies:
       eslint: ^9.0.0
       typescript: ^5.0.0
 
-  eslint-plugin-ckeditor5-rules@12.2.0:
-    resolution: {integrity: sha512-WgQP9aZo1N7bIDwwf2Wsnd0RpL20MAVxEehhYoFWy7HAMAnV3IliKuU3dsFA35O8cK4q7eKz7FiObwSRAfttQA==}
+  eslint-plugin-ckeditor5-rules@13.0.0:
+    resolution: {integrity: sha512-flXURsHYkTlPIHWlxt6BB40DRkdl8l1+qp9rFEi5ruF9ZW6hPRPN3Z4fvalrUAy/JuxmmwrcYKpiv+5keOHuPw==}
+    engines: {node: '>=24.11.0'}
 
   eslint-plugin-mocha@11.2.0:
     resolution: {integrity: sha512-nMdy3tEXZac8AH5Z/9hwUkSfWu8xHf4XqwB5UEQzyTQGKcNlgFeciRAjLjliIKC3dR1Ex/a2/5sqgQzvYRkkkA==}
@@ -6748,13 +6750,13 @@ snapshots:
     optionalDependencies:
       source-map: 0.6.1
 
-  eslint-config-ckeditor5@12.2.0(eslint@9.38.0(jiti@2.6.1))(typescript@5.0.4):
+  eslint-config-ckeditor5@13.0.0(eslint@9.38.0(jiti@2.6.1))(typescript@5.0.4):
     dependencies:
       '@eslint/js': 9.38.0
       '@eslint/markdown': 6.6.0
       '@stylistic/eslint-plugin': 4.4.1(eslint@9.38.0(jiti@2.6.1))(typescript@5.0.4)
       eslint: 9.38.0(jiti@2.6.1)
-      eslint-plugin-ckeditor5-rules: 12.2.0
+      eslint-plugin-ckeditor5-rules: 13.0.0
       eslint-plugin-mocha: 11.2.0(eslint@9.38.0(jiti@2.6.1))
       globals: 16.4.0
       typescript: 5.0.4
@@ -6762,11 +6764,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-ckeditor5-rules@12.2.0:
+  eslint-plugin-ckeditor5-rules@13.0.0:
     dependencies:
       '@es-joy/jsdoccomment': 0.50.2
       enhanced-resolve: 5.18.3
-      fs-extra: 11.3.2
       resolve.exports: 2.0.3
       upath: 2.0.1
       validate-npm-package-name: 6.0.2

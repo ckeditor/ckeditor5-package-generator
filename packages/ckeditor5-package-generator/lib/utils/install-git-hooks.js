@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import { spawn } from 'child_process';
+import { spawn } from 'node:child_process';
 
 /**
  * @param {string} directoryPath

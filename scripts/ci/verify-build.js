@@ -5,10 +5,10 @@
  * For licensing, see LICENSE.md.
  */
 
-import fs from 'fs';
+import fs from 'node:fs';
 import upath from 'upath';
-import { spawn, spawnSync } from 'child_process';
-import { stripVTControlCharacters } from 'util';
+import { spawn, spawnSync } from 'node:child_process';
+import { stripVTControlCharacters } from 'node:util';
 import chalk from 'chalk';
 import parseArguments from './utils/parsearguments.js';
 import { EXPECTED_PUBLISH_FILES, EXPECTED_LEGACY_PUBLISH_FILES, EXPECTED_SRC_DIR_FILES } from './utils/expectedFiles.js';

@@ -4,7 +4,7 @@
  */
 
 import chalk from 'chalk';
-import fs from 'fs';
+import fs from 'node:fs';
 import mkdirp from 'mkdirp';
 import upath from 'upath';
 
