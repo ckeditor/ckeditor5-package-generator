@@ -5,7 +5,7 @@
 
 import { describe, it, expect, vi } from 'vitest';
 import module from 'node:module';
-import { getThemePath, getCorePath, getMainManifestPath } from '../../lib/utils/get-path.js';
+import { getThemePath, getCorePath } from '../../lib/utils/get-path.js';
 
 describe( 'lib/utils/get-path', () => {
 	describe( 'getThemePath', () => {
@@ -46,24 +46,6 @@ describe( 'lib/utils/get-path', () => {
 				} ) );
 
 			expect( getCorePath() ).toEqual( 'node_modules/@ckeditor/ckeditor5-core' );
-		} );
-	} );
-
-	describe( 'getMainManifestPath', () => {
-		it( 'should be a function', () => {
-			expect( getMainManifestPath ).toBeTypeOf( 'function' );
-		} );
-
-		it( 'returns relative path to the `@ckeditor/ckeditor5-core` package.', () => {
-			const mockPath = 'ckeditor5/build/ckeditor5-dll.manifest.json';
-
-			vi
-				.spyOn( module, 'createRequire' )
-				.mockImplementationOnce( () => ( {
-					resolve: () => mockPath
-				} ) );
-
-			expect( getMainManifestPath() ).toEqual( mockPath );
 		} );
 	} );
 } );

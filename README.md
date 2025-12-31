@@ -69,7 +69,7 @@ The tool will create a new directory called `ckeditor5-package` with an example 
 To use a local version of the `@ckeditor/ckeditor5-package-tools` package, use the `--dev` option when executing the command.
 
 ```bash
-node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--dev] [--use-npm] [--use-yarn] [--use-pnpm] [--installation-methods <current|current-and-legacy>] [--global-name <...>] [--plugin-name <...>] [--lang <js|ts>] [--verbose]
+node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--dev] [--use-npm] [--use-yarn] [--use-pnpm] [--global-name <...>] [--plugin-name <...>] [--lang <js|ts>] [--verbose]
 ```
 
 #### Options
@@ -79,7 +79,6 @@ node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--d
 * `--use-npm` &ndash; use `npm` to install dependencies in a newly created package.
 * `--use-yarn` &ndash; use `yarn` to install dependencies in a newly created package.
 * `--use-pnpm` &ndash; use `pnpm` to install dependencies in a newly created package.
-* `--installation-methods` &ndash; (values: `current` | `current-and-legacy`) choose which installation methods of CKEditor 5 do you want to support? If omitted, the script will ask the user to choose manually.
 * `--global-name` &ndash; define a global name of the package to be used in UMD build.
 * `--plugin-name` &ndash; define a class name to be different from the package name.
 * `--lang` &ndash; (values: `js` | `ts`) choose whether the created package should use JavaScript or TypeScript. If omitted, the script will ask the user to choose manually.

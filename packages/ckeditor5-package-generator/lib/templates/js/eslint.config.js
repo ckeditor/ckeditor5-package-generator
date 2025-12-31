@@ -32,11 +32,7 @@ export default defineConfig( [
 			// If the import does not include it, this rule will try to automatically detect the correct file extension.
 			'ckeditor5-rules/require-file-extensions-in-imports': [ 'error', {
 				extensions: [ '.ts', '.js', '.json' ]
-			} ],
-			// This rule ensures that all imports from `@ckeditor/*` packages are done through the main package entry points.
-			// This is required for the editor types to work properly and to ease migration to the installation methods
-			// introduced in CKEditor 5 version 42.0.0.
-			'ckeditor5-rules/no-legacy-imports': 'error'
+			} ]
 		}
 	},
 	{
@@ -61,18 +57,6 @@ export default defineConfig( [
 			globals: {
 				...globals.browser
 			}
-		}
-	},
-	{
-		name: 'Sample and tests config',
-		files: [
-			'sample/**/*.{js,mjs,cjs}',
-			'tests/**/*.{js,mjs,cjs}'
-		],
-		rules: {
-			// To write complex tests, you may need to import files that are not exported in DLL files by default.
-			// Hence, imports CKEditor 5 packages in test files are not checked.
-			'ckeditor5-rules/ckeditor-imports': 'off'
 		}
 	}
 ] );

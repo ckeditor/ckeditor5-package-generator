@@ -31,12 +31,3 @@ export function getCorePath() {
 		upath.dirname( getRequire().resolve( '@ckeditor/ckeditor5-core/package.json' ) )
 	);
 }
-
-/**
- * Returns an absolute path to the main DLL manifest file.
- *
- * @returns {string}
- */
-export function getMainManifestPath() {
-	return getRequire().resolve( 'ckeditor5/build/ckeditor5-dll.manifest.json' );
-}

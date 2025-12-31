@@ -39,9 +39,8 @@ describe( 'lib/utils/copy-files', () => {
 			'stylelint-config-ckeditor5': '>=<%= packageVersions.stylelintConfigCkeditor5 %>'
 		},
 		'scripts': {
-			'dll:build': 'ckeditor5-package-tools dll:build',
-			'prepare': '<%= packageManager %> run dll:build',
-			'prepublishOnly': '<%= packageManager %> run dll:build'
+			'build:dist': 'node ./scripts/build-dist.mjs',
+			'prepare': '<%= packageManager %> run build:dist'
 		}
 	};
 
@@ -62,14 +61,6 @@ describe( 'lib/utils/copy-files', () => {
 			}
 
 			if ( pattern === 'ts/**/*' ) {
-				return [ 'ts/package.json', 'ts/src/index.ts' ];
-			}
-
-			if ( pattern === 'js-legacy/**/*' ) {
-				return [ 'js/package.json', 'js/src/index.js' ];
-			}
-
-			if ( pattern === 'ts-legacy/**/*' ) {
 				return [ 'ts/package.json', 'ts/src/index.ts' ];
 			}
 		} );
@@ -134,14 +125,12 @@ describe( 'lib/utils/copy-files', () => {
 				}
 			},
 			packageManager: 'yarn',
-			installationMethodOfPackage: 'current',
 			directoryPath: 'directory/path/foo',
 			packageVersions: {
 				ckeditor5DevBuildTools: '40.0.0',
 				ckeditor5: '30.0.0',
 				packageTools: '25.0.0'
-			},
-			dllConfiguration: {}
+			}
 		};
 
 		stubs = {
@@ -209,9 +198,8 @@ describe( 'lib/utils/copy-files', () => {
 					'stylelint-config-ckeditor5': '>='
 				},
 				'scripts': {
-					'dll:build': 'ckeditor5-package-tools dll:build',
-					'prepare': 'yarn run dll:build',
-					'prepublishOnly': 'yarn run dll:build'
+					'build:dist': 'node ./scripts/build-dist.mjs',
+					'prepare': 'yarn run build:dist'
 				}
 			}, null, 2 )
 		);
@@ -268,9 +256,8 @@ describe( 'lib/utils/copy-files', () => {
 					'stylelint-config-ckeditor5': '>='
 				},
 				'scripts': {
-					'dll:build': 'ckeditor5-package-tools dll:build',
-					'prepare': 'yarn run dll:build',
-					'prepublishOnly': 'yarn run dll:build'
+					'build:dist': 'node ./scripts/build-dist.mjs',
+					'prepare': 'yarn run build:dist'
 				}
 			}, null, 2 )
 		);
@@ -428,72 +415,6 @@ describe( 'lib/utils/copy-files', () => {
 		);
 	} );
 
-	it( 'works correctly with path containing directory called "js" with flag "--installation-methods" set to "current-and-legacy"', () => {
-		options.directoryPath = 'directory/js/foo';
-		options.installationMethodOfPackage = 'current-and-legacy';
-
-		copyFiles( stubs.logger, options );
-
-		expect( fs.writeFileSync ).toHaveBeenCalledTimes( 4 );
-
-		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
-			1,
-			'directory/js/foo/LICENSE.md',
-			expect.any( String )
-		);
-
-		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
-			2,
-			'directory/js/foo/lang/contexts.json',
-			expect.any( String )
-		);
-
-		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
-			3,
-			'directory/js/foo/package.json',
-			expect.any( String )
-		);
-
-		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
-			4,
-			'directory/js/foo/src/index.js',
-			expect.any( String )
-		);
-	} );
-
-	it( 'works correctly with path containing directory called "ts" with flag "--installation-methods" set to "current-and-legacy', () => {
-		options.directoryPath = 'directory/ts/foo';
-		options.installationMethodOfPackage = 'current-and-legacy';
-
-		copyFiles( stubs.logger, options );
-
-		expect( fs.writeFileSync ).toHaveBeenCalledTimes( 4 );
-
-		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
-			1,
-			'directory/ts/foo/LICENSE.md',
-			expect.any( String )
-		);
-
-		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
-			2,
-			'directory/ts/foo/lang/contexts.json',
-			expect.any( String )
-		);
-
-		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
-			3,
-			'directory/ts/foo/package.json',
-			expect.any( String )
-		);
-
-		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
-			4,
-			'directory/ts/foo/src/index.js',
-			expect.any( String )
-		);
-	} );
-
 	it( 'works correctly with path containing directory called "Projects" (it ends with "ts")', () => {
 		options.directoryPath = 'directory/Projects/foo';
 
@@ -571,9 +492,8 @@ describe( 'lib/utils/copy-files', () => {
 					'stylelint-config-ckeditor5': '>='
 				},
 				'scripts': {
-					'dll:build': 'ckeditor5-package-tools dll:build',
-					'prepare': 'npm run dll:build',
-					'prepublishOnly': 'npm run dll:build'
+					'build:dist': 'node ./scripts/build-dist.mjs',
+					'prepare': 'npm run build:dist'
 				}
 			}, null, 2 )
 		);

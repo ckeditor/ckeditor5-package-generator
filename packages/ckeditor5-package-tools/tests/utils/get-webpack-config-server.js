@@ -43,7 +43,6 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 			if ( dirPath === '/process/cwd/sample' ) {
 				return [
 					'ckeditor.js',
-					'dll.html',
 					'index.html'
 				];
 			}
@@ -141,7 +140,6 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 			if ( dirPath === '/process/cwd/sample' ) {
 				return [
 					'ckeditor.ts',
-					'dll.html',
 					'index.html'
 				];
 			}
@@ -175,6 +173,8 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 	} );
 
 	it( 'defines the configuration for an HTTP server', () => {
+		vi.spyOn( path, 'sep', 'get' ).mockImplementation( () => '/' );
+
 		const config = getWebpackConfigServer( { cwd } );
 
 		expect( config.devServer ).toEqual( {
@@ -191,7 +191,7 @@ describe( 'lib/utils/get-webpack-config-server', () => {
 		vi.mocked( fs.readdirSync ).mockImplementation( dirPath => {
 			const normalized = String( dirPath ).replace( /\\/g, '/' );
 			if ( normalized === 'C:/process/cwd/sample' ) {
-				return [ 'ckeditor.js', 'dll.html', 'index.html' ];
+				return [ 'ckeditor.js', 'index.html' ];
 			}
 		} );
 

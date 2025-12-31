@@ -11,7 +11,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { stripVTControlCharacters } from 'node:util';
 import chalk from 'chalk';
 import parseArguments from './utils/parsearguments.js';
-import { EXPECTED_PUBLISH_FILES, EXPECTED_LEGACY_PUBLISH_FILES, EXPECTED_SRC_DIR_FILES } from './utils/expectedFiles.js';
+import { EXPECTED_PUBLISH_FILES, EXPECTED_SRC_DIR_FILES } from './utils/expectedFiles.js';
 
 const REPOSITORY_DIRECTORY = upath.join( import.meta.dirname, '..', '..' );
 const NEW_PACKAGE_DIRECTORY = upath.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-test-package' );
@@ -43,10 +43,8 @@ async function start() {
  *
  * @param {VerificationOptions} options
  */
-async function verifyBuild( { language, packageManager, customPluginName, installationMethod, globalName } ) {
+async function verifyBuild( { language, packageManager, customPluginName, globalName } ) {
 	let testSetupInfoMessage = `Testing build for language: [${ language }] and package manager: [${ packageManager }]`;
-
-	const supportsLegacyMethods = installationMethod !== 'current';
 
 	const projectRootName = upath.basename( process.cwd() );
 	const packageBuildCommand = [
@@ -65,14 +63,11 @@ async function verifyBuild( { language, packageManager, customPluginName, instal
 	if ( language === 'ts' ) {
 		const fileName = customPluginName ? customPluginName.toLowerCase() : 'testpackage';
 
-		( supportsLegacyMethods ?
-			EXPECTED_LEGACY_PUBLISH_FILES :
-			EXPECTED_PUBLISH_FILES
-		).ts.push( `dist/${ fileName }.d.ts` );
+		EXPECTED_PUBLISH_FILES.ts.push( `dist/${ fileName }.d.ts` );
 	}
 
 	const expectedPublishFiles = getExpectedFiles(
-		supportsLegacyMethods ? EXPECTED_LEGACY_PUBLISH_FILES : EXPECTED_PUBLISH_FILES,
+		EXPECTED_PUBLISH_FILES,
 		language,
 		customPluginName
 	);
@@ -86,8 +81,6 @@ async function verifyBuild( { language, packageManager, customPluginName, instal
 		testSetupInfoMessage += ` with custom plugin name: [${ customPluginName }]`;
 		packageBuildCommand.push( '--plugin-name', customPluginName );
 	}
-
-	packageBuildCommand.push( '--installation-methods', installationMethod );
 
 	logProcess( testSetupInfoMessage + '.' );
 
@@ -110,15 +103,11 @@ async function verifyBuild( { language, packageManager, customPluginName, instal
 	checkFileList( stderr, expectedPublishFiles );
 
 	logProcess( 'Verifying post release cleanup...' );
-	verifyPublishCleanup( language, expectedSrcDirFiles, supportsLegacyMethods );
+	verifyPublishCleanup( language, expectedSrcDirFiles );
 
 	logProcess( 'Starting the development servers and verifying the sample builds...' );
 
 	const listOfDevelopmentServers = [ startDevelopmentServer( NEW_PACKAGE_DIRECTORY ) ];
-
-	if ( supportsLegacyMethods ) {
-		listOfDevelopmentServers.push( startDevelopmentServerForDllBuild( NEW_PACKAGE_DIRECTORY ) );
-	}
 
 	await Promise.all( listOfDevelopmentServers )
 		.then( optionsList => {
@@ -220,41 +209,6 @@ function startDevelopmentServer( cwd ) {
 }
 
 /**
- * Starts the development server for the DLL build and resolves its process object and URL.
- *
- * @param {String} cwd
- * @return {Promise.<Object>}
- */
-function startDevelopmentServerForDllBuild( cwd ) {
-	return new Promise( ( resolve, reject ) => {
-		const sampleServer = spawn( 'npx', [ 'http-server', './' ], {
-			cwd,
-			encoding: 'utf8',
-			shell: true
-		} );
-
-		// The `http-server` package prints the URL with colors, which have to be removed before searching for the server URL.
-		sampleServer.stdout.on( 'data', data => {
-			const content = stripVTControlCharacters( data.toString() );
-			const urlMatch = content.match( /http:\/\/127.0.0.1:\d+/ );
-
-			if ( urlMatch ) {
-				const sampleUrl = `${ urlMatch[ 0 ] }/sample/dll.html`;
-
-				return resolve( {
-					server: sampleServer,
-					url: sampleUrl
-				} );
-			}
-		} );
-
-		sampleServer.on( 'error', error => {
-			return reject( error );
-		} );
-	} );
-}
-
-/**
  * Terminates the process.
  *
  * @param {Object} childProcess The process to terminate.
@@ -338,15 +292,14 @@ function checkFileList( output, expectedPublishFiles ) {
  *
  * @param {String} lang
  * @param {Object} expectedSrcDirFiles
- * @param {Boolean} supportsLegacyMethods
  */
-function verifyPublishCleanup( lang, expectedSrcDirFiles, supportsLegacyMethods ) {
+function verifyPublishCleanup( lang, expectedSrcDirFiles ) {
 	// "package.json" check.
 	const pkgJsonPath = upath.join( NEW_PACKAGE_DIRECTORY, 'package.json' );
 	const pkgJsonRaw = fs.readFileSync( pkgJsonPath, 'utf-8' );
 	const pkgJsonContent = JSON.parse( pkgJsonRaw );
 
-	const hasCorrectEntryPoint = pkgJsonContent.main === `${ supportsLegacyMethods ? 'src' : 'dist' }/index.${ lang }`;
+	const hasCorrectEntryPoint = pkgJsonContent.main === `dist/index.${ lang }`;
 
 	if ( !hasCorrectEntryPoint ) {
 		console.log( chalk.red( '"package.json" has incorrect value in "main" field:' ) );

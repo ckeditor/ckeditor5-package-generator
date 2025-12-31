@@ -37,7 +37,6 @@
     "eslint-config-ckeditor5": "^<%= packageVersions.eslintConfigCkeditor5 %>",
     "eslint-plugin-ckeditor5-rules": "^<%= packageVersions.eslintPluginCkeditor5Rules %>",
     "globals": "^16.1.0",
-    "http-server": "^14.1.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.6",
     "postcss-loader": "^8.2.0",
@@ -51,7 +50,7 @@
     "webdriverio": "^9.19.2"
   },
   "peerDependencies": {
-    "ckeditor5": ">=42.0.0 || ^0.0.0-nightly"
+    "ckeditor5": ">=48.0.0 || ^0.0.0-nightly"
   },
   "overrides": {
     "sugarss": "^5.0.1"

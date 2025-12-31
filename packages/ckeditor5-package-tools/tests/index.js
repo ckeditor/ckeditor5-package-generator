@@ -5,14 +5,12 @@
 
 import { describe, it, expect, vi } from 'vitest';
 import start from '../lib/tasks/start.js';
-import dllBuild from '../lib/tasks/dll-build.js';
 import synchronizeTranslations from '../lib/tasks/synchronize-translations.js';
 import exportPackageAsJavaScript from '../lib/tasks/export-package-as-javascript.js';
 import exportPackageAsTypeScript from '../lib/tasks/export-package-as-typescript.js';
 import tasks from '../lib/index.js';
 
 vi.mock( '../lib/tasks/start.js' );
-vi.mock( '../lib/tasks/dll-build.js' );
 vi.mock( '../lib/tasks/synchronize-translations.js' );
 vi.mock( '../lib/tasks/export-package-as-javascript.js' );
 vi.mock( '../lib/tasks/export-package-as-typescript.js' );
@@ -38,25 +36,6 @@ describe( 'lib/index', () => {
 			tasks.start( options );
 
 			expect( start ).toHaveBeenCalledWith( options );
-		} );
-	} );
-
-	describe( '#dll:build', () => {
-		it( 'is available', () => {
-			expect( tasks[ 'dll:build' ] ).toBeTypeOf( 'function' );
-		} );
-
-		it( 'executes the proper function from the "tasks/" directory', () => {
-			tasks[ 'dll:build' ]();
-
-			expect( dllBuild ).toBeCalledTimes( 1 );
-		} );
-
-		it( 'passes arguments directly to the function', () => {
-			const options = { foo: 1, bar: true };
-			tasks[ 'dll:build' ]( options );
-
-			expect( dllBuild ).toHaveBeenCalledWith( options );
 		} );
 	} );
 
