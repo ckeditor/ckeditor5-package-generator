@@ -21,14 +21,6 @@ const EXPECTED_DIST_PUBLISH_FILES = [
 	'dist/index.js.map'
 ];
 
-const EXPECTED_JS_LEGACY_PUBLISH_FILES = [
-	'src/index.js',
-	'src/testpackage.js',
-
-	'lang/contexts.json',
-	'theme/icons/ckeditor.svg'
-];
-
 const EXPECTED_JS_PUBLISH_FILES = [
 	...EXPECTED_DIST_PUBLISH_FILES,
 	'package.json',
@@ -45,18 +37,6 @@ const EXPECTED_TS_PUBLISH_FILES = [
 	'ckeditor5-metadata.json'
 ];
 
-const EXPECTED_TS_LEGACY_PUBLISH_FILES = [
-	'src/augmentation.js',
-	'src/index.js',
-	'src/testpackage.js',
-	'src/augmentation.d.ts',
-	'src/index.d.ts',
-	'src/testpackage.d.ts',
-
-	'lang/contexts.json',
-	'theme/icons/ckeditor.svg'
-];
-
 const EXPECTED_DIST_TYPES_PUBLISH_FILES = [
 	'dist/augmentation.d.ts',
 	'dist/index.d.ts'
@@ -69,20 +49,6 @@ export const EXPECTED_PUBLISH_FILES = {
 	ts: [
 		...EXPECTED_TS_PUBLISH_FILES,
 		...EXPECTED_DIST_TYPES_PUBLISH_FILES
-	]
-};
-
-export const EXPECTED_LEGACY_PUBLISH_FILES = {
-	js: [
-		...EXPECTED_JS_PUBLISH_FILES,
-		...EXPECTED_JS_LEGACY_PUBLISH_FILES,
-		'build/test-package.js'
-	],
-	ts: [
-		...EXPECTED_TS_PUBLISH_FILES,
-		...EXPECTED_TS_LEGACY_PUBLISH_FILES,
-		...EXPECTED_DIST_TYPES_PUBLISH_FILES,
-		'build/test-package.js'
 	]
 };
 

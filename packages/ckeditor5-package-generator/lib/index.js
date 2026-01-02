@@ -5,7 +5,6 @@
 
 import chalk from 'chalk';
 import Logger from './utils/logger.js';
-import chooseInstallationMethods from './utils/choose-installation-methods.js';
 import choosePackageManager from './utils/choose-package-manager.js';
 import chooseProgrammingLanguage from './utils/choose-programming-language.js';
 import setGlobalName from './utils/set-global-name.js';
@@ -30,7 +29,6 @@ export default async function init( packageName, options ) {
 		useNpm,
 		useYarn,
 		usePnpm,
-		installationMethods,
 		lang,
 		pluginName,
 		globalName,
@@ -45,7 +43,6 @@ export default async function init( packageName, options ) {
 	const { directoryName, directoryPath } = createDirectory( logger, packageName );
 	const packageManager = await choosePackageManager( logger, { useNpm, useYarn, usePnpm } );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
-	const installationMethodOfPackage = await chooseInstallationMethods( logger, installationMethods );
 
 	const defaultGlobalName = 'CK' + formattedNames.plugin.pascalCase;
 	const validatedGlobalName = await setGlobalName( logger, globalName, defaultGlobalName );
@@ -62,7 +59,6 @@ export default async function init( packageName, options ) {
 		npxByPackageManager,
 		programmingLanguage,
 		packageVersions,
-		installationMethodOfPackage,
 		validatedGlobalName
 	} );
 
@@ -84,30 +80,6 @@ export default async function init( packageName, options ) {
 		'Example: ' + chalk.gray( packageManager + ' run start' ),
 		''
 	].join( '\n' ), { startWithNewLine: true } );
-
-	if ( installationMethodOfPackage === 'current-and-legacy' ) {
-		logger.info( [
-			chalk.yellow.inverse(
-				' ╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗ '
-			),
-			chalk.yellow.inverse(
-				' ║   Supporting a wider range of CKEditor 5 versions requires using a more complex method of importing modules         ║ '
-			),
-			chalk.yellow.inverse(
-				' ║   from CKEditor 5.                                                                                                  ║ '
-			),
-			chalk.yellow.inverse(
-				' ║                                                                                                                     ║ '
-			),
-			chalk.yellow.inverse(
-				' ║   Read more here: https://ckeditor.com/docs/ckeditor5/latest/framework/tutorials/supporting-multiple-versions.html  ║ '
-			),
-			chalk.yellow.inverse(
-				' ╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝ '
-			),
-			''
-		].join( '\n' ), { startWithNewLine: true } );
-	}
 }
 
 /**
@@ -120,8 +92,6 @@ export default async function init( packageName, options ) {
  * @property {Boolean} [useYarn=false]
  *
  * @property {Boolean} [usePnpm=false]
- *
- * @property {String} installationMethods
  *
  * @property {Boolean} [dev=false]
  *

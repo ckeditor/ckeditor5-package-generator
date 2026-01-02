@@ -15,12 +15,10 @@ export default args => {
 			'open',
 			'production',
 			'verbose',
-			'watch',
 			'validate-only'
 		],
 
 		alias: {
-			w: 'watch',
 			v: 'verbose'
 		},
 
@@ -29,7 +27,6 @@ export default args => {
 			language: 'en',
 			verbose: false,
 			production: false,
-			watch: false,
 			'validate-only': false
 		}
 	};
@@ -71,8 +68,6 @@ function replaceKebabCaseWithCamelCase( options, keys ) {
  * @property {String} task A name of a task to execute.
  *
  * @property {Array.<String>} _ Additional modifiers for the executed task that could not be matched with the supported options.
- *
- * @property {Boolean} [watch=false] When building the DLL file, it listens to changes in the source.
  *
  * @property {Boolean} [verbose=false] Whether to display additional logs by tasks.
  *

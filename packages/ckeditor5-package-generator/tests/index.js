@@ -5,7 +5,6 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Logger from '../lib/utils/logger.js';
-import chooseInstallationMethods from '../lib/utils/choose-installation-methods.js';
 import choosePackageManager from '../lib/utils/choose-package-manager.js';
 import chooseProgrammingLanguage from '../lib/utils/choose-programming-language.js';
 import setGlobalName from '../lib/utils/set-global-name.js';
@@ -54,7 +53,6 @@ vi.mock( '../lib/utils/logger.js', () => ( {
 		}
 	}
 } ) );
-vi.mock( '../lib/utils/choose-installation-methods.js' );
 vi.mock( '../lib/utils/choose-package-manager.js' );
 vi.mock( '../lib/utils/choose-programming-language.js' );
 vi.mock( '../lib/utils/set-global-name.js' );
@@ -100,8 +98,6 @@ describe( 'lib/index', () => {
 
 		vi.mocked( chooseProgrammingLanguage ).mockResolvedValue( 'js' );
 
-		vi.mocked( chooseInstallationMethods ).mockResolvedValue( 'current' );
-
 		vi.mocked( getDependenciesVersions ).mockReturnValue( { ckeditor5: '30.0.0' } );
 
 		vi.mocked( setGlobalName ).mockResolvedValue( 'GLOBAL' );
@@ -115,7 +111,6 @@ describe( 'lib/index', () => {
 			useYarn: true,
 			useNpm: false,
 			usePnpm: false,
-			installationMethods: 'current',
 			pluginName: 'FooBar',
 			lang: 'js',
 			dev: false,
@@ -223,13 +218,6 @@ describe( 'lib/index', () => {
 		expect( chooseProgrammingLanguage ).toHaveBeenCalledWith( expect.any( Logger ), 'js' );
 	} );
 
-	it( 'chooses the installation method', async () => {
-		await index( packageName, options );
-
-		expect( chooseInstallationMethods ).toHaveBeenCalledTimes( 1 );
-		expect( chooseInstallationMethods ).toHaveBeenCalledWith( expect.any( Logger ), 'current' );
-	} );
-
 	it( 'sets the global name', async () => {
 		await index( packageName, options );
 
@@ -270,7 +258,6 @@ describe( 'lib/index', () => {
 				packageName: '@scope/ckeditor5-feature',
 				programmingLanguage: 'js',
 				validatedGlobalName: 'GLOBAL',
-				installationMethodOfPackage: 'current',
 				formattedNames: {
 					package: {
 						raw: 'xyz',
@@ -335,47 +322,6 @@ describe( 'lib/index', () => {
 				'  * stylelint - for running a tool for static analyzing CSS files.',
 				'',
 				'Example: yarn run start',
-				''
-			].join( '\n' ),
-			{ startWithNewLine: true }
-		);
-	} );
-
-	it( 'logs extended info before the script finishes when current and legacy installation methods were chosen', async () => {
-		options.installationMethods = 'current-and-legacy';
-
-		vi.mocked( chooseInstallationMethods ).mockResolvedValue( 'current-and-legacy' );
-
-		await index( packageName, options );
-
-		expect( stubs.loggerInfo ).toHaveBeenCalledTimes( 2 );
-		expect( stubs.loggerInfo ).toHaveBeenNthCalledWith(
-			1,
-			[
-				'Done!',
-				'',
-				'Execute the "cd directoryName" command to change the current working directory',
-				'to the newly created package. Then, the package offers a few predefined scripts:',
-				'',
-				'  * start - for creating the HTTP server with the editor sample,',
-				'  * test - for executing unit tests of an example plugin,',
-				'  * lint - for running a tool for static analyzing JavaScript files,',
-				'  * stylelint - for running a tool for static analyzing CSS files.',
-				'',
-				'Example: yarn run start',
-				''
-			].join( '\n' ),
-			{ startWithNewLine: true }
-		);
-		expect( stubs.loggerInfo ).toHaveBeenNthCalledWith(
-			2,
-			[
-				' ╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗ ',
-				' ║   Supporting a wider range of CKEditor 5 versions requires using a more complex method of importing modules         ║ ',
-				' ║   from CKEditor 5.                                                                                                  ║ ',
-				' ║                                                                                                                     ║ ',
-				' ║   Read more here: https://ckeditor.com/docs/ckeditor5/latest/framework/tutorials/supporting-multiple-versions.html  ║ ',
-				' ╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝ ',
 				''
 			].join( '\n' ),
 			{ startWithNewLine: true }

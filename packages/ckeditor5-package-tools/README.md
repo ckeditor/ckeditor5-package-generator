@@ -17,7 +17,6 @@ The following scripts are available in the package:
 * `test` &ndash; run tests using [Vitest](https://vitest.dev/) testing framework,
 * `test:debug` &ndash; run tests using [Vitest](https://vitest.dev/) testing framework and allows debugging them. Once Vitest starts it will stop execution and wait for you to open developer tools that can connect to Node.js inspector,
 * `start` &ndash; prepares the [development server](https://webpack.js.org/configuration/dev-server/) with the live-reloading mechanism,
-* `dll:build` &ndash; prepares a file compatible with [CKEditor 5 DLL](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html) that exposes plugins from the package,
 * `translations:synchronize` &ndash; validates and synchronizes the translation messages by updating all translation files (`*.po` files) to be in sync with the context file,
 * `translations:validate` &ndash; only validates the translation messages against the context file,
 * `export-package-as-javascript` &ndash; changes `main` entry in `package.json` file to point to a `.js` file,
@@ -31,7 +30,7 @@ Available scripts can be called via npm scripts in the `package.json` file, e.g.
 
 ```json
 {
-  "dll:build": "ckeditor5-package-tools dll:build"
+  "start": "ckeditor5-package-tools start"
 }
 ```
 
@@ -42,7 +41,7 @@ Available scripts can be called manually as Node scripts, e.g.:
 ```js
 import packageTools from '@ckeditor/ckeditor5-package-tools';
 
-packageTools[ 'dll:build' ]( /* Ckeditor5PackageToolsOptions */ );
+packageTools[ 'translations:synchronize' ]( /* Ckeditor5PackageToolsOptions */ );
 ```
 
 All available scripts require the `Ckeditor5PackageToolsOptions` object. Its interface is described in the [`lib/utils/parse-arguments.js`](https://github.com/ckeditor/ckeditor5-package-generator/blob/master/packages/ckeditor5-package-tools/lib/utils/parse-arguments.js) file.

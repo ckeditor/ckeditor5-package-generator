@@ -18,7 +18,6 @@ describe( 'lib/utils/parse-arguments', () => {
 
 		expect( options.production ).toEqual( false );
 		expect( options.verbose ).toEqual( false );
-		expect( options.watch ).toEqual( false );
 		expect( options.open ).toEqual( true );
 		expect( options.language ).toEqual( 'en' );
 		expect( options.validateOnly ).toEqual( false );
@@ -50,18 +49,6 @@ describe( 'lib/utils/parse-arguments', () => {
 		expect( options.verbose ).toEqual( true );
 	} );
 
-	it( 'allows specifying the watch option', () => {
-		const options = parseArguments( [ 'task-to-execute', '--watch' ] );
-
-		expect( options.watch ).toEqual( true );
-	} );
-
-	it( 'allows specifying the watch option (using an alias)', () => {
-		const options = parseArguments( [ 'task-to-execute', '-w' ] );
-
-		expect( options.watch ).toEqual( true );
-	} );
-
 	it( 'allows specifying the production option', () => {
 		const options = parseArguments( [ 'task-to-execute', '--production' ] );
 
@@ -69,11 +56,10 @@ describe( 'lib/utils/parse-arguments', () => {
 	} );
 
 	it( 'allows specifying many modifiers', () => {
-		const options = parseArguments( [ 'task-to-execute', '--production', '--verbose', '-w' ] );
+		const options = parseArguments( [ 'task-to-execute', '--production', '--verbose' ] );
 
 		expect( options.production ).toEqual( true );
 		expect( options.verbose ).toEqual( true );
-		expect( options.watch ).toEqual( true );
 	} );
 
 	it( 'does not attach aliases as available properties in the returned object', () => {

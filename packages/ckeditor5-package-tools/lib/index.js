@@ -4,7 +4,6 @@
  */
 
 import start from './tasks/start.js';
-import dllBuild from './tasks/dll-build.js';
 import synchronizeTranslations from './tasks/synchronize-translations.js';
 import exportPackageAsJavaScript from './tasks/export-package-as-javascript.js';
 import exportPackageAsTypeScript from './tasks/export-package-as-typescript.js';
@@ -12,10 +11,6 @@ import exportPackageAsTypeScript from './tasks/export-package-as-typescript.js';
 export default {
 	start( options ) {
 		return start( options );
-	},
-
-	'dll:build'( options ) {
-		return dllBuild( options );
 	},
 
 	'translations:synchronize'( options ) {
