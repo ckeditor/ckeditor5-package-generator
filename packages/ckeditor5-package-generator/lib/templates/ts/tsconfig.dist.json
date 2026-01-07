@@ -5,7 +5,7 @@
     "moduleResolution": "bundler",
     "rootDir": "./src",
     "types": [
-      "./typings/types"
+      "typings"
     ]
   }
 }
