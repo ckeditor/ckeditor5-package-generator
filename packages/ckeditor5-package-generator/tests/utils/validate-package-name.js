@@ -236,4 +236,20 @@ describe( 'lib/utils/validate-package-name', () => {
 
 		expect( validatedPackageName ).toEqual( '@scope/ckeditor5-test-package' );
 	} );
+
+	it( 'should exit gracefully on inquirer.prompt SIGINT signal', async () => {
+		vi.mocked( inquirer.prompt ).mockRejectedValue( new Error( 'SIGINT' ) );
+
+		await validatePackageName( stubs.logger, 'invalid-package-name' );
+
+		expect( process.exit ).toHaveBeenCalled();
+	} );
+
+	it( 'should rethrow error on inquirer.prompt error other than SIGINT', async () => {
+		vi.mocked( inquirer.prompt ).mockRejectedValue( new Error( 'Other error' ) );
+
+		await expect( validatePackageName( stubs.logger, 'invalid-package-name' ) ).rejects.toThrow( 'Other error' );
+
+		expect( process.exit ).not.toHaveBeenCalled();
+	} );
 } );
