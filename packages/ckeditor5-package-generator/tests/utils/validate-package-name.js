@@ -69,6 +69,14 @@ describe( 'lib/utils/validate-package-name', () => {
 		expect( promptWithErrorHandling ).toHaveBeenCalled();
 	} );
 
+	it( 'should call the validator function when calling prompt', async () => {
+		await validatePackageName( stubs.logger, undefined );
+
+		const validatorFn = vi.mocked( promptWithErrorHandling ).mock.calls[ 0 ][ 0 ].validate;
+
+		expect( validatorFn( '@ckeditor/ckeditor5-foo' ) ).toEqual( true );
+	} );
+
 	it( 'should return new valid package name from prompt when provided value is invalid', async () => {
 		vi.mocked( promptWithErrorHandling ).mockImplementation( async () => (
 			{ validPackageName: '@ckeditor/ckeditor5-valid-package-name' }
