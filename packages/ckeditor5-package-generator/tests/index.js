@@ -110,6 +110,8 @@ describe( 'lib/index', () => {
 
 		vi.mocked( installGitHooks ).mockResolvedValue();
 
+		vi.mocked( validatePackageName ).mockImplementation( async ( logger, packageName ) => packageName );
+
 		options = {
 			verbose: true,
 			useYarn: true,

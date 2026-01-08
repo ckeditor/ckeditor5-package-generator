@@ -4,6 +4,7 @@
  */
 
 import chalk from 'chalk';
+import inquirer from 'inquirer';
 
 const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
 
@@ -12,24 +13,34 @@ const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
  *
  * @param {Logger} logger
  * @param {String|undefined} packageName
+ * @returns {Promise<String>}
  */
-export default function validatePackageName( logger, packageName ) {
+export default async function validatePackageName( logger, packageName ) {
 	logger.process( 'Verifying the specified package name.' );
 
-	const validationError = validator( packageName );
+	const validationResult = validator( packageName );
 
-	if ( !validationError ) {
-		return;
+	if ( validationResult === true ) {
+		return packageName;
 	}
 
 	logger.error( '❗ Found an error while verifying the provided package name:', { startWithNewLine: true } );
-	logger.error( validationError );
+	logger.error( validationResult );
 
 	logger.info( 'Expected pattern:            ' + chalk.green( '@[scope]/ckeditor5-[feature-name]' ), { startWithNewLine: true } );
 	logger.info( 'The provided package name:   ' + chalk.red( packageName || '' ) );
 	logger.info( 'Allowed characters list:     ' + chalk.blue( '0-9 a-z - . _' ) );
 
-	process.exit( 1 );
+	const { validPackageName } = await inquirer.prompt( {
+		required: true,
+		message: 'Enter the valid package name:',
+		type: 'input',
+		name: 'validPackageName',
+		validate: name => validator( name ),
+		default: packageName
+	} );
+
+	return validPackageName;
 }
 
 /**
@@ -38,7 +49,7 @@ export default function validatePackageName( logger, packageName ) {
  * Returns a string containing the validation error, or `null` if no errors were found.
  *
  * @param {String|undefined} packageName
- * @returns {String|null}
+ * @returns {String|true}
  */
 function validator( packageName ) {
 	if ( !packageName ) {
@@ -72,5 +83,5 @@ function validator( packageName ) {
 		return 'The package name contains non-allowed characters.';
 	}
 
-	return null;
+	return true;
 }

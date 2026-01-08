@@ -5,7 +5,9 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import validatePackageName from '../../lib/utils/validate-package-name.js';
+import inquirer from 'inquirer';
 
+vi.mock( 'inquirer' );
 vi.mock( 'chalk', () => ( {
 	default: {
 		green: vi.fn( str => str ),
@@ -19,6 +21,7 @@ describe( 'lib/utils/validate-package-name', () => {
 
 	beforeEach( () => {
 		vi.spyOn( process, 'exit' ).mockImplementation( () => {} );
+		vi.mocked( inquirer.prompt ).mockImplementation( async args => ( { validPackageName: args.default } ) );
 
 		stubs = {
 			logger: {
@@ -29,19 +32,19 @@ describe( 'lib/utils/validate-package-name', () => {
 		};
 	} );
 
-	it( 'should be a function', () => {
+	it( 'should be a function', async () => {
 		expect( validatePackageName ).toBeTypeOf( 'function' );
 	} );
 
-	it( 'logs the process', () => {
-		validatePackageName( stubs.logger, undefined );
+	it( 'logs the process', async () => {
+		await validatePackageName( stubs.logger, undefined );
 
 		expect( stubs.logger.process ).toHaveBeenCalledTimes( 1 );
 		expect( stubs.logger.process ).toHaveBeenCalledWith( 'Verifying the specified package name.' );
 	} );
 
-	it( 'logs info about correct package name format in case of incorrect name', () => {
-		validatePackageName( stubs.logger, 'foo-bar' );
+	it( 'logs info about correct package name format in case of incorrect name', async () => {
+		await validatePackageName( stubs.logger, 'foo-bar' );
 
 		expect( stubs.logger.error ).toHaveBeenCalledTimes( 2 );
 		expect( stubs.logger.error ).toHaveBeenNthCalledWith(
@@ -60,47 +63,62 @@ describe( 'lib/utils/validate-package-name', () => {
 		expect( stubs.logger.info ).toHaveBeenNthCalledWith( 3, 'Allowed characters list:     0-9 a-z - . _' );
 	} );
 
+	it( 'should call inquirer.prompt when provided value is invalid', async () => {
+		await validatePackageName( stubs.logger, undefined );
+
+		expect( inquirer.prompt ).toHaveBeenCalled();
+	} );
+
+	it( 'should return new valid package name from inquirer.prompt when provided value is invalid', async () => {
+		vi.mocked( inquirer.prompt ).mockImplementation( async () => ( { validPackageName: '@ckeditor/ckeditor5-valid-package-name' } ) );
+
+		const validatedPackageName = await validatePackageName( stubs.logger, undefined );
+
+		expect( validatedPackageName ).toEqual( '@ckeditor/ckeditor5-valid-package-name' );
+	} );
+
+	it( 'should not call inquirer.prompt when provided value is valid', async () => {
+		await validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo' );
+
+		expect( inquirer.prompt ).not.toHaveBeenCalled();
+	} );
+
 	describe( 'verifying package name length', () => {
-		it( 'rejects undefined value', () => {
-			validatePackageName( stubs.logger, undefined );
+		it( 'rejects undefined value', async () => {
+			await validatePackageName( stubs.logger, undefined );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith(
 				2,
 				'The package name cannot be an empty string - pass the name as the first argument to the script.'
 			);
 		} );
 
-		it( 'rejects an empty package name', () => {
-			validatePackageName( stubs.logger, '' );
+		it( 'rejects an empty package name', async () => {
+			await validatePackageName( stubs.logger, '' );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith(
 				2,
 				'The package name cannot be an empty string - pass the name as the first argument to the script.'
 			);
 		} );
 
-		it( 'accepts a name lesser than 214 characters', () => {
-			validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo' );
+		it( 'accepts a name lesser than 214 characters', async () => {
+			await validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo' );
 
-			expect( process.exit ).not.toHaveBeenCalled();
 			expect( stubs.logger.error ).not.toHaveBeenCalled();
 		} );
 
-		it( 'accepts the length of a name equal to 214', () => {
+		it( 'accepts the length of a name equal to 214', async () => {
 			// 214 is a limit, 21 is the length of the string, the rest is "o".
-			validatePackageName( stubs.logger, '@ckeditor/ckeditor5-f' + 'o'.repeat( 193 ) );
+			await validatePackageName( stubs.logger, '@ckeditor/ckeditor5-f' + 'o'.repeat( 193 ) );
 
-			expect( process.exit ).not.toHaveBeenCalled();
 			expect( stubs.logger.error ).not.toHaveBeenCalled();
 		} );
 
-		it( 'rejects a name longer than 214 characters', () => {
+		it( 'rejects a name longer than 214 characters', async () => {
 			// 214 is a limit, 21 is the length of the string, the rest is "o". Add 1 to exceed the limit.
-			validatePackageName( stubs.logger, '@ckeditor/ckeditor5-f' + 'o'.repeat( 194 ) );
+			await validatePackageName( stubs.logger, '@ckeditor/ckeditor5-f' + 'o'.repeat( 194 ) );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith(
 				2,
 				'The length of the package name cannot be longer than 214 characters.'
@@ -109,59 +127,53 @@ describe( 'lib/utils/validate-package-name', () => {
 	} );
 
 	describe( 'verifying capital letters', () => {
-		it( 'rejects a package name if it contains at least a single capital letter', () => {
-			validatePackageName( stubs.logger, '@ckeditor/ckeditor5-Foo' );
+		it( 'rejects a package name if it contains at least a single capital letter', async () => {
+			await validatePackageName( stubs.logger, '@ckeditor/ckeditor5-Foo' );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith( 2, 'The package name cannot contain capital letters.' );
 		} );
 	} );
 
 	describe( 'verifying compliance with the pattern', () => {
-		it( 'rejects the package name without a scope', () => {
-			validatePackageName( stubs.logger, 'ckeditor5-foo' );
+		it( 'rejects the package name without a scope', async () => {
+			await validatePackageName( stubs.logger, 'ckeditor5-foo' );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith(
 				2,
 				'The package name must match the "@[scope]/ckeditor5-[feature-name]" pattern.'
 			);
 		} );
 
-		it( 'rejects the package name if the scope misses the "at" (@) character at the beginning', () => {
-			validatePackageName( stubs.logger, 'ckeditor/ckeditor5-foo' );
+		it( 'rejects the package name if the scope misses the "at" (@) character at the beginning', async () => {
+			await validatePackageName( stubs.logger, 'ckeditor/ckeditor5-foo' );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith(
 				2,
 				'The package name must match the "@[scope]/ckeditor5-[feature-name]" pattern.'
 			);
 		} );
 
-		it( 'rejects the package name if the name ends with the slash (/)', () => {
-			validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo/' );
+		it( 'rejects the package name if the name ends with the slash (/)', async () => {
+			await validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo/' );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith(
 				2,
 				'The package name must match the "@[scope]/ckeditor5-[feature-name]" pattern.'
 			);
 		} );
 
-		it( 'rejects the package name if it does not match to the ckeditor5-* pattern (missing "ckeditor5-" prefix)', () => {
-			validatePackageName( stubs.logger, '@ckeditor/foo' );
+		it( 'rejects the package name if it does not match to the ckeditor5-* pattern (missing "ckeditor5-" prefix)', async () => {
+			await validatePackageName( stubs.logger, '@ckeditor/foo' );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith(
 				2,
 				'The package name must match the "@[scope]/ckeditor5-[feature-name]" pattern.'
 			);
 		} );
 
-		it( 'rejects the package name if it does not match to the ckeditor5-* pattern (missing hyphen-minus)', () => {
-			validatePackageName( stubs.logger, '@ckeditor/ckeditor5_foo' );
+		it( 'rejects the package name if it does not match to the ckeditor5-* pattern (missing hyphen-minus)', async () => {
+			await validatePackageName( stubs.logger, '@ckeditor/ckeditor5_foo' );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith(
 				2,
 				'The package name must match the "@[scope]/ckeditor5-[feature-name]" pattern.'
@@ -170,67 +182,58 @@ describe( 'lib/utils/validate-package-name', () => {
 	} );
 
 	describe( 'verifying allowed characters', () => {
-		it( 'rejects if the package name contains non-friendly URL characters - check ~', () => {
-			validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo~foo' );
+		it( 'rejects if the package name contains non-friendly URL characters - check ~', async () => {
+			await validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo~foo' );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith( 2, 'The package name contains non-allowed characters.' );
 		} );
 
-		it( 'rejects if the package name contains non-friendly URL characters - check \'', () => {
-			validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo\'foo' );
+		it( 'rejects if the package name contains non-friendly URL characters - check \'', async () => {
+			await validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo\'foo' );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith( 2, 'The package name contains non-allowed characters.' );
 		} );
 
-		it( 'rejects if the package name contains non-friendly URL characters - check !', () => {
-			validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo!foo' );
+		it( 'rejects if the package name contains non-friendly URL characters - check !', async () => {
+			await validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo!foo' );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith( 2, 'The package name contains non-allowed characters.' );
 		} );
 
-		it( 'rejects if the package name contains non-friendly URL characters - check (', () => {
-			validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo(foo' );
+		it( 'rejects if the package name contains non-friendly URL characters - check (', async () => {
+			await validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo(foo' );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith( 2, 'The package name contains non-allowed characters.' );
 		} );
 
-		it( 'rejects if the package name contains non-friendly URL characters - check )', () => {
-			validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo)foo' );
+		it( 'rejects if the package name contains non-friendly URL characters - check )', async () => {
+			await validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo)foo' );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith( 2, 'The package name contains non-allowed characters.' );
 		} );
 
-		it( 'rejects if the package name contains non-friendly URL characters - check *', () => {
-			validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo*foo' );
+		it( 'rejects if the package name contains non-friendly URL characters - check *', async () => {
+			await validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo*foo' );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith( 2, 'The package name contains non-allowed characters.' );
 		} );
 
-		it( 'rejects if the scope contains non-alphanumeric characters', () => {
-			validatePackageName( stubs.logger, '@ćkèditör/ckeditor5-foo' );
+		it( 'rejects if the scope contains non-alphanumeric characters', async () => {
+			await validatePackageName( stubs.logger, '@ćkèditör/ckeditor5-foo' );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith( 2, 'The package name contains non-allowed characters.' );
 		} );
 
-		it( 'rejects if the package name contains non-alphanumeric characters', () => {
-			validatePackageName( stubs.logger, '@ckeditor/ckeditor5-fø' );
+		it( 'rejects if the package name contains non-alphanumeric characters', async () => {
+			await validatePackageName( stubs.logger, '@ckeditor/ckeditor5-fø' );
 
-			expect( process.exit ).toHaveBeenCalled();
 			expect( stubs.logger.error ).toHaveBeenNthCalledWith( 2, 'The package name contains non-allowed characters.' );
 		} );
 	} );
 
-	it( 'returns null for a valid package name', () => {
-		validatePackageName( stubs.logger, '@scope/ckeditor5-test-package' );
+	it( 'returns the packageName for a valid package name', async () => {
+		const validatedPackageName = await validatePackageName( stubs.logger, '@scope/ckeditor5-test-package' );
 
-		expect( process.exit ).not.toHaveBeenCalled();
-		expect( stubs.logger.error ).not.toHaveBeenCalled();
+		expect( validatedPackageName ).toEqual( '@scope/ckeditor5-test-package' );
 	} );
 } );
