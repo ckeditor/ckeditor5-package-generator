@@ -4,18 +4,18 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import inquirer from 'inquirer';
 import validateGlobalName from '../../lib/utils/validate-global-name.js';
 import setGlobalName from '../../lib/utils/set-global-name.js';
+import promptWithErrorHandling from '../../lib/utils/prompt-with-error-handling.js';
 
-vi.mock( 'inquirer' );
+vi.mock( '../../lib/utils/prompt-with-error-handling.js' );
 vi.mock( '../../lib/utils/validate-global-name.js' );
 
 describe( 'lib/utils/set-global-name', () => {
 	let stubs;
 
 	beforeEach( () => {
-		vi.mocked( inquirer.prompt ).mockResolvedValue( 'GLOBAL' );
+		vi.mocked( promptWithErrorHandling ).mockResolvedValue( 'GLOBAL' );
 		vi.mocked( validateGlobalName ).mockReturnValue( true );
 
 		stubs = {
@@ -32,8 +32,8 @@ describe( 'lib/utils/set-global-name', () => {
 	it( 'calls prompt() with correct arguments', async () => {
 		await setGlobalName( stubs.logger, '', 'CKCustomPlugin' );
 
-		expect( inquirer.prompt ).toHaveBeenCalledTimes( 1 );
-		expect( inquirer.prompt ).toHaveBeenCalledWith( {
+		expect( promptWithErrorHandling ).toHaveBeenCalledTimes( 1 );
+		expect( promptWithErrorHandling ).toHaveBeenCalledWith( {
 			required: true,
 			message: 'Enter the global name for UMD build:',
 			type: 'input',
@@ -56,7 +56,7 @@ describe( 'lib/utils/set-global-name', () => {
 
 		expect( result ).toEqual( undefined );
 
-		expect( inquirer.prompt ).toHaveBeenCalledTimes( 1 );
+		expect( promptWithErrorHandling ).toHaveBeenCalledTimes( 1 );
 
 		expect( stubs.logger.error ).toHaveBeenCalledTimes( 1 );
 		expect( stubs.logger.error ).toHaveBeenCalledWith( '--global-name does not match the pattern. Falling back to manual choice.' );

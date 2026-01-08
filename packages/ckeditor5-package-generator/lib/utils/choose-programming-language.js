@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import inquirer from 'inquirer';
+import promptWithErrorHandling from './prompt-with-error-handling.js';
 
 const PROGRAMMING_LANGUAGES = [
 	{ value: 'ts', displayName: 'TypeScript' },
@@ -29,7 +29,7 @@ export default async function chooseProgrammingLanguage( logger, lang ) {
 		logger.error( `--lang option has to be one of: ${ langShorthands.join( ', ' ) }. Falling back to manual choice.` );
 	}
 
-	const { programmingLanguage } = await inquirer.prompt( [ {
+	const { programmingLanguage } = await promptWithErrorHandling( [ {
 		prefix: '📍',
 		name: 'programmingLanguage',
 		message: 'Choose your programming language:',

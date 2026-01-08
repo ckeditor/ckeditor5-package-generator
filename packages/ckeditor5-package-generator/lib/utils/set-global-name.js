@@ -3,8 +3,8 @@
  * For licensing, see LICENSE.md.
  */
 
-import inquirer from 'inquirer';
 import validateGlobalName from './validate-global-name.js';
+import promptWithErrorHandling from './prompt-with-error-handling.js';
 
 /**
  * Sets global name for generated package. It's used in UMD builds.
@@ -27,7 +27,7 @@ export default async function setGlobalName( logger, globalName, defaultGlobalNa
 		);
 	}
 
-	const globalNameFromInput = await inquirer.prompt( {
+	const globalNameFromInput = await promptWithErrorHandling( {
 		required: true,
 		message: 'Enter the global name for UMD build:',
 		type: 'input',

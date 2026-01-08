@@ -3,10 +3,10 @@
  * For licensing, see LICENSE.md.
  */
 
-import inquirer from 'inquirer';
 import isYarnInstalled from './is-yarn-installed.js';
 import isPnpmInstalled from './is-pnpm-installed.js';
 import chalk from 'chalk';
+import promptWithErrorHandling from './prompt-with-error-handling.js';
 
 /**
  * @param {Logger} logger
@@ -61,7 +61,7 @@ async function askUserToChoosePackageManager( { yarnInstalled, pnpmInstalled } )
 		pnpmInstalled && 'pnpm'
 	].filter( Boolean );
 
-	const { packageManager } = await inquirer.prompt( [ {
+	const { packageManager } = await promptWithErrorHandling( [ {
 		prefix: '📍',
 		name: 'packageManager',
 		message: 'Choose the package manager:',

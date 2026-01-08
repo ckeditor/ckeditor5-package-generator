@@ -5,9 +5,9 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import validatePackageName from '../../lib/utils/validate-package-name.js';
-import inquirer from 'inquirer';
+import promptWithErrorHandling from '../../lib/utils/prompt-with-error-handling.js';
 
-vi.mock( 'inquirer' );
+vi.mock( '../../lib/utils/prompt-with-error-handling.js' );
 vi.mock( 'chalk', () => ( {
 	default: {
 		green: vi.fn( str => str ),
@@ -21,7 +21,7 @@ describe( 'lib/utils/validate-package-name', () => {
 
 	beforeEach( () => {
 		vi.spyOn( process, 'exit' ).mockImplementation( () => {} );
-		vi.mocked( inquirer.prompt ).mockImplementation( async args => ( { validPackageName: args.default } ) );
+		vi.mocked( promptWithErrorHandling ).mockImplementation( async args => ( { validPackageName: args.default } ) );
 
 		stubs = {
 			logger: {
@@ -63,24 +63,26 @@ describe( 'lib/utils/validate-package-name', () => {
 		expect( stubs.logger.info ).toHaveBeenNthCalledWith( 3, 'Allowed characters list:     0-9 a-z - . _' );
 	} );
 
-	it( 'should call inquirer.prompt when provided value is invalid', async () => {
+	it( 'should call prompt when provided value is invalid', async () => {
 		await validatePackageName( stubs.logger, undefined );
 
-		expect( inquirer.prompt ).toHaveBeenCalled();
+		expect( promptWithErrorHandling ).toHaveBeenCalled();
 	} );
 
-	it( 'should return new valid package name from inquirer.prompt when provided value is invalid', async () => {
-		vi.mocked( inquirer.prompt ).mockImplementation( async () => ( { validPackageName: '@ckeditor/ckeditor5-valid-package-name' } ) );
+	it( 'should return new valid package name from prompt when provided value is invalid', async () => {
+		vi.mocked( promptWithErrorHandling ).mockImplementation( async () => (
+			{ validPackageName: '@ckeditor/ckeditor5-valid-package-name' }
+		) );
 
 		const validatedPackageName = await validatePackageName( stubs.logger, undefined );
 
 		expect( validatedPackageName ).toEqual( '@ckeditor/ckeditor5-valid-package-name' );
 	} );
 
-	it( 'should not call inquirer.prompt when provided value is valid', async () => {
+	it( 'should not call prompt when provided value is valid', async () => {
 		await validatePackageName( stubs.logger, '@ckeditor/ckeditor5-foo' );
 
-		expect( inquirer.prompt ).not.toHaveBeenCalled();
+		expect( promptWithErrorHandling ).not.toHaveBeenCalled();
 	} );
 
 	describe( 'verifying package name length', () => {
@@ -235,21 +237,5 @@ describe( 'lib/utils/validate-package-name', () => {
 		const validatedPackageName = await validatePackageName( stubs.logger, '@scope/ckeditor5-test-package' );
 
 		expect( validatedPackageName ).toEqual( '@scope/ckeditor5-test-package' );
-	} );
-
-	it( 'should exit gracefully on inquirer.prompt SIGINT signal', async () => {
-		vi.mocked( inquirer.prompt ).mockRejectedValue( new Error( 'SIGINT' ) );
-
-		await validatePackageName( stubs.logger, 'invalid-package-name' );
-
-		expect( process.exit ).toHaveBeenCalled();
-	} );
-
-	it( 'should rethrow error on inquirer.prompt error other than SIGINT', async () => {
-		vi.mocked( inquirer.prompt ).mockRejectedValue( new Error( 'Other error' ) );
-
-		await expect( validatePackageName( stubs.logger, 'invalid-package-name' ) ).rejects.toThrow( 'Other error' );
-
-		expect( process.exit ).not.toHaveBeenCalled();
 	} );
 } );
