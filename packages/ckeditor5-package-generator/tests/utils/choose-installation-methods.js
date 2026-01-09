@@ -4,10 +4,10 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import inquirer from 'inquirer';
 import chooseInstallationMethods from '../../lib/utils/choose-installation-methods.js';
-import promptWithErrorHandling from '../../lib/utils/prompt-with-error-handling.js';
 
-vi.mock( '../../lib/utils/prompt-with-error-handling.js' );
+vi.mock( 'inquirer' );
 
 describe( 'lib/utils/choose-installation-methods', () => {
 	const INSTALLATION_METHODS = [
@@ -23,7 +23,7 @@ describe( 'lib/utils/choose-installation-methods', () => {
 	];
 
 	beforeEach( () => {
-		vi.mocked( promptWithErrorHandling ).mockResolvedValue( { installationMethod: INSTALLATION_METHODS[ 0 ].displayName } );
+		vi.mocked( inquirer.prompt ).mockResolvedValue( { installationMethod: INSTALLATION_METHODS[ 0 ].displayName } );
 	} );
 
 	it( 'should be a function', () => {
@@ -33,8 +33,8 @@ describe( 'lib/utils/choose-installation-methods', () => {
 	it( 'calls prompt() with correct arguments', async () => {
 		await chooseInstallationMethods( vi.fn() );
 
-		expect( promptWithErrorHandling ).toHaveBeenCalledTimes( 1 );
-		expect( promptWithErrorHandling ).toHaveBeenCalledWith( [ {
+		expect( inquirer.prompt ).toHaveBeenCalledTimes( 1 );
+		expect( inquirer.prompt ).toHaveBeenCalledWith( [ {
 			prefix: '📍',
 			name: 'installationMethod',
 			message: 'Which installation methods of CKEditor 5 do you want to support?',
@@ -50,7 +50,7 @@ describe( 'lib/utils/choose-installation-methods', () => {
 	} );
 
 	it( 'returns correct value when user picks "Current and legacy methods with DLLs"', async () => {
-		vi.mocked( promptWithErrorHandling ).mockResolvedValue( { installationMethod: INSTALLATION_METHODS[ 1 ].displayName } );
+		vi.mocked( inquirer.prompt ).mockResolvedValue( { installationMethod: INSTALLATION_METHODS[ 1 ].displayName } );
 
 		const result = await chooseInstallationMethods( vi.fn() );
 
@@ -62,7 +62,7 @@ describe( 'lib/utils/choose-installation-methods', () => {
 
 		expect( result ).toEqual( 'current' );
 
-		expect( promptWithErrorHandling ).not.toHaveBeenCalled();
+		expect( inquirer.prompt ).not.toHaveBeenCalled();
 	} );
 
 	it( 'falls back to user input when installation method option has invalid value', async () => {
@@ -70,13 +70,13 @@ describe( 'lib/utils/choose-installation-methods', () => {
 			error: vi.fn()
 		};
 
-		vi.mocked( promptWithErrorHandling ).mockResolvedValue( { installationMethod: INSTALLATION_METHODS[ 1 ].displayName } );
+		vi.mocked( inquirer.prompt ).mockResolvedValue( { installationMethod: INSTALLATION_METHODS[ 1 ].displayName } );
 
 		const result = await chooseInstallationMethods( logger, 'foobar' );
 
 		expect( result ).toEqual( 'current-and-legacy' );
 
-		expect( promptWithErrorHandling ).toHaveBeenCalledTimes( 1 );
+		expect( inquirer.prompt ).toHaveBeenCalledTimes( 1 );
 		expect( logger.error ).toHaveBeenCalledTimes( 1 );
 	} );
 } );

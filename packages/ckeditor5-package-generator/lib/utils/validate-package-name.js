@@ -4,7 +4,7 @@
  */
 
 import chalk from 'chalk';
-import promptWithErrorHandling from './prompt-with-error-handling.js';
+import inquirer from 'inquirer';
 
 const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
 
@@ -31,16 +31,27 @@ export default async function validatePackageName( logger, packageName ) {
 	logger.info( 'The provided package name:   ' + chalk.red( packageName || '' ) );
 	logger.info( 'Allowed characters list:     ' + chalk.blue( '0-9 a-z - . _' ) );
 
-	const { validPackageName } = await promptWithErrorHandling( {
+	const result = await inquirer.prompt( {
 		required: true,
-		message: 'Enter the valid package name (CTRL + C to cancel):',
+		message: 'Enter the valid package name:',
 		type: 'input',
 		name: 'validPackageName',
 		validate: name => validator( name ),
 		default: packageName
+	} ).catch( error => {
+		// Ctrl+C or prompt cancellation.
+		if ( error.message && error.message.includes( 'SIGINT' ) ) {
+			process.exit( 1 );
+		} else {
+			throw error;
+		}
 	} );
 
-	return validPackageName;
+	if ( !result ) {
+		return null;
+	}
+
+	return result.validPackageName;
 }
 
 /**

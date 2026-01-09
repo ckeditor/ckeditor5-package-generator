@@ -4,12 +4,12 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import inquirer from 'inquirer';
 import isYarnInstalled from '../../lib/utils/is-yarn-installed.js';
 import isPnpmInstalled from '../../lib/utils/is-pnpm-installed.js';
 import choosePackageManager from '../../lib/utils/choose-package-manager.js';
-import promptWithErrorHandling from '../../lib/utils/prompt-with-error-handling.js';
 
-vi.mock( '../../lib/utils/prompt-with-error-handling.js' );
+vi.mock( 'inquirer' );
 vi.mock( '../../lib/utils/is-yarn-installed.js' );
 vi.mock( '../../lib/utils/is-pnpm-installed.js' );
 vi.mock( 'chalk', () => ( {
@@ -22,7 +22,7 @@ describe( 'lib/utils/choose-package-manager', () => {
 	const logger = { info: vi.fn() };
 
 	beforeEach( () => {
-		vi.mocked( promptWithErrorHandling ).mockResolvedValue( { packageManager: 'yarn' } );
+		vi.mocked( inquirer.prompt ).mockResolvedValue( { packageManager: 'yarn' } );
 		vi.mocked( isYarnInstalled ).mockReturnValue( true );
 		vi.mocked( isPnpmInstalled ).mockReturnValue( true );
 	} );
@@ -56,7 +56,7 @@ describe( 'lib/utils/choose-package-manager', () => {
 	it( 'should call prompt when arguments are false', async () => {
 		await choosePackageManager( logger, { useNpm: false, useYarn: false, usePnpm: false } );
 
-		expect( promptWithErrorHandling ).toHaveBeenCalled();
+		expect( inquirer.prompt ).toHaveBeenCalled();
 	} );
 
 	it( 'should throw error when yarn argument is true and yarn is not installed', () => {
@@ -90,7 +90,7 @@ describe( 'lib/utils/choose-package-manager', () => {
 		const result = await choosePackageManager( logger, { useNpm: false, useYarn: false, usePnpm: false } );
 
 		expect( result ).toEqual( 'npm' );
-		expect( promptWithErrorHandling ).not.toHaveBeenCalled();
+		expect( inquirer.prompt ).not.toHaveBeenCalled();
 		expect( logger.info ).toHaveBeenCalledWith( 'Using npm as no other supported package manager is installed.' );
 	} );
 
@@ -100,7 +100,7 @@ describe( 'lib/utils/choose-package-manager', () => {
 
 		await choosePackageManager( logger, { useNpm: false, useYarn: false, usePnpm: false } );
 
-		expect( promptWithErrorHandling ).toHaveBeenCalledWith( [ expect.objectContaining( { choices: [ 'npm', 'yarn' ] } ) ] );
+		expect( inquirer.prompt ).toHaveBeenCalledWith( [ expect.objectContaining( { choices: [ 'npm', 'yarn' ] } ) ] );
 	} );
 
 	it( 'should call prompt with correct arguments when yarn not installed and pnpm installed', async () => {
@@ -109,7 +109,7 @@ describe( 'lib/utils/choose-package-manager', () => {
 
 		await choosePackageManager( logger, { useNpm: false, useYarn: false, usePnpm: false } );
 
-		expect( promptWithErrorHandling ).toHaveBeenCalledWith( [ expect.objectContaining( { choices: [ 'npm', 'pnpm' ] } ) ] );
+		expect( inquirer.prompt ).toHaveBeenCalledWith( [ expect.objectContaining( { choices: [ 'npm', 'pnpm' ] } ) ] );
 	} );
 
 	it( 'should call prompt with correct arguments when yarn and pnpm are installed', async () => {
@@ -118,11 +118,11 @@ describe( 'lib/utils/choose-package-manager', () => {
 
 		await choosePackageManager( logger, { useNpm: false, useYarn: false, usePnpm: false } );
 
-		expect( promptWithErrorHandling ).toHaveBeenCalledWith( [ expect.objectContaining( { choices: [ 'npm', 'yarn', 'pnpm' ] } ) ] );
+		expect( inquirer.prompt ).toHaveBeenCalledWith( [ expect.objectContaining( { choices: [ 'npm', 'yarn', 'pnpm' ] } ) ] );
 	} );
 
 	it( 'should return yarn when prompt returns yarn, yarn is installed and arguments are false', async () => {
-		vi.mocked( promptWithErrorHandling ).mockResolvedValue( { packageManager: 'yarn' } );
+		vi.mocked( inquirer.prompt ).mockResolvedValue( { packageManager: 'yarn' } );
 
 		const result = await choosePackageManager( logger, { useNpm: false, useYarn: false, usePnpm: false } );
 
@@ -130,7 +130,7 @@ describe( 'lib/utils/choose-package-manager', () => {
 	} );
 
 	it( 'should return npm when prompt returns npm, yarn is installed and arguments are false', async () => {
-		vi.mocked( promptWithErrorHandling ).mockResolvedValue( { packageManager: 'npm' } );
+		vi.mocked( inquirer.prompt ).mockResolvedValue( { packageManager: 'npm' } );
 
 		const result = await choosePackageManager( logger, { useNpm: false, useYarn: false, usePnpm: false } );
 
@@ -138,7 +138,7 @@ describe( 'lib/utils/choose-package-manager', () => {
 	} );
 
 	it( 'should return pnpm when prompt returns pnpm, pnpm is installed and arguments are false', async () => {
-		vi.mocked( promptWithErrorHandling ).mockResolvedValue( { packageManager: 'pnpm' } );
+		vi.mocked( inquirer.prompt ).mockResolvedValue( { packageManager: 'pnpm' } );
 
 		const result = await choosePackageManager( logger, { useNpm: false, useYarn: false, usePnpm: false } );
 
@@ -148,13 +148,13 @@ describe( 'lib/utils/choose-package-manager', () => {
 	it( 'should not call prompt when yarn is installed and npm flag used', async () => {
 		await choosePackageManager( logger, { useNpm: true, useYarn: false, usePnpm: false } );
 
-		expect( promptWithErrorHandling ).not.toHaveBeenCalled();
+		expect( inquirer.prompt ).not.toHaveBeenCalled();
 	} );
 
 	it( 'should not call prompt when yarn is installed and yarn flag used', async () => {
 		await choosePackageManager( logger, { useNpm: false, useYarn: true, usePnpm: false } );
 
-		expect( promptWithErrorHandling ).not.toHaveBeenCalled();
+		expect( inquirer.prompt ).not.toHaveBeenCalled();
 	} );
 
 	it( 'should call prompt when pnpm is not installed and arguments are false', async () => {
@@ -162,36 +162,36 @@ describe( 'lib/utils/choose-package-manager', () => {
 
 		await choosePackageManager( logger, { useNpm: false, useYarn: false, usePnpm: false } );
 
-		expect( promptWithErrorHandling ).toHaveBeenCalled();
+		expect( inquirer.prompt ).toHaveBeenCalled();
 	} );
 
 	it( 'should not call prompt when pnpm is installed and pnpm flag used', async () => {
 		await choosePackageManager( logger, { useNpm: false, useYarn: false, usePnpm: true } );
 
-		expect( promptWithErrorHandling ).not.toHaveBeenCalled();
+		expect( inquirer.prompt ).not.toHaveBeenCalled();
 	} );
 
 	it( 'should call prompt when multiple package managers are specified (npm & yarn)', async () => {
 		await choosePackageManager( logger, { useNpm: true, useYarn: true, usePnpm: false } );
 
-		expect( promptWithErrorHandling ).toHaveBeenCalled();
+		expect( inquirer.prompt ).toHaveBeenCalled();
 	} );
 
 	it( 'should call prompt when multiple package managers are specified (npm & pnpm)', async () => {
 		await choosePackageManager( logger, { useNpm: true, useYarn: false, usePnpm: true } );
 
-		expect( promptWithErrorHandling ).toHaveBeenCalled();
+		expect( inquirer.prompt ).toHaveBeenCalled();
 	} );
 
 	it( 'should call prompt when multiple package managers are specified (yarn & pnpm)', async () => {
 		await choosePackageManager( logger, { useNpm: false, useYarn: true, usePnpm: true } );
 
-		expect( promptWithErrorHandling ).toHaveBeenCalled();
+		expect( inquirer.prompt ).toHaveBeenCalled();
 	} );
 
 	it( 'should call prompt when all package managers are specified (npm & yarn & pnpm)', async () => {
 		await choosePackageManager( logger, { useNpm: true, useYarn: true, usePnpm: true } );
 
-		expect( promptWithErrorHandling ).toHaveBeenCalled();
+		expect( inquirer.prompt ).toHaveBeenCalled();
 	} );
 } );

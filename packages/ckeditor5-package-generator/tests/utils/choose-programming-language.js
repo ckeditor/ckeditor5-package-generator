@@ -4,14 +4,14 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import inquirer from 'inquirer';
 import chooseProgrammingLanguage from '../../lib/utils/choose-programming-language.js';
-import promptWithErrorHandling from '../../lib/utils/prompt-with-error-handling.js';
 
-vi.mock( '../../lib/utils/prompt-with-error-handling.js' );
+vi.mock( 'inquirer' );
 
 describe( 'lib/utils/choose-programming-language', () => {
 	beforeEach( () => {
-		vi.mocked( promptWithErrorHandling ).mockResolvedValue( { programmingLanguage: 'JavaScript' } );
+		vi.mocked( inquirer.prompt ).mockResolvedValue( { programmingLanguage: 'JavaScript' } );
 	} );
 
 	it( 'should be a function', () => {
@@ -21,8 +21,8 @@ describe( 'lib/utils/choose-programming-language', () => {
 	it( 'calls prompt() with correct arguments', async () => {
 		await chooseProgrammingLanguage( vi.fn() );
 
-		expect( promptWithErrorHandling ).toHaveBeenCalledTimes( 1 );
-		expect( promptWithErrorHandling ).toHaveBeenCalledWith( [ {
+		expect( inquirer.prompt ).toHaveBeenCalledTimes( 1 );
+		expect( inquirer.prompt ).toHaveBeenCalledWith( [ {
 			prefix: '📍',
 			name: 'programmingLanguage',
 			message: 'Choose your programming language:',
@@ -38,7 +38,7 @@ describe( 'lib/utils/choose-programming-language', () => {
 	} );
 
 	it( 'returns correct value when user picks TypeScript', async () => {
-		vi.mocked( promptWithErrorHandling ).mockResolvedValue( { programmingLanguage: 'TypeScript' } );
+		vi.mocked( inquirer.prompt ).mockResolvedValue( { programmingLanguage: 'TypeScript' } );
 
 		const result = await chooseProgrammingLanguage( vi.fn() );
 
@@ -50,7 +50,7 @@ describe( 'lib/utils/choose-programming-language', () => {
 
 		expect( result ).toEqual( 'ts' );
 
-		expect( promptWithErrorHandling ).not.toHaveBeenCalled();
+		expect( inquirer.prompt ).not.toHaveBeenCalled();
 	} );
 
 	it( 'falls back to user input when lang option has invalid value', async () => {
@@ -58,13 +58,13 @@ describe( 'lib/utils/choose-programming-language', () => {
 			error: vi.fn()
 		};
 
-		vi.mocked( promptWithErrorHandling ).mockResolvedValue( { programmingLanguage: 'TypeScript' } );
+		vi.mocked( inquirer.prompt ).mockResolvedValue( { programmingLanguage: 'TypeScript' } );
 
 		const result = await chooseProgrammingLanguage( logger, 'python' );
 
 		expect( result ).toEqual( 'ts' );
 
-		expect( promptWithErrorHandling ).toHaveBeenCalledTimes( 1 );
+		expect( inquirer.prompt ).toHaveBeenCalledTimes( 1 );
 		expect( logger.error ).toHaveBeenCalledTimes( 1 );
 	} );
 } );

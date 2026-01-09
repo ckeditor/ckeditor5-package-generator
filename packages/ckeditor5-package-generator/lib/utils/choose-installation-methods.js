@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import promptWithErrorHandling from './prompt-with-error-handling.js';
+import inquirer from 'inquirer';
 
 const INSTALLATION_METHODS = [
 	{
@@ -38,7 +38,7 @@ export default async function chooseInstallationMethods( logger, method ) {
 		);
 	}
 
-	const { installationMethod } = await promptWithErrorHandling( [ {
+	const { installationMethod } = await inquirer.prompt( [ {
 		prefix: '📍',
 		name: 'installationMethod',
 		message: 'Which installation methods of CKEditor 5 do you want to support?',
