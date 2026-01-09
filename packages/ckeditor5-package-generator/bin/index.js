@@ -27,7 +27,17 @@ new Command( packageJson.name )
 	.allowUnknownOption()
 	.version( packageJson.version )
 	.addHelpText( 'after', `\nVersion: ${ packageJson.version }` )
-	.action( ( packageName, options ) => init( packageName, options ) )
+	.action( ( packageName, options ) => {
+		return init( packageName, options )
+			.catch( error => {
+				// Ctrl+C or prompt cancellation.
+				if ( error.message && error.message.includes( 'SIGINT' ) ) {
+					process.exit( 1 );
+				} else {
+					throw error;
+				}
+			} );
+	} )
 	.parse( process.argv );
 
 function isInsideGitRepositoryCallback() {
