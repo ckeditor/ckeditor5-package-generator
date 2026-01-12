@@ -287,28 +287,12 @@ function checkFileList( output, expectedPublishFiles ) {
 /**
  * Checks whether after publishing, the repository is in a correct state:
  *
- * - "main" field in "package.json" should point to the language corresponding to the package's language (.js or .ts).
  * - There should be no leftover build files in "src" directory.
  *
  * @param {String} lang
  * @param {Object} expectedSrcDirFiles
  */
 function verifyPublishCleanup( lang, expectedSrcDirFiles ) {
-	// "package.json" check.
-	const pkgJsonPath = upath.join( NEW_PACKAGE_DIRECTORY, 'package.json' );
-	const pkgJsonRaw = fs.readFileSync( pkgJsonPath, 'utf-8' );
-	const pkgJsonContent = JSON.parse( pkgJsonRaw );
-
-	const hasCorrectEntryPoint = pkgJsonContent.main === `dist/index.${ lang }`;
-
-	if ( !hasCorrectEntryPoint ) {
-		console.log( chalk.red( '"package.json" has incorrect value in "main" field:' ) );
-		console.log( chalk.red( pkgJsonContent.main ) );
-
-		foundError = true;
-	}
-
-	// "src" directory check.
 	const srcDirPath = upath.join( NEW_PACKAGE_DIRECTORY, 'src' );
 	const excessFiles = fs.readdirSync( srcDirPath )
 		.filter( file => !expectedSrcDirFiles.includes( file ) );
@@ -318,9 +302,7 @@ function verifyPublishCleanup( lang, expectedSrcDirFiles ) {
 		console.log( chalk.red( excessFiles.map( file => `- ${ file }` ).join( '\n' ) ) );
 
 		foundError = true;
-	}
-
-	if ( hasCorrectEntryPoint && !excessFiles.length ) {
+	} else {
 		console.log( chalk.green( 'Post release cleanup successful.' ) );
 	}
 }

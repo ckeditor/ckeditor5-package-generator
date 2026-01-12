@@ -11,9 +11,6 @@
     "ckeditor5-package-generator"
   ],
   "type": "module",
-  "main": "dist/index.ts",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -66,16 +63,12 @@
   },
   "scripts": {
     "build:dist": "node ./scripts/build-dist.mjs",
-    "ts:build": "tsc -p ./tsconfig.release.json",
-    "ts:clear": "<%= npxByPackageManager %> rimraf --glob \"src/**/*.@(js|d.ts)\"",
     "lint": "eslint",
     "start": "ckeditor5-package-tools start",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
     "test": "vitest",
     "test:debug": "vitest --inspect-brk --no-file-parallelism --browser.headless=false",
     "prepare": "<%= packageManager %> run build:dist",
-    "prepublishOnly": "<%= packageManager %> run ts:build && ckeditor5-package-tools export-package-as-javascript",
-    "postpublish": "<%= packageManager %> run ts:clear && ckeditor5-package-tools export-package-as-typescript",
     "translations:synchronize": "ckeditor5-package-tools translations:synchronize",
     "translations:validate": "ckeditor5-package-tools translations:synchronize --validate-only"
   },

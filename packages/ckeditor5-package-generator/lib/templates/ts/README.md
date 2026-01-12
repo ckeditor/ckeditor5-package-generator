@@ -14,7 +14,6 @@ This package was created by the [ckeditor5-package-generator](https://www.npmjs.
   * [`build:dist`](#builddist)
   * [`translations:synchronize`](#translationssynchronize)
   * [`translations:validate`](#translationsvalidate)
-  * [`ts:build` and `ts:clear`](#tsbuild-and-tsclear)
 * [License](#license)
 
 ## Developing the package
@@ -129,10 +128,6 @@ Examples:
 ```bash
 <%= packageManager %> run translations:validate
 ```
-
-### `ts:build` and `ts:clear`
-
-These scripts compile TypeScript and remove the compiled files. They are used in the aforementioned life cycle scripts, and there is no need to call them manually.
 
 ## License
 

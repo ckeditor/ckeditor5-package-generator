@@ -19,8 +19,6 @@ The following scripts are available in the package:
 * `start` &ndash; prepares the [development server](https://webpack.js.org/configuration/dev-server/) with the live-reloading mechanism,
 * `translations:synchronize` &ndash; validates and synchronizes the translation messages by updating all translation files (`*.po` files) to be in sync with the context file,
 * `translations:validate` &ndash; only validates the translation messages against the context file,
-* `export-package-as-javascript` &ndash; changes `main` entry in `package.json` file to point to a `.js` file,
-* `export-package-as-typescript` &ndash; changes `main` entry in `package.json` file to point to a `.ts` file.
 
 There are two ways to integrate these scripts, either with [npm scripts](https://docs.npmjs.com/cli/v7/using-npm/scripts) or Node.js scripts.
 
