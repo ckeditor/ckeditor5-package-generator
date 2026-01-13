@@ -14,7 +14,6 @@ This package was created by the [ckeditor5-package-generator](https://www.npmjs.
   * [`build:dist`](#builddist)
   * [`translations:synchronize`](#translationssynchronize)
   * [`translations:validate`](#translationsvalidate)
-  * [`ts:build` and `ts:clear`](#tsbuild-and-tsclear)
 * [License](#license)
 
 ## Developing the package
