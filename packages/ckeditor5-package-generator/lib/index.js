@@ -43,20 +43,15 @@ export default async function init( packageName, options ) {
 	const { directoryName, directoryPath } = createDirectory( logger, packageName );
 	const packageManager = await choosePackageManager( logger, { useNpm, useYarn, usePnpm } );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
-
-	const defaultGlobalName = 'CK' + formattedNames.plugin.pascalCase;
-	const validatedGlobalName = await setGlobalName( logger, globalName, defaultGlobalName );
-
-	const packageVersions = getDependenciesVersions( logger, { dev, useReleaseDirectory } );
-
-	const npxByPackageManager = packageManager === 'pnpm' ? 'pnpm dlx' : 'npx';
+	const validatedGlobalName = await setGlobalName( logger, globalName, 'CK' + formattedNames.plugin.pascalCase );
+	const packageVersions = getDependenciesVersions( logger, { dev, packageManager, useReleaseDirectory } );
 
 	copyFiles( logger, {
 		packageName,
 		formattedNames,
 		directoryPath,
 		packageManager,
-		npxByPackageManager,
+		npxByPackageManager: packageManager === 'pnpm' ? 'pnpm dlx' : 'npx',
 		programmingLanguage,
 		packageVersions,
 		validatedGlobalName
@@ -73,6 +68,7 @@ export default async function init( packageName, options ) {
 		'to the newly created package. Then, the package offers a few predefined scripts:',
 		'',
 		'  * ' + chalk.underline( 'start' ) + ' - for creating the HTTP server with the editor sample,',
+		'  * ' + chalk.underline( 'build' ) + ' - for building the editor,',
 		'  * ' + chalk.underline( 'test' ) + ' - for executing unit tests of an example plugin,',
 		'  * ' + chalk.underline( 'lint' ) + ' - for running a tool for static analyzing JavaScript files,',
 		'  * ' + chalk.underline( 'stylelint' ) + ' - for running a tool for static analyzing CSS files.',

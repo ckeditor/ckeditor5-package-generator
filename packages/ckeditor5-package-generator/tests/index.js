@@ -229,7 +229,11 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( getDependenciesVersions ).toHaveBeenCalledTimes( 1 );
-		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ), { dev: false, useReleaseDirectory: false } );
+		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ), {
+			dev: false,
+			packageManager: 'yarn',
+			useReleaseDirectory: false
+		} );
 	} );
 
 	it( 'gets the versions of the dependencies (`--dev`)', async () => {
@@ -237,7 +241,11 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( getDependenciesVersions ).toHaveBeenCalledTimes( 1 );
-		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ), { dev: true, useReleaseDirectory: false } );
+		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ), {
+			dev: true,
+			packageManager: 'yarn',
+			useReleaseDirectory: false
+		} );
 	} );
 
 	it( 'gets the versions of the dependencies (`--use-release-directory`)', async () => {
@@ -245,7 +253,11 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( getDependenciesVersions ).toHaveBeenCalledTimes( 1 );
-		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ), { dev: false, useReleaseDirectory: true } );
+		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ), {
+			dev: false,
+			packageManager: 'yarn',
+			useReleaseDirectory: true
+		} );
 	} );
 
 	it( 'copies the files', async () => {
@@ -317,6 +329,7 @@ describe( 'lib/index', () => {
 				'to the newly created package. Then, the package offers a few predefined scripts:',
 				'',
 				'  * start - for creating the HTTP server with the editor sample,',
+				'  * build - for building the editor,',
 				'  * test - for executing unit tests of an example plugin,',
 				'  * lint - for running a tool for static analyzing JavaScript files,',
 				'  * stylelint - for running a tool for static analyzing CSS files.',

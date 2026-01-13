@@ -1,8 +1,8 @@
-declare global {
-	interface Window {
-		editor: ClassicEditor;
-	}
-}
+/**
+ * This file is used to test the package during development. When you run the `start` script,
+ * a local server is started with the `index.html` as a starting point. The `index.html` file
+ * loads this script which creates and configures the editor instance.
+ */
 
 import {
 	ClassicEditor,
@@ -28,18 +28,15 @@ import {
 	Table,
 	TableToolbar
 } from 'ckeditor5';
-
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
-
-import <%= formattedNames.plugin.pascalCase %> from '../src/<%= formattedNames.plugin.lowerCaseMerged %>.js';
-
+import Package from './package.js';
 import 'ckeditor5/ckeditor5.css';
 
 ClassicEditor
-	.create( document.getElementById( 'editor' )!, {
+	.create( document.getElementById( 'editor' ), {
 		licenseKey: 'GPL',
 		plugins: [
-			<%= formattedNames.plugin.pascalCase %>,
+			Package,
 			Essentials,
 			Autoformat,
 			BlockQuote,
@@ -66,7 +63,7 @@ ClassicEditor
 			'undo',
 			'redo',
 			'|',
-			'<%= formattedNames.plugin.camelCase %>',
+			'package',
 			'|',
 			'heading',
 			'|',
@@ -106,8 +103,8 @@ ClassicEditor
 	.then( editor => {
 		window.editor = editor;
 		CKEditorInspector.attach( editor );
-		window.console.log( 'CKEditor 5 is ready.', editor );
+		console.log( 'CKEditor 5 is ready.', editor );
 	} )
 	.catch( err => {
-		window.console.error( err.stack );
+		console.error( err.stack );
 	} );
