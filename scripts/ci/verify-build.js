@@ -11,7 +11,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { stripVTControlCharacters } from 'node:util';
 import chalk from 'chalk';
 import parseArguments from './utils/parsearguments.js';
-import { EXPECTED_PUBLISH_FILES, EXPECTED_SRC_DIR_FILES } from './utils/expectedFiles.js';
+import { EXPECTED_PUBLISH_FILES } from './utils/expectedFiles.js';
 
 const REPOSITORY_DIRECTORY = upath.join( import.meta.dirname, '..', '..' );
 const NEW_PACKAGE_DIRECTORY = upath.join( REPOSITORY_DIRECTORY, '..', 'ckeditor5-test-package' );
@@ -71,11 +71,6 @@ async function verifyBuild( { language, packageManager, customPluginName, global
 		language,
 		customPluginName
 	);
-	const expectedSrcDirFiles = getExpectedFiles(
-		EXPECTED_SRC_DIR_FILES,
-		language,
-		customPluginName
-	);
 
 	if ( customPluginName ) {
 		testSetupInfoMessage += ` with custom plugin name: [${ customPluginName }]`;
@@ -102,9 +97,6 @@ async function verifyBuild( { language, packageManager, customPluginName, global
 	console.log( stderr );
 	checkFileList( stderr, expectedPublishFiles );
 
-	logProcess( 'Verifying post release cleanup...' );
-	verifyPublishCleanup( language, expectedSrcDirFiles );
-
 	logProcess( 'Starting the development servers and verifying the sample builds...' );
 
 	const listOfDevelopmentServers = [ startDevelopmentServer( NEW_PACKAGE_DIRECTORY ) ];
@@ -123,7 +115,7 @@ async function verifyBuild( { language, packageManager, customPluginName, global
 		} )
 		.then( () => {
 			logProcess( 'Removing the created package...' );
-			fs.rmSync( NEW_PACKAGE_DIRECTORY, { recursive: true } );
+			fs.rmSync( NEW_PACKAGE_DIRECTORY, { recursive: true, maxRetries: 1 } );
 		} );
 }
 
@@ -165,46 +157,31 @@ function executeCommand( command, options ) {
  */
 function startDevelopmentServer( cwd ) {
 	return new Promise( ( resolve, reject ) => {
-		const sampleServer = spawn( 'npm', [ 'run', 'start', '--', '--no-open' ], {
+		const sampleServer = spawn( 'npm', [ 'run', 'start' ], {
 			cwd,
 			encoding: 'utf8',
 			shell: true
 		} );
 
-		let sampleUrl;
-
-		// The `webpack-dev-server` package prints the URL to stderr.
-		sampleServer.stderr.on( 'data', data => {
-			const content = data.toString().slice( 0, -1 );
-			const urlMatch = content.match( /http:\/\/localhost:\d+\// );
-
-			if ( !sampleUrl && urlMatch ) {
-				sampleUrl = urlMatch[ 0 ];
-			}
-		} );
-
-		// Webpack prints the "hidden modules..." string when finished processing the file.
-		// Hence, we can assume that the server is live at this stage.
 		sampleServer.stdout.on( 'data', data => {
 			const content = stripVTControlCharacters( data.toString() ).slice( 0, -1 );
-			const endMatch = /webpack \d+\.\d+\.\d+ compiled successfully in \d+ ms/.test( content );
-			const errorMatch = content.indexOf( 'ERROR' ) !== -1;
+			const serverUrl = content.match( /http:\/\/127.0.0.1:\d+\// )?.[ 0 ];
 
-			if ( endMatch ) {
+			if ( serverUrl ) {
 				return resolve( {
 					server: sampleServer,
-					url: sampleUrl
+					url: serverUrl
 				} );
-			}
-
-			if ( errorMatch ) {
-				return reject( content );
 			}
 		} );
 
 		sampleServer.on( 'error', error => {
 			return reject( error );
 		} );
+
+		setTimeout( () => {
+			return reject( new Error( 'Starting the development server timed out.' ) );
+		}, 5000 );
 	} );
 }
 
@@ -281,29 +258,6 @@ function checkFileList( output, expectedPublishFiles ) {
 	if ( excessFiles.length ) {
 		console.log( chalk.red( 'Excess files included in publish:' ) );
 		console.log( chalk.red( excessFiles.map( file => `- ${ file }` ).join( '\n' ) ) );
-	}
-}
-
-/**
- * Checks whether after publishing, the repository is in a correct state:
- *
- * - There should be no leftover build files in "src" directory.
- *
- * @param {String} lang
- * @param {Object} expectedSrcDirFiles
- */
-function verifyPublishCleanup( lang, expectedSrcDirFiles ) {
-	const srcDirPath = upath.join( NEW_PACKAGE_DIRECTORY, 'src' );
-	const excessFiles = fs.readdirSync( srcDirPath )
-		.filter( file => !expectedSrcDirFiles.includes( file ) );
-
-	if ( excessFiles.length ) {
-		console.log( chalk.red( 'Excess files after publishing in "src" directory:' ) );
-		console.log( chalk.red( excessFiles.map( file => `- ${ file }` ).join( '\n' ) ) );
-
-		foundError = true;
-	} else {
-		console.log( chalk.green( 'Post release cleanup successful.' ) );
 	}
 }
 

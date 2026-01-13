@@ -1,2 +1,3 @@
+import '../theme/styles/index.css';
+
 export { default as <%= formattedNames.plugin.pascalCase %> } from './<%= formattedNames.plugin.lowerCaseMerged %>.js';
-export { default as ckeditorIcon } from '../theme/icons/ckeditor.svg';

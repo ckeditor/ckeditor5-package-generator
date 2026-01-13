@@ -8,8 +8,8 @@ import pkgJson from './package.json' with { type: 'json' };
  * This configuration file uses Vite's "mode" to differentiate between different builds. By default,
  * only the shared configuration is used. It configures common plugins and Vitest.
  *
- * However, when "--mode npm-build" is passed to Vite, the configuration for building the package
- * for npm is merged in. Similarly, when "--mode browser-build" is used, the configuration for
+ * However, when "--mode npm" is passed to Vite, the configuration for building the package
+ * for npm is merged in. Similarly, when "--mode browser" is used, the configuration for
  * building the browser bundles is merged in.
  */
 export default defineConfig( ( { mode } ) => {
@@ -71,6 +71,7 @@ export default defineConfig( ( { mode } ) => {
 			lib: {
 				entry,
 				formats: [ 'es' ],
+				cssFileName: 'index',
 				fileName: ( format: string, name: string ) => name + '.js'
 			},
 			rollupOptions: {
@@ -93,6 +94,7 @@ export default defineConfig( ( { mode } ) => {
 				entry,
 				name: '<%= validatedGlobalName %>',
 				formats: [ 'es', 'umd' ],
+				cssFileName: 'index',
 				fileName: ( format: string, name: string ) => name + '.' + format + '.js'
 			},
 			rollupOptions: {
@@ -108,8 +110,8 @@ export default defineConfig( ( { mode } ) => {
 
 	// Map of available build settings.
 	const BUILD_SETTINGS: Record<string, ViteUserConfig> = {
-		'npm-build': npmConfig,
-		'browser-build': browserConfig
+		npm: npmConfig,
+		browser: browserConfig
 	};
 
 	return mergeConfig(

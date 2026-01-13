@@ -29,14 +29,15 @@ import {
 	TableToolbar
 } from 'ckeditor5';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
-import Package from './package.js';
 import 'ckeditor5/ckeditor5.css';
+
+import { <%= formattedNames.plugin.pascalCase %> } from './index.js';
 
 ClassicEditor
 	.create( document.getElementById( 'editor' ), {
 		licenseKey: 'GPL',
 		plugins: [
-			Package,
+			<%= formattedNames.plugin.pascalCase %>,
 			Essentials,
 			Autoformat,
 			BlockQuote,
@@ -63,7 +64,7 @@ ClassicEditor
 			'undo',
 			'redo',
 			'|',
-			'package',
+			'<%= formattedNames.plugin.camelCase %>',
 			'|',
 			'heading',
 			'|',

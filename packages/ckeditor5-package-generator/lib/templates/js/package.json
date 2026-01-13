@@ -48,11 +48,14 @@
     "vitest": "^4.0.6",
     "webdriverio": "^9.19.2"
   },
+  "overrides": {
+    "sugarss": "^5.0.1"
+  },
   "scripts": {
     "start": "vite",
     "build": "<%= packageManager %> run build:npm && <%= packageManager %> run build:browser",
-    "build:npm": "vite build --mode npm-build",
-    "build:browser": "vite build --mode browser-build",
+    "build:npm": "vite build --mode npm",
+    "build:browser": "vite build --mode browser",
     "test": "vitest",
     "test:debug": "vitest --inspect-brk --no-file-parallelism --browser.headless=false",
     "lint": "eslint",
