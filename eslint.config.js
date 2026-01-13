@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2020-2025, CKSource Holding sp. z o.o. All rights reserved.
+ * @license Copyright (c) 2020-2026, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md.
  */
 
@@ -42,7 +42,7 @@ export default defineConfig( [
 			'no-console': 'off',
 			'ckeditor5-rules/license-header': [ 'error', { headerLines: [
 				'/**',
-				' * @license Copyright (c) 2020-2025, CKSource Holding sp. z o.o. All rights reserved.',
+				' * @license Copyright (c) 2020-2026, CKSource Holding sp. z o.o. All rights reserved.',
 				' * For licensing, see LICENSE.md.',
 				' */'
 			] } ],

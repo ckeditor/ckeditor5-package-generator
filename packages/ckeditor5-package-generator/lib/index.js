@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2020-2025, CKSource Holding sp. z o.o. All rights reserved.
+ * @license Copyright (c) 2020-2026, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md.
  */
 
@@ -37,10 +37,10 @@ export default async function init( packageName, options ) {
 
 	const logger = new Logger( verbose );
 
-	validatePackageName( logger, packageName );
+	const validatedPackageName = await validatePackageName( logger, packageName );
 	validatePluginName( logger, pluginName );
-	const formattedNames = getPackageNameFormats( packageName, pluginName );
-	const { directoryName, directoryPath } = createDirectory( logger, packageName );
+	const formattedNames = getPackageNameFormats( validatedPackageName, pluginName );
+	const { directoryName, directoryPath } = createDirectory( logger, validatedPackageName );
 	const packageManager = await choosePackageManager( logger, { useNpm, useYarn, usePnpm } );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
 
@@ -52,7 +52,7 @@ export default async function init( packageName, options ) {
 	const npxByPackageManager = packageManager === 'pnpm' ? 'pnpm dlx' : 'npx';
 
 	copyFiles( logger, {
-		packageName,
+		packageName: validatedPackageName,
 		formattedNames,
 		directoryPath,
 		packageManager,
