@@ -165,6 +165,8 @@ function startDevelopmentServer( cwd ) {
 
 		sampleServer.stdout.on( 'data', data => {
 			const content = stripVTControlCharacters( data.toString() ).slice( 0, -1 );
+
+			console.log( { content } );
 			const serverUrl = content.match( /http:\/\/127.0.0.1:\d+\// )?.[ 0 ];
 
 			if ( serverUrl ) {
