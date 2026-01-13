@@ -25,33 +25,26 @@ import getPackageVersion from './get-package-version.js';
  * @param {Logger} logger
  * @param {Object} options
  * @param {Boolean} options.dev
- * @param {String} options.packageManager
  * @param {Boolean} [options.useReleaseDirectory=false]
  * @returns {Object}
  */
-export default function getDependenciesVersions( logger, {
-	dev,
-	packageManager,
-	useReleaseDirectory = false
-} ) {
+export default function getDependenciesVersions( logger, { dev, useReleaseDirectory = false } ) {
 	logger.process( 'Collecting the latest CKEditor 5 packages versions...' );
 
-	const getVersion = packageName => getPackageVersion( packageName, packageManager );
-
 	return {
-		ckeditor5: getVersion( 'ckeditor5' ),
-		ckeditor5PremiumFeatures: getVersion( 'ckeditor5-premium-features' ),
-		ckeditor5Inspector: getVersion( '@ckeditor/ckeditor5-inspector' ),
-		eslintConfigCkeditor5: getVersion( 'eslint-config-ckeditor5' ),
-		eslintPluginCkeditor5Rules: getVersion( 'eslint-plugin-ckeditor5-rules' ),
-		stylelintConfigCkeditor5: getVersion( 'stylelint-config-ckeditor5' ),
-		packageTools: resolvePackageToolsDependency( logger, { dev, packageManager, useReleaseDirectory } )
+		ckeditor5: getPackageVersion( 'ckeditor5' ),
+		ckeditor5PremiumFeatures: getPackageVersion( 'ckeditor5-premium-features' ),
+		ckeditor5Inspector: getPackageVersion( '@ckeditor/ckeditor5-inspector' ),
+		eslintConfigCkeditor5: getPackageVersion( 'eslint-config-ckeditor5' ),
+		eslintPluginCkeditor5Rules: getPackageVersion( 'eslint-plugin-ckeditor5-rules' ),
+		stylelintConfigCkeditor5: getPackageVersion( 'stylelint-config-ckeditor5' ),
+		packageTools: resolvePackageToolsDependency( logger, { dev, useReleaseDirectory } )
 	};
 }
 
-function resolvePackageToolsDependency( logger, { dev, packageManager, useReleaseDirectory } ) {
+function resolvePackageToolsDependency( logger, { dev, useReleaseDirectory } ) {
 	if ( !dev ) {
-		return '^' + getPackageVersion( '@ckeditor/ckeditor5-package-tools', packageManager );
+		return '^' + getPackageVersion( '@ckeditor/ckeditor5-package-tools' );
 	}
 
 	// Controls how `ckeditor5-package-tools` is linked:

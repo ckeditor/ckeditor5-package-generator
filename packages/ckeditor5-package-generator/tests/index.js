@@ -231,11 +231,7 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( getDependenciesVersions ).toHaveBeenCalledTimes( 1 );
-		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ), {
-			dev: false,
-			packageManager: 'yarn',
-			useReleaseDirectory: false
-		} );
+		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ), { dev: false, useReleaseDirectory: false } );
 	} );
 
 	it( 'gets the versions of the dependencies (`--dev`)', async () => {
@@ -243,11 +239,7 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( getDependenciesVersions ).toHaveBeenCalledTimes( 1 );
-		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ), {
-			dev: true,
-			packageManager: 'yarn',
-			useReleaseDirectory: false
-		} );
+		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ), { dev: true, useReleaseDirectory: false } );
 	} );
 
 	it( 'gets the versions of the dependencies (`--use-release-directory`)', async () => {
@@ -255,11 +247,7 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( getDependenciesVersions ).toHaveBeenCalledTimes( 1 );
-		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ), {
-			dev: false,
-			packageManager: 'yarn',
-			useReleaseDirectory: true
-		} );
+		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ), { dev: false, useReleaseDirectory: true } );
 	} );
 
 	it( 'copies the files', async () => {

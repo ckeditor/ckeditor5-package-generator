@@ -9,12 +9,11 @@ import { execFileSync } from 'node:child_process';
  * Returns version of the specified package.
  *
  * @param {String} packageName Name of the package to check the version of.
- * @param {String} packageManager Package manager to use.
  * @return {String}
  */
-export default function getPackageVersion( packageName, packageManager ) {
+export default function getPackageVersion( packageName ) {
 	return execFileSync(
-		packageManager,
+		'npm',
 		[ 'view', packageName, 'version' ],
 		{ stdio: 'pipe', encoding: 'utf-8' }
 	).trim();
