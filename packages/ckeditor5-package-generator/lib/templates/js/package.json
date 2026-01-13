@@ -11,8 +11,6 @@
     "ckeditor5-package-generator"
   ],
   "type": "module",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
   "exports": {
     ".": "./dist/index.js",
     "./*": "./dist/*",
