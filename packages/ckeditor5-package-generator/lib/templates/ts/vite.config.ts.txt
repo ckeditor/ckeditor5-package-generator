@@ -1,5 +1,6 @@
 import { resolve, isAbsolute, extname } from 'node:path';
 import { defineConfig, mergeConfig, type ViteUserConfig } from 'vitest/config';
+import { translations } from '@ckeditor/ckeditor5-dev-build-tools';
 import svg from 'vite-plugin-svgo';
 import { webdriverio } from '@vitest/browser-webdriverio';
 import pkgJson from './package.json' with { type: 'json' };
@@ -92,6 +93,11 @@ export default defineConfig( ( { mode } ) => {
 	 * Settings specific to the npm build (ESM).
 	 */
 	const npmConfig: ViteUserConfig = {
+		plugins: [
+			translations( {
+				source: '**/*.po'
+			} )
+		],
 		build: {
 			minify: false,
 			outDir: 'dist',

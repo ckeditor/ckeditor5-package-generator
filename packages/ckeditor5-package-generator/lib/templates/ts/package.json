@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-core": "latest",
+    "@ckeditor/ckeditor5-dev-build-tools": "<%= packageVersions.ckeditor5DevBuildTools %>",
     "@ckeditor/ckeditor5-inspector": "^<%= packageVersions.ckeditor5Inspector %>",
     "@ckeditor/ckeditor5-package-tools": "<%= packageVersions.packageTools %>",
     "@typescript-eslint/parser": "^8.32.1",

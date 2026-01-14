@@ -12,6 +12,7 @@ import getPackageVersion from './get-package-version.js';
  *   * `ckeditor5`
  *   * `ckeditor5-premium-features`
  *   * `@ckeditor/ckeditor5-inspector` (as `ckeditor5Inspector`)
+ *   * `@ckeditor/ckeditor5-dev-build-tools` (as `ckeditor5DevBuildTools`)
  *   * `eslint-config-ckeditor5` (as `eslintConfigCkeditor5`)
  *   * `eslint-plugin-ckeditor5-rules` (as `eslintPluginCkeditor5Rules`)
  *   * `stylelint-config-ckeditor5` (as `stylelintConfigCkeditor5`)
@@ -35,6 +36,7 @@ export default function getDependenciesVersions( logger, { dev, useReleaseDirect
 		ckeditor5: getPackageVersion( 'ckeditor5' ),
 		ckeditor5PremiumFeatures: getPackageVersion( 'ckeditor5-premium-features' ),
 		ckeditor5Inspector: getPackageVersion( '@ckeditor/ckeditor5-inspector' ),
+		ckeditor5DevBuildTools: getPackageVersion( '@ckeditor/ckeditor5-dev-build-tools' ),
 		eslintConfigCkeditor5: getPackageVersion( 'eslint-config-ckeditor5' ),
 		eslintPluginCkeditor5Rules: getPackageVersion( 'eslint-plugin-ckeditor5-rules' ),
 		stylelintConfigCkeditor5: getPackageVersion( 'stylelint-config-ckeditor5' ),

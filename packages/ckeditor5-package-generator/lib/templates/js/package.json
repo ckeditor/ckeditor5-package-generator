@@ -28,6 +28,7 @@
     "ckeditor5": ">=48.0.0 || ^0.0.0-nightly"
   },
   "devDependencies": {
+    "@ckeditor/ckeditor5-dev-build-tools": "<%= packageVersions.ckeditor5DevBuildTools %>",
     "@ckeditor/ckeditor5-inspector": "^<%= packageVersions.ckeditor5Inspector %>",
     "@ckeditor/ckeditor5-package-tools": "<%= packageVersions.packageTools %>",
     "@vitest/browser-webdriverio": "^4.0.6",
