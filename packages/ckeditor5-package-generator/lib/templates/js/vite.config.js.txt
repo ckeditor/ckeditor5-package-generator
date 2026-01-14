@@ -19,7 +19,7 @@ export default defineConfig( ( { mode } ) => {
 		const externals = Object.keys( externalPackages );
 		const extensions = [ '.ts', '.mts', '.mjs', '.js', '.json', '.node' ];
 
-		return ( id ) => {
+		return id => {
 			// Bundle relative and absolute imports.
 			if ( id.startsWith( '.' ) || isAbsolute( id ) ) {
 				return false;
