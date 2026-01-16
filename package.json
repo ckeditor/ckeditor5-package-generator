@@ -38,6 +38,7 @@
     "listr2": "^8.2.5",
     "minimist": "^1.2.8",
     "semver": "^7.0.0",
+    "typescript": "^5.9.3",
     "upath": "^2.0.1",
     "vitest": "^4.0.6"
   },
