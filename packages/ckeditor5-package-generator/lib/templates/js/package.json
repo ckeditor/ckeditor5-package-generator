@@ -42,7 +42,7 @@
     "lint-staged": "^10.2.6",
     "stylelint": "^16.0.0",
     "stylelint-config-ckeditor5": "^<%= packageVersions.stylelintConfigCkeditor5 %>",
-    "typescript": "~5.5.4",
+    "typescript": "5.5.4",
     "vite": "^7.3.0",
     "vite-plugin-svgo": "^2.0.0",
     "vitest": "^4.0.6",
