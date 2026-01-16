@@ -4,14 +4,14 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { execSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 import getPackageVersion from '../../lib/utils/get-package-version.js';
 
 vi.mock( 'child_process' );
 
 describe( 'lib/utils/get-package-version', () => {
 	beforeEach( () => {
-		vi.mocked( execSync ).mockReturnValue( Buffer.from( '30.0.0' ) );
+		vi.mocked( execFileSync ).mockReturnValue( '30.0.0' );
 	} );
 
 	it( 'should be a function', () => {
@@ -19,20 +19,24 @@ describe( 'lib/utils/get-package-version', () => {
 	} );
 
 	it( 'returns a string', () => {
-		const returnedValue = getPackageVersion( 'ckeditor5' );
+		const returnedValue = getPackageVersion( 'ckeditor5', 'npm' );
 
 		expect( returnedValue ).toBeTypeOf( 'string' );
 	} );
 
 	it( 'calls "npm show" to determine the version', () => {
-		getPackageVersion( 'ckeditor5' );
+		getPackageVersion( 'ckeditor5', 'npm' );
 
-		expect( execSync ).toHaveBeenCalledTimes( 1 );
-		expect( execSync ).toHaveBeenCalledWith( 'npm view ckeditor5 version' );
+		expect( execFileSync ).toHaveBeenCalledTimes( 1 );
+		expect( execFileSync ).toHaveBeenCalledWith(
+			'npm',
+			[ 'view', 'ckeditor5', 'version' ],
+			{ encoding: 'utf-8', stdio: 'pipe' }
+		);
 	} );
 
 	it( 'returns a version matching semantic versioning specification', () => {
-		const returnedValue = getPackageVersion( 'ckeditor5' );
+		const returnedValue = getPackageVersion( 'ckeditor5', 'npm' );
 
 		expect( returnedValue ).toEqual( '30.0.0' );
 	} );

@@ -27,7 +27,6 @@ describe( 'lib/utils/copy-files', () => {
 			'ckeditor5': '>=<%= packageVersions.ckeditor5 %>'
 		},
 		'devDependencies': {
-			'@ckeditor/ckeditor5-dev-build-tools': '<%= packageVersions.ckeditor5DevBuildTools %>',
 			'@ckeditor/ckeditor5-autoformat': '>=<%= packageVersions.ckeditor5 %>',
 			'@ckeditor/ckeditor5-basic-styles': '>=<%= packageVersions.ckeditor5 %>',
 			'@ckeditor/ckeditor5-block-quote': '>=<%= packageVersions.ckeditor5 %>',
@@ -127,7 +126,6 @@ describe( 'lib/utils/copy-files', () => {
 			packageManager: 'yarn',
 			directoryPath: 'directory/path/foo',
 			packageVersions: {
-				ckeditor5DevBuildTools: '40.0.0',
 				ckeditor5: '30.0.0',
 				packageTools: '25.0.0'
 			}
@@ -186,7 +184,6 @@ describe( 'lib/utils/copy-files', () => {
 					'ckeditor5': '>=30.0.0'
 				},
 				'devDependencies': {
-					'@ckeditor/ckeditor5-dev-build-tools': '40.0.0',
 					'@ckeditor/ckeditor5-autoformat': '>=30.0.0',
 					'@ckeditor/ckeditor5-basic-styles': '>=30.0.0',
 					'@ckeditor/ckeditor5-block-quote': '>=30.0.0',
@@ -244,7 +241,6 @@ describe( 'lib/utils/copy-files', () => {
 					'ckeditor5': '>=30.0.0'
 				},
 				'devDependencies': {
-					'@ckeditor/ckeditor5-dev-build-tools': '40.0.0',
 					'@ckeditor/ckeditor5-autoformat': '>=30.0.0',
 					'@ckeditor/ckeditor5-basic-styles': '>=30.0.0',
 					'@ckeditor/ckeditor5-block-quote': '>=30.0.0',
@@ -480,7 +476,6 @@ describe( 'lib/utils/copy-files', () => {
 					'ckeditor5': '>=30.0.0'
 				},
 				'devDependencies': {
-					'@ckeditor/ckeditor5-dev-build-tools': '40.0.0',
 					'@ckeditor/ckeditor5-autoformat': '>=30.0.0',
 					'@ckeditor/ckeditor5-basic-styles': '>=30.0.0',
 					'@ckeditor/ckeditor5-block-quote': '>=30.0.0',
@@ -538,4 +533,3 @@ describe( 'lib/utils/copy-files', () => {
 		);
 	} );
 } );
-

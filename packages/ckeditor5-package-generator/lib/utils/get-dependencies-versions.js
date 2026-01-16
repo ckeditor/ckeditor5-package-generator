@@ -9,12 +9,14 @@ import getPackageVersion from './get-package-version.js';
 /**
  * Returns an object containing version for the packages listed below:
  *
- *   * ckeditor5
- *   * @ckeditor/ckeditor5-inspector (as `ckeditor5Inspector`)
- *   * @ckeditor/ckeditor5-dev-build-tools (as `ckeditor5DevBuildTools`)
- *   * eslint-config-ckeditor5 (as `eslintConfigCkeditor5`)
- *   * stylelint-config-ckeditor5 (as `stylelintConfigCkeditor5`)
- *   * @ckeditor/ckeditor5-package-tools (as `packageTools`)
+ *   * `ckeditor5`
+ *   * `ckeditor5-premium-features`
+ *   * `@ckeditor/ckeditor5-inspector` (as `ckeditor5Inspector`)
+ *   * `@ckeditor/ckeditor5-dev-build-tools` (as `ckeditor5DevBuildTools`)
+ *   * `eslint-config-ckeditor5` (as `eslintConfigCkeditor5`)
+ *   * `eslint-plugin-ckeditor5-rules` (as `eslintPluginCkeditor5Rules`)
+ *   * `stylelint-config-ckeditor5` (as `stylelintConfigCkeditor5`)
+ *   * `@ckeditor/ckeditor5-package-tools` (as `packageTools`)
  *
  * The value for the `packageTools` package depends on the `options.devMode` modifier:
  *

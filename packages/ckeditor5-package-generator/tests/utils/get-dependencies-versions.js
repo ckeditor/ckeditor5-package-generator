@@ -68,11 +68,6 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 		expect( returnedValue.ckeditor5 ).toEqual( '30.0.0' );
 	} );
 
-	it( 'returns an object with a version of the "ckeditor5-dev-build-tools" package', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
-		expect( returnedValue.ckeditor5DevBuildTools ).to.equal( '7.0.0' );
-	} );
-
 	it( 'returns an object with a version of the "eslint-config-ckeditor5"', () => {
 		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.eslintConfigCkeditor5 ).toEqual( '5.0.0' );

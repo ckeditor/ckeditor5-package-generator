@@ -319,6 +319,7 @@ describe( 'lib/index', () => {
 				'to the newly created package. Then, the package offers a few predefined scripts:',
 				'',
 				'  * start - for creating the HTTP server with the editor sample,',
+				'  * build - for building the editor,',
 				'  * test - for executing unit tests of an example plugin,',
 				'  * lint - for running a tool for static analyzing JavaScript files,',
 				'  * stylelint - for running a tool for static analyzing CSS files.',
