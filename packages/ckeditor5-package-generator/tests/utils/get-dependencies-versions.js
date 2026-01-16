@@ -16,31 +16,31 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 	beforeEach( () => {
 		vi.mocked( getPackageVersion ).mockImplementation( packageName => {
 			if ( packageName === 'ckeditor5' ) {
-				return '30.0.0';
+				return Promise.resolve( '30.0.0' );
 			}
 
 			if ( packageName === '@ckeditor/ckeditor5-package-tools' ) {
-				return '1.0.0';
+				return Promise.resolve( '1.0.0' );
 			}
 
 			if ( packageName === '@ckeditor/ckeditor5-dev-build-tools' ) {
-				return '7.0.0';
+				return Promise.resolve( '7.0.0' );
 			}
 
 			if ( packageName === '@ckeditor/ckeditor5-inspector' ) {
-				return '4.0.0';
+				return Promise.resolve( '4.0.0' );
 			}
 
 			if ( packageName === 'eslint-config-ckeditor5' ) {
-				return '5.0.0';
+				return Promise.resolve( '5.0.0' );
 			}
 
 			if ( packageName === 'eslint-plugin-ckeditor5-rules' ) {
-				return '5.0.0';
+				return Promise.resolve( '5.0.0' );
 			}
 
 			if ( packageName === 'stylelint-config-ckeditor5' ) {
-				return '3.0.0';
+				return Promise.resolve( '3.0.0' );
 			}
 		} );
 
@@ -56,45 +56,45 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 		expect( getDependenciesVersions ).toBeTypeOf( 'function' );
 	} );
 
-	it( 'logs the process', () => {
-		getDependenciesVersions( stubs.logger, { dev: false } );
+	it( 'logs the process', async () => {
+		await getDependenciesVersions( stubs.logger, { dev: false } );
 
 		expect( stubs.logger.process ).toHaveBeenCalledTimes( 1 );
 		expect( stubs.logger.process ).toHaveBeenCalledWith( 'Collecting the latest CKEditor 5 packages versions...' );
 	} );
 
-	it( 'returns an object with a version of the "ckeditor5" package', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
+	it( 'returns an object with a version of the "ckeditor5" package', async () => {
+		const returnedValue = await getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.ckeditor5 ).toEqual( '30.0.0' );
 	} );
 
-	it( 'returns an object with a version of the "eslint-config-ckeditor5"', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
+	it( 'returns an object with a version of the "eslint-config-ckeditor5"', async () => {
+		const returnedValue = await getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.eslintConfigCkeditor5 ).toEqual( '5.0.0' );
 	} );
 
-	it( 'returns an object with a version of the "eslint-plugin-ckeditor5-rules"', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
+	it( 'returns an object with a version of the "eslint-plugin-ckeditor5-rules"', async () => {
+		const returnedValue = await getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.eslintPluginCkeditor5Rules ).toEqual( '5.0.0' );
 	} );
 
-	it( 'returns an object with a version of the "stylelint-config-ckeditor5" package', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
+	it( 'returns an object with a version of the "stylelint-config-ckeditor5" package', async () => {
+		const returnedValue = await getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.stylelintConfigCkeditor5 ).toEqual( '3.0.0' );
 	} );
 
-	it( 'returns an object with a version of the "@ckeditor/ckeditor5-package-tools" package', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
+	it( 'returns an object with a version of the "@ckeditor/ckeditor5-package-tools" package', async () => {
+		const returnedValue = await getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.ckeditor5Inspector ).toEqual( '4.0.0' );
 	} );
 
-	it( 'returns an object with a version of the "@ckeditor/ckeditor5-package-tools" package if the "dev" option is disabled', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
+	it( 'returns an object with a version of the "@ckeditor/ckeditor5-package-tools" package if the "dev" option is disabled', async () => {
+		const returnedValue = await getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.packageTools ).toEqual( '^1.0.0' );
 	} );
 
-	it( 'returns an absolute path to the "@ckeditor/ckeditor5-package-tools" package if the "dev" option is enabled', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, { dev: true } );
+	it( 'returns an absolute path to the "@ckeditor/ckeditor5-package-tools" package if the "dev" option is enabled', async () => {
+		const returnedValue = await getDependenciesVersions( stubs.logger, { dev: true } );
 
 		const PROJECT_ROOT_DIRECTORY = upath.join( import.meta.dirname, '..', '..', '..' );
 		const packageTools = 'file:' + upath.resolve( PROJECT_ROOT_DIRECTORY, 'ckeditor5-package-tools' );
@@ -103,8 +103,8 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 	} );
 
 	// eslint-disable-next-line @stylistic/max-len
-	it( 'returns an absolute path to the `release/` directory for `@ckeditor/ckeditor5-package-tools` with `--use-release-directory` and `--dev', () => {
-		const returnedValue = getDependenciesVersions( stubs.logger, { dev: true, useReleaseDirectory: true } );
+	it( 'returns an absolute path to the `release/` directory for `@ckeditor/ckeditor5-package-tools` with `--use-release-directory` and `--dev', async () => {
+		const returnedValue = await getDependenciesVersions( stubs.logger, { dev: true, useReleaseDirectory: true } );
 
 		const PROJECT_ROOT_DIRECTORY = upath.join( import.meta.dirname, '..', '..', '..', '..', 'release' );
 		const packageTools = 'file:' + upath.resolve( PROJECT_ROOT_DIRECTORY, 'ckeditor5-package-tools' );
@@ -112,8 +112,8 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 		expect( returnedValue.packageTools ).toEqual( packageTools );
 	} );
 
-	it( 'prints a verbose log when using `--use-release-directory` and `--dev', () => {
-		getDependenciesVersions( stubs.logger, { dev: true, useReleaseDirectory: true } );
+	it( 'prints a verbose log when using `--use-release-directory` and `--dev', async () => {
+		await getDependenciesVersions( stubs.logger, { dev: true, useReleaseDirectory: true } );
 
 		expect( stubs.logger.verboseInfo ).toHaveBeenCalledTimes( 1 );
 		expect( stubs.logger.verboseInfo ).toHaveBeenCalledWith(

@@ -4,39 +4,44 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { execFileSync } from 'node:child_process';
+import * as childProcess from 'node:child_process';
 import getPackageVersion from '../../lib/utils/get-package-version.js';
 
-vi.mock( 'child_process' );
+vi.mock( 'node:child_process', () => ( {
+	execFile: vi.fn()
+} ) );
 
 describe( 'lib/utils/get-package-version', () => {
 	beforeEach( () => {
-		vi.mocked( execFileSync ).mockReturnValue( '30.0.0' );
+		vi.mocked( childProcess.execFile ).mockImplementation( ( command, args, options, callback ) => {
+			callback( null, { stdout: '30.0.0', stderr: '' } );
+		} );
 	} );
 
 	it( 'should be a function', () => {
 		expect( getPackageVersion ).toBeTypeOf( 'function' );
 	} );
 
-	it( 'returns a string', () => {
-		const returnedValue = getPackageVersion( 'ckeditor5', 'npm' );
+	it( 'returns a string', async () => {
+		const returnedValue = await getPackageVersion( 'ckeditor5', 'npm' );
 
 		expect( returnedValue ).toBeTypeOf( 'string' );
 	} );
 
-	it( 'calls "npm show" to determine the version', () => {
-		getPackageVersion( 'ckeditor5', 'npm' );
+	it( 'calls npm registry to determine the version', async () => {
+		await getPackageVersion( 'ckeditor5', 'npm' );
 
-		expect( execFileSync ).toHaveBeenCalledTimes( 1 );
-		expect( execFileSync ).toHaveBeenCalledWith(
+		expect( childProcess.execFile ).toHaveBeenCalledTimes( 1 );
+		expect( childProcess.execFile ).toHaveBeenCalledWith(
 			'npm',
 			[ 'view', 'ckeditor5', 'version' ],
-			{ encoding: 'utf-8', stdio: 'pipe' }
+			{ encoding: 'utf-8', stdio: 'pipe' },
+			expect.any( Function )
 		);
 	} );
 
-	it( 'returns a version matching semantic versioning specification', () => {
-		const returnedValue = getPackageVersion( 'ckeditor5', 'npm' );
+	it( 'returns a version matching semantic versioning specification', async () => {
+		const returnedValue = await getPackageVersion( 'ckeditor5', 'npm' );
 
 		expect( returnedValue ).toEqual( '30.0.0' );
 	} );
