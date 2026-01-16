@@ -101,22 +101,19 @@ async function verifyBuild( { language, packageManager, customPluginName, global
 
 	const listOfDevelopmentServers = [ startDevelopmentServer( NEW_PACKAGE_DIRECTORY ) ];
 
-	await Promise.all( listOfDevelopmentServers )
-		.then( optionsList => {
-			optionsList.forEach( options => {
-				executeCommand( [ 'node', upath.join( 'scripts', 'ci', 'verify-sample.js' ), options.url ], { cwd: REPOSITORY_DIRECTORY } );
-			} );
+	const optionsList = await Promise.all( listOfDevelopmentServers );
 
-			return optionsList;
-		} )
-		.then( optionsList => {
-			logProcess( 'Stopping the development servers...' );
-			return Promise.all( optionsList.map( options => killProcess( options.server ) ) );
-		} )
-		.then( () => {
-			logProcess( 'Removing the created package...' );
-			fs.rmSync( NEW_PACKAGE_DIRECTORY, { recursive: true, maxRetries: 1 } );
-		} );
+	optionsList.forEach( options => {
+		executeCommand( [ 'node', upath.join( 'scripts', 'ci', 'verify-sample.js' ), options.url ], { cwd: REPOSITORY_DIRECTORY } );
+	} );
+
+	logProcess( 'Stopping the development servers...' );
+
+	await Promise.all( optionsList.map( options => killProcess( options.server ) ) );
+
+	logProcess( 'Removing the created package...' );
+
+	fs.rmSync( NEW_PACKAGE_DIRECTORY, { recursive: true } );
 }
 
 /**
@@ -160,7 +157,8 @@ function startDevelopmentServer( cwd ) {
 		const sampleServer = spawn( 'npm', [ 'run', 'start' ], {
 			cwd,
 			encoding: 'utf8',
-			shell: true
+			shell: true,
+			detached: true
 		} );
 
 		sampleServer.stdout.on( 'data', data => {
@@ -193,20 +191,24 @@ function startDevelopmentServer( cwd ) {
  */
 function killProcess( childProcess ) {
 	return new Promise( resolve => {
-		childProcess.on( 'exit', () => resolve() );
+		let resolved = false;
 
-		// On Windows, for unknown reasons, the `childProcess.kill()` does not terminate successfully the development server processes.
-		// This in turn made it impossible to remove the created test package directory, because the `EBUSY` error was emitted when trying
-		// to remove it. So to unify the method of process termination on different operating systems, the `taskkill` command is used on
-		// Windows and `kill` command on other systems.
-		//
-		// See https://github.com/ckeditor/ckeditor5-package-generator/issues/79.
+		const resolveOnce = () => {
+			if ( resolved ) {
+				return;
+			}
+
+			resolved = true;
+			resolve();
+		};
+
+		childProcess.once( 'exit', resolveOnce );
+		childProcess.once( 'close', resolveOnce );
+
 		if ( process.platform === 'win32' ) {
-			// Terminate the process indicated by its id (/pid) and any child processes which were started by it (/t), forcefully (/f).
 			spawnSync( 'taskkill', [ '/pid', childProcess.pid, '/t', '/f' ] );
 		} else {
-			// Terminate the process indicated by its id by sending the `kill` signal that cannot be caught or ignored (-9).
-			spawnSync( 'kill', [ '-9', childProcess.pid ] );
+			process.kill( -childProcess.pid, 'SIGTERM' );
 		}
 	} );
 }
