@@ -10,6 +10,13 @@
     sizes="32x32"
   >
   <title>Development sample</title>
+
+  <style>
+    body {
+      max-width: 800px;
+      margin: 20px auto;
+    }
+  </style>
 </head>
 <body>
   <h1>Development Sample</h1>
@@ -78,7 +85,7 @@
 │  └─ contexts.json      # Entries used for creating translations.
 ├─ src
 │  ├─ <PACKAGE_NAME>.ts
-│  ├─ augmentation.ts    # Type augmentations for the `@ckeditor/ckeditor5-core` module. Read more in <a href="https://ckeditor.com/docs/ckeditor5/latest/api/module_core_plugincollection-PluginsMap.html">PluginsMap</a> and <a href="https://ckeditor.com/docs/ckeditor5/latest/api/module_core_commandcollection-CommandsMap.html">CommandsMap</a>.
+│  ├─ augmentation.ts    # Type augmentations for the `@ckeditor/ckeditor5-core` package. Read more in <a href="https://ckeditor.com/docs/ckeditor5/latest/api/module_core_plugincollection-PluginsMap.html">PluginsMap</a> and <a href="https://ckeditor.com/docs/ckeditor5/latest/api/module_core_commandcollection-CommandsMap.html">CommandsMap</a>.
 │  ├─ index.ts           # The modules exported by the package.
 │  ├─ sample.ts          # Editor setup used when running the `<%= packageManager %> run start` command.
 │  └─ **/*.ts            # All TypeScript source files should be saved here.

@@ -25,7 +25,7 @@
   ],
   "dependencies": {},
   "peerDependencies": {
-    "ckeditor5": ">=48.0.0 || ^0.0.0-nightly"
+    "ckeditor5": ">=48.0.0 || ^0.0.0-nightly || ^0.0.0-internal"
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-dev-build-tools": "<%= packageVersions.ckeditor5DevBuildTools %>",
