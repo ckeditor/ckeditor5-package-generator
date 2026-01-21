@@ -35,7 +35,7 @@ describe( 'lib/utils/get-package-version', () => {
 		expect( childProcess.execFile ).toHaveBeenCalledWith(
 			'npm',
 			[ 'view', 'ckeditor5', 'version' ],
-			{ encoding: 'utf-8', stdio: 'pipe' },
+			{ encoding: 'utf-8', shell: true, stdio: 'pipe' },
 			expect.any( Function )
 		);
 	} );
