@@ -18,7 +18,7 @@ export default async function getPackageVersion( packageName ) {
 	const { stdout } = await execFileAsync(
 		'npm',
 		[ 'view', packageName, 'version' ],
-		{ stdio: 'pipe', encoding: 'utf-8' }
+		{ stdio: 'pipe', shell: true, encoding: 'utf-8' }
 	);
 
 	return stdout.trim();

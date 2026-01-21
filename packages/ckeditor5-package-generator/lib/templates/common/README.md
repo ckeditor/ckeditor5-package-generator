@@ -64,7 +64,7 @@ Examples:
 <%= packageManager %> run lint
 
 # Auto-fix problems.
-<%= packageManager %> run lint --fix
+<%= packageManager %> run lint <%= cliSeparator %>--fix
 ```
 
 ### `stylelint`
