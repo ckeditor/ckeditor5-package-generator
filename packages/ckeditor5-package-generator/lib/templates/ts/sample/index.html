@@ -83,11 +83,13 @@
     <pre><code class="language-plaintext">.
 ├─ lang
 │  └─ contexts.json      # Entries used for creating translations.
+├─ sample
+│  ├─ index.html         # The HTML file for the development sample.
+│  └─ index.ts           # Editor setup used when running the `<%= packageManager %> run start` command.
 ├─ src
 │  ├─ <PACKAGE_NAME>.ts
 │  ├─ augmentation.ts    # Type augmentations for the `@ckeditor/ckeditor5-core` package. Read more in <a href="https://ckeditor.com/docs/ckeditor5/latest/api/module_core_plugincollection-PluginsMap.html">PluginsMap</a> and <a href="https://ckeditor.com/docs/ckeditor5/latest/api/module_core_commandcollection-CommandsMap.html">CommandsMap</a>.
 │  ├─ index.ts           # The modules exported by the package.
-│  ├─ sample.ts          # Editor setup used when running the `<%= packageManager %> run start` command.
 │  └─ **/*.ts            # All TypeScript source files should be saved here.
 ├─ tests
 │  ├─ <PACKAGE_NAME>.ts
@@ -112,6 +114,6 @@
     </ul>
   </div>
 
-  <script type="module" src="./src/sample.ts"></script>
+  <script type="module" src="./index.ts"></script>
 </body>
 </html>

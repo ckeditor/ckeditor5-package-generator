@@ -83,10 +83,12 @@
     <pre><code class="language-plaintext">.
 ├─ lang
 │  └─ contexts.json      # Entries used for creating translations.
+├─ sample
+│  ├─ index.html         # The HTML file for the development sample.
+│  └─ index.js           # Editor setup used when running the `<%= packageManager %> run start` command.
 ├─ src
 │  ├─ <PACKAGE_NAME>.js
 │  ├─ index.js           # The modules exported by the package.
-│  ├─ sample.js          # Editor setup used when running the `<%= packageManager %> run start` command.
 │  └─ **/*.js            # All TypeScript source files should be saved here.
 ├─ tests
 │  ├─ <PACKAGE_NAME>.js
@@ -108,6 +110,6 @@
     </ul>
   </div>
 
-  <script type="module" src="./src/sample.js"></script>
+  <script type="module" src="./index.js"></script>
 </body>
 </html>
