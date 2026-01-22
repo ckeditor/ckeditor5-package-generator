@@ -63,7 +63,7 @@ export default defineConfig( ( { mode } ) => {
 		test: {
 			dir: resolve( import.meta.dirname ),
 			include: [
-				resolve( import.meta.dirname, 'tests/**/*.[jt]s' )
+				'tests/**/*.[jt]s'
 			],
 			browser: {
 				enabled: true,

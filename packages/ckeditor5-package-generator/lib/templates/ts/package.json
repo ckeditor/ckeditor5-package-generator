@@ -27,7 +27,7 @@
   "dependencies": {},
   "peerDependencies": {
     "@ckeditor/ckeditor5-core": ">=48.0.0 || ^0.0.0-nightly || ^0.0.0-internal",
-    "ckeditor5": ">=48.0.0 || ^0.0.0-nightly"
+    "ckeditor5": ">=48.0.0 || ^0.0.0-nightly || ^0.0.0-internal"
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-core": "latest",
