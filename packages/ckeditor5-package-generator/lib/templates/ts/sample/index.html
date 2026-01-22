@@ -87,12 +87,12 @@
 │  ├─ index.html         # The HTML file for the development sample.
 │  └─ index.ts           # Editor setup used when running the `<%= packageManager %> run start` command.
 ├─ src
-│  ├─ <PACKAGE_NAME>.ts
+│  ├─ <%= formattedNames.plugin.lowerCaseMerged %>.ts
 │  ├─ augmentation.ts    # Type augmentations for the `@ckeditor/ckeditor5-core` package. Read more in <a href="https://ckeditor.com/docs/ckeditor5/latest/api/module_core_plugincollection-PluginsMap.html">PluginsMap</a> and <a href="https://ckeditor.com/docs/ckeditor5/latest/api/module_core_commandcollection-CommandsMap.html">CommandsMap</a>.
 │  ├─ index.ts           # The modules exported by the package.
 │  └─ **/*.ts            # All TypeScript source files should be saved here.
 ├─ tests
-│  ├─ <PACKAGE_NAME>.ts
+│  ├─ <%= formattedNames.plugin.lowerCaseMerged %>.ts
 │  └─ **/*.ts            # All tests should be saved here.
 ├─ theme
 │  ├─ icons

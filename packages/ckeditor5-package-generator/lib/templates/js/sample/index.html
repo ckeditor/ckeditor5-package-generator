@@ -87,11 +87,11 @@
 │  ├─ index.html         # The HTML file for the development sample.
 │  └─ index.js           # Editor setup used when running the `<%= packageManager %> run start` command.
 ├─ src
-│  ├─ <PACKAGE_NAME>.js
+│  ├─ <%= formattedNames.plugin.lowerCaseMerged %>.js
 │  ├─ index.js           # The modules exported by the package.
-│  └─ **/*.js            # All TypeScript source files should be saved here.
+│  └─ **/*.js            # All JavaScript source files should be saved here.
 ├─ tests
-│  ├─ <PACKAGE_NAME>.js
+│  ├─ <%= formattedNames.plugin.lowerCaseMerged %>.js
 │  └─ **/*.js            # All tests should be saved here.
 ├─ theme
 │  ├─ icons
