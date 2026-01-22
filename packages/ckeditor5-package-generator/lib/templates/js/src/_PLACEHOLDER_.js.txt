@@ -1,5 +1,4 @@
 import { Plugin, ButtonView } from 'ckeditor5';
-
 import ckeditor5Icon from '../theme/icons/ckeditor.svg';
 
 export default class <%= formattedNames.plugin.pascalCase %> extends Plugin {

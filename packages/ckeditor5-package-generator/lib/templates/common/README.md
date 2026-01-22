@@ -21,6 +21,7 @@ This package was created by the [ckeditor5-package-generator](https://www.npmjs.
 To read about the CKEditor 5 Framework, visit the [CKEditor 5 Framework documentation](https://ckeditor.com/docs/ckeditor5/latest/framework/index.html).
 
 ## Available scripts
+
 NPM scripts are a convenient way to provide commands in a project. They are defined in the `package.json` file and shared with people contributing to the project. It ensures developers use the same command with the same options (flags).
 
 All the scripts can be executed by running `<%= packageManager %> run <script>`. Pre and post commands with matching names will be run for those as well.
@@ -31,21 +32,11 @@ The following scripts are available in the package.
 
 Starts an HTTP server with the live-reload mechanism that allows previewing and testing of plugins available in the package.
 
-When the server starts, the default browser will open the developer sample. This can be disabled by passing the `--no-open` option to that command.
-
-You can also define the language that will translate the created editor by specifying the `--language [LANG]` option. It defaults to `'en'`.
-
 Examples:
 
 ```bash
 # Starts the server and open the browser.
 <%= packageManager %> run start
-
-# Disable auto-opening the browser.
-<%= packageManager %> run start <%= cliSeparator %>--no-open
-
-# Create the editor with the interface in German.
-<%= packageManager %> run start <%= cliSeparator %>--language=de
 ```
 
 ### `test`
@@ -71,6 +62,9 @@ Examples:
 ```bash
 # Execute eslint.
 <%= packageManager %> run lint
+
+# Auto-fix problems.
+<%= packageManager %> run lint <%= cliSeparator %>--fix
 ```
 
 ### `stylelint`
@@ -84,15 +78,15 @@ Examples:
 <%= packageManager %> run stylelint
 ```
 
-### `build:dist`
+### `build`
 
-Creates npm and browser builds of your plugin. These builds can be added to the editor following the [Configuring CKEditor 5 features](https://ckeditor.com/docs/ckeditor5/latest/getting-started/setup/configuration.html) guide.
+Creates npm and browser builds of your plugin. These builds can be added to the editor by following the [Configuring CKEditor 5 features](https://ckeditor.com/docs/ckeditor5/latest/getting-started/setup/configuration.html) guide.
 
 Examples:
 
 ```bash
 # Builds the `npm` and browser files thats are ready to publish.
-npm run build:dist
+<%= packageManager %> run build
 ```
 
 ### `translations:synchronize`

@@ -98,7 +98,7 @@ describe( 'lib/index', () => {
 
 		vi.mocked( chooseProgrammingLanguage ).mockResolvedValue( 'js' );
 
-		vi.mocked( getDependenciesVersions ).mockReturnValue( { ckeditor5: '30.0.0' } );
+		vi.mocked( getDependenciesVersions ).mockResolvedValue( { ckeditor5: '30.0.0' } );
 
 		vi.mocked( setGlobalName ).mockResolvedValue( 'GLOBAL' );
 
@@ -319,6 +319,7 @@ describe( 'lib/index', () => {
 				'to the newly created package. Then, the package offers a few predefined scripts:',
 				'',
 				'  * start - for creating the HTTP server with the editor sample,',
+				'  * build - for building the package,',
 				'  * test - for executing unit tests of an example plugin,',
 				'  * lint - for running a tool for static analyzing JavaScript files,',
 				'  * stylelint - for running a tool for static analyzing CSS files.',
