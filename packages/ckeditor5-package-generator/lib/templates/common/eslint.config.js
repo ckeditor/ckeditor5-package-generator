@@ -16,7 +16,10 @@ export default defineConfig( [
 		name: 'Base config',
 		languageOptions: {
 			ecmaVersion: 'latest',
-			sourceType: 'module'
+			sourceType: 'module',
+			globals: {
+				...globals.browser
+			}
 		},
 		linterOptions: {
 			reportUnusedInlineConfigs: 'error',
@@ -31,14 +34,6 @@ export default defineConfig( [
 			'ckeditor5-rules/require-file-extensions-in-imports': [ 'error', {
 				extensions: [ '.ts', '.js', '.json' ]
 			} ]
-		}
-	},
-	{
-		files: [ 'src/**/*' ],
-		languageOptions: {
-			globals: {
-				...globals.browser
-			}
 		}
 	},
 	{
