@@ -29,8 +29,8 @@
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-dev-build-tools": "<%= packageVersions.ckeditor5DevBuildTools %>",
+    "@ckeditor/ckeditor5-dev-translations": "<%= packageVersions.ckeditor5DevTranslations %>",
     "@ckeditor/ckeditor5-inspector": "^<%= packageVersions.ckeditor5Inspector %>",
-    "@ckeditor/ckeditor5-package-tools": "<%= packageVersions.packageTools %>",
     "@vitest/browser-webdriverio": "^4.0.6",
     "@vitest/coverage-istanbul": "^4.0.6",
     "ckeditor5": "latest",
@@ -60,8 +60,8 @@
     "test:debug": "vitest --inspect-brk --no-file-parallelism --browser.headless=false",
     "lint": "eslint",
     "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
-    "translations:synchronize": "ckeditor5-package-tools translations:synchronize",
-    "translations:validate": "ckeditor5-package-tools translations:synchronize --validate-only",
+    "translations:synchronize": "node ./scripts/synchronize-translations.js",
+    "translations:validate": "node ./scripts/synchronize-translations.js --validate-only",
     "prepublishOnly": "<%= packageManager %> run build"
   },
   "lint-staged": {

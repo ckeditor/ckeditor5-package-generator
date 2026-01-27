@@ -75,7 +75,6 @@ node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--d
 #### Options
 
 * `--dev` &ndash; whether to execute in the development mode. It means that the `@ckeditor/ckeditor5-package-tools` package will not be installed from npm, but from the local file system.
-* `--use-release-directory` &ndash; whether to use the `release/` directory while resolving a path to the `@ckeditor/ckeditor5-package-tools` dependency. This flag must be used along with `--dev`.
 * `--use-npm` &ndash; use `npm` to install dependencies in a newly created package.
 * `--use-yarn` &ndash; use `yarn` to install dependencies in a newly created package.
 * `--use-pnpm` &ndash; use `pnpm` to install dependencies in a newly created package.

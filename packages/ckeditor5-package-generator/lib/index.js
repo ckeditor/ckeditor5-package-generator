@@ -31,8 +31,7 @@ export default async function init( packageName, options ) {
 		usePnpm,
 		lang,
 		pluginName,
-		globalName,
-		useReleaseDirectory
+		globalName
 	} = options;
 
 	const logger = new Logger( verbose );
@@ -44,7 +43,7 @@ export default async function init( packageName, options ) {
 	const packageManager = await choosePackageManager( logger, { useNpm, useYarn, usePnpm } );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
 	const validatedGlobalName = await setGlobalName( logger, globalName, 'CK' + formattedNames.plugin.pascalCase );
-	const packageVersions = await getDependenciesVersions( logger, { dev, useReleaseDirectory } );
+	const packageVersions = await getDependenciesVersions( logger );
 
 	copyFiles( logger, {
 		packageName: validatedPackageName,
@@ -90,8 +89,7 @@ export default async function init( packageName, options ) {
  * @property {Boolean} [usePnpm=false]
  *
  * @property {Boolean} [dev=false]
- *
- * @property {Boolean} [useReleaseDirectory=false]
+
  *
  * @property {String} lang
  *

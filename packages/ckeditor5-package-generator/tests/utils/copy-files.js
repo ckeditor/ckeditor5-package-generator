@@ -31,7 +31,6 @@ describe( 'lib/utils/copy-files', () => {
 			'@ckeditor/ckeditor5-basic-styles': '>=<%= packageVersions.ckeditor5 %>',
 			'@ckeditor/ckeditor5-block-quote': '>=<%= packageVersions.ckeditor5 %>',
 			'@ckeditor/ckeditor5-inspector': '>=<%= packageVersions.ckeditor5Inspector %>',
-			'@ckeditor/ckeditor5-package-tools': '<%= packageVersions.packageTools %>',
 			'eslint': '^7.32.0',
 			'eslint-config-ckeditor5': '>=<%= packageVersions.eslintConfigCkeditor5 %>',
 			'stylelint': '^13.13.1',
@@ -126,8 +125,7 @@ describe( 'lib/utils/copy-files', () => {
 			packageManager: 'yarn',
 			directoryPath: 'directory/path/foo',
 			packageVersions: {
-				ckeditor5: '30.0.0',
-				packageTools: '25.0.0'
+				ckeditor5: '30.0.0'
 			}
 		};
 

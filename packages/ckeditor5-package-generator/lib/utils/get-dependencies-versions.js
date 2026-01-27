@@ -3,7 +3,6 @@
  * For licensing, see LICENSE.md.
  */
 
-import upath from 'upath';
 import getPackageVersion from './get-package-version.js';
 
 /**
@@ -12,86 +11,42 @@ import getPackageVersion from './get-package-version.js';
  *   * `ckeditor5`
  *   * `@ckeditor/ckeditor5-inspector` (as `ckeditor5Inspector`)
  *   * `@ckeditor/ckeditor5-dev-build-tools` (as `ckeditor5DevBuildTools`)
+ *   * `@ckeditor/ckeditor5-dev-translations` (as `ckeditor5DevTranslations`)
  *   * `eslint-config-ckeditor5` (as `eslintConfigCkeditor5`)
  *   * `eslint-plugin-ckeditor5-rules` (as `eslintPluginCkeditor5Rules`)
  *   * `stylelint-config-ckeditor5` (as `stylelintConfigCkeditor5`)
- *   * `@ckeditor/ckeditor5-package-tools` (as `packageTools`)
- *
- * The value for the `packageTools` package depends on the `options.devMode` modifier:
- *
- *   * `true` - an absolute path to the locally cloned package.
- *   * `false` - the latest version published on npm.
  *
  * @param {Logger} logger
- * @param {Object} options
- * @param {Boolean} options.dev
- * @param {Boolean} [options.useReleaseDirectory=false]
  * @returns {Promise<Object>}
  */
-export default async function getDependenciesVersions( logger, { dev, useReleaseDirectory = false } ) {
+export default async function getDependenciesVersions( logger ) {
 	logger.process( 'Collecting the latest CKEditor 5 packages versions...' );
 
 	const [
 		ckeditor5,
 		ckeditor5Inspector,
 		ckeditor5DevBuildTools,
+		ckeditor5DevTranslations,
 		eslintConfigCkeditor5,
 		eslintPluginCkeditor5Rules,
-		stylelintConfigCkeditor5,
-		packageTools
+		stylelintConfigCkeditor5
 	] = await Promise.all( [
 		getPackageVersion( 'ckeditor5' ),
 		getPackageVersion( '@ckeditor/ckeditor5-inspector' ),
 		getPackageVersion( '@ckeditor/ckeditor5-dev-build-tools' ),
+		getPackageVersion( '@ckeditor/ckeditor5-dev-translations' ),
 		getPackageVersion( 'eslint-config-ckeditor5' ),
 		getPackageVersion( 'eslint-plugin-ckeditor5-rules' ),
-		getPackageVersion( 'stylelint-config-ckeditor5' ),
-		resolvePackageToolsDependency( logger, { dev, useReleaseDirectory } )
+		getPackageVersion( 'stylelint-config-ckeditor5' )
 	] );
 
 	return {
 		ckeditor5,
 		ckeditor5Inspector,
 		ckeditor5DevBuildTools,
+		ckeditor5DevTranslations,
 		eslintConfigCkeditor5,
 		eslintPluginCkeditor5Rules,
-		stylelintConfigCkeditor5,
-		packageTools
+		stylelintConfigCkeditor5
 	};
-}
-
-async function resolvePackageToolsDependency( logger, { dev, useReleaseDirectory } ) {
-	if ( !dev ) {
-		const version = await getPackageVersion( '@ckeditor/ckeditor5-package-tools' );
-
-		return '^' + version;
-	}
-
-	// Controls how `ckeditor5-package-tools` is linked:
-	// - `useReleaseDirectory=true` → `/root/release/ckeditor5-package-tools`
-	// - `useReleaseDirectory=false` → `/root/packages/ckeditor5-package-tools`
-	//
-	// The repository defaults to `pnpm`, whose dependency layout is not fully compatible with Yarn.
-	// To avoid traversing `node_modules/` (which may contain symlinks), enabling `useReleaseDirectory`
-	// ensures a clean package structure without external modules.
-	//
-	// See: https://github.com/ckeditor/ckeditor5-package-generator/issues/253.
-	const packageToolsPath = [
-		import.meta.dirname,
-		'..',
-		'..',
-		'..'
-	];
-
-	if ( useReleaseDirectory ) {
-		logger.verboseInfo( 'Using the `release/` directory for `ckeditor5-package-tools`. Ensure it exists and is up-to-date.' );
-
-		packageToolsPath.push( '..' );
-		packageToolsPath.push( 'release' );
-	}
-
-	packageToolsPath.push( 'ckeditor5-package-tools' );
-
-	// Windows accepts unix-like paths in `package.json`.
-	return 'file:' + upath.resolve( ...packageToolsPath );
 }
