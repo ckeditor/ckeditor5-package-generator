@@ -1,5 +1,6 @@
 ---
 type: Major breaking change
+scope: ckeditor5-package-generator
 see: https://github.com/ckeditor/ckeditor5-package-generator/issues/295
 ---
 
