@@ -25,9 +25,11 @@
   ],
   "dependencies": {},
   "peerDependencies": {
+    "@ckeditor/ckeditor5-core": ">=48.0.0 || ^0.0.0-nightly || ^0.0.0-internal",
     "ckeditor5": ">=48.0.0 || ^0.0.0-nightly || ^0.0.0-internal"
   },
   "devDependencies": {
+    "@ckeditor/ckeditor5-core": "latest",
     "@ckeditor/ckeditor5-dev-build-tools": "<%= packageVersions.ckeditor5DevBuildTools %>",
     "@ckeditor/ckeditor5-dev-translations": "<%= packageVersions.ckeditor5DevTranslations %>",
     "@ckeditor/ckeditor5-inspector": "^<%= packageVersions.ckeditor5Inspector %>",
