@@ -58,7 +58,7 @@ describe( 'lib/utils/install-dependencies', () => {
 		expect( spawn ).toHaveBeenCalledTimes( 1 );
 		expect( spawn ).toHaveBeenCalledWith(
 			'yarnpkg',
-			[],
+			[ 'install' ],
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -74,7 +74,7 @@ describe( 'lib/utils/install-dependencies', () => {
 		expect( spawn ).toHaveBeenCalledTimes( 1 );
 		expect( spawn ).toHaveBeenCalledWith(
 			'yarnpkg',
-			[],
+			[ 'install' ],
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -118,16 +118,6 @@ describe( 'lib/utils/install-dependencies', () => {
 		);
 	} );
 
-	it( 'uses --install-links flag using npm in dev mode', async () => {
-		await runTest( { packageManager: 'npm', verbose: true, dev: true } );
-
-		expect( spawn ).toHaveBeenCalledWith(
-			'npm',
-			[ 'install', '--install-links' ],
-			expect.any( Object )
-		);
-	} );
-
 	it( 'installs dependencies using pnpm', async () => {
 		await runTest( { packageManager: 'pnpm' } );
 
@@ -161,16 +151,6 @@ describe( 'lib/utils/install-dependencies', () => {
 		);
 	} );
 
-	it( 'installs dependencies using pnpm in dev mode', async () => {
-		await runTest( { packageManager: 'pnpm', dev: true } );
-
-		expect( spawn ).toHaveBeenCalledWith(
-			'pnpm',
-			[ 'install' ],
-			expect.any( Object )
-		);
-	} );
-
 	it( 'throws an error when install task closes with error exit code', () => {
 		return runTest( { exitCode: 1 } )
 			.then( () => {
@@ -182,9 +162,12 @@ describe( 'lib/utils/install-dependencies', () => {
 	} );
 
 	it( 'throws an error for unhandled package manager', async () => {
+		vi.mocked( spawn ).mockImplementation( () => {
+			throw new Error( 'Unhandled package manager unknown' );
+		} );
+
 		try {
-			await installDependencies( defaultDirectoryPath, 'unknown', false, false );
-			throw new Error( 'Expected to throw.' );
+			await installDependencies( defaultDirectoryPath, 'unknown', false );
 		} catch ( err ) {
 			expect( err.message ).toEqual( 'Unhandled package manager unknown' );
 		}
@@ -200,8 +183,8 @@ describe( 'lib/utils/install-dependencies', () => {
 	 *
 	 * @param {Object} options
 	 */
-	async function runTest( { packageManager = 'yarn', exitCode = 0, verbose = false, dev = false } ) {
-		const promise = installDependencies( defaultDirectoryPath, packageManager, verbose, dev );
+	async function runTest( { packageManager = 'yarn', exitCode = 0, verbose = false } ) {
+		const promise = installDependencies( defaultDirectoryPath, packageManager, verbose );
 		const [ , installTaskCloseCallback ] = stubs.installTask.on.mock.calls[ 0 ];
 		await installTaskCloseCallback( exitCode );
 
