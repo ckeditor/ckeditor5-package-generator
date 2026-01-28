@@ -51,7 +51,6 @@ async function verifyBuild( { language, packageManager, customPluginName, global
 		'node',
 		`${ projectRootName }/packages/ckeditor5-package-generator/bin/index.js`,
 		'@ckeditor/ckeditor5-test-package',
-		'--dev',
 		'--verbose',
 		'--lang', language,
 		`--use-${ packageManager }`,

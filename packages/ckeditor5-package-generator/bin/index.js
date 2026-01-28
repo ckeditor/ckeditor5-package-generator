@@ -15,7 +15,6 @@ const packageJson = fs.readJsonSync( upath.join( import.meta.dirname, '..', 'pac
 new Command( packageJson.name )
 	.argument( '[packageName]', 'name of the package (@scope/ckeditor5-*)' )
 	.option( '-v, --verbose', 'output additional logs', false )
-	.option( '--dev', 'execution of the script in the development mode', isInsideGitRepositoryCallback, false )
 	.option( '--use-npm', 'whether use npm to install packages', false )
 	.option( '--use-yarn', 'whether use yarn to install packages', false )
 	.option( '--use-pnpm', 'whether use pnpm to install packages', false )
@@ -37,12 +36,3 @@ new Command( packageJson.name )
 			} );
 	} )
 	.parse( process.argv );
-
-function isInsideGitRepositoryCallback() {
-	// An absolute path to the repository that tracks the package.
-	const rootRepositoryPath = upath.join( import.meta.dirname, '..', '..', '..' );
-
-	// The assumption here is that if the `--dev` flag was used, the entire repository is cloned.
-	// Otherwise, the executable was downloaded from npm, and it can't be executed in dev-mode.
-	return fs.existsSync( upath.join( rootRepositoryPath, '.git' ) );
-}

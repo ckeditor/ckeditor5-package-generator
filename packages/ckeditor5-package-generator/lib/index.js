@@ -24,7 +24,6 @@ import validatePluginName from './utils/validate-plugin-name.js';
  */
 export default async function init( packageName, options ) {
 	const {
-		dev,
 		verbose,
 		useNpm,
 		useYarn,
@@ -56,7 +55,7 @@ export default async function init( packageName, options ) {
 		validatedGlobalName
 	} );
 
-	await installDependencies( directoryPath, packageManager, verbose, dev );
+	await installDependencies( directoryPath, packageManager, verbose );
 	initializeGitRepository( directoryPath, logger );
 	await installGitHooks( directoryPath, logger, verbose );
 

@@ -3,25 +3,24 @@
  * For licensing, see LICENSE.md.
  */
 
+import { spawn } from 'node:child_process';
 import { tools } from '@ckeditor/ckeditor5-dev-utils';
 import chalk from 'chalk';
-import { spawn } from 'node:child_process';
 
 /**
  * @param {String} directoryPath
  * @param {'npm'|'yarn'|'pnpm'} packageManager
  * @param {Boolean} verbose
- * @param {Boolean} dev
  * @returns {Promise}
  */
-export default async function installDependencies( directoryPath, packageManager, verbose, dev ) {
+export default async function installDependencies( directoryPath, packageManager, verbose ) {
 	const installSpinner = tools.createSpinner( 'Installing dependencies... ' + chalk.gray.italic( 'It takes a while.' ), {
 		isDisabled: verbose
 	} );
 
 	installSpinner.start();
 
-	await installPackages( directoryPath, packageManager, verbose, dev );
+	await installPackages( directoryPath, packageManager, verbose );
 
 	installSpinner.finish();
 }
@@ -30,10 +29,9 @@ export default async function installDependencies( directoryPath, packageManager
  * @param {String} directoryPath
  * @param {'npm'|'yarn'|'pnpm'} packageManager
  * @param {Boolean} verbose
- * @param {Boolean} dev
  * @returns {Promise}
  */
-function installPackages( directoryPath, packageManager, verbose, dev ) {
+function installPackages( directoryPath, packageManager, verbose ) {
 	return new Promise( ( resolve, reject ) => {
 		const spawnOptions = {
 			encoding: 'utf8',
@@ -42,30 +40,21 @@ function installPackages( directoryPath, packageManager, verbose, dev ) {
 			stderr: 'inherit'
 		};
 
-		let installTask;
-
 		if ( verbose ) {
 			spawnOptions.stdio = 'inherit';
 		}
 
-		if ( packageManager === 'npm' ) {
-			const npmArguments = [
-				'install'
-			];
+		const COMMAND_MAP = {
+			npm: 'npm',
+			yarn: 'yarnpkg',
+			pnpm: 'pnpm'
+		};
 
-			// Flag required for npm 8 to install linked packages' dependencies
-			if ( dev ) {
-				npmArguments.push( '--install-links' );
-			}
-
-			installTask = spawn( 'npm', npmArguments, spawnOptions );
-		} else if ( packageManager === 'yarn' ) {
-			installTask = spawn( 'yarnpkg', [], spawnOptions );
-		} else if ( packageManager === 'pnpm' ) {
-			installTask = spawn( 'pnpm', [ 'install' ], spawnOptions );
-		} else {
-			throw new Error( 'Unhandled package manager ' + packageManager );
-		}
+		const installTask = spawn(
+			COMMAND_MAP[ packageManager ],
+			[ 'install' ],
+			spawnOptions
+		);
 
 		installTask.on( 'close', exitCode => {
 			if ( exitCode ) {

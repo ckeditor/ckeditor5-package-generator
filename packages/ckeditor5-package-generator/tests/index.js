@@ -115,7 +115,6 @@ describe( 'lib/index', () => {
 			usePnpm: false,
 			pluginName: 'FooBar',
 			lang: 'js',
-			dev: false,
 			globalName: 'GLOBAL'
 		};
 	} );
@@ -233,14 +232,6 @@ describe( 'lib/index', () => {
 		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ) );
 	} );
 
-	it( 'gets the versions of the dependencies (`--dev`)', async () => {
-		options.dev = true;
-		await index( packageName, options );
-
-		expect( getDependenciesVersions ).toHaveBeenCalledTimes( 1 );
-		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ) );
-	} );
-
 	it( 'copies the files', async () => {
 		await index( packageName, options );
 
@@ -281,7 +272,7 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( installDependencies ).toHaveBeenCalledTimes( 1 );
-		expect( installDependencies ).toHaveBeenCalledWith( 'directoryPath', 'yarn', true, false );
+		expect( installDependencies ).toHaveBeenCalledWith( 'directoryPath', 'yarn', true );
 	} );
 
 	it( 'initializes the git repository', async () => {
