@@ -87,9 +87,6 @@ export default async function init( packageName, options ) {
  *
  * @property {Boolean} [usePnpm=false]
  *
- * @property {Boolean} [dev=false]
-
- *
  * @property {String} lang
  *
  * @property {String} pluginName

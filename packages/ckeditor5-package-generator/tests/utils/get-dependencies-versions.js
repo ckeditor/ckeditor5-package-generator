@@ -18,10 +18,6 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 				return Promise.resolve( '30.0.0' );
 			}
 
-			if ( packageName === '@ckeditor/ckeditor5-package-tools' ) {
-				return Promise.resolve( '1.0.0' );
-			}
-
 			if ( packageName === '@ckeditor/ckeditor5-dev-build-tools' ) {
 				return Promise.resolve( '7.0.0' );
 			}
@@ -80,10 +76,5 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 	it( 'returns an object with a version of the "stylelint-config-ckeditor5" package', async () => {
 		const returnedValue = await getDependenciesVersions( stubs.logger );
 		expect( returnedValue.stylelintConfigCkeditor5 ).toEqual( '3.0.0' );
-	} );
-
-	it( 'returns an object with a version of the "@ckeditor/ckeditor5-package-tools" package', async () => {
-		const returnedValue = await getDependenciesVersions( stubs.logger );
-		expect( returnedValue.ckeditor5Inspector ).toEqual( '4.0.0' );
 	} );
 } );

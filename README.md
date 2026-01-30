@@ -40,18 +40,6 @@ This repository follows the mono-repository structure. It contains multiple npm 
 	</td>
 </tr>
 
-<tr>
-	<td>
-		<a href="/packages/ckeditor5-package-tools"><code>@ckeditor/ckeditor5-package-tools</code></a>
-	</td>
-	<td>
-		<a href="https://badge.fury.io/js/@ckeditor%2Fckeditor5-package-tools"><img src="https://badge.fury.io/js/@ckeditor%2Fckeditor5-package-tools.svg" alt="npm version" height="18"></a>
-	</td>
-	<td>
-		Development environment tools for CKEditor 5 packages.
-	</td>
-</tr>
-
 </tbody>
 </table>
 

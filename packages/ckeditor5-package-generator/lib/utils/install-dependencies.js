@@ -50,8 +50,14 @@ function installPackages( directoryPath, packageManager, verbose ) {
 			pnpm: 'pnpm'
 		};
 
+		const pkgManager = COMMAND_MAP[ packageManager ];
+
+		if ( !pkgManager ) {
+			return reject( new Error( `Unknown package manager: ${ packageManager }.` ) );
+		}
+
 		const installTask = spawn(
-			COMMAND_MAP[ packageManager ],
+			pkgManager,
 			[ 'install' ],
 			spawnOptions
 		);

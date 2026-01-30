@@ -162,14 +162,10 @@ describe( 'lib/utils/install-dependencies', () => {
 	} );
 
 	it( 'throws an error for unhandled package manager', async () => {
-		vi.mocked( spawn ).mockImplementation( () => {
-			throw new Error( 'Unhandled package manager unknown' );
-		} );
-
 		try {
 			await installDependencies( defaultDirectoryPath, 'unknown', false );
 		} catch ( err ) {
-			expect( err.message ).toEqual( 'Unhandled package manager unknown' );
+			expect( err.message ).toEqual( 'Unknown package manager: unknown.' );
 		}
 	} );
 
