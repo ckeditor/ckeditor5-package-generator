@@ -82,23 +82,25 @@
 
     <pre><code class="language-plaintext">.
 ├─ lang
-│  └─ contexts.json      # Entries used for creating translations.
+│  └─ contexts.json                # Entries used for creating translations.
 ├─ sample
-│  ├─ index.html         # The HTML file for the development sample.
-│  └─ index.js           # Editor setup used when running the `<%= packageManager %> run start` command.
+│  ├─ index.html                   # The HTML file for the development sample.
+│  └─ index.js                     # Editor setup used when running the `<%= packageManager %> run start` command.
+├─ scripts
+│  └─ synchronize-translations.js  # Validates and synchronizes translation files.
 ├─ src
 │  ├─ <%= formattedNames.plugin.lowerCaseMerged %>.js
-│  ├─ index.js           # The modules exported by the package.
-│  └─ **/*.js            # All JavaScript source files should be saved here.
+│  ├─ index.js                     # The modules exported by the package.
+│  └─ **/*.js                      # All JavaScript source files should be saved here.
 ├─ tests
 │  ├─ <%= formattedNames.plugin.lowerCaseMerged %>.js
-│  └─ **/*.js            # All tests should be saved here.
+│  └─ **/*.js                      # All tests should be saved here.
 ├─ theme
 │  ├─ icons
-│  │  ├─ ckeditor.svg    # The CKEditor 5 icon displayed in the toolbar.
-│  │  └─ **/*.svg        # All icon files should be saved here.
-│  ├─ styles
-│  │  └─ **/*.css        # All stylesheet files should be saved here.
+│  │  ├─ ckeditor.svg              # The CKEditor 5 icon displayed in the toolbar.
+│  │  └─ **/*.svg                  # All icon files should be saved here.
+│  └─styles
+│     └─ **/*.css                  # All stylesheet files should be saved here.
 └─ ...</code></pre>
 
     <h3>Reporting issues</h3>

@@ -24,15 +24,13 @@ import validatePluginName from './utils/validate-plugin-name.js';
  */
 export default async function init( packageName, options ) {
 	const {
-		dev,
 		verbose,
 		useNpm,
 		useYarn,
 		usePnpm,
 		lang,
 		pluginName,
-		globalName,
-		useReleaseDirectory
+		globalName
 	} = options;
 
 	const logger = new Logger( verbose );
@@ -44,7 +42,7 @@ export default async function init( packageName, options ) {
 	const packageManager = await choosePackageManager( logger, { useNpm, useYarn, usePnpm } );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
 	const validatedGlobalName = await setGlobalName( logger, globalName, 'CK' + formattedNames.plugin.pascalCase );
-	const packageVersions = await getDependenciesVersions( logger, { dev, useReleaseDirectory } );
+	const packageVersions = await getDependenciesVersions( logger );
 
 	copyFiles( logger, {
 		packageName: validatedPackageName,
@@ -57,7 +55,7 @@ export default async function init( packageName, options ) {
 		validatedGlobalName
 	} );
 
-	await installDependencies( directoryPath, packageManager, verbose, dev );
+	await installDependencies( directoryPath, packageManager, verbose );
 	initializeGitRepository( directoryPath, logger );
 	await installGitHooks( directoryPath, logger, verbose );
 
@@ -88,10 +86,6 @@ export default async function init( packageName, options ) {
  * @property {Boolean} [useYarn=false]
  *
  * @property {Boolean} [usePnpm=false]
- *
- * @property {Boolean} [dev=false]
- *
- * @property {Boolean} [useReleaseDirectory=false]
  *
  * @property {String} lang
  *
