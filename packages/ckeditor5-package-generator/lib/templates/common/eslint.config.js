@@ -35,5 +35,13 @@ export default defineConfig( [
 				extensions: [ '.ts', '.js', '.json' ]
 			} ]
 		}
+	},
+	{
+		files: [ 'scripts/**/*' ],
+		languageOptions: {
+			globals: {
+				...globals.node
+			}
+		}
 	}
 ] );
