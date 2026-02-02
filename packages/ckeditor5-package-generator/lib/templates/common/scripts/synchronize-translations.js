@@ -5,6 +5,7 @@
 
 import { globSync } from 'node:fs';
 import { parseArgs } from 'node:util';
+import { fileURLToPath } from 'node:url';
 import { join, relative, dirname } from 'node:path';
 import { synchronizeTranslations } from '@ckeditor/ckeditor5-dev-translations';
 
@@ -27,7 +28,7 @@ synchronizeTranslations( {
 	packagePaths: [ cwd ],
 
 	// A relative path to the `@ckeditor/ckeditor5-core` package where common translations are located.
-	corePackagePath: relative( cwd, dirname( import.meta.resolve( '@ckeditor/ckeditor5-core/package.json' ) ) ),
+	corePackagePath: getCorePackagePath( cwd ),
 
 	// Ignore unused from the core package, as the shared context may but does not have to be used.
 	ignoreUnusedCorePackageContexts: true,
@@ -38,3 +39,14 @@ synchronizeTranslations( {
 	// Skip the license header.
 	skipLicenseHeader: true
 } );
+
+/**
+ * Returns the relative path to the `@ckeditor/ckeditor5-core` package.
+ */
+function getCorePackagePath( cwd ) {
+	const corePackagePath = fileURLToPath(
+		dirname( import.meta.resolve( '@ckeditor/ckeditor5-core/package.json' ) )
+	);
+
+	return relative( cwd, corePackagePath );
+}
