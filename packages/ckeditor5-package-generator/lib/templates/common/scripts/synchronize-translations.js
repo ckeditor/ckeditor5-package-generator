@@ -44,8 +44,8 @@ synchronizeTranslations( {
  * Returns the relative path to the `@ckeditor/ckeditor5-core` package.
  */
 function getCorePackagePath( cwd ) {
-	const corePackagePath = fileURLToPath(
-		dirname( import.meta.resolve( '@ckeditor/ckeditor5-core/package.json' ) )
+	const corePackagePath = dirname(
+		fileURLToPath( import.meta.resolve( '@ckeditor/ckeditor5-core/package.json' ) )
 	);
 
 	return relative( cwd, corePackagePath );
