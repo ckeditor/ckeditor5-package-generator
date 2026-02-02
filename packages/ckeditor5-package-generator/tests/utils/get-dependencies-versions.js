@@ -18,12 +18,16 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 				return Promise.resolve( '30.0.0' );
 			}
 
+			if ( packageName === '@ckeditor/ckeditor5-inspector' ) {
+				return Promise.resolve( '4.0.0' );
+			}
+
 			if ( packageName === '@ckeditor/ckeditor5-dev-build-tools' ) {
 				return Promise.resolve( '7.0.0' );
 			}
 
-			if ( packageName === '@ckeditor/ckeditor5-inspector' ) {
-				return Promise.resolve( '4.0.0' );
+			if ( packageName === '@ckeditor/ckeditor5-dev-translations' ) {
+				return Promise.resolve( '7.0.0' );
 			}
 
 			if ( packageName === 'eslint-config-ckeditor5' ) {
@@ -61,6 +65,21 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 	it( 'returns an object with a version of the "ckeditor5" package', async () => {
 		const returnedValue = await getDependenciesVersions( stubs.logger );
 		expect( returnedValue.ckeditor5 ).toEqual( '30.0.0' );
+	} );
+
+	it( 'returns an object with a version of the "@ckeditor/ckeditor5-inspector" package', async () => {
+		const returnedValue = await getDependenciesVersions( stubs.logger );
+		expect( returnedValue.ckeditor5Inspector ).toEqual( '4.0.0' );
+	} );
+
+	it( 'returns an object with a version of the "@ckeditor/ckeditor5-dev-build-tools" package', async () => {
+		const returnedValue = await getDependenciesVersions( stubs.logger );
+		expect( returnedValue.ckeditor5DevBuildTools ).toEqual( '7.0.0' );
+	} );
+
+	it( 'returns an object with a version of the "@ckeditor/ckeditor5-dev-translations" package', async () => {
+		const returnedValue = await getDependenciesVersions( stubs.logger );
+		expect( returnedValue.ckeditor5DevTranslations ).toEqual( '7.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "eslint-config-ckeditor5"', async () => {
