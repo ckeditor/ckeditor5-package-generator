@@ -3,9 +3,9 @@ Changelog
 
 ## [6.0.0-alpha.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v5.0.1...v6.0.0-alpha.0) (February 11, 2026)
 
-This alpha release brings some significant changes to the package generator. We’ve removed support for the old installation methods and are now fully aligned with the new installation approach. As part of this shift, we took the opportunity to modernize the entire generated project setup.
+This alpha release brings significant changes to the package generator. We have [removed support for the old installation methods](https://github.com/ckeditor/ckeditor5/issues/17779) and are now fully aligned with the new installation approach. As part of this shift, we took the opportunity to modernize the entire generated project setup.
 
-New plugins are now created with a clean, pre-configured Vite setup instead of the previous webpack-based configuration. The result should feel more familiar to most developers, offer better performance, and be much easier to extend and customize as your plugin evolves.
+New plugins are now created with a clean, pre-configured Vite setup instead of the previous webpack-based configuration. The result should feel more familiar to most developers, offer a performance boost, and be much easier to extend and customize as your plugin evolves.
 
 ### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
 
