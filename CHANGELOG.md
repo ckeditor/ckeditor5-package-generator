@@ -3,6 +3,10 @@ Changelog
 
 ## [6.0.0-alpha.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v5.0.1...v6.0.0-alpha.0) (February 11, 2026)
 
+This alpha release brings some significant changes to the package generator. We’ve removed support for the old installation methods and are now fully aligned with the new installation approach. As part of this shift, we took the opportunity to modernize the entire generated project setup.
+
+New plugins are now created with a clean, pre-configured Vite setup instead of the previous webpack-based configuration. The result should feel more familiar to most developers, offer better performance, and be much easier to extend and customize as your plugin evolves.
+
 ### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
 
 * **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Removed `--installation-methods` (`-m`) flag that was used to provide the CKEditor 5 installation method: either the current (modern) method or the legacy (DLL-based) one. Now, only the current installation method is supported, so no DLL-based files and configurations are generated anymore. For more details on migrating custom plugins, please refer to the [documentation](https://ckeditor.com/docs/ckeditor5/latest/updating/nim-migration/custom-plugins.html). See [#280](https://github.com/ckeditor/ckeditor5-package-generator/issues/280).
