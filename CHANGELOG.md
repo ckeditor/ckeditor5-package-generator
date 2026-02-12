@@ -1,6 +1,25 @@
 Changelog
 =========
 
+## [6.0.0-alpha.1](https://github.com/ckeditor/ckeditor5-package-generator/compare/v6.0.0-alpha.0...v6.0.0-alpha.1) (February 12, 2026)
+
+### Bug fixes
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Packages produced by the generator should include `.gitignore` that defines internal artifacts.
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Other releases:
+
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/6.0.0-alpha.1): v6.0.0-alpha.0 => v6.0.0-alpha.1
+</details>
+
+
 ## [6.0.0-alpha.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v5.0.1...v6.0.0-alpha.0) (February 11, 2026)
 
 This alpha release brings significant changes to the package generator. We have [removed support for the old installation methods](https://github.com/ckeditor/ckeditor5/issues/17779) and are now fully aligned with the new installation approach. As part of this shift, we took the opportunity to modernize the entire generated project setup.
@@ -109,31 +128,6 @@ Other releases:
 
 * [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/4.1.1): v4.1.0 => v4.1.1
 * [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/4.1.1): v4.1.0 => v4.1.1
-</details>
-
-
-## [4.1.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v4.0.2...v4.1.0) (September 16, 2025)
-
-### Features
-
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Added comprehensive support for `pnpm` alongside existing `npm` and `yarn` options in the CKEditor 5 package generator. Closes [#247](https://github.com/ckeditor/ckeditor5-package-generator/issues/247).
-
-  You can now use the `--use-pnpm` CLI flag to specify `pnpm` as your package manager when generating a new package.
-
-### Released packages
-
-Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
-
-<details>
-<summary>Released packages (summary)</summary>
-
-Releases containing new features:
-
-* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/4.1.0): v4.0.2 => v4.1.0
-
-Other releases:
-
-* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/4.1.0): v4.0.2 => v4.1.0
 </details>
 
 ---
