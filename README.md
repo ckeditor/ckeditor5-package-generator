@@ -3,6 +3,7 @@ CKEditor 5 Package Generator
 
 [![CircleCI](https://circleci.com/gh/ckeditor/ckeditor5-package-generator.svg?style=shield)](https://app.circleci.com/pipelines/github/ckeditor/ckeditor5-package-generator?branch=master)
 [![Coverage Status](https://codecov.io/github/ckeditor/ckeditor5-package-generator/graph/badge.svg)](https://codecov.io/github/ckeditor/ckeditor5-package-generator)
+
 This repository follows the mono-repository structure. It contains multiple npm packages.
 
 ## Table of contents
