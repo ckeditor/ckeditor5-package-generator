@@ -57,8 +57,7 @@ describe( 'lib/utils/install-dependencies', () => {
 
 		expect( spawn ).toHaveBeenCalledTimes( 1 );
 		expect( spawn ).toHaveBeenCalledWith(
-			'yarnpkg',
-			[],
+			'yarnpkg install',
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -73,8 +72,7 @@ describe( 'lib/utils/install-dependencies', () => {
 
 		expect( spawn ).toHaveBeenCalledTimes( 1 );
 		expect( spawn ).toHaveBeenCalledWith(
-			'yarnpkg',
-			[],
+			'yarnpkg install',
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -90,8 +88,7 @@ describe( 'lib/utils/install-dependencies', () => {
 
 		expect( spawn ).toHaveBeenCalledTimes( 1 );
 		expect( spawn ).toHaveBeenCalledWith(
-			'npm',
-			[ 'install' ],
+			'npm install',
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -106,8 +103,7 @@ describe( 'lib/utils/install-dependencies', () => {
 
 		expect( spawn ).toHaveBeenCalledTimes( 1 );
 		expect( spawn ).toHaveBeenCalledWith(
-			'npm',
-			[ 'install' ],
+			'npm install',
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -122,8 +118,7 @@ describe( 'lib/utils/install-dependencies', () => {
 		await runTest( { packageManager: 'npm', verbose: true, dev: true } );
 
 		expect( spawn ).toHaveBeenCalledWith(
-			'npm',
-			[ 'install', '--install-links' ],
+			'npm install --install-links',
 			expect.any( Object )
 		);
 	} );
@@ -133,8 +128,7 @@ describe( 'lib/utils/install-dependencies', () => {
 
 		expect( spawn ).toHaveBeenCalledTimes( 1 );
 		expect( spawn ).toHaveBeenCalledWith(
-			'pnpm',
-			[ 'install' ],
+			'pnpm install',
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -149,8 +143,7 @@ describe( 'lib/utils/install-dependencies', () => {
 
 		expect( spawn ).toHaveBeenCalledTimes( 1 );
 		expect( spawn ).toHaveBeenCalledWith(
-			'pnpm',
-			[ 'install' ],
+			'pnpm install',
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -165,8 +158,7 @@ describe( 'lib/utils/install-dependencies', () => {
 		await runTest( { packageManager: 'pnpm', dev: true } );
 
 		expect( spawn ).toHaveBeenCalledWith(
-			'pnpm',
-			[ 'install' ],
+			'pnpm install',
 			expect.any( Object )
 		);
 	} );

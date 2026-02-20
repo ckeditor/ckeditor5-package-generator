@@ -43,8 +43,7 @@ describe( 'lib/utils/install-git-hooks', () => {
 
 		expect( spawn ).toHaveBeenCalledTimes( 1 );
 		expect( spawn ).toHaveBeenCalledWith(
-			'npm',
-			[ 'rebuild', 'husky' ],
+			'npm rebuild husky',
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -59,8 +58,7 @@ describe( 'lib/utils/install-git-hooks', () => {
 
 		expect( spawn ).toHaveBeenCalledTimes( 1 );
 		expect( spawn ).toHaveBeenCalledWith(
-			'npm',
-			[ 'rebuild', 'husky' ],
+			'npm rebuild husky',
 			{
 				encoding: 'utf8',
 				shell: true,
