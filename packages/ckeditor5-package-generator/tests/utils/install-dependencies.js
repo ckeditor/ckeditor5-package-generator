@@ -57,8 +57,7 @@ describe( 'lib/utils/install-dependencies', () => {
 
 		expect( spawn ).toHaveBeenCalledTimes( 1 );
 		expect( spawn ).toHaveBeenCalledWith(
-			'yarnpkg',
-			[ 'install' ],
+			'yarnpkg install',
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -73,8 +72,7 @@ describe( 'lib/utils/install-dependencies', () => {
 
 		expect( spawn ).toHaveBeenCalledTimes( 1 );
 		expect( spawn ).toHaveBeenCalledWith(
-			'yarnpkg',
-			[ 'install' ],
+			'yarnpkg install',
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -90,8 +88,7 @@ describe( 'lib/utils/install-dependencies', () => {
 
 		expect( spawn ).toHaveBeenCalledTimes( 1 );
 		expect( spawn ).toHaveBeenCalledWith(
-			'npm',
-			[ 'install' ],
+			'npm install',
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -106,8 +103,7 @@ describe( 'lib/utils/install-dependencies', () => {
 
 		expect( spawn ).toHaveBeenCalledTimes( 1 );
 		expect( spawn ).toHaveBeenCalledWith(
-			'npm',
-			[ 'install' ],
+			'npm install',
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -123,8 +119,7 @@ describe( 'lib/utils/install-dependencies', () => {
 
 		expect( spawn ).toHaveBeenCalledTimes( 1 );
 		expect( spawn ).toHaveBeenCalledWith(
-			'pnpm',
-			[ 'install' ],
+			'pnpm install',
 			{
 				encoding: 'utf8',
 				shell: true,
@@ -139,8 +134,7 @@ describe( 'lib/utils/install-dependencies', () => {
 
 		expect( spawn ).toHaveBeenCalledTimes( 1 );
 		expect( spawn ).toHaveBeenCalledWith(
-			'pnpm',
-			[ 'install' ],
+			'pnpm install',
 			{
 				encoding: 'utf8',
 				shell: true,

@@ -56,11 +56,7 @@ function installPackages( directoryPath, packageManager, verbose ) {
 			return reject( new Error( `Unknown package manager: ${ packageManager }.` ) );
 		}
 
-		const installTask = spawn(
-			pkgManager,
-			[ 'install' ],
-			spawnOptions
-		);
+		const installTask = spawn( `${ pkgManager } install`, spawnOptions );
 
 		installTask.on( 'close', exitCode => {
 			if ( exitCode ) {
