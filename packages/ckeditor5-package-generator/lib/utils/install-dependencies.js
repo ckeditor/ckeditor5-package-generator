@@ -49,20 +49,18 @@ function installPackages( directoryPath, packageManager, verbose, dev ) {
 		}
 
 		if ( packageManager === 'npm' ) {
-			const npmArguments = [
-				'install'
-			];
+			let npmCommand = 'npm install';
 
 			// Flag required for npm 8 to install linked packages' dependencies
 			if ( dev ) {
-				npmArguments.push( '--install-links' );
+				npmCommand += ' --install-links';
 			}
 
-			installTask = spawn( 'npm', npmArguments, spawnOptions );
+			installTask = spawn( npmCommand, spawnOptions );
 		} else if ( packageManager === 'yarn' ) {
-			installTask = spawn( 'yarnpkg', [], spawnOptions );
+			installTask = spawn( 'yarnpkg install', spawnOptions );
 		} else if ( packageManager === 'pnpm' ) {
-			installTask = spawn( 'pnpm', [ 'install' ], spawnOptions );
+			installTask = spawn( 'pnpm install', spawnOptions );
 		} else {
 			throw new Error( 'Unhandled package manager ' + packageManager );
 		}
