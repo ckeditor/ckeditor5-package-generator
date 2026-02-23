@@ -21,14 +21,12 @@ export default function installGitHooks( directoryPath, logger, verbose ) {
 			stderr: 'inherit'
 		};
 
-		const spawnArguments = [ 'rebuild', 'husky' ];
-
 		if ( verbose ) {
 			spawnOptions.stdio = 'inherit';
 		}
 
 		// 'rebuild' was added to yarn in version 2, but we use yarn 1, thus only npm can be used.
-		const rebuildTask = spawn( 'npm', spawnArguments, spawnOptions );
+		const rebuildTask = spawn( 'npm rebuild husky', spawnOptions );
 
 		rebuildTask.on( 'close', exitCode => {
 			if ( exitCode ) {

@@ -123,9 +123,11 @@ async function verifyBuild( { language, packageManager, customPluginName, global
  * @returns {Object} Process
  */
 function executeCommand( command, options ) {
-	console.log( chalk.italic.gray( `Executing: "${ command.join( ' ' ) }".` ) );
+	const commandString = command.join( ' ' );
 
-	const newProcess = spawnSync( command.shift(), command, {
+	console.log( chalk.italic.gray( `Executing: "${ commandString }".` ) );
+
+	const newProcess = spawnSync( commandString, {
 		cwd: options.cwd,
 		encoding: 'utf8',
 		shell: true,
@@ -151,7 +153,7 @@ function executeCommand( command, options ) {
  */
 function startDevelopmentServer( cwd ) {
 	return new Promise( ( resolve, reject ) => {
-		const sampleServer = spawn( 'npm', [ 'run', 'start' ], {
+		const sampleServer = spawn( 'npm run start', {
 			cwd,
 			encoding: 'utf8',
 			shell: true,
