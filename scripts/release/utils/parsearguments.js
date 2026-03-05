@@ -27,7 +27,7 @@ export default function parseArguments( cliArguments ) {
 
 		default: {
 			packages: null,
-			branch: 'epic/ci/4168-drop-oim',
+			branch: 'master',
 			'npm-tag': null,
 			ci: false,
 			'compile-only': false,
@@ -83,7 +83,7 @@ function toCamelCase( value ) {
  *
  * @property {Array.<String>|null} packages
  *
- * @property {String} [branch='epic/ci/4168-drop-oim']
+ * @property {String} [branch='master']
  *
  * @property {Boolean} [compileOnly=false]
  *
