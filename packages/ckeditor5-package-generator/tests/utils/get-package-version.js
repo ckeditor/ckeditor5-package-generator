@@ -4,14 +4,14 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { execSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 import getPackageVersion from '../../lib/utils/get-package-version.js';
 
-vi.mock( 'child_process' );
+vi.mock( 'node:child_process' );
 
 describe( 'lib/utils/get-package-version', () => {
 	beforeEach( () => {
-		vi.mocked( execSync ).mockReturnValue( Buffer.from( '30.0.0' ) );
+		vi.mocked( execFileSync ).mockReturnValue( '"30.0.0"\n' );
 	} );
 
 	it( 'should be a function', () => {
@@ -24,16 +24,38 @@ describe( 'lib/utils/get-package-version', () => {
 		expect( returnedValue ).toBeTypeOf( 'string' );
 	} );
 
-	it( 'calls "npm show" to determine the version', () => {
+	it( 'calls npm view with json output to determine the version', () => {
 		getPackageVersion( 'ckeditor5' );
 
-		expect( execSync ).toHaveBeenCalledTimes( 1 );
-		expect( execSync ).toHaveBeenCalledWith( 'npm view ckeditor5 version' );
+		expect( execFileSync ).toHaveBeenCalledTimes( 1 );
+		expect( execFileSync ).toHaveBeenCalledWith( 'npm', [ 'view', 'ckeditor5', 'version', '--json' ], {
+			encoding: 'utf8'
+		} );
 	} );
 
 	it( 'returns a version matching semantic versioning specification', () => {
 		const returnedValue = getPackageVersion( 'ckeditor5' );
 
 		expect( returnedValue ).toEqual( '30.0.0' );
+	} );
+
+	it( 'passes the semver range to npm view when provided', () => {
+		getPackageVersion( 'ckeditor5', '^47.0.0' );
+
+		expect( execFileSync ).toHaveBeenCalledWith( 'npm', [ 'view', 'ckeditor5@^47.0.0', 'version', '--json' ], {
+			encoding: 'utf8'
+		} );
+	} );
+
+	it( 'returns the highest version matching the provided range', () => {
+		vi.mocked( execFileSync ).mockReturnValue( '["46.1.0","47.0.0","47.2.1","48.0.0"]\n' );
+
+		expect( getPackageVersion( 'ckeditor5', '^47.0.0' ) ).toEqual( '47.2.1' );
+	} );
+
+	it( 'throws when no returned version matches the provided range', () => {
+		vi.mocked( execFileSync ).mockReturnValue( '["46.1.0","48.0.0"]\n' );
+
+		expect( () => getPackageVersion( 'ckeditor5', '^47.0.0' ) ).toThrow( 'No version of ckeditor5 matches ^47.0.0' );
 	} );
 } );

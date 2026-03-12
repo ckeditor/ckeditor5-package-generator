@@ -19,6 +19,10 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 				return '30.0.0';
 			}
 
+			if ( packageName === 'ckeditor5-premium-features' ) {
+				return '30.1.0';
+			}
+
 			if ( packageName === '@ckeditor/ckeditor5-package-tools' ) {
 				return '1.0.0';
 			}
@@ -66,6 +70,11 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 	it( 'returns an object with a version of the "ckeditor5" package', () => {
 		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
 		expect( returnedValue.ckeditor5 ).toEqual( '30.0.0' );
+	} );
+
+	it( 'returns an object with a version of the "ckeditor5-premium-features" package', () => {
+		const returnedValue = getDependenciesVersions( stubs.logger, { dev: false } );
+		expect( returnedValue.ckeditor5PremiumFeatures ).toEqual( '30.1.0' );
 	} );
 
 	it( 'returns an object with a version of the "ckeditor5-dev-build-tools" package', () => {
@@ -124,5 +133,18 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 		expect( stubs.logger.verboseInfo ).toHaveBeenCalledWith(
 			'Using the `release/` directory for `ckeditor5-package-tools`. Ensure it exists and is up-to-date.'
 		);
+	} );
+
+	it( 'queries each dependency with the expected semver range', () => {
+		getDependenciesVersions( stubs.logger, { dev: false } );
+
+		expect( getPackageVersion ).toHaveBeenCalledWith( 'ckeditor5', '^47.0.0' );
+		expect( getPackageVersion ).toHaveBeenCalledWith( 'ckeditor5-premium-features', '^47.0.0' );
+		expect( getPackageVersion ).toHaveBeenCalledWith( '@ckeditor/ckeditor5-inspector', '^5.0.0' );
+		expect( getPackageVersion ).toHaveBeenCalledWith( '@ckeditor/ckeditor5-dev-build-tools', '^54.5.0' );
+		expect( getPackageVersion ).toHaveBeenCalledWith( 'eslint-config-ckeditor5', '^13.0.0' );
+		expect( getPackageVersion ).toHaveBeenCalledWith( 'eslint-plugin-ckeditor5-rules', '^13.0.0' );
+		expect( getPackageVersion ).toHaveBeenCalledWith( 'stylelint-config-ckeditor5', '^13.0.0' );
+		expect( getPackageVersion ).toHaveBeenCalledWith( '@ckeditor/ckeditor5-package-tools' );
 	} );
 } );
