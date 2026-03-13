@@ -105,6 +105,9 @@ importers:
       mkdirp:
         specifier: ^1.0.4
         version: 1.0.4
+      semver:
+        specifier: ^7.7.3
+        version: 7.7.3
       upath:
         specifier: ^2.0.0
         version: 2.0.1
@@ -123,7 +126,7 @@ importers:
     dependencies:
       '@ckeditor/ckeditor5-dev-translations':
         specifier: ^54.2.0
-        version: 54.2.0(typescript@5.0.4)
+        version: 54.2.0(@babel/core@7.28.5)(typescript@5.0.4)(webpack@5.105.2)
       '@ckeditor/ckeditor5-dev-utils':
         specifier: ^54.2.0
         version: 54.2.0(@babel/core@7.28.5)(typescript@5.0.4)(webpack@5.105.2)
@@ -4637,7 +4640,7 @@ snapshots:
 
   '@ckeditor/ckeditor5-dev-changelog@54.2.0(@types/node@24.7.2)(typescript@5.0.4)':
     dependencies:
-      '@ckeditor/ckeditor5-dev-utils': 54.2.0(@babel/core@7.28.5)(typescript@5.0.4)(webpack@5.105.2)
+      '@ckeditor/ckeditor5-dev-utils': 54.2.0(typescript@5.0.4)
       date-fns: 4.1.0
       glob: 13.0.0
       gray-matter: 4.0.3
@@ -4662,7 +4665,7 @@ snapshots:
 
   '@ckeditor/ckeditor5-dev-release-tools@54.2.0(@types/node@24.7.2)(typescript@5.0.4)':
     dependencies:
-      '@ckeditor/ckeditor5-dev-utils': 54.2.0(@babel/core@7.28.5)(typescript@5.0.4)(webpack@5.105.2)
+      '@ckeditor/ckeditor5-dev-utils': 54.2.0(typescript@5.0.4)
       '@octokit/rest': 22.0.0
       cli-columns: 4.0.0
       glob: 13.0.0
@@ -4682,7 +4685,7 @@ snapshots:
       - uglify-js
       - webpack
 
-  '@ckeditor/ckeditor5-dev-translations@54.2.0(typescript@5.0.4)':
+  '@ckeditor/ckeditor5-dev-translations@54.2.0(@babel/core@7.28.5)(typescript@5.0.4)(webpack@5.105.2)':
     dependencies:
       '@babel/parser': 7.29.0
       '@babel/traverse': 7.29.0
@@ -4703,7 +4706,66 @@ snapshots:
       - uglify-js
       - webpack
 
+  '@ckeditor/ckeditor5-dev-translations@54.2.0(typescript@5.0.4)':
+    dependencies:
+      '@babel/parser': 7.29.0
+      '@babel/traverse': 7.29.0
+      '@ckeditor/ckeditor5-dev-utils': 54.2.0(typescript@5.0.4)
+      glob: 13.0.0
+      plural-forms: 0.5.5
+      pofile: 1.1.4
+      rimraf: 6.0.1
+      upath: 2.0.1
+      webpack-sources: 3.3.3
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@rspack/core'
+      - '@swc/core'
+      - esbuild
+      - supports-color
+      - typescript
+      - uglify-js
+      - webpack
+
   '@ckeditor/ckeditor5-dev-utils@54.2.0(@babel/core@7.28.5)(typescript@5.0.4)(webpack@5.105.2)':
+    dependencies:
+      '@ckeditor/ckeditor5-dev-translations': 54.2.0(@babel/core@7.28.5)(typescript@5.0.4)(webpack@5.105.2)
+      '@types/postcss-import': 14.0.3
+      '@types/through2': 2.0.41
+      babel-loader: 10.0.0(@babel/core@7.28.5)(webpack@5.105.2)
+      cli-cursor: 5.0.0
+      cli-spinners: 3.3.0
+      css-loader: 7.1.2(webpack@5.105.2)
+      cssnano: 7.1.1(postcss@8.5.6)
+      esbuild-loader: 4.4.0(webpack@5.105.2)
+      glob: 13.0.0
+      is-interactive: 2.0.0
+      mini-css-extract-plugin: 2.9.4(webpack@5.105.2)
+      mocha: 11.7.4
+      pacote: 21.0.3
+      postcss: 8.5.6
+      postcss-import: 16.1.1(postcss@8.5.6)
+      postcss-loader: 8.2.0(postcss@8.5.6)(typescript@5.0.4)(webpack@5.105.2)
+      postcss-mixins: 11.0.3(postcss@8.5.6)
+      postcss-nesting: 13.0.2(postcss@8.5.6)
+      raw-loader: 4.0.2(webpack@5.105.2)
+      shelljs: 0.10.0
+      simple-git: 3.28.0
+      style-loader: 4.0.0(webpack@5.105.2)
+      terser-webpack-plugin: 5.3.14(webpack@5.105.2)
+      through2: 4.0.2
+      upath: 2.0.1
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@rspack/core'
+      - '@swc/core'
+      - esbuild
+      - supports-color
+      - typescript
+      - uglify-js
+      - webpack
+
+  '@ckeditor/ckeditor5-dev-utils@54.2.0(typescript@5.0.4)':
     dependencies:
       '@ckeditor/ckeditor5-dev-translations': 54.2.0(typescript@5.0.4)
       '@types/postcss-import': 14.0.3
