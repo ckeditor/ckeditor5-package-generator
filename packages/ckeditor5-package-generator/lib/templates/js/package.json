@@ -36,8 +36,8 @@
     "@ckeditor/ckeditor5-dev-build-tools": "<%= packageVersions.ckeditor5DevBuildTools %>",
     "@ckeditor/ckeditor5-dev-translations": "<%= packageVersions.ckeditor5DevTranslations %>",
     "@ckeditor/ckeditor5-inspector": "^<%= packageVersions.ckeditor5Inspector %>",
-    "@vitest/browser-webdriverio": "^4.0.6",
-    "@vitest/coverage-istanbul": "^4.0.6",
+    "@vitest/browser-webdriverio": "~4.0.6",
+    "@vitest/coverage-istanbul": "~4.0.6",
     "ckeditor5": "latest",
     "eslint": "^9.27.0",
     "eslint-config-ckeditor5": "^<%= packageVersions.eslintConfigCkeditor5 %>",
@@ -50,7 +50,7 @@
     "typescript": "5.5.4",
     "vite": "^7.3.0",
     "vite-plugin-svgo": "^2.0.0",
-    "vitest": "^4.0.6",
+    "vitest": "~4.0.6",
     "webdriverio": "^9.19.2"
   },
   "overrides": {
