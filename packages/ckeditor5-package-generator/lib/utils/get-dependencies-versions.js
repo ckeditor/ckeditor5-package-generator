@@ -31,13 +31,13 @@ export default function getDependenciesVersions( logger, { dev, useReleaseDirect
 	logger.process( 'Collecting the latest CKEditor 5 packages versions...' );
 
 	return {
-		ckeditor5: getPackageVersion( 'ckeditor5' ),
-		ckeditor5PremiumFeatures: getPackageVersion( 'ckeditor5-premium-features' ),
-		ckeditor5Inspector: getPackageVersion( '@ckeditor/ckeditor5-inspector' ),
-		ckeditor5DevBuildTools: getPackageVersion( '@ckeditor/ckeditor5-dev-build-tools' ),
-		eslintConfigCkeditor5: getPackageVersion( 'eslint-config-ckeditor5' ),
-		eslintPluginCkeditor5Rules: getPackageVersion( 'eslint-plugin-ckeditor5-rules' ),
-		stylelintConfigCkeditor5: getPackageVersion( 'stylelint-config-ckeditor5' ),
+		ckeditor5: getPackageVersion( 'ckeditor5', '^47.0.0' ),
+		ckeditor5PremiumFeatures: getPackageVersion( 'ckeditor5-premium-features', '^47.0.0' ),
+		ckeditor5Inspector: getPackageVersion( '@ckeditor/ckeditor5-inspector', '^5.0.0' ),
+		ckeditor5DevBuildTools: getPackageVersion( '@ckeditor/ckeditor5-dev-build-tools', '^54.5.0' ),
+		eslintConfigCkeditor5: getPackageVersion( 'eslint-config-ckeditor5', '^13.0.0' ),
+		eslintPluginCkeditor5Rules: getPackageVersion( 'eslint-plugin-ckeditor5-rules', '^13.0.0' ),
+		stylelintConfigCkeditor5: getPackageVersion( 'stylelint-config-ckeditor5', '^13.0.0' ),
 		packageTools: resolvePackageToolsDependency( logger, { dev, useReleaseDirectory } )
 	};
 }
