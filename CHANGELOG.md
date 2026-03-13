@@ -1,6 +1,35 @@
 Changelog
 =========
 
+## [5.1.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v5.0.1...v5.1.0) (March 13, 2026)
+
+### Features
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Improved package name validation UX. The tool now prompts for a valid package name instead of exiting when an incorrect name is provided. Closes [#283](https://github.com/ckeditor/ckeditor5-package-generator/issues/283).
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Added graceful handling for prompt cancellation (Ctrl+C). Closes [#283](https://github.com/ckeditor/ckeditor5-package-generator/issues/283).
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: The `v5` version of the `ckeditor5-package-generator` package should only use dependencies compatible with both the new and old editor installation methods. Closes [#309](https://github.com/ckeditor/ckeditor5-package-generator/issues/309).
+
+### Bug fixes
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Address the `DEP0190` deprecation warning shown during package generation by changing dependency and Git hook installation subprocess calls to avoid passing argument arrays with `shell: true`. Closes [#284](https://github.com/ckeditor/ckeditor5-package-generator/issues/284).
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Releases containing new features:
+
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/5.1.0): v5.0.1 => v5.1.0
+
+Other releases:
+
+* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/5.1.0): v5.0.1 => v5.1.0
+</details>
+
+
 ## [5.0.1](https://github.com/ckeditor/ckeditor5-package-generator/compare/v5.0.0...v5.0.1) (November 14, 2025)
 
 ### Bug fixes
@@ -87,26 +116,6 @@ Releases containing new features:
 Other releases:
 
 * [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/4.1.0): v4.0.2 => v4.1.0
-</details>
-
-
-## [4.0.2](https://github.com/ckeditor/ckeditor5-package-generator/compare/v4.0.1...v4.0.2) (July 23, 2025)
-
-### Bug fixes
-
-* **[tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools)**: Fixed various errors thrown when generating packages in a monorepo environment. Closes [ckeditor/ckeditor5-package-generator#132](https://github.com/ckeditor/ckeditor5-package-generator/issues/132).
-
-### Released packages
-
-Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
-
-<details>
-<summary>Released packages (summary)</summary>
-
-Other releases:
-
-* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/4.0.2): v4.0.1 => v4.0.2
-* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/4.0.2): v4.0.1 => v4.0.2
 </details>
 
 ---
