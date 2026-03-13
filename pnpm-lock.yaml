@@ -127,7 +127,7 @@ importers:
     dependencies:
       '@ckeditor/ckeditor5-dev-translations':
         specifier: ^54.2.0
-        version: 54.2.0(@babel/core@7.28.5)(typescript@5.0.4)(webpack@5.105.2)
+        version: 54.2.0(typescript@5.0.4)
       '@ckeditor/ckeditor5-dev-utils':
         specifier: ^54.2.0
         version: 54.2.0(@babel/core@7.28.5)(typescript@5.0.4)(webpack@5.105.2)
@@ -166,7 +166,7 @@ importers:
         version: 2.0.0(webpack@5.105.2)
       terser-webpack-plugin:
         specifier: ^5.3.7
-        version: 5.3.14(webpack@5.105.2)
+        version: 5.3.16(webpack@5.105.2)
       ts-loader:
         specifier: ^9.4.2
         version: 9.5.4(typescript@5.0.4)(webpack@5.105.2)
@@ -1977,10 +1977,6 @@ packages:
 
   end-of-stream@1.4.5:
     resolution: {integrity: sha512-ooEGc6HP26xXq/N+GCGOT0JKCLDGrq2bQUZrQ7gyrJiZANJ/8YDTxTpQBXGMn+WbIQXNVpyWymm7KYVICQnyOg==}
-
-  enhanced-resolve@5.18.3:
-    resolution: {integrity: sha512-d4lC8xfavMeBjzGr2vECC3fsGXziXZQyJxD868h2M/mBI3PwAuODxAkLkq5HYuvrPYcUtiLzsTo8U3PgX3Ocww==}
-    engines: {node: '>=10.13.0'}
 
   enhanced-resolve@5.19.0:
     resolution: {integrity: sha512-phv3E1Xl4tQOShqSte26C7Fl84EwUdZsyOuSSk9qtAGyyQs2s3jJzComh+Abf4g187lUUAvH+H26omrqia2aGg==}
@@ -4073,22 +4069,6 @@ packages:
     resolution: {integrity: sha512-ChjMH33/KetonMTAtpYdgUFr0tbz69Fp2v7zWxQfYZX4g5ZN2nOBXm1R2xyA+lMIKrLKIoKAwFj93jE/avX9cQ==}
     engines: {node: '>=18'}
 
-  terser-webpack-plugin@5.3.14:
-    resolution: {integrity: sha512-vkZjpUjb6OMS7dhV+tILUW6BhpDR7P2L/aQSAv+Uwk+m8KATX9EccViHTJR2qDtACKPIYndLGCyl3FMo+r2LMw==}
-    engines: {node: '>= 10.13.0'}
-    peerDependencies:
-      '@swc/core': '*'
-      esbuild: '*'
-      uglify-js: '*'
-      webpack: ^5.1.0
-    peerDependenciesMeta:
-      '@swc/core':
-        optional: true
-      esbuild:
-        optional: true
-      uglify-js:
-        optional: true
-
   terser-webpack-plugin@5.3.16:
     resolution: {integrity: sha512-h9oBFCWrq78NyWWVcSwZarJkZ01c2AyGrzs1crmHZO3QUg9D61Wu4NPjBy69n7JqylFF5y+CsUZYmYEIZ3mR+Q==}
     engines: {node: '>= 10.13.0'}
@@ -4643,7 +4623,7 @@ snapshots:
 
   '@ckeditor/ckeditor5-dev-changelog@54.2.0(@types/node@24.7.2)(typescript@5.0.4)':
     dependencies:
-      '@ckeditor/ckeditor5-dev-utils': 54.2.0(typescript@5.0.4)
+      '@ckeditor/ckeditor5-dev-utils': 54.2.0(@babel/core@7.28.5)(typescript@5.0.4)(webpack@5.105.2)
       date-fns: 4.1.0
       glob: 13.0.0
       gray-matter: 4.0.3
@@ -4668,7 +4648,7 @@ snapshots:
 
   '@ckeditor/ckeditor5-dev-release-tools@54.2.0(@types/node@24.7.2)(typescript@5.0.4)':
     dependencies:
-      '@ckeditor/ckeditor5-dev-utils': 54.2.0(typescript@5.0.4)
+      '@ckeditor/ckeditor5-dev-utils': 54.2.0(@babel/core@7.28.5)(typescript@5.0.4)(webpack@5.105.2)
       '@octokit/rest': 22.0.0
       cli-columns: 4.0.0
       glob: 13.0.0
@@ -4688,7 +4668,7 @@ snapshots:
       - uglify-js
       - webpack
 
-  '@ckeditor/ckeditor5-dev-translations@54.2.0(@babel/core@7.28.5)(typescript@5.0.4)(webpack@5.105.2)':
+  '@ckeditor/ckeditor5-dev-translations@54.2.0(typescript@5.0.4)':
     dependencies:
       '@babel/parser': 7.29.0
       '@babel/traverse': 7.29.0
@@ -4709,66 +4689,7 @@ snapshots:
       - uglify-js
       - webpack
 
-  '@ckeditor/ckeditor5-dev-translations@54.2.0(typescript@5.0.4)':
-    dependencies:
-      '@babel/parser': 7.29.0
-      '@babel/traverse': 7.29.0
-      '@ckeditor/ckeditor5-dev-utils': 54.2.0(typescript@5.0.4)
-      glob: 13.0.0
-      plural-forms: 0.5.5
-      pofile: 1.1.4
-      rimraf: 6.0.1
-      upath: 2.0.1
-      webpack-sources: 3.3.3
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@rspack/core'
-      - '@swc/core'
-      - esbuild
-      - supports-color
-      - typescript
-      - uglify-js
-      - webpack
-
   '@ckeditor/ckeditor5-dev-utils@54.2.0(@babel/core@7.28.5)(typescript@5.0.4)(webpack@5.105.2)':
-    dependencies:
-      '@ckeditor/ckeditor5-dev-translations': 54.2.0(@babel/core@7.28.5)(typescript@5.0.4)(webpack@5.105.2)
-      '@types/postcss-import': 14.0.3
-      '@types/through2': 2.0.41
-      babel-loader: 10.0.0(@babel/core@7.28.5)(webpack@5.105.2)
-      cli-cursor: 5.0.0
-      cli-spinners: 3.3.0
-      css-loader: 7.1.2(webpack@5.105.2)
-      cssnano: 7.1.1(postcss@8.5.6)
-      esbuild-loader: 4.4.0(webpack@5.105.2)
-      glob: 13.0.0
-      is-interactive: 2.0.0
-      mini-css-extract-plugin: 2.9.4(webpack@5.105.2)
-      mocha: 11.7.4
-      pacote: 21.0.3
-      postcss: 8.5.6
-      postcss-import: 16.1.1(postcss@8.5.6)
-      postcss-loader: 8.2.0(postcss@8.5.6)(typescript@5.0.4)(webpack@5.105.2)
-      postcss-mixins: 11.0.3(postcss@8.5.6)
-      postcss-nesting: 13.0.2(postcss@8.5.6)
-      raw-loader: 4.0.2(webpack@5.105.2)
-      shelljs: 0.10.0
-      simple-git: 3.28.0
-      style-loader: 4.0.0(webpack@5.105.2)
-      terser-webpack-plugin: 5.3.14(webpack@5.105.2)
-      through2: 4.0.2
-      upath: 2.0.1
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@rspack/core'
-      - '@swc/core'
-      - esbuild
-      - supports-color
-      - typescript
-      - uglify-js
-      - webpack
-
-  '@ckeditor/ckeditor5-dev-utils@54.2.0(typescript@5.0.4)':
     dependencies:
       '@ckeditor/ckeditor5-dev-translations': 54.2.0(typescript@5.0.4)
       '@types/postcss-import': 14.0.3
@@ -4793,7 +4714,7 @@ snapshots:
       shelljs: 0.10.0
       simple-git: 3.32.3
       style-loader: 4.0.0(webpack@5.105.2)
-      terser-webpack-plugin: 5.3.14(webpack@5.105.2)
+      terser-webpack-plugin: 5.3.16(webpack@5.105.2)
       through2: 4.0.2
       upath: 2.0.1
     transitivePeerDependencies:
@@ -6534,11 +6455,6 @@ snapshots:
     dependencies:
       once: 1.4.0
 
-  enhanced-resolve@5.18.3:
-    dependencies:
-      graceful-fs: 4.2.11
-      tapable: 2.3.0
-
   enhanced-resolve@5.19.0:
     dependencies:
       graceful-fs: 4.2.11
@@ -6643,7 +6559,7 @@ snapshots:
   eslint-plugin-ckeditor5-rules@13.0.0:
     dependencies:
       '@es-joy/jsdoccomment': 0.50.2
-      enhanced-resolve: 5.18.3
+      enhanced-resolve: 5.19.0
       resolve.exports: 2.0.3
       upath: 2.0.1
       validate-npm-package-name: 6.0.2
@@ -9021,15 +8937,6 @@ snapshots:
       minizlib: 3.1.0
       yallist: 5.0.0
 
-  terser-webpack-plugin@5.3.14(webpack@5.105.2):
-    dependencies:
-      '@jridgewell/trace-mapping': 0.3.31
-      jest-worker: 27.5.1
-      schema-utils: 4.3.3
-      serialize-javascript: 7.0.4
-      terser: 5.44.0
-      webpack: 5.105.2
-
   terser-webpack-plugin@5.3.16(webpack@5.105.2):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
@@ -9092,7 +8999,7 @@ snapshots:
   ts-loader@9.5.4(typescript@5.0.4)(webpack@5.105.2):
     dependencies:
       chalk: 4.1.2
-      enhanced-resolve: 5.18.3
+      enhanced-resolve: 5.19.0
       micromatch: 4.0.8
       semver: 7.7.3
       source-map: 0.7.6
