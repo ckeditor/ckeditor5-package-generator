@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import { execFileSync } from 'node:child_process';
+import { execSync } from 'node:child_process';
 import semver from 'semver';
 
 /**
@@ -16,7 +16,7 @@ import semver from 'semver';
 export default function getPackageVersion( packageName, range ) {
 	const packageSpec = range ? `${ packageName }@${ range }` : packageName;
 
-	const output = execFileSync( 'npm', [ 'view', packageSpec, 'version', '--json' ], {
+	const output = execSync( `npm view "${ packageSpec }" version --json`, {
 		encoding: 'utf8'
 	} ).trim();
 
