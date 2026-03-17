@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
-    "vitest": "~4.0.6"
+    "vitest": "^4.1.0"
   },
   "bin": {
     "ckeditor5-package-generator": "bin/index.js"
