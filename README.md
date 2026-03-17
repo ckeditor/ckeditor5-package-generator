@@ -3,6 +3,7 @@ CKEditor 5 Package Generator
 
 [![CircleCI](https://circleci.com/gh/ckeditor/ckeditor5-package-generator.svg?style=shield)](https://app.circleci.com/pipelines/github/ckeditor/ckeditor5-package-generator?branch=master)
 [![Coverage Status](https://codecov.io/github/ckeditor/ckeditor5-package-generator/graph/badge.svg)](https://codecov.io/github/ckeditor/ckeditor5-package-generator)
+
 This repository follows the mono-repository structure. It contains multiple npm packages.
 
 ## Table of contents
@@ -40,18 +41,6 @@ This repository follows the mono-repository structure. It contains multiple npm 
 	</td>
 </tr>
 
-<tr>
-	<td>
-		<a href="/packages/ckeditor5-package-tools"><code>@ckeditor/ckeditor5-package-tools</code></a>
-	</td>
-	<td>
-		<a href="https://badge.fury.io/js/@ckeditor%2Fckeditor5-package-tools"><img src="https://badge.fury.io/js/@ckeditor%2Fckeditor5-package-tools.svg" alt="npm version" height="18"></a>
-	</td>
-	<td>
-		Development environment tools for CKEditor 5 packages.
-	</td>
-</tr>
-
 </tbody>
 </table>
 
@@ -66,20 +55,15 @@ To create a new package, call the `ckeditor5-package-generator` executable file.
 
 The tool will create a new directory called `ckeditor5-package` with an example plugin called `Package` and tools for its development.
 
-To use a local version of the `@ckeditor/ckeditor5-package-tools` package, use the `--dev` option when executing the command.
-
 ```bash
-node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--dev] [--use-npm] [--use-yarn] [--use-pnpm] [--installation-methods <current|current-and-legacy>] [--global-name <...>] [--plugin-name <...>] [--lang <js|ts>] [--verbose]
+node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--use-npm] [--use-yarn] [--use-pnpm] [--global-name <...>] [--plugin-name <...>] [--lang <js|ts>] [--verbose]
 ```
 
 #### Options
 
-* `--dev` &ndash; whether to execute in the development mode. It means that the `@ckeditor/ckeditor5-package-tools` package will not be installed from npm, but from the local file system.
-* `--use-release-directory` &ndash; whether to use the `release/` directory while resolving a path to the `@ckeditor/ckeditor5-package-tools` dependency. This flag must be used along with `--dev`.
 * `--use-npm` &ndash; use `npm` to install dependencies in a newly created package.
 * `--use-yarn` &ndash; use `yarn` to install dependencies in a newly created package.
 * `--use-pnpm` &ndash; use `pnpm` to install dependencies in a newly created package.
-* `--installation-methods` &ndash; (values: `current` | `current-and-legacy`) choose which installation methods of CKEditor 5 do you want to support? If omitted, the script will ask the user to choose manually.
 * `--global-name` &ndash; define a global name of the package to be used in UMD build.
 * `--plugin-name` &ndash; define a class name to be different from the package name.
 * `--lang` &ndash; (values: `js` | `ts`) choose whether the created package should use JavaScript or TypeScript. If omitted, the script will ask the user to choose manually.
@@ -92,24 +76,6 @@ Available scripts and their modifiers are described in the [`README.md` file of 
 #### Package metadata
 
 The `ckeditor5-metadata.json` file contains data of the package that allows for an automated detection of plugins and processing them by external scripts. Information about how this file should be maintained is available in the [official guide](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/contributing/package-metadata.html). Keep in mind that this file has no effect on how the plugin work.
-
-### Developing tools in the repository
-
-When creating a new package with the `--dev` option, the local version of the `@ckeditor/ckeditor5-package-tools` will be installed instead of its npm version.
-
-However, applying changes in the local repository does not impact an already created package. Hence, you need to create a [link](https://docs.npmjs.com/cli/link/) between the local repository and the new package.
-
-```bash
-# The assumption here is your current working directory points to the root directory in the repository.
-cd packages/ckeditor5-package-tools
-pnpm link
-
-# Then, go to the newly created package.
-cd /path/to/new/package/ckeditor5-foo
-pnpm link @ckeditor/ckeditor5-package-tools
-```
-
-Now, the newly created package uses changes from the local repository.
 
 ## Releasing packages
 

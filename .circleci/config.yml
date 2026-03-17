@@ -132,7 +132,7 @@ jobs:
                 files: coverage/lcov.info
                 disable_search: true
 
-  package_js_npm_both_install_methods:
+  package_js_npm:
     docker:
       - image: cimg/node:24.11.0-browsers
     steps:
@@ -143,10 +143,10 @@ jobs:
           command: npm run release:prepare-packages -- --verbose --compile-only
       - browser-tools/install_chrome
       - run:
-          name: Verify build (JavaScript, npm, current and legacy installation methods)
-          command: node scripts/ci/verify-build.js -l js -p npm -m current-and-legacy -g GLOBAL_NAME
+          name: Verify build (JavaScript, npm)
+          command: node scripts/ci/verify-build.js -l js -p npm -g GLOBAL_NAME
 
-  package_js_yarn_both_install_methods:
+  package_js_pnpm:
     docker:
       - image: cimg/node:24.11.0-browsers
     steps:
@@ -157,10 +157,10 @@ jobs:
           command: npm run release:prepare-packages -- --verbose --compile-only
       - browser-tools/install_chrome
       - run:
-          name: Verify build (JavaScript, yarn, current and legacy installation methods)
-          command: node scripts/ci/verify-build.js -l js -p yarn -m current-and-legacy -g GLOBAL_NAME
+          name: Verify build (JavaScript, pnpm)
+          command: node scripts/ci/verify-build.js -l js -p pnpm -g GLOBAL_NAME
 
-  package_js_pnpm_both_install_methods:
+  package_ts_npm_custom_name:
     docker:
       - image: cimg/node:24.11.0-browsers
     steps:
@@ -171,10 +171,10 @@ jobs:
           command: npm run release:prepare-packages -- --verbose --compile-only
       - browser-tools/install_chrome
       - run:
-          name: Verify build (JavaScript, pnpm, current and legacy installation methods)
-          command: node scripts/ci/verify-build.js -l js -p pnpm -m current-and-legacy -g GLOBAL_NAME
+          name: Verify build (TypeScript, npm, custom plugin name)
+          command: node scripts/ci/verify-build.js -l ts -p npm -n CustomPluginName -g GLOBAL_NAME
 
-  package_js_npm_current_install_methods:
+  package_ts_pnpm_custom_name:
     docker:
       - image: cimg/node:24.11.0-browsers
     steps:
@@ -185,10 +185,10 @@ jobs:
           command: npm run release:prepare-packages -- --verbose --compile-only
       - browser-tools/install_chrome
       - run:
-          name: Verify build (JavaScript, npm, current installation methods)
-          command: node scripts/ci/verify-build.js -l js -p npm -m current -g GLOBAL_NAME
+          name: Verify build (TypeScript, pnpm, custom plugin name)
+          command: node scripts/ci/verify-build.js -l ts -p pnpm -n CustomPluginName -g GLOBAL_NAME
 
-  package_js_yarn_current_install_methods:
+  package_js_yarn_custom_name:
     docker:
       - image: cimg/node:24.11.0-browsers
     steps:
@@ -199,10 +199,10 @@ jobs:
           command: npm run release:prepare-packages -- --verbose --compile-only
       - browser-tools/install_chrome
       - run:
-          name: Verify build (JavaScript, yarn, current installation methods)
-          command: node scripts/ci/verify-build.js -l js -p yarn -m current -g GLOBAL_NAME
+          name: Verify build (JavaScript, yarn, custom plugin name)
+          command: node scripts/ci/verify-build.js -l js -p yarn -n customPluginName400 -g GLOBAL_NAME
 
-  package_js_pnpm_current_install_methods:
+  package_ts_yarn:
     docker:
       - image: cimg/node:24.11.0-browsers
     steps:
@@ -213,120 +213,8 @@ jobs:
           command: npm run release:prepare-packages -- --verbose --compile-only
       - browser-tools/install_chrome
       - run:
-          name: Verify build (JavaScript, pnpm, current installation methods)
-          command: node scripts/ci/verify-build.js -l js -p pnpm -m current -g GLOBAL_NAME
-
-  package_ts_npm_both_install_methods_custom_name:
-    docker:
-      - image: cimg/node:24.11.0-browsers
-    steps:
-      - checkout
-      - bootstrap_repository_command
-      - run:
-          name: Create npm-like builds of packages
-          command: npm run release:prepare-packages -- --verbose --compile-only
-      - browser-tools/install_chrome
-      - run:
-          name: Verify build (TypeScript, npm, current and legacy installation methods, custom plugin name)
-          command: node scripts/ci/verify-build.js -l ts -p npm -m current-and-legacy -n CustomPluginName -g GLOBAL_NAME
-
-  package_ts_npm_current_install_methods_custom_name:
-    docker:
-      - image: cimg/node:24.11.0-browsers
-    steps:
-      - checkout
-      - bootstrap_repository_command
-      - run:
-          name: Create npm-like builds of packages
-          command: npm run release:prepare-packages -- --verbose --compile-only
-      - browser-tools/install_chrome
-      - run:
-          name: Verify build (TypeScript, npm, current installation methods, custom plugin name)
-          command: node scripts/ci/verify-build.js -l ts -p npm -m current -n CustomPluginName -g GLOBAL_NAME
-
-  package_ts_pnpm_both_install_methods_custom_name:
-    docker:
-      - image: cimg/node:24.11.0-browsers
-    steps:
-      - checkout
-      - bootstrap_repository_command
-      - run:
-          name: Create npm-like builds of packages
-          command: npm run release:prepare-packages -- --verbose --compile-only
-      - browser-tools/install_chrome
-      - run:
-          name: Verify build (TypeScript, pnpm, current and legacy installation methods, custom plugin name)
-          command: node scripts/ci/verify-build.js -l ts -p pnpm -m current-and-legacy -n CustomPluginName -g GLOBAL_NAME
-
-  package_ts_pnpm_current_install_methods_custom_name:
-    docker:
-      - image: cimg/node:24.11.0-browsers
-    steps:
-      - checkout
-      - bootstrap_repository_command
-      - run:
-          name: Create npm-like builds of packages
-          command: npm run release:prepare-packages -- --verbose --compile-only
-      - browser-tools/install_chrome
-      - run:
-          name: Verify build (TypeScript, pnpm, current installation methods, custom plugin name)
-          command: node scripts/ci/verify-build.js -l ts -p pnpm -m current -n CustomPluginName -g GLOBAL_NAME
-
-  package_js_yarn_both_install_methods_custom_name:
-    docker:
-      - image: cimg/node:24.11.0-browsers
-    steps:
-      - checkout
-      - bootstrap_repository_command
-      - run:
-          name: Create npm-like builds of packages
-          command: npm run release:prepare-packages -- --verbose --compile-only
-      - browser-tools/install_chrome
-      - run:
-          name: Verify build (JavaScript, yarn, current and legacy installation methods, custom plugin name)
-          command: node scripts/ci/verify-build.js -l js -p yarn -m current-and-legacy -n customPluginName400 -g GLOBAL_NAME
-
-  package_js_yarn_current_install_methods_custom_name:
-    docker:
-      - image: cimg/node:24.11.0-browsers
-    steps:
-      - checkout
-      - bootstrap_repository_command
-      - run:
-          name: Create npm-like builds of packages
-          command: npm run release:prepare-packages -- --verbose --compile-only
-      - browser-tools/install_chrome
-      - run:
-          name: Verify build (JavaScript, yarn, current installation methods, custom plugin name)
-          command: node scripts/ci/verify-build.js -l js -p yarn -m current -n customPluginName400 -g GLOBAL_NAME
-
-  package_ts_yarn_both_install_methods:
-    docker:
-      - image: cimg/node:24.11.0-browsers
-    steps:
-      - checkout
-      - bootstrap_repository_command
-      - run:
-          name: Create npm-like builds of packages
-          command: npm run release:prepare-packages -- --verbose --compile-only
-      - browser-tools/install_chrome
-      - run:
-          name: Verify build (TypeScript, yarn, current and legacy installation methods)
-          command: node scripts/ci/verify-build.js -l ts -p yarn -m current-and-legacy -g GLOBAL_NAME
-
-  package_ts_yarn_current_install_methods:
-    docker:
-      - image: cimg/node:24.11.0-browsers
-    steps:
-      - checkout
-      - bootstrap_repository_command
-      - run:
-          name: Create npm-like builds of packages
-          command: npm run release:prepare-packages -- --verbose --compile-only
-      - browser-tools/install_chrome
-      - run:
-          name: Verify build (TypeScript, yarn, current installation methods)
-          command: node scripts/ci/verify-build.js -l ts -p yarn -m current -g GLOBAL_NAME
+          name: Verify build (TypeScript, yarn)
+          command: node scripts/ci/verify-build.js -l ts -p yarn -g GLOBAL_NAME
 
   release_prepare:
     docker:
@@ -360,8 +248,15 @@ jobs:
               circleci-agent step halt
             fi
       - run:
+          name: Disable the redundant workflows option
+          command: pnpm ckeditor5-dev-ci-circle-disable-auto-cancel-builds --organization ckeditor --repository ckeditor5-package-generator
+      - run:
           name: Trigger the release pipeline
           command: pnpm ckeditor5-dev-ci-trigger-circle-build --slug ckeditor/ckeditor5-package-generator --release-branch master
+      - run:
+          name: Enable the redundant workflows option
+          command: pnpm ckeditor5-dev-ci-circle-enable-auto-cancel-builds --organization ckeditor --repository ckeditor5-package-generator
+          when: always
 
   release_project:
     docker:
@@ -430,37 +325,23 @@ workflows:
         - equal: [ false, << pipeline.parameters.isRelease >> ]
     jobs:
       - validate_and_tests
-      - package_js_npm_both_install_methods
-      - package_js_yarn_both_install_methods
-      - package_js_pnpm_both_install_methods
-      - package_js_npm_current_install_methods
-      - package_js_yarn_current_install_methods
-      - package_js_pnpm_current_install_methods
-      - package_ts_npm_both_install_methods_custom_name
-      - package_ts_npm_current_install_methods_custom_name
-      - package_js_yarn_both_install_methods_custom_name
-      - package_js_yarn_current_install_methods_custom_name
-      - package_ts_yarn_both_install_methods
-      - package_ts_pnpm_both_install_methods_custom_name
-      - package_ts_pnpm_current_install_methods_custom_name
+      - package_js_npm
+      - package_js_yarn_custom_name
+      - package_js_pnpm
+      - package_ts_npm_custom_name
+      - package_ts_pnpm_custom_name
+      - package_ts_yarn
       - release_prepare
       - trigger_release_process:
           requires:
             - validate_and_tests
             - release_prepare
-            - package_js_npm_both_install_methods
-            - package_js_yarn_both_install_methods
-            - package_js_pnpm_both_install_methods
-            - package_js_npm_current_install_methods
-            - package_js_yarn_current_install_methods
-            - package_js_pnpm_current_install_methods
-            - package_ts_npm_both_install_methods_custom_name
-            - package_ts_npm_current_install_methods_custom_name
-            - package_js_yarn_both_install_methods_custom_name
-            - package_js_yarn_current_install_methods_custom_name
-            - package_ts_yarn_both_install_methods
-            - package_ts_pnpm_both_install_methods_custom_name
-            - package_ts_pnpm_current_install_methods_custom_name
+            - package_js_npm
+            - package_js_yarn_custom_name
+            - package_js_pnpm
+            - package_ts_npm_custom_name
+            - package_ts_pnpm_custom_name
+            - package_ts_yarn
           filters:
             branches:
               only:
@@ -490,19 +371,12 @@ workflows:
         - equal: [ false, << pipeline.parameters.isRelease >> ]
     jobs:
       - validate_and_tests
-      - package_js_npm_both_install_methods
-      - package_js_yarn_both_install_methods
-      - package_js_pnpm_both_install_methods
-      - package_js_npm_current_install_methods
-      - package_js_yarn_current_install_methods
-      - package_js_pnpm_current_install_methods
-      - package_ts_npm_both_install_methods_custom_name
-      - package_ts_npm_current_install_methods_custom_name
-      - package_js_yarn_both_install_methods_custom_name
-      - package_js_yarn_current_install_methods_custom_name
-      - package_ts_pnpm_both_install_methods_custom_name
-      - package_ts_pnpm_current_install_methods_custom_name
-      - package_ts_yarn_both_install_methods
+      - package_js_npm
+      - package_js_yarn_custom_name
+      - package_js_pnpm
+      - package_ts_npm_custom_name
+      - package_ts_pnpm_custom_name
+      - package_ts_yarn
       - notify_ci_failure:
           hideAuthor: "true"
           filters:
