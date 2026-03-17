@@ -5,7 +5,6 @@
 
 import chalk from 'chalk';
 import Logger from './utils/logger.js';
-import chooseInstallationMethods from './utils/choose-installation-methods.js';
 import choosePackageManager from './utils/choose-package-manager.js';
 import chooseProgrammingLanguage from './utils/choose-programming-language.js';
 import setGlobalName from './utils/set-global-name.js';
@@ -25,16 +24,13 @@ import validatePluginName from './utils/validate-plugin-name.js';
  */
 export default async function init( packageName, options ) {
 	const {
-		dev,
 		verbose,
 		useNpm,
 		useYarn,
 		usePnpm,
-		installationMethods,
 		lang,
 		pluginName,
-		globalName,
-		useReleaseDirectory
+		globalName
 	} = options;
 
 	const logger = new Logger( verbose );
@@ -45,28 +41,21 @@ export default async function init( packageName, options ) {
 	const { directoryName, directoryPath } = createDirectory( logger, validatedPackageName );
 	const packageManager = await choosePackageManager( logger, { useNpm, useYarn, usePnpm } );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
-	const installationMethodOfPackage = await chooseInstallationMethods( logger, installationMethods );
-
-	const defaultGlobalName = 'CK' + formattedNames.plugin.pascalCase;
-	const validatedGlobalName = await setGlobalName( logger, globalName, defaultGlobalName );
-
-	const packageVersions = getDependenciesVersions( logger, { dev, useReleaseDirectory } );
-
-	const npxByPackageManager = packageManager === 'pnpm' ? 'pnpm dlx' : 'npx';
+	const validatedGlobalName = await setGlobalName( logger, globalName, 'CK' + formattedNames.plugin.pascalCase );
+	const packageVersions = await getDependenciesVersions( logger );
 
 	copyFiles( logger, {
 		packageName: validatedPackageName,
 		formattedNames,
 		directoryPath,
 		packageManager,
-		npxByPackageManager,
+		npxByPackageManager: packageManager === 'pnpm' ? 'pnpm dlx' : 'npx',
 		programmingLanguage,
 		packageVersions,
-		installationMethodOfPackage,
 		validatedGlobalName
 	} );
 
-	await installDependencies( directoryPath, packageManager, verbose, dev );
+	await installDependencies( directoryPath, packageManager, verbose );
 	initializeGitRepository( directoryPath, logger );
 	await installGitHooks( directoryPath, logger, verbose );
 
@@ -77,6 +66,7 @@ export default async function init( packageName, options ) {
 		'to the newly created package. Then, the package offers a few predefined scripts:',
 		'',
 		'  * ' + chalk.underline( 'start' ) + ' - for creating the HTTP server with the editor sample,',
+		'  * ' + chalk.underline( 'build' ) + ' - for building the package,',
 		'  * ' + chalk.underline( 'test' ) + ' - for executing unit tests of an example plugin,',
 		'  * ' + chalk.underline( 'lint' ) + ' - for running a tool for static analyzing JavaScript files,',
 		'  * ' + chalk.underline( 'stylelint' ) + ' - for running a tool for static analyzing CSS files.',
@@ -84,30 +74,6 @@ export default async function init( packageName, options ) {
 		'Example: ' + chalk.gray( packageManager + ' run start' ),
 		''
 	].join( '\n' ), { startWithNewLine: true } );
-
-	if ( installationMethodOfPackage === 'current-and-legacy' ) {
-		logger.info( [
-			chalk.yellow.inverse(
-				' ╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗ '
-			),
-			chalk.yellow.inverse(
-				' ║   Supporting a wider range of CKEditor 5 versions requires using a more complex method of importing modules         ║ '
-			),
-			chalk.yellow.inverse(
-				' ║   from CKEditor 5.                                                                                                  ║ '
-			),
-			chalk.yellow.inverse(
-				' ║                                                                                                                     ║ '
-			),
-			chalk.yellow.inverse(
-				' ║   Read more here: https://ckeditor.com/docs/ckeditor5/latest/framework/tutorials/supporting-multiple-versions.html  ║ '
-			),
-			chalk.yellow.inverse(
-				' ╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝ '
-			),
-			''
-		].join( '\n' ), { startWithNewLine: true } );
-	}
 }
 
 /**
@@ -120,12 +86,6 @@ export default async function init( packageName, options ) {
  * @property {Boolean} [useYarn=false]
  *
  * @property {Boolean} [usePnpm=false]
- *
- * @property {String} installationMethods
- *
- * @property {Boolean} [dev=false]
- *
- * @property {Boolean} [useReleaseDirectory=false]
  *
  * @property {String} lang
  *

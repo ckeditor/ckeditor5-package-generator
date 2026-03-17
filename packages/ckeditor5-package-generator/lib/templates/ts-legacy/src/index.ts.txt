@@ -1,8 +1,0 @@
-import ckeditor from './../theme/icons/ckeditor.svg';
-import './augmentation.js';
-
-export { default as <%= formattedNames.plugin.pascalCase %> } from './<%= formattedNames.plugin.lowerCaseMerged %>.js';
-
-export const icons = {
-	ckeditor
-};
