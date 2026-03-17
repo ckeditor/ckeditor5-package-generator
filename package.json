@@ -31,7 +31,7 @@
     "eslint-config-ckeditor5": "^13.0.0",
     "eslint-plugin-ckeditor5-rules": "^13.0.0",
     "fs-extra": "^11.2.0",
-    "glob": "^13.0.0",
+    "glob": "^13.0.6",
     "globals": "^16.1.0",
     "husky": "^8.0.2",
     "lint-staged": "^10.5.4",
