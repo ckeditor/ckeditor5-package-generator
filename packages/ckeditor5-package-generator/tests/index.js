@@ -15,6 +15,7 @@ import getPackageNameFormats from '../lib/utils/get-package-name-formats.js';
 import initializeGitRepository from '../lib/utils/initialize-git-repository.js';
 import installDependencies from '../lib/utils/install-dependencies.js';
 import installGitHooks from '../lib/utils/install-git-hooks.js';
+import { showIntro, showNote, showOutro } from '../lib/utils/prompt.js';
 import validatePackageName from '../lib/utils/validate-package-name.js';
 import validatePluginName from '../lib/utils/validate-plugin-name.js';
 import index from '../lib/index.js';
@@ -63,6 +64,7 @@ vi.mock( '../lib/utils/get-package-name-formats.js' );
 vi.mock( '../lib/utils/initialize-git-repository.js' );
 vi.mock( '../lib/utils/install-dependencies.js' );
 vi.mock( '../lib/utils/install-git-hooks.js' );
+vi.mock( '../lib/utils/prompt.js' );
 vi.mock( '../lib/utils/validate-package-name.js' );
 vi.mock( '../lib/utils/validate-plugin-name.js' );
 
@@ -107,6 +109,7 @@ describe( 'lib/index', () => {
 		vi.mocked( installGitHooks ).mockResolvedValue();
 
 		vi.mocked( validatePackageName ).mockImplementation( async ( logger, packageName ) => packageName );
+		vi.mocked( validatePluginName ).mockImplementation( async ( logger, pluginName ) => pluginName );
 
 		options = {
 			verbose: true,
@@ -155,6 +158,13 @@ describe( 'lib/index', () => {
 
 		expect( validatePluginName ).toHaveBeenCalledTimes( 1 );
 		expect( validatePluginName ).toHaveBeenCalledWith( expect.any( Logger ), 'FooBar' );
+	} );
+
+	it( 'shows intro before running the generator', async () => {
+		await index( packageName, options );
+
+		expect( showIntro ).toHaveBeenCalledTimes( 1 );
+		expect( showIntro ).toHaveBeenCalledWith( 'CKEditor 5 package generator' );
 	} );
 
 	it( 'gets the package name formats', async () => {
@@ -289,27 +299,20 @@ describe( 'lib/index', () => {
 		expect( installGitHooks ).toHaveBeenCalledWith( 'directoryPath', expect.any( Logger ), true );
 	} );
 
-	it( 'logs info before the script finishes', async () => {
+	it( 'shows next steps before the script finishes', async () => {
 		await index( packageName, options );
 
-		expect( stubs.loggerInfo ).toHaveBeenCalledTimes( 1 );
-		expect( stubs.loggerInfo ).toHaveBeenCalledWith(
+		expect( showNote ).toHaveBeenCalledTimes( 1 );
+		expect( showNote ).toHaveBeenCalledWith(
 			[
-				'Done!',
-				'',
-				'Execute the "cd directoryName" command to change the current working directory',
-				'to the newly created package. Then, the package offers a few predefined scripts:',
-				'',
-				'  * start - for creating the HTTP server with the editor sample,',
-				'  * build - for building the package,',
-				'  * test - for executing unit tests of an example plugin,',
-				'  * lint - for running a tool for static analyzing JavaScript files,',
-				'  * stylelint - for running a tool for static analyzing CSS files.',
-				'',
-				'Example: yarn run start',
-				''
+				'cd directoryName',
+				'yarn run start',
+				'yarn run test'
 			].join( '\n' ),
-			{ startWithNewLine: true }
+			'Next steps'
 		);
+
+		expect( showOutro ).toHaveBeenCalledTimes( 1 );
+		expect( showOutro ).toHaveBeenCalledWith( 'Done!' );
 	} );
 } );

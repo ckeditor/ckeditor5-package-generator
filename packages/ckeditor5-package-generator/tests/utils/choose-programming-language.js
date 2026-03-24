@@ -3,68 +3,60 @@
  * For licensing, see LICENSE.md.
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import inquirer from 'inquirer';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { promptSelect } from '../../lib/utils/prompt.js';
 import chooseProgrammingLanguage from '../../lib/utils/choose-programming-language.js';
 
-vi.mock( 'inquirer' );
+vi.mock( '../../lib/utils/prompt.js' );
 
 describe( 'lib/utils/choose-programming-language', () => {
 	beforeEach( () => {
-		vi.mocked( inquirer.prompt ).mockResolvedValue( { programmingLanguage: 'JavaScript' } );
+		vi.mocked( promptSelect ).mockResolvedValue( 'js' );
 	} );
 
 	it( 'should be a function', () => {
 		expect( chooseProgrammingLanguage ).toBeTypeOf( 'function' );
 	} );
 
-	it( 'calls prompt() with correct arguments', async () => {
-		await chooseProgrammingLanguage( vi.fn() );
+	it( 'calls promptSelect() with correct arguments', async () => {
+		await chooseProgrammingLanguage( { info: vi.fn() } );
 
-		expect( inquirer.prompt ).toHaveBeenCalledTimes( 1 );
-		expect( inquirer.prompt ).toHaveBeenCalledWith( [ {
-			prefix: '📍',
-			name: 'programmingLanguage',
-			message: 'Choose your programming language:',
-			type: 'list',
-			choices: [ 'TypeScript', 'JavaScript' ]
-		} ] );
+		expect( promptSelect ).toHaveBeenCalledTimes( 1 );
+		expect( promptSelect ).toHaveBeenCalledWith( {
+			message: 'Programming language',
+			initialValue: 'ts',
+			options: [
+				{ value: 'ts', label: 'TypeScript' },
+				{ value: 'js', label: 'JavaScript' }
+			]
+		} );
 	} );
 
-	it( 'returns correct value when user picks JavaScript', async () => {
-		const result = await chooseProgrammingLanguage( vi.fn() );
+	it( 'returns the selected language', async () => {
+		const result = await chooseProgrammingLanguage( { info: vi.fn() } );
 
 		expect( result ).toEqual( 'js' );
 	} );
 
-	it( 'returns correct value when user picks TypeScript', async () => {
-		vi.mocked( inquirer.prompt ).mockResolvedValue( { programmingLanguage: 'TypeScript' } );
-
-		const result = await chooseProgrammingLanguage( vi.fn() );
+	it( 'returns the lang option if it defines a supported value', async () => {
+		const result = await chooseProgrammingLanguage( { info: vi.fn() }, 'ts' );
 
 		expect( result ).toEqual( 'ts' );
+		expect( promptSelect ).not.toHaveBeenCalled();
 	} );
 
-	it( 'returns lang option if it defines a supported value', async () => {
-		const result = await chooseProgrammingLanguage( vi.fn(), 'ts' );
-
-		expect( result ).toEqual( 'ts' );
-
-		expect( inquirer.prompt ).not.toHaveBeenCalled();
-	} );
-
-	it( 'falls back to user input when lang option has invalid value', async () => {
+	it( 'falls back to the prompt when lang option has invalid value', async () => {
 		const logger = {
-			error: vi.fn()
+			info: vi.fn()
 		};
 
-		vi.mocked( inquirer.prompt ).mockResolvedValue( { programmingLanguage: 'TypeScript' } );
+		vi.mocked( promptSelect ).mockResolvedValue( 'ts' );
 
 		const result = await chooseProgrammingLanguage( logger, 'python' );
 
 		expect( result ).toEqual( 'ts' );
-
-		expect( inquirer.prompt ).toHaveBeenCalledTimes( 1 );
-		expect( logger.error ).toHaveBeenCalledTimes( 1 );
+		expect( promptSelect ).toHaveBeenCalledTimes( 1 );
+		expect( logger.info ).toHaveBeenCalledTimes( 1 );
+		expect( logger.info ).toHaveBeenCalledWith( 'The provided language "python" is not supported. Choose one of: ts, js.' );
 	} );
 } );

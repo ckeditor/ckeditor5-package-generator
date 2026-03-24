@@ -12,7 +12,7 @@ import chalk from 'chalk';
  * @param {String} globalName
  */
 export default function validateGlobalName( logger, globalName ) {
-	const validationError = validator( globalName );
+	const validationError = getGlobalNameValidationError( globalName );
 
 	if ( !validationError ) {
 		return true;
@@ -33,8 +33,8 @@ export default function validateGlobalName( logger, globalName ) {
  * @param {String} globalName
  * @returns {String|null}
  */
-function validator( globalName ) {
-	if ( !globalName.length ) {
+export function getGlobalNameValidationError( globalName ) {
+	if ( !globalName || !globalName.length ) {
 		return 'The global name can not be an empty string.';
 	}
 	if ( !/^[a-zA-Z0-9_\-/@]+$/.test( globalName ) ) {

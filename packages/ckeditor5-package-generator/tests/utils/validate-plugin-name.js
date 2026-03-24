@@ -3,21 +3,17 @@
  * For licensing, see LICENSE.md.
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { promptText, showNote } from '../../lib/utils/prompt.js';
 import validatePluginName from '../../lib/utils/validate-plugin-name.js';
 
-vi.mock( 'chalk', () => ( {
-	default: {
-		red: vi.fn( str => str ),
-		blue: vi.fn( str => str )
-	}
-} ) );
+vi.mock( '../../lib/utils/prompt.js' );
 
 describe( 'lib/utils/validate-plugin-name', () => {
 	let stubs;
 
 	beforeEach( () => {
-		vi.spyOn( process, 'exit' ).mockImplementation( () => {} );
+		vi.mocked( promptText ).mockResolvedValue( 'FooBar' );
 
 		stubs = {
 			logger: {
@@ -32,62 +28,61 @@ describe( 'lib/utils/validate-plugin-name', () => {
 		expect( validatePluginName ).toBeTypeOf( 'function' );
 	} );
 
-	it( 'does nothing if the plugin name is not provided', () => {
-		validatePluginName( stubs.logger );
+	it( 'does nothing if the plugin name is not provided', async () => {
+		const validatedPluginName = await validatePluginName( stubs.logger );
 
-		expect( stubs.logger.process ).not.toHaveBeenCalled();
-		expect( stubs.logger.error ).not.toHaveBeenCalled();
-		expect( stubs.logger.info ).not.toHaveBeenCalled();
-		expect( process.exit ).not.toHaveBeenCalled();
+		expect( validatedPluginName ).toBeUndefined();
+		expect( showNote ).not.toHaveBeenCalled();
+		expect( promptText ).not.toHaveBeenCalled();
 	} );
 
-	it( 'logs the process if the plugin name is provided', () => {
-		validatePluginName( stubs.logger, 'Foo' );
+	it( 'returns the plugin name when it is valid', async () => {
+		const validatedPluginName = await validatePluginName( stubs.logger, 'FooBar' );
 
-		expect( stubs.logger.process ).toHaveBeenCalledTimes( 1 );
-		expect( stubs.logger.process ).toHaveBeenCalledWith( 'Verifying the specified plugin name.' );
+		expect( validatedPluginName ).toEqual( 'FooBar' );
+		expect( showNote ).not.toHaveBeenCalled();
+		expect( promptText ).not.toHaveBeenCalled();
 	} );
 
-	it( 'logs info about correct plugin name format in case of incorrect name', () => {
-		validatePluginName( stubs.logger, '#abc' );
+	it( 'shows a note and prompts when the provided plugin name is invalid', async () => {
+		await validatePluginName( stubs.logger, '#abc' );
 
-		expect( stubs.logger.error ).toHaveBeenCalledTimes( 2 );
-		expect( stubs.logger.error ).toHaveBeenNthCalledWith(
-			1,
-			'❗ Found an error while verifying the provided plugin name:',
-			{ startWithNewLine: true }
+		expect( showNote ).toHaveBeenCalledWith(
+			expect.stringContaining( 'The plugin name contains non-allowed characters.' ),
+			'Plugin name'
 		);
-
-		expect( stubs.logger.info ).toHaveBeenCalledTimes( 2 );
-		expect( stubs.logger.info ).toHaveBeenNthCalledWith( 1, 'The provided plugin name:    #abc' );
-		expect( stubs.logger.info ).toHaveBeenNthCalledWith( 2, 'Allowed characters list:     0-9 A-Z a-z' );
-	} );
-
-	it( 'rejects plugin names containing non-allowed characters', () => {
-		validatePluginName( stubs.logger, '#abc' );
-
-		expect( process.exit ).toHaveBeenCalled();
-		expect( stubs.logger.error ).toHaveBeenNthCalledWith( 2, 'The plugin name contains non-allowed characters.' );
-	} );
-
-	it( 'rejects plugin names that do not start with a letter', () => {
-		validatePluginName( stubs.logger, '9Abc' );
-
-		expect( process.exit ).toHaveBeenCalled();
-		expect( stubs.logger.error ).toHaveBeenNthCalledWith( 2, 'The plugin name can not start with a digit.' );
-	} );
-
-	it( 'accepts plugin names that only contain letters', () => {
-		validatePluginName( stubs.logger, 'FooBar' );
-
-		expect( process.exit ).not.toHaveBeenCalled();
+		expect( promptText ).toHaveBeenCalledWith( {
+			message: 'Plugin class name (optional)',
+			placeholder: 'MyPlugin',
+			initialValue: '#abc',
+			validate: expect.any( Function )
+		} );
 		expect( stubs.logger.error ).not.toHaveBeenCalled();
 	} );
 
-	it( 'accepts plugin names that contain a number', () => {
-		validatePluginName( stubs.logger, 'Foo9bar' );
+	it( 'allows clearing the custom plugin name during the prompt', async () => {
+		vi.mocked( promptText ).mockResolvedValue( '' );
 
-		expect( process.exit ).not.toHaveBeenCalled();
-		expect( stubs.logger.error ).not.toHaveBeenCalled();
+		const validatedPluginName = await validatePluginName( stubs.logger, '#abc' );
+
+		expect( validatedPluginName ).toBeUndefined();
+	} );
+
+	it( 'prompt validator accepts empty and valid values', async () => {
+		await validatePluginName( stubs.logger, '#abc' );
+
+		const validator = vi.mocked( promptText ).mock.calls[ 0 ][ 0 ].validate;
+
+		expect( validator( '' ) ).toBeUndefined();
+		expect( validator( 'FooBar' ) ).toBeUndefined();
+	} );
+
+	it( 'prompt validator rejects invalid values', async () => {
+		await validatePluginName( stubs.logger, '#abc' );
+
+		const validator = vi.mocked( promptText ).mock.calls[ 0 ][ 0 ].validate;
+
+		expect( validator( '#abc' ) ).toEqual( 'The plugin name contains non-allowed characters.' );
+		expect( validator( '9Abc' ) ).toEqual( 'The plugin name can not start with a digit.' );
 	} );
 } );

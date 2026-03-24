@@ -3,8 +3,8 @@
  * For licensing, see LICENSE.md.
  */
 
-import inquirer from 'inquirer';
-import validateGlobalName from './validate-global-name.js';
+import { promptText, showNote } from './prompt.js';
+import { getGlobalNameValidationError } from './validate-global-name.js';
 
 /**
  * Sets global name for generated package. It's used in UMD builds.
@@ -16,25 +16,24 @@ import validateGlobalName from './validate-global-name.js';
  * @param {String} defaultGlobalName
  * @returns {Promise.<String>}
  */
-export default async function setGlobalName( logger, globalName, defaultGlobalName ) {
+export default async function setGlobalName( _logger, globalName, defaultGlobalName ) {
 	if ( globalName ) {
-		if ( validateGlobalName( logger, globalName ) ) {
+		const validationError = getGlobalNameValidationError( globalName );
+
+		if ( !validationError ) {
 			return globalName;
 		}
 
-		logger.error(
-			'--global-name does not match the pattern. Falling back to manual choice.'
-		);
+		showNote( [
+			validationError,
+			'',
+			'Allowed characters: 0-9 A-Z a-z _ - / @'
+		].join( '\n' ), 'Global name' );
 	}
 
-	const globalNameFromInput = await inquirer.prompt( {
-		required: true,
-		message: 'Enter the global name for UMD build:',
-		type: 'input',
-		name: 'globalName',
-		validate: validateGlobalName.bind( this, logger ),
-		default: defaultGlobalName
+	return await promptText( {
+		message: 'Global name for UMD build',
+		initialValue: defaultGlobalName,
+		validate: value => getGlobalNameValidationError( value || '' ) || undefined
 	} );
-
-	return globalNameFromInput.globalName;
 }

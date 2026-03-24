@@ -31,13 +31,6 @@ describe( 'lib/utils/install-git-hooks', () => {
 		expect( installGitHooks ).toBeTypeOf( 'function' );
 	} );
 
-	it( 'logs the process', async () => {
-		await runTest( {} );
-
-		expect( stubs.logger.process ).toHaveBeenCalledTimes( 1 );
-		expect( stubs.logger.process ).toHaveBeenCalledWith( 'Installing Git hooks...' );
-	} );
-
 	it( 'installs git hooks', async () => {
 		await runTest( {} );
 

@@ -265,4 +265,3 @@ describe( 'lib/utils/get-package-name-formats', () => {
 		} );
 	} );
 } );
-

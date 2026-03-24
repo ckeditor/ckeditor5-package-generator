@@ -3,35 +3,48 @@
  * For licensing, see LICENSE.md.
  */
 
-import chalk from 'chalk';
+import { promptText, showNote } from './prompt.js';
 
 /**
  * If the plugin name is not valid, prints the error and exits the process.
  *
  * @param {Logger} logger
  * @param {String|undefined} pluginName
+ * @returns {Promise<String|undefined>}
  */
-export default function validatePluginName( logger, pluginName ) {
+export default async function validatePluginName( _logger, pluginName ) {
 	// Custom plugin name is optional.
 	if ( !pluginName ) {
 		return;
 	}
 
-	logger.process( 'Verifying the specified plugin name.' );
-
 	const validationError = validator( pluginName );
 
 	if ( !validationError ) {
-		return;
+		return pluginName;
 	}
 
-	logger.error( '❗ Found an error while verifying the provided plugin name:', { startWithNewLine: true } );
-	logger.error( validationError );
+	showNote( [
+		validationError,
+		'',
+		'Allowed characters: 0-9 A-Z a-z',
+		'Leave the field empty to derive the plugin name from the package name.'
+	].join( '\n' ), 'Plugin name' );
 
-	logger.info( 'The provided plugin name:    ' + chalk.red( pluginName ) );
-	logger.info( 'Allowed characters list:     ' + chalk.blue( '0-9 A-Z a-z' ) );
+	const validatedPluginName = await promptText( {
+		message: 'Plugin class name (optional)',
+		placeholder: 'MyPlugin',
+		initialValue: pluginName,
+		validate: value => {
+			if ( !value ) {
+				return undefined;
+			}
 
-	process.exit( 1 );
+			return validator( value ) || undefined;
+		}
+	} );
+
+	return validatedPluginName || undefined;
 }
 
 /**

@@ -3,10 +3,10 @@
  * For licensing, see LICENSE.md.
  */
 
-import inquirer from 'inquirer';
 import isYarnInstalled from './is-yarn-installed.js';
 import isPnpmInstalled from './is-pnpm-installed.js';
 import chalk from 'chalk';
+import { promptSelect } from './prompt.js';
 
 /**
  * @param {Logger} logger
@@ -16,7 +16,18 @@ import chalk from 'chalk';
 export default async function choosePackageManager( logger, { useNpm, useYarn, usePnpm } ) {
 	const yarnInstalled = isYarnInstalled();
 	const pnpmInstalled = isPnpmInstalled();
-	const selected = [ useNpm, useYarn, usePnpm ].filter( Boolean ).length;
+	const availablePackageManagers = [
+		'npm',
+		yarnInstalled && 'yarn',
+		pnpmInstalled && 'pnpm'
+	].filter( Boolean );
+	const requestedPackageManagers = [
+		useNpm && 'npm',
+		useYarn && 'yarn',
+		usePnpm && 'pnpm'
+	].filter( Boolean );
+	const availableRequestedPackageManagers = requestedPackageManagers.filter( manager => availablePackageManagers.includes( manager ) );
+	const unavailableRequestedPackageManagers = requestedPackageManagers.filter( manager => !availablePackageManagers.includes( manager ) );
 
 	if ( !yarnInstalled && !pnpmInstalled ) {
 		logger.info( chalk.yellow( 'Using npm as no other supported package manager is installed.' ) );
@@ -24,52 +35,38 @@ export default async function choosePackageManager( logger, { useNpm, useYarn, u
 		return 'npm';
 	}
 
-	if ( useYarn && !yarnInstalled ) {
-		throw new Error( 'Detected --use-yarn option but yarn is not installed.' );
+	if ( requestedPackageManagers.length === 1 && !unavailableRequestedPackageManagers.length ) {
+		return requestedPackageManagers[ 0 ];
 	}
 
-	if ( usePnpm && !pnpmInstalled ) {
-		throw new Error( 'Detected --use-pnpm option but pnpm is not installed.' );
+	if ( unavailableRequestedPackageManagers.length ) {
+		logger.info(
+			'Ignoring unavailable package manager choices: ' + unavailableRequestedPackageManagers.join( ', ' ) + '.'
+		);
 	}
 
-	if ( selected > 1 ) {
-		return await askUserToChoosePackageManager( { yarnInstalled, pnpmInstalled } );
+	if ( requestedPackageManagers.length > 1 ) {
+		logger.info( 'Multiple package managers were requested. Choose one to continue.' );
 	}
 
-	if ( useNpm ) {
-		return 'npm';
-	}
-
-	if ( useYarn ) {
-		return 'yarn';
-	}
-
-	if ( usePnpm ) {
-		return 'pnpm';
-	}
-
-	return await askUserToChoosePackageManager( { yarnInstalled, pnpmInstalled } );
+	return await askUserToChoosePackageManager( {
+		availablePackageManagers,
+		initialValue: availableRequestedPackageManagers[ 0 ] || 'npm'
+	} );
 }
 
 /**
  * @returns {Promise<'npm'|'yarn'|'pnpm'>}
  */
-async function askUserToChoosePackageManager( { yarnInstalled, pnpmInstalled } ) {
-	const choices = [
-		'npm',
-		yarnInstalled && 'yarn',
-		pnpmInstalled && 'pnpm'
-	].filter( Boolean );
-
-	const { packageManager } = await inquirer.prompt( [ {
-		prefix: '📍',
-		name: 'packageManager',
-		message: 'Choose the package manager:',
-		type: 'list',
-		choices
-	} ] );
-
-	return packageManager;
+async function askUserToChoosePackageManager( { availablePackageManagers, initialValue } ) {
+	return await promptSelect( {
+		message: 'Package manager',
+		initialValue,
+		options: availablePackageManagers.map( packageManager => ( {
+			value: packageManager,
+			label: packageManager
+		} ) )
+	} );
 }
 
 /**

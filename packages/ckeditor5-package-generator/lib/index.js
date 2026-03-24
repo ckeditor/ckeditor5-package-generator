@@ -17,6 +17,7 @@ import installDependencies from './utils/install-dependencies.js';
 import installGitHooks from './utils/install-git-hooks.js';
 import validatePackageName from './utils/validate-package-name.js';
 import validatePluginName from './utils/validate-plugin-name.js';
+import { showIntro, showNote, showOutro } from './utils/prompt.js';
 
 /**
  * @param {String|undefined} packageName
@@ -35,14 +36,16 @@ export default async function init( packageName, options ) {
 
 	const logger = new Logger( verbose );
 
+	showIntro( 'CKEditor 5 package generator' );
+
 	const validatedPackageName = await validatePackageName( logger, packageName );
-	validatePluginName( logger, pluginName );
-	const formattedNames = getPackageNameFormats( validatedPackageName, pluginName );
-	const { directoryName, directoryPath } = createDirectory( logger, validatedPackageName );
+	const validatedPluginName = await validatePluginName( logger, pluginName );
+	const formattedNames = getPackageNameFormats( validatedPackageName, validatedPluginName );
 	const packageManager = await choosePackageManager( logger, { useNpm, useYarn, usePnpm } );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
 	const validatedGlobalName = await setGlobalName( logger, globalName, 'CK' + formattedNames.plugin.pascalCase );
 	const packageVersions = await getDependenciesVersions( logger );
+	const { directoryName, directoryPath } = createDirectory( logger, validatedPackageName );
 
 	copyFiles( logger, {
 		packageName: validatedPackageName,
@@ -59,21 +62,13 @@ export default async function init( packageName, options ) {
 	initializeGitRepository( directoryPath, logger );
 	await installGitHooks( directoryPath, logger, verbose );
 
-	logger.info( [
-		chalk.green( 'Done!' ),
-		'',
-		'Execute the "' + chalk.cyan( 'cd ' + directoryName ) + '" command to change the current working directory',
-		'to the newly created package. Then, the package offers a few predefined scripts:',
-		'',
-		'  * ' + chalk.underline( 'start' ) + ' - for creating the HTTP server with the editor sample,',
-		'  * ' + chalk.underline( 'build' ) + ' - for building the package,',
-		'  * ' + chalk.underline( 'test' ) + ' - for executing unit tests of an example plugin,',
-		'  * ' + chalk.underline( 'lint' ) + ' - for running a tool for static analyzing JavaScript files,',
-		'  * ' + chalk.underline( 'stylelint' ) + ' - for running a tool for static analyzing CSS files.',
-		'',
-		'Example: ' + chalk.gray( packageManager + ' run start' ),
-		''
-	].join( '\n' ), { startWithNewLine: true } );
+	showNote( [
+		chalk.cyan( 'cd ' + directoryName ),
+		chalk.gray( packageManager + ' run start' ),
+		chalk.gray( packageManager + ' run test' )
+	].join( '\n' ), 'Next steps' );
+
+	showOutro( chalk.green( 'Done!' ) );
 }
 
 /**

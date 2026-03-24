@@ -21,14 +21,17 @@ While not necessary, it is also nice to have the latest version of `yarn 1.x` or
 To create a new package without installing the tool, simply execute the following command:
 
 ```bash
-npx ckeditor5-package-generator <packageName> [--use-npm] [--use-yarn] [--use-pnpm] [--plugin-name <...>] [--lang <js|ts>] [--global-name <...>] [--verbose]
+npx ckeditor5-package-generator [packageName] [--use-npm] [--use-yarn] [--use-pnpm] [--plugin-name <...>] [--lang <js|ts>] [--global-name <...>] [--verbose]
 ```
 
-The `<packageName>` argument is required and  must follow these rules:
+If `packageName` is omitted, the generator will ask for it interactively.
 
-* The provided name must match the schema: `@scope/ckeditor5-*`, where [@scope](https://docs.npmjs.com/about-scopes) is the owner of the package.
-* The package name must start with the `ckeditor5-` prefix.
-* Allowed characters are numbers (`0-9`), lowercase letters (`a-z`) and the following symbols: `-` `.` `_`.
+The package name must use one of these formats:
+
+* `@scope/ckeditor5-[name]`, where [@scope](https://docs.npmjs.com/about-scopes) is the package owner.
+* `ckeditor5-[name]`.
+
+In both cases, the name must start with the `ckeditor5-` prefix and may only contain numbers (`0-9`), lowercase letters (`a-z`), and these symbols: `-` `.` `_`.
 
 If you want the plugin name to be different from the package name, you can use the `--plugin-name` modifier that must follow these rules:
 

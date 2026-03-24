@@ -4,9 +4,10 @@
  */
 
 import chalk from 'chalk';
-import inquirer from 'inquirer';
+import { promptText, showNote } from './prompt.js';
 
 const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
+const UNSCOPED_PACKAGE_REGEXP = /^ckeditor5-([^/]+)$/;
 
 /**
  * If the package name is not valid, prints the error and exits the process.
@@ -15,36 +16,34 @@ const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
  * @param {String|undefined} packageName
  * @returns {Promise<String>}
  */
-export default async function validatePackageName( logger, packageName ) {
-	logger.process( 'Verifying the specified package name.' );
-
+export default async function validatePackageName( _logger, packageName ) {
 	const validationResult = validator( packageName );
 
 	if ( validationResult === true ) {
 		return packageName;
 	}
 
-	logger.error( '❗ Found an error while verifying the provided package name:', { startWithNewLine: true } );
-	logger.error( validationResult );
+	showNote( [
+		packageName ? validationResult : 'Choose a package name to get started.',
+		'',
+		'Accepted formats:',
+		'  ' + chalk.green( '@[scope]/ckeditor5-[feature-name]' ),
+		'  ' + chalk.green( 'ckeditor5-[feature-name]' ),
+		'',
+		'Allowed characters: ' + chalk.blue( '0-9 a-z - . _' )
+	].join( '\n' ), 'Package name' );
 
-	logger.info( 'Expected pattern:            ' + chalk.green( '@[scope]/ckeditor5-[feature-name]' ), { startWithNewLine: true } );
-	logger.info( 'The provided package name:   ' + chalk.red( packageName || '' ) );
-	logger.info( 'Allowed characters list:     ' + chalk.blue( '0-9 a-z - . _' ) );
-
-	const { validPackageName } = await inquirer.prompt( {
-		required: true,
-		message: 'Enter the valid package name:',
-		type: 'input',
-		name: 'validPackageName',
-		validate: name => validator( name ),
-		default: packageName
+	return await promptText( {
+		message: 'Package name',
+		placeholder: '@scope/ckeditor5-my-feature',
+		initialValue: packageName,
+		validate: name => validationResultToPrompt( validator( name ) )
 	} );
-
-	return validPackageName;
 }
 
 /**
- * Checks if the package name is valid for the npm package, and if it follows the "@scope/ckeditor5-name" format.
+ * Checks if the package name is valid for the npm package, and if it follows the
+ * "@scope/ckeditor5-name" format.
  *
  * Returns a string containing the validation error, or `null` if no errors were found.
  *
@@ -53,7 +52,7 @@ export default async function validatePackageName( logger, packageName ) {
  */
 function validator( packageName ) {
 	if ( !packageName ) {
-		return 'The package name cannot be an empty string - pass the name as the first argument to the script.';
+		return 'The package name cannot be empty.';
 	}
 
 	// Npm does not allow names longer than 214 characters.
@@ -66,15 +65,19 @@ function validator( packageName ) {
 		return 'The package name cannot contain capital letters.';
 	}
 
-	const match = packageName.match( SCOPED_PACKAGE_REGEXP );
+	const match = getPackageNameParts( packageName );
 
-	// The package name must follow the @scope/ckeditor5-name pattern.
+	// The package name must follow one of the accepted package name patterns.
 	if ( !match ) {
-		return 'The package name must match the "@[scope]/ckeditor5-[feature-name]" pattern.';
+		return 'The package name must match the "ckeditor5-[feature-name]" or "@[scope]/ckeditor5-[feature-name]" pattern.';
 	}
 
 	// encodeURIComponent() will escape majority of characters not allowed for the npm package name.
-	if ( match[ 1 ] !== encodeURIComponent( match[ 1 ] ) || match[ 2 ] !== encodeURIComponent( match[ 2 ] ) ) {
+	if ( match.scope && match.scope !== encodeURIComponent( match.scope ) ) {
+		return 'The package name contains non-allowed characters.';
+	}
+
+	if ( match.name !== encodeURIComponent( match.name ) ) {
 		return 'The package name contains non-allowed characters.';
 	}
 
@@ -84,4 +87,38 @@ function validator( packageName ) {
 	}
 
 	return true;
+}
+
+/**
+ * @param {String|undefined} packageName
+ * @returns {{ scope: string|null, name: string }|null}
+ */
+function getPackageNameParts( packageName ) {
+	const scopedMatch = packageName.match( SCOPED_PACKAGE_REGEXP );
+
+	if ( scopedMatch ) {
+		return {
+			scope: scopedMatch[ 1 ],
+			name: scopedMatch[ 2 ]
+		};
+	}
+
+	const unscopedMatch = packageName.match( UNSCOPED_PACKAGE_REGEXP );
+
+	if ( unscopedMatch ) {
+		return {
+			scope: null,
+			name: unscopedMatch[ 1 ]
+		};
+	}
+
+	return null;
+}
+
+/**
+ * @param {String|true} result
+ * @returns {String|undefined}
+ */
+function validationResultToPrompt( result ) {
+	return result === true ? undefined : result;
 }

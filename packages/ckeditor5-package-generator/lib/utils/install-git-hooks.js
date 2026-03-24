@@ -10,9 +10,7 @@ import { spawn } from 'node:child_process';
  * @param {Logger} logger
  * @param {CKeditor5PackageGeneratorOptions} options
  */
-export default function installGitHooks( directoryPath, logger, verbose ) {
-	logger.process( 'Installing Git hooks...' );
-
+export default function installGitHooks( directoryPath, _logger, verbose ) {
 	return new Promise( ( resolve, reject ) => {
 		const spawnOptions = {
 			encoding: 'utf8',

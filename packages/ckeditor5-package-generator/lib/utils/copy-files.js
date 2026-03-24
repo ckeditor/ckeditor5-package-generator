@@ -26,8 +26,6 @@ const TEMPLATE_PATH = upath.join( import.meta.dirname, '..', 'templates' );
  * @param {String} options.validatedGlobalName
  */
 export default function copyFiles( logger, options ) {
-	logger.process( 'Copying files...' );
-
 	const templateGlobs = [
 		'common/**/*',
 		`${ options.programmingLanguage }/**/*`
