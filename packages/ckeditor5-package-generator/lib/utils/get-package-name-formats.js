@@ -4,6 +4,7 @@
  */
 
 const PARTS_REGEXP = /[0-9]+|[A-Za-z][a-z]*/g;
+const PACKAGE_NAME_PREFIX_REGEXP = /^(?:@[^/]+\/)?ckeditor5-/;
 
 /**
  * This function returns an object with two properties: "package" and "plugin". Values of those properties
@@ -26,8 +27,8 @@ export default function getPackageNameFormats( packageName, pluginName ) {
  * @returns {FormattedName}
  */
 function format( name ) {
-	// Removing the scope and prefix in case of the package name.
-	const raw = name.split( 'ckeditor5-' ).pop();
+	// Removing the scope and package prefix in case of the package name.
+	const raw = name.replace( PACKAGE_NAME_PREFIX_REGEXP, '' );
 
 	// Separating the name into its components.
 	const parts = raw.match( PARTS_REGEXP )
@@ -91,7 +92,7 @@ function uppercaseFirstChar( string ) {
  *
  * @property {String} raw super-feature-name
  *
- * @property {String} full @scope/ckeditor5-super-feature-name
+ * @property {String} full @scope/ckeditor5-plugin-super-feature-name
  *
  * @property {String} spacedOut Super feature name
  *

@@ -15,6 +15,7 @@ import getPackageNameFormats from '../lib/utils/get-package-name-formats.js';
 import initializeGitRepository from '../lib/utils/initialize-git-repository.js';
 import installDependencies from '../lib/utils/install-dependencies.js';
 import installGitHooks from '../lib/utils/install-git-hooks.js';
+import { showIntro, showNote, showOutro } from '../lib/utils/prompt.js';
 import validatePackageName from '../lib/utils/validate-package-name.js';
 import validatePluginName from '../lib/utils/validate-plugin-name.js';
 import index from '../lib/index.js';
@@ -63,6 +64,7 @@ vi.mock( '../lib/utils/get-package-name-formats.js' );
 vi.mock( '../lib/utils/initialize-git-repository.js' );
 vi.mock( '../lib/utils/install-dependencies.js' );
 vi.mock( '../lib/utils/install-git-hooks.js' );
+vi.mock( '../lib/utils/prompt.js' );
 vi.mock( '../lib/utils/validate-package-name.js' );
 vi.mock( '../lib/utils/validate-plugin-name.js' );
 
@@ -106,13 +108,12 @@ describe( 'lib/index', () => {
 
 		vi.mocked( installGitHooks ).mockResolvedValue();
 
-		vi.mocked( validatePackageName ).mockImplementation( async ( logger, packageName ) => packageName );
+		vi.mocked( validatePackageName ).mockImplementation( async packageName => packageName );
+		vi.mocked( validatePluginName ).mockImplementation( async pluginName => pluginName );
 
 		options = {
 			verbose: true,
-			useYarn: true,
-			useNpm: false,
-			usePnpm: false,
+			packageManager: 'yarn',
 			pluginName: 'FooBar',
 			lang: 'js',
 			globalName: 'GLOBAL'
@@ -126,7 +127,7 @@ describe( 'lib/index', () => {
 	it( 'passes the verbose option when creating the logger ("true" check)', async () => {
 		await index( packageName, options );
 
-		const [ logger ] = validatePackageName.mock.calls[ 0 ];
+		const [ logger ] = choosePackageManager.mock.calls[ 0 ];
 
 		expect( logger.constructor.name ).toEqual( 'Logger' );
 		expect( logger ).toEqual( { verbose: true, info: stubs.loggerInfo } );
@@ -137,7 +138,7 @@ describe( 'lib/index', () => {
 
 		await index( packageName, options );
 
-		const [ logger ] = validatePackageName.mock.calls[ 0 ];
+		const [ logger ] = choosePackageManager.mock.calls[ 0 ];
 
 		expect( logger.constructor.name ).toEqual( 'Logger' );
 		expect( logger ).toEqual( { verbose: false, info: stubs.loggerInfo } );
@@ -147,14 +148,21 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( validatePackageName ).toHaveBeenCalledTimes( 1 );
-		expect( validatePackageName ).toHaveBeenCalledWith( expect.any( Logger ), '@scope/ckeditor5-feature' );
+		expect( validatePackageName ).toHaveBeenCalledWith( '@scope/ckeditor5-feature' );
 	} );
 
 	it( 'validates the plugin name', async () => {
 		await index( packageName, options );
 
 		expect( validatePluginName ).toHaveBeenCalledTimes( 1 );
-		expect( validatePluginName ).toHaveBeenCalledWith( expect.any( Logger ), 'FooBar' );
+		expect( validatePluginName ).toHaveBeenCalledWith( 'FooBar' );
+	} );
+
+	it( 'shows intro before running the generator', async () => {
+		await index( packageName, options );
+
+		expect( showIntro ).toHaveBeenCalledTimes( 1 );
+		expect( showIntro ).toHaveBeenCalledWith( 'CKEditor 5 package generator' );
 	} );
 
 	it( 'gets the package name formats', async () => {
@@ -171,11 +179,21 @@ describe( 'lib/index', () => {
 		expect( createDirectory ).toHaveBeenCalledWith( expect.any( Logger ), '@scope/ckeditor5-feature' );
 	} );
 
+	it( 'creates the directory after later prompts and network requests', async () => {
+		await index( packageName, options );
+
+		expect( createDirectory.mock.invocationCallOrder[ 0 ] ).toBeGreaterThan( validatePluginName.mock.invocationCallOrder[ 0 ] );
+		expect( createDirectory.mock.invocationCallOrder[ 0 ] ).toBeGreaterThan( choosePackageManager.mock.invocationCallOrder[ 0 ] );
+		expect( createDirectory.mock.invocationCallOrder[ 0 ] ).toBeGreaterThan( chooseProgrammingLanguage.mock.invocationCallOrder[ 0 ] );
+		expect( createDirectory.mock.invocationCallOrder[ 0 ] ).toBeGreaterThan( setGlobalName.mock.invocationCallOrder[ 0 ] );
+		expect( createDirectory.mock.invocationCallOrder[ 0 ] ).toBeGreaterThan( getDependenciesVersions.mock.invocationCallOrder[ 0 ] );
+	} );
+
 	it( 'chooses the package manager', async () => {
 		await index( packageName, options );
 
 		expect( choosePackageManager ).toHaveBeenCalledTimes( 1 );
-		expect( choosePackageManager ).toHaveBeenCalledWith( expect.any( Logger ), { useNpm: false, useYarn: true, usePnpm: false } );
+		expect( choosePackageManager ).toHaveBeenCalledWith( expect.any( Logger ), 'yarn' );
 	} );
 
 	it( 'chooses npx for npm package manager', async () => {
@@ -222,14 +240,14 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( setGlobalName ).toHaveBeenCalledTimes( 1 );
-		expect( setGlobalName ).toHaveBeenCalledWith( expect.any( Logger ), 'GLOBAL', 'CKBarBaz' );
+		expect( setGlobalName ).toHaveBeenCalledWith( 'GLOBAL', 'CKBarBaz' );
 	} );
 
 	it( 'gets the versions of the dependencies', async () => {
 		await index( packageName, options );
 
 		expect( getDependenciesVersions ).toHaveBeenCalledTimes( 1 );
-		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ) );
+		expect( getDependenciesVersions ).toHaveBeenCalledWith();
 	} );
 
 	it( 'copies the files', async () => {
@@ -279,37 +297,30 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( initializeGitRepository ).toHaveBeenCalledTimes( 1 );
-		expect( initializeGitRepository ).toHaveBeenCalledWith( 'directoryPath', expect.any( Logger ) );
+		expect( initializeGitRepository ).toHaveBeenCalledWith( 'directoryPath' );
 	} );
 
 	it( 'installs the git hooks', async () => {
 		await index( packageName, options );
 
 		expect( installGitHooks ).toHaveBeenCalledTimes( 1 );
-		expect( installGitHooks ).toHaveBeenCalledWith( 'directoryPath', expect.any( Logger ), true );
+		expect( installGitHooks ).toHaveBeenCalledWith( 'directoryPath', true );
 	} );
 
-	it( 'logs info before the script finishes', async () => {
+	it( 'shows next steps before the script finishes', async () => {
 		await index( packageName, options );
 
-		expect( stubs.loggerInfo ).toHaveBeenCalledTimes( 1 );
-		expect( stubs.loggerInfo ).toHaveBeenCalledWith(
+		expect( showNote ).toHaveBeenCalledTimes( 1 );
+		expect( showNote ).toHaveBeenCalledWith(
 			[
-				'Done!',
-				'',
-				'Execute the "cd directoryName" command to change the current working directory',
-				'to the newly created package. Then, the package offers a few predefined scripts:',
-				'',
-				'  * start - for creating the HTTP server with the editor sample,',
-				'  * build - for building the package,',
-				'  * test - for executing unit tests of an example plugin,',
-				'  * lint - for running a tool for static analyzing JavaScript files,',
-				'  * stylelint - for running a tool for static analyzing CSS files.',
-				'',
-				'Example: yarn run start',
-				''
+				'cd directoryName',
+				'yarn run start',
+				'yarn run test'
 			].join( '\n' ),
-			{ startWithNewLine: true }
+			'Next steps'
 		);
+
+		expect( showOutro ).toHaveBeenCalledTimes( 1 );
+		expect( showOutro ).toHaveBeenCalledWith( 'Done!' );
 	} );
 } );

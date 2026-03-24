@@ -55,13 +55,6 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 		expect( getDependenciesVersions ).toBeTypeOf( 'function' );
 	} );
 
-	it( 'logs the process', async () => {
-		await getDependenciesVersions( stubs.logger );
-
-		expect( stubs.logger.process ).toHaveBeenCalledTimes( 1 );
-		expect( stubs.logger.process ).toHaveBeenCalledWith( 'Collecting the latest CKEditor 5 packages versions...' );
-	} );
-
 	it( 'returns an object with a version of the "ckeditor5" package', async () => {
 		const returnedValue = await getDependenciesVersions( stubs.logger );
 		expect( returnedValue.ckeditor5 ).toEqual( '30.0.0' );

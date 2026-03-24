@@ -16,9 +16,6 @@ describe( 'lib/utils/install-git-hooks', () => {
 		defaultDirectoryPath = 'directory/path/foo';
 
 		stubs = {
-			logger: {
-				process: vi.fn()
-			},
 			rebuildTask: {
 				on: vi.fn()
 			}
@@ -29,13 +26,6 @@ describe( 'lib/utils/install-git-hooks', () => {
 
 	it( 'should be a function', () => {
 		expect( installGitHooks ).toBeTypeOf( 'function' );
-	} );
-
-	it( 'logs the process', async () => {
-		await runTest( {} );
-
-		expect( stubs.logger.process ).toHaveBeenCalledTimes( 1 );
-		expect( stubs.logger.process ).toHaveBeenCalledWith( 'Installing Git hooks...' );
 	} );
 
 	it( 'installs git hooks', async () => {
@@ -90,7 +80,7 @@ describe( 'lib/utils/install-git-hooks', () => {
 	 * @param {Object} options
 	 */
 	async function runTest( { verbose = false, exitCode = 0 } ) {
-		const promise = installGitHooks( defaultDirectoryPath, stubs.logger, verbose );
+		const promise = installGitHooks( defaultDirectoryPath, verbose );
 		const [ , rebuildTaskCloseCallback ] = stubs.rebuildTask.on.mock.calls[ 0 ];
 		await rebuildTaskCloseCallback( exitCode );
 

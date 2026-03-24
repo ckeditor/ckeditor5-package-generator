@@ -28,13 +28,6 @@ describe( 'lib/utils/initialize-git-repository', () => {
 		expect( initializeGitRepository ).toBeTypeOf( 'function' );
 	} );
 
-	it( 'logs the process', () => {
-		initializeGitRepository( directoryPath, stubs.logger );
-
-		expect( stubs.logger.process ).toHaveBeenCalledTimes( 1 );
-		expect( stubs.logger.process ).toHaveBeenCalledWith( 'Initializing Git repository...' );
-	} );
-
 	it( 'initializes the repository', () => {
 		initializeGitRepository( directoryPath, stubs.logger );
 

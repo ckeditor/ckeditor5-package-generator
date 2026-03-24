@@ -16,12 +16,9 @@ import getPackageVersion from './get-package-version.js';
  *   * `eslint-plugin-ckeditor5-rules` (as `eslintPluginCkeditor5Rules`)
  *   * `stylelint-config-ckeditor5` (as `stylelintConfigCkeditor5`)
  *
- * @param {Logger} logger
  * @returns {Promise<Object>}
  */
-export default async function getDependenciesVersions( logger ) {
-	logger.process( 'Collecting the latest CKEditor 5 packages versions...' );
-
+export default async function getDependenciesVersions() {
 	const [
 		ckeditor5,
 		ckeditor5Inspector,

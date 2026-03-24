@@ -145,12 +145,6 @@ describe( 'lib/utils/copy-files', () => {
 		expect( copyFiles ).toBeTypeOf( 'function' );
 	} );
 
-	it( 'logs the process', () => {
-		copyFiles( stubs.logger, options );
-
-		expect( stubs.logger.process ).toHaveBeenCalledWith( 'Copying files...' );
-	} );
-
 	it( 'creates files for JavaScript', () => {
 		copyFiles( stubs.logger, options );
 

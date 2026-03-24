@@ -17,6 +17,7 @@ import installDependencies from './utils/install-dependencies.js';
 import installGitHooks from './utils/install-git-hooks.js';
 import validatePackageName from './utils/validate-package-name.js';
 import validatePluginName from './utils/validate-plugin-name.js';
+import { showIntro, showNote, showOutro } from './utils/prompt.js';
 
 /**
  * @param {String|undefined} packageName
@@ -25,9 +26,7 @@ import validatePluginName from './utils/validate-plugin-name.js';
 export default async function init( packageName, options ) {
 	const {
 		verbose,
-		useNpm,
-		useYarn,
-		usePnpm,
+		packageManager,
 		lang,
 		pluginName,
 		globalName
@@ -35,45 +34,39 @@ export default async function init( packageName, options ) {
 
 	const logger = new Logger( verbose );
 
-	const validatedPackageName = await validatePackageName( logger, packageName );
-	validatePluginName( logger, pluginName );
-	const formattedNames = getPackageNameFormats( validatedPackageName, pluginName );
-	const { directoryName, directoryPath } = createDirectory( logger, validatedPackageName );
-	const packageManager = await choosePackageManager( logger, { useNpm, useYarn, usePnpm } );
+	showIntro( 'CKEditor 5 package generator' );
+
+	const validatedPackageName = await validatePackageName( packageName );
+	const validatedPluginName = await validatePluginName( pluginName );
+	const formattedNames = getPackageNameFormats( validatedPackageName, validatedPluginName );
+	const selectedPackageManager = await choosePackageManager( logger, packageManager );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
-	const validatedGlobalName = await setGlobalName( logger, globalName, 'CK' + formattedNames.plugin.pascalCase );
-	const packageVersions = await getDependenciesVersions( logger );
+	const validatedGlobalName = await setGlobalName( globalName, 'CK' + formattedNames.plugin.pascalCase );
+	const packageVersions = await getDependenciesVersions();
+	const { directoryName, directoryPath } = createDirectory( logger, validatedPackageName );
 
 	copyFiles( logger, {
 		packageName: validatedPackageName,
 		formattedNames,
 		directoryPath,
-		packageManager,
-		npxByPackageManager: packageManager === 'pnpm' ? 'pnpm dlx' : 'npx',
+		packageManager: selectedPackageManager,
+		npxByPackageManager: selectedPackageManager === 'pnpm' ? 'pnpm dlx' : 'npx',
 		programmingLanguage,
 		packageVersions,
 		validatedGlobalName
 	} );
 
-	await installDependencies( directoryPath, packageManager, verbose );
-	initializeGitRepository( directoryPath, logger );
-	await installGitHooks( directoryPath, logger, verbose );
+	await installDependencies( directoryPath, selectedPackageManager, verbose );
+	initializeGitRepository( directoryPath );
+	await installGitHooks( directoryPath, verbose );
 
-	logger.info( [
-		chalk.green( 'Done!' ),
-		'',
-		'Execute the "' + chalk.cyan( 'cd ' + directoryName ) + '" command to change the current working directory',
-		'to the newly created package. Then, the package offers a few predefined scripts:',
-		'',
-		'  * ' + chalk.underline( 'start' ) + ' - for creating the HTTP server with the editor sample,',
-		'  * ' + chalk.underline( 'build' ) + ' - for building the package,',
-		'  * ' + chalk.underline( 'test' ) + ' - for executing unit tests of an example plugin,',
-		'  * ' + chalk.underline( 'lint' ) + ' - for running a tool for static analyzing JavaScript files,',
-		'  * ' + chalk.underline( 'stylelint' ) + ' - for running a tool for static analyzing CSS files.',
-		'',
-		'Example: ' + chalk.gray( packageManager + ' run start' ),
-		''
-	].join( '\n' ), { startWithNewLine: true } );
+	showNote( [
+		chalk.cyan( 'cd ' + directoryName ),
+		chalk.gray( selectedPackageManager + ' run start' ),
+		chalk.gray( selectedPackageManager + ' run test' )
+	].join( '\n' ), 'Next steps' );
+
+	showOutro( chalk.green( 'Done!' ) );
 }
 
 /**
@@ -81,11 +74,7 @@ export default async function init( packageName, options ) {
  *
  * @property {Boolean} [verbose=false]
  *
- * @property {Boolean} [useNpm=false]
- *
- * @property {Boolean} [useYarn=false]
- *
- * @property {Boolean} [usePnpm=false]
+ * @property {'npm'|'yarn'|'pnpm'} [packageManager]
  *
  * @property {String} lang
  *

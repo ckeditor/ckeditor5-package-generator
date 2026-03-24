@@ -4,8 +4,7 @@
  */
 
 import { spawn } from 'node:child_process';
-import { tools } from '@ckeditor/ckeditor5-dev-utils';
-import chalk from 'chalk';
+import { createSpinner } from './prompt.js';
 
 /**
  * @param {String} directoryPath
@@ -14,15 +13,18 @@ import chalk from 'chalk';
  * @returns {Promise}
  */
 export default async function installDependencies( directoryPath, packageManager, verbose ) {
-	const installSpinner = tools.createSpinner( 'Installing dependencies... ' + chalk.gray.italic( 'It takes a while.' ), {
-		isDisabled: verbose
-	} );
+	const installSpinner = verbose ? null : createSpinner();
 
-	installSpinner.start();
+	installSpinner?.start( 'Installing dependencies' );
 
-	await installPackages( directoryPath, packageManager, verbose );
+	try {
+		await installPackages( directoryPath, packageManager, verbose );
+		installSpinner?.stop( 'Dependencies installed.' );
+	} catch ( error ) {
+		installSpinner?.stop( 'Installing dependencies failed.', 1 );
 
-	installSpinner.finish();
+		throw error;
+	}
 }
 
 /**

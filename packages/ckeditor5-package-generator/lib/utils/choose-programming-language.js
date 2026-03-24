@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import inquirer from 'inquirer';
+import { promptSelect } from './prompt.js';
 
 const PROGRAMMING_LANGUAGES = [
 	{ value: 'ts', displayName: 'TypeScript' },
@@ -26,17 +26,15 @@ export default async function chooseProgrammingLanguage( logger, lang ) {
 			return lang;
 		}
 
-		logger.error( `--lang option has to be one of: ${ langShorthands.join( ', ' ) }. Falling back to manual choice.` );
+		logger.info( `The provided language "${ lang }" is not supported. Choose one of: ${ langShorthands.join( ', ' ) }.` );
 	}
 
-	const { programmingLanguage } = await inquirer.prompt( [ {
-		prefix: '📍',
-		name: 'programmingLanguage',
-		message: 'Choose your programming language:',
-		type: 'list',
-		choices: PROGRAMMING_LANGUAGES.map( ( { displayName } ) => displayName )
-	} ] );
-
-	// Full name to shorthand: "JavaScript" => "js"
-	return PROGRAMMING_LANGUAGES.find( p => p.displayName === programmingLanguage ).value;
+	return await promptSelect( {
+		message: 'Programming language',
+		initialValue: 'ts',
+		options: PROGRAMMING_LANGUAGES.map( ( { value, displayName } ) => ( {
+			value,
+			label: displayName
+		} ) )
+	} );
 }

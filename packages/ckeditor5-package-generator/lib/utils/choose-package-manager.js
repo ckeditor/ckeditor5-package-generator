@@ -3,20 +3,42 @@
  * For licensing, see LICENSE.md.
  */
 
-import inquirer from 'inquirer';
 import isYarnInstalled from './is-yarn-installed.js';
 import isPnpmInstalled from './is-pnpm-installed.js';
 import chalk from 'chalk';
+import { promptSelect } from './prompt.js';
+
+const SUPPORTED_PACKAGE_MANAGERS = [ 'npm', 'yarn', 'pnpm' ];
 
 /**
  * @param {Logger} logger
- * @param {ChoosePackageManagerOptions} options
+ * @param {'npm'|'yarn'|'pnpm'|undefined} packageManager
  * @returns {Promise<'npm'|'yarn'|'pnpm'>}
  */
-export default async function choosePackageManager( logger, { useNpm, useYarn, usePnpm } ) {
+export default async function choosePackageManager( logger, packageManager ) {
 	const yarnInstalled = isYarnInstalled();
 	const pnpmInstalled = isPnpmInstalled();
-	const selected = [ useNpm, useYarn, usePnpm ].filter( Boolean ).length;
+	const availablePackageManagers = [
+		'npm',
+		yarnInstalled && 'yarn',
+		pnpmInstalled && 'pnpm'
+	].filter( Boolean );
+	let requestedPackageManager = packageManager;
+
+	if ( requestedPackageManager && !SUPPORTED_PACKAGE_MANAGERS.includes( requestedPackageManager ) ) {
+		logger.info(
+			`The provided package manager "${ requestedPackageManager }" is not supported. ` +
+			`Choose one of: ${ SUPPORTED_PACKAGE_MANAGERS.join( ', ' ) }.`
+		);
+
+		requestedPackageManager = undefined;
+	}
+
+	if ( requestedPackageManager && !availablePackageManagers.includes( requestedPackageManager ) ) {
+		logger.info( `Ignoring unavailable package manager choice: ${ requestedPackageManager }.` );
+
+		requestedPackageManager = undefined;
+	}
 
 	if ( !yarnInstalled && !pnpmInstalled ) {
 		logger.info( chalk.yellow( 'Using npm as no other supported package manager is installed.' ) );
@@ -24,57 +46,26 @@ export default async function choosePackageManager( logger, { useNpm, useYarn, u
 		return 'npm';
 	}
 
-	if ( useYarn && !yarnInstalled ) {
-		throw new Error( 'Detected --use-yarn option but yarn is not installed.' );
+	if ( requestedPackageManager ) {
+		return requestedPackageManager;
 	}
 
-	if ( usePnpm && !pnpmInstalled ) {
-		throw new Error( 'Detected --use-pnpm option but pnpm is not installed.' );
-	}
-
-	if ( selected > 1 ) {
-		return await askUserToChoosePackageManager( { yarnInstalled, pnpmInstalled } );
-	}
-
-	if ( useNpm ) {
-		return 'npm';
-	}
-
-	if ( useYarn ) {
-		return 'yarn';
-	}
-
-	if ( usePnpm ) {
-		return 'pnpm';
-	}
-
-	return await askUserToChoosePackageManager( { yarnInstalled, pnpmInstalled } );
+	return await askUserToChoosePackageManager( {
+		availablePackageManagers,
+		initialValue: 'npm'
+	} );
 }
 
 /**
  * @returns {Promise<'npm'|'yarn'|'pnpm'>}
  */
-async function askUserToChoosePackageManager( { yarnInstalled, pnpmInstalled } ) {
-	const choices = [
-		'npm',
-		yarnInstalled && 'yarn',
-		pnpmInstalled && 'pnpm'
-	].filter( Boolean );
-
-	const { packageManager } = await inquirer.prompt( [ {
-		prefix: '📍',
-		name: 'packageManager',
-		message: 'Choose the package manager:',
-		type: 'list',
-		choices
-	} ] );
-
-	return packageManager;
+async function askUserToChoosePackageManager( { availablePackageManagers, initialValue } ) {
+	return await promptSelect( {
+		message: 'Package manager',
+		initialValue,
+		options: availablePackageManagers.map( packageManager => ( {
+			value: packageManager,
+			label: packageManager
+		} ) )
+	} );
 }
-
-/**
- * @typedef {Object} ChoosePackageManagerOptions
- * @property {boolean} useNpm Whether to use npm.
- * @property {boolean} useYarn Whether to use yarn.
- * @property {boolean} usePnpm Whether to use pnpm.
- */
