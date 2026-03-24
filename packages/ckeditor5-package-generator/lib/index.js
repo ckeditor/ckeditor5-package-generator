@@ -44,7 +44,7 @@ export default async function init( packageName, options ) {
 	const packageManager = await choosePackageManager( logger, { useNpm, useYarn, usePnpm } );
 	const programmingLanguage = await chooseProgrammingLanguage( logger, lang );
 	const validatedGlobalName = await setGlobalName( logger, globalName, 'CK' + formattedNames.plugin.pascalCase );
-	const packageVersions = await getDependenciesVersions( logger );
+	const packageVersions = await getDependenciesVersions();
 	const { directoryName, directoryPath } = createDirectory( logger, validatedPackageName );
 
 	copyFiles( logger, {
@@ -59,7 +59,7 @@ export default async function init( packageName, options ) {
 	} );
 
 	await installDependencies( directoryPath, packageManager, verbose );
-	initializeGitRepository( directoryPath, logger );
+	initializeGitRepository( directoryPath );
 	await installGitHooks( directoryPath, logger, verbose );
 
 	showNote( [

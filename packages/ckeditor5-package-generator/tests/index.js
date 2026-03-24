@@ -239,7 +239,7 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( getDependenciesVersions ).toHaveBeenCalledTimes( 1 );
-		expect( getDependenciesVersions ).toHaveBeenCalledWith( expect.any( Logger ) );
+		expect( getDependenciesVersions ).toHaveBeenCalledWith();
 	} );
 
 	it( 'copies the files', async () => {
@@ -289,7 +289,7 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( initializeGitRepository ).toHaveBeenCalledTimes( 1 );
-		expect( initializeGitRepository ).toHaveBeenCalledWith( 'directoryPath', expect.any( Logger ) );
+		expect( initializeGitRepository ).toHaveBeenCalledWith( 'directoryPath' );
 	} );
 
 	it( 'installs the git hooks', async () => {

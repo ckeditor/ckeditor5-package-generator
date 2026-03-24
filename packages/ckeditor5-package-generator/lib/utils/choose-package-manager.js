@@ -35,17 +35,17 @@ export default async function choosePackageManager( logger, { useNpm, useYarn, u
 		return 'npm';
 	}
 
-	if ( requestedPackageManagers.length === 1 && !unavailableRequestedPackageManagers.length ) {
-		return requestedPackageManagers[ 0 ];
-	}
-
 	if ( unavailableRequestedPackageManagers.length ) {
 		logger.info(
 			'Ignoring unavailable package manager choices: ' + unavailableRequestedPackageManagers.join( ', ' ) + '.'
 		);
 	}
 
-	if ( requestedPackageManagers.length > 1 ) {
+	if ( availableRequestedPackageManagers.length === 1 ) {
+		return availableRequestedPackageManagers[ 0 ];
+	}
+
+	if ( availableRequestedPackageManagers.length > 1 ) {
 		logger.info( 'Multiple package managers were requested. Choose one to continue.' );
 	}
 

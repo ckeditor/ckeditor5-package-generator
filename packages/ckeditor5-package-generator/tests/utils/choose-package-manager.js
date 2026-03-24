@@ -119,4 +119,15 @@ describe( 'lib/utils/choose-package-manager', () => {
 			initialValue: 'npm'
 		} ) );
 	} );
+
+	it( 'returns the only available requested package manager', async () => {
+		vi.mocked( isYarnInstalled ).mockReturnValue( false );
+
+		const result = await choosePackageManager( logger, { useNpm: false, useYarn: true, usePnpm: true } );
+
+		expect( result ).toEqual( 'pnpm' );
+		expect( logger.info ).toHaveBeenCalledWith( 'Ignoring unavailable package manager choices: yarn.' );
+		expect( logger.info ).not.toHaveBeenCalledWith( 'Multiple package managers were requested. Choose one to continue.' );
+		expect( promptSelect ).not.toHaveBeenCalled();
+	} );
 } );
