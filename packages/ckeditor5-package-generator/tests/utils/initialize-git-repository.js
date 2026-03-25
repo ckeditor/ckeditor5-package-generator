@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import fs from 'node:fs';
 import { execSync } from 'node:child_process';
 import initializeGitRepository from '../../lib/utils/initialize-git-repository.js';
@@ -12,31 +12,21 @@ vi.mock( 'fs' );
 vi.mock( 'child_process' );
 
 describe( 'lib/utils/initialize-git-repository', () => {
-	let stubs;
-
 	const directoryPath = 'directory/path/foo';
-
-	beforeEach( () => {
-		stubs = {
-			logger: {
-				process: vi.fn()
-			}
-		};
-	} );
 
 	it( 'should be a function', () => {
 		expect( initializeGitRepository ).toBeTypeOf( 'function' );
 	} );
 
 	it( 'initializes the repository', () => {
-		initializeGitRepository( directoryPath, stubs.logger );
+		initializeGitRepository( directoryPath );
 
 		expect( execSync ).toHaveBeenCalledTimes( 3 );
 		expect( execSync ).toHaveBeenNthCalledWith( 1, 'git init', { stdio: 'ignore', cwd: directoryPath } );
 	} );
 
 	it( 'commits files to the repository', () => {
-		initializeGitRepository( directoryPath, stubs.logger );
+		initializeGitRepository( directoryPath );
 
 		expect( execSync ).toHaveBeenCalledTimes( 3 );
 		expect( execSync ).toHaveBeenNthCalledWith( 2, 'git add -A', { stdio: 'ignore', cwd: directoryPath } );
@@ -55,7 +45,7 @@ describe( 'lib/utils/initialize-git-repository', () => {
 				throw new Error( 'Custom error message.' );
 			} );
 
-		initializeGitRepository( directoryPath, stubs.logger );
+		initializeGitRepository( directoryPath );
 
 		expect( fs.rmSync ).toHaveBeenCalledTimes( 1 );
 		expect( fs.rmSync ).toHaveBeenCalledWith( 'directory/path/foo/.git', { recursive: true, force: true } );
