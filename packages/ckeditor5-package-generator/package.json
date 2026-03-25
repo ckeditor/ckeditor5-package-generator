@@ -11,7 +11,6 @@
   "main": "lib/index.js",
   "type": "module",
   "dependencies": {
-    "@ckeditor/ckeditor5-dev-utils": "^55.0.0",
     "@clack/prompts": "^1.1.0",
     "cac": "^7.0.0",
     "fs-extra": "^11.2.0",

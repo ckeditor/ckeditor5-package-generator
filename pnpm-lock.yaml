@@ -18,13 +18,13 @@ importers:
         version: 55.0.0
       '@ckeditor/ckeditor5-dev-changelog':
         specifier: ^55.0.0
-        version: 55.0.0(@types/node@24.7.2)
+        version: 55.0.0(@babel/core@7.28.5)(@types/node@24.7.2)(webpack@5.105.2)
       '@ckeditor/ckeditor5-dev-ci':
         specifier: ^55.0.0
         version: 55.0.0
       '@ckeditor/ckeditor5-dev-release-tools':
         specifier: ^55.0.0
-        version: 55.0.0(@types/node@24.7.2)
+        version: 55.0.0(@babel/core@7.28.5)(@types/node@24.7.2)(webpack@5.105.2)
       '@ckeditor/ckeditor5-dev-web-crawler':
         specifier: ^55.0.0
         version: 55.0.0(typescript@5.9.3)
@@ -85,18 +85,12 @@ importers:
 
   packages/ckeditor5-package-generator:
     dependencies:
-      '@ckeditor/ckeditor5-dev-utils':
-        specifier: ^55.0.0
-        version: 55.0.0(@babel/core@7.28.5)(webpack@5.105.2)
       '@clack/prompts':
         specifier: ^1.1.0
         version: 1.1.0
       cac:
         specifier: ^7.0.0
         version: 7.0.0
-      chalk:
-        specifier: ^5.0.0
-        version: 5.6.2
       fs-extra:
         specifier: ^11.2.0
         version: 11.3.2
@@ -3531,7 +3525,7 @@ snapshots:
     dependencies:
       glob: 13.0.6
 
-  '@ckeditor/ckeditor5-dev-changelog@55.0.0(@types/node@24.7.2)':
+  '@ckeditor/ckeditor5-dev-changelog@55.0.0(@babel/core@7.28.5)(@types/node@24.7.2)(webpack@5.105.2)':
     dependencies:
       '@ckeditor/ckeditor5-dev-utils': 55.0.0(@babel/core@7.28.5)(webpack@5.105.2)
       date-fns: 4.1.0
@@ -3552,7 +3546,7 @@ snapshots:
       '@octokit/rest': 22.0.0
       slack-notify: 2.0.7
 
-  '@ckeditor/ckeditor5-dev-release-tools@55.0.0(@types/node@24.7.2)':
+  '@ckeditor/ckeditor5-dev-release-tools@55.0.0(@babel/core@7.28.5)(@types/node@24.7.2)(webpack@5.105.2)':
     dependencies:
       '@ckeditor/ckeditor5-dev-utils': 55.0.0(@babel/core@7.28.5)(webpack@5.105.2)
       '@octokit/rest': 22.0.0
