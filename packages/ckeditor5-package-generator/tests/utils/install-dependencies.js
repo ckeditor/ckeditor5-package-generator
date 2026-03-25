@@ -5,18 +5,11 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { spawn } from 'node:child_process';
-import { tools } from '@ckeditor/ckeditor5-dev-utils';
+import { createSpinner } from '../../lib/utils/prompt.js';
 import installDependencies from '../../lib/utils/install-dependencies.js';
 
-vi.mock( 'chalk', () => ( {
-	default: {
-		gray: {
-			italic: vi.fn( str => str )
-		}
-	}
-} ) );
 vi.mock( 'child_process' );
-vi.mock( '@ckeditor/ckeditor5-dev-utils' );
+vi.mock( '../../lib/utils/prompt.js' );
 
 describe( 'lib/utils/install-dependencies', () => {
 	let defaultDirectoryPath, stubs;
@@ -27,14 +20,14 @@ describe( 'lib/utils/install-dependencies', () => {
 		stubs = {
 			spinner: {
 				start: vi.fn(),
-				finish: vi.fn()
+				stop: vi.fn()
 			},
 			installTask: {
 				on: vi.fn()
 			}
 		};
 
-		vi.mocked( tools.createSpinner ).mockReturnValue( stubs.spinner );
+		vi.mocked( createSpinner ).mockReturnValue( stubs.spinner );
 		vi.mocked( spawn ).mockReturnValue( stubs.installTask );
 	} );
 
@@ -42,14 +35,22 @@ describe( 'lib/utils/install-dependencies', () => {
 		expect( installDependencies ).toBeTypeOf( 'function' );
 	} );
 
-	it( 'creates and removes the spinner', async () => {
+	it( 'shows a clack spinner during installation', async () => {
 		await runTest( {} );
 
+		expect( createSpinner ).toHaveBeenCalledTimes( 1 );
 		expect( stubs.spinner.start ).toHaveBeenCalledTimes( 1 );
-		expect( stubs.spinner.finish ).toHaveBeenCalledTimes( 1 );
+		expect( stubs.spinner.start ).toHaveBeenCalledWith( 'Installing dependencies' );
+		expect( stubs.spinner.stop ).toHaveBeenCalledTimes( 1 );
+		expect( stubs.spinner.stop ).toHaveBeenCalledWith( 'Dependencies installed.' );
+	} );
 
-		expect( tools.createSpinner ).toHaveBeenCalledTimes( 1 );
-		expect( tools.createSpinner ).toHaveBeenCalledWith( 'Installing dependencies... It takes a while.', { isDisabled: false } );
+	it( 'does not create a spinner in verbose mode', async () => {
+		await runTest( { verbose: true } );
+
+		expect( createSpinner ).not.toHaveBeenCalled();
+		expect( stubs.spinner.start ).not.toHaveBeenCalled();
+		expect( stubs.spinner.stop ).not.toHaveBeenCalled();
 	} );
 
 	it( 'installs dependencies using yarn', async () => {
@@ -145,32 +146,28 @@ describe( 'lib/utils/install-dependencies', () => {
 		);
 	} );
 
-	it( 'throws an error when install task closes with error exit code', () => {
+	it( 'shows spinner error when installation fails', () => {
 		return runTest( { exitCode: 1 } )
 			.then( () => {
 				throw new Error( 'Expected to throw.' );
 			} )
 			.catch( err => {
 				expect( err.message ).toEqual( 'Installing dependencies finished with an error.' );
+				expect( stubs.spinner.stop ).toHaveBeenCalledTimes( 1 );
+				expect( stubs.spinner.stop ).toHaveBeenCalledWith( 'Installing dependencies failed.', 1 );
 			} );
 	} );
 
-	it( 'throws an error for unhandled package manager', async () => {
-		try {
-			await installDependencies( defaultDirectoryPath, 'unknown', false );
-		} catch ( err ) {
-			expect( err.message ).toEqual( 'Unknown package manager: unknown.' );
-		}
+	it( 'shows spinner error for unhandled package manager', async () => {
+		await expect( installDependencies( defaultDirectoryPath, 'unknown', false ) ).rejects.toThrow(
+			'Unknown package manager: unknown.'
+		);
+
+		expect( stubs.spinner.stop ).toHaveBeenCalledTimes( 1 );
+		expect( stubs.spinner.stop ).toHaveBeenCalledWith( 'Installing dependencies failed.', 1 );
 	} );
 
 	/**
-	 * This function allows execution of following code block:
-	 *
-	 * installTask.on( 'close', exitCode => {
-	 *
-	 * It is needed to run the test properly, as that block
-	 * is a callback that executes resolve() and reject().
-	 *
 	 * @param {Object} options
 	 */
 	async function runTest( { packageManager = 'yarn', exitCode = 0, verbose = false } ) {

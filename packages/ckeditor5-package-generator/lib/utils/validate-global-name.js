@@ -3,28 +3,6 @@
  * For licensing, see LICENSE.md.
  */
 
-import chalk from 'chalk';
-
-/**
- * If the global name is not valid, prints the error.
- *
- * @param {Logger} logger
- * @param {String} globalName
- */
-export default function validateGlobalName( logger, globalName ) {
-	const validationError = validator( globalName );
-
-	if ( !validationError ) {
-		return true;
-	}
-
-	logger.error( '❗ Found an error while verifying the provided global name:', { startWithNewLine: true } );
-	logger.error( validationError );
-
-	logger.info( 'The provided global name:    ' + chalk.red( globalName ) );
-	logger.info( 'Allowed characters list:     ' + chalk.blue( '0-9 A-Z a-z _ - / @' ) );
-}
-
 /**
  * Checks if the global name is valid.
  *
@@ -33,8 +11,8 @@ export default function validateGlobalName( logger, globalName ) {
  * @param {String} globalName
  * @returns {String|null}
  */
-function validator( globalName ) {
-	if ( !globalName.length ) {
+export function getGlobalNameValidationError( globalName ) {
+	if ( !globalName || !globalName.length ) {
 		return 'The global name can not be an empty string.';
 	}
 	if ( !/^[a-zA-Z0-9_\-/@]+$/.test( globalName ) ) {

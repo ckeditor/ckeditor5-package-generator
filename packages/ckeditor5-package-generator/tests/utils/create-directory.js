@@ -7,12 +7,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import fs from 'node:fs';
 import mkdirp from 'mkdirp';
 import createDirectory from '../../lib/utils/create-directory.js';
-
-vi.mock( 'chalk', () => ( {
-	default: {
-		cyan: str => str
-	}
-} ) );
 vi.mock( 'upath', () => ( {
 	default: {
 		resolve: ( ...chunks ) => [ 'resolved', ...chunks ].join( '/' )
@@ -39,14 +33,6 @@ describe( 'lib/utils/create-directory', () => {
 		expect( createDirectory ).toBeTypeOf( 'function' );
 	} );
 
-	it( 'logs the process', () => {
-		createDirectory( stubs.logger, '@foo/ckeditor5-bar' );
-
-		expect( stubs.logger.process ).toHaveBeenCalledTimes( 2 );
-		expect( stubs.logger.process ).toHaveBeenNthCalledWith( 1, 'Checking whether the "ckeditor5-bar" directory can be created.' );
-		expect( stubs.logger.process ).toHaveBeenNthCalledWith( 2, 'Creating the directory "resolved/ckeditor5-bar".' );
-	} );
-
 	it( 'creates the directory', () => {
 		createDirectory( stubs.logger, '@foo/ckeditor5-bar' );
 
@@ -68,6 +54,15 @@ describe( 'lib/utils/create-directory', () => {
 
 	it( 'returns directory name and path', () => {
 		const result = createDirectory( stubs.logger, '@foo/ckeditor5-bar' );
+
+		expect( result ).toEqual( {
+			directoryName: 'ckeditor5-bar',
+			directoryPath: 'resolved/ckeditor5-bar'
+		} );
+	} );
+
+	it( 'uses the full package name as directory name for unscoped packages', () => {
+		const result = createDirectory( stubs.logger, 'ckeditor5-bar' );
 
 		expect( result ).toEqual( {
 			directoryName: 'ckeditor5-bar',

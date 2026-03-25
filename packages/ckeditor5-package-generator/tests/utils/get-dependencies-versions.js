@@ -10,8 +10,6 @@ import getDependenciesVersions from '../../lib/utils/get-dependencies-versions.j
 vi.mock( '../../lib/utils/get-package-version.js' );
 
 describe( 'lib/utils/get-dependencies-versions', () => {
-	let stubs;
-
 	beforeEach( () => {
 		vi.mocked( getPackageVersion ).mockImplementation( packageName => {
 			if ( packageName === 'ckeditor5' ) {
@@ -42,58 +40,44 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 				return Promise.resolve( '3.0.0' );
 			}
 		} );
-
-		stubs = {
-			logger: {
-				process: vi.fn(),
-				verboseInfo: vi.fn()
-			}
-		};
 	} );
 
 	it( 'should be a function', () => {
 		expect( getDependenciesVersions ).toBeTypeOf( 'function' );
 	} );
 
-	it( 'logs the process', async () => {
-		await getDependenciesVersions( stubs.logger );
-
-		expect( stubs.logger.process ).toHaveBeenCalledTimes( 1 );
-		expect( stubs.logger.process ).toHaveBeenCalledWith( 'Collecting the latest CKEditor 5 packages versions...' );
-	} );
-
 	it( 'returns an object with a version of the "ckeditor5" package', async () => {
-		const returnedValue = await getDependenciesVersions( stubs.logger );
+		const returnedValue = await getDependenciesVersions();
 		expect( returnedValue.ckeditor5 ).toEqual( '30.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "@ckeditor/ckeditor5-inspector" package', async () => {
-		const returnedValue = await getDependenciesVersions( stubs.logger );
+		const returnedValue = await getDependenciesVersions();
 		expect( returnedValue.ckeditor5Inspector ).toEqual( '4.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "@ckeditor/ckeditor5-dev-build-tools" package', async () => {
-		const returnedValue = await getDependenciesVersions( stubs.logger );
+		const returnedValue = await getDependenciesVersions();
 		expect( returnedValue.ckeditor5DevBuildTools ).toEqual( '7.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "@ckeditor/ckeditor5-dev-translations" package', async () => {
-		const returnedValue = await getDependenciesVersions( stubs.logger );
+		const returnedValue = await getDependenciesVersions();
 		expect( returnedValue.ckeditor5DevTranslations ).toEqual( '7.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "eslint-config-ckeditor5"', async () => {
-		const returnedValue = await getDependenciesVersions( stubs.logger );
+		const returnedValue = await getDependenciesVersions();
 		expect( returnedValue.eslintConfigCkeditor5 ).toEqual( '5.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "eslint-plugin-ckeditor5-rules"', async () => {
-		const returnedValue = await getDependenciesVersions( stubs.logger );
+		const returnedValue = await getDependenciesVersions();
 		expect( returnedValue.eslintPluginCkeditor5Rules ).toEqual( '5.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "stylelint-config-ckeditor5" package', async () => {
-		const returnedValue = await getDependenciesVersions( stubs.logger );
+		const returnedValue = await getDependenciesVersions();
 		expect( returnedValue.stylelintConfigCkeditor5 ).toEqual( '3.0.0' );
 	} );
 } );

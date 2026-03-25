@@ -53,8 +53,8 @@ async function verifyBuild( { language, packageManager, customPluginName, global
 		'@ckeditor/ckeditor5-test-package',
 		'--verbose',
 		'--lang', language,
-		`--use-${ packageManager }`,
-		`--global-name ${ globalName }`
+		'--package-manager', packageManager,
+		'--global-name', globalName
 	];
 
 	if ( language === 'ts' ) {

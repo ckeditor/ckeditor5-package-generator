@@ -9,11 +9,8 @@ import { execSync } from 'node:child_process';
 
 /**
  * @param {string} directoryPath
- * @param {Logger} logger
  */
-export default function initializeGitRepository( directoryPath, logger ) {
-	logger.process( 'Initializing Git repository...' );
-
+export default function initializeGitRepository( directoryPath ) {
 	const options = {
 		stdio: 'ignore',
 		cwd: directoryPath

@@ -3,8 +3,8 @@
  * For licensing, see LICENSE.md.
  */
 
-import chalk from 'chalk';
 import fs from 'node:fs';
+import { styleText } from 'node:util';
 import { globSync } from 'glob';
 import mkdirp from 'mkdirp';
 import upath from 'upath';
@@ -26,8 +26,6 @@ const TEMPLATE_PATH = upath.join( import.meta.dirname, '..', 'templates' );
  * @param {String} options.validatedGlobalName
  */
 export default function copyFiles( logger, options ) {
-	logger.process( 'Copying files...' );
-
 	const templateGlobs = [
 		'common/**/*',
 		`${ options.programmingLanguage }/**/*`
@@ -44,7 +42,7 @@ export default function copyFiles( logger, options ) {
 		.filter( file => options.packageManager !== 'pnpm' ? !file.includes( 'pnpm-workspace.yaml' ) : true );
 
 	for ( const templatePath of templatesToCopy ) {
-		logger.verboseInfo( `* Copying "${ chalk.gray( templatePath ) }"...` );
+		logger.verboseInfo( `* Copying "${ styleText( 'gray', templatePath ) }"...` );
 
 		const data = {
 			cliSeparator: options.packageManager === 'npm' ? '-- ' : '',

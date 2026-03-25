@@ -56,14 +56,12 @@ To create a new package, call the `ckeditor5-package-generator` executable file.
 The tool will create a new directory called `ckeditor5-package` with an example plugin called `Package` and tools for its development.
 
 ```bash
-node /path/to/repository/packages/ckeditor5-package-generator <packageName> [--use-npm] [--use-yarn] [--use-pnpm] [--global-name <...>] [--plugin-name <...>] [--lang <js|ts>] [--verbose]
+node /path/to/repository/packages/ckeditor5-package-generator [packageName] [--package-manager <npm|yarn|pnpm>] [--global-name <...>] [--plugin-name <...>] [--lang <js|ts>] [--verbose]
 ```
 
 #### Options
 
-* `--use-npm` &ndash; use `npm` to install dependencies in a newly created package.
-* `--use-yarn` &ndash; use `yarn` to install dependencies in a newly created package.
-* `--use-pnpm` &ndash; use `pnpm` to install dependencies in a newly created package.
+* `--package-manager` &ndash; (values: `npm` | `yarn` | `pnpm`) choose the package manager used to install dependencies in a newly created package. If omitted, the script will ask the user to choose one manually.
 * `--global-name` &ndash; define a global name of the package to be used in UMD build.
 * `--plugin-name` &ndash; define a class name to be different from the package name.
 * `--lang` &ndash; (values: `js` | `ts`) choose whether the created package should use JavaScript or TypeScript. If omitted, the script will ask the user to choose manually.

@@ -3,7 +3,6 @@
  * For licensing, see LICENSE.md.
  */
 
-import chalk from 'chalk';
 import fs from 'node:fs';
 import mkdirp from 'mkdirp';
 import upath from 'upath';
@@ -15,10 +14,8 @@ import upath from 'upath';
  * @param {String} packageName
  */
 export default function createDirectory( logger, packageName ) {
-	const directoryName = packageName.split( '/' )[ 1 ];
+	const directoryName = packageName.startsWith( '@' ) ? packageName.split( '/' )[ 1 ] : packageName;
 	const directoryPath = upath.resolve( directoryName );
-
-	logger.process( `Checking whether the "${ chalk.cyan( directoryName ) }" directory can be created.` );
 
 	if ( fs.existsSync( directoryPath ) ) {
 		logger.error( 'Cannot create a directory as the location is already taken.' );
@@ -26,8 +23,6 @@ export default function createDirectory( logger, packageName ) {
 
 		process.exit( 1 );
 	}
-
-	logger.process( `Creating the directory "${ chalk.cyan( directoryPath ) }".` );
 
 	mkdirp.sync( directoryPath );
 

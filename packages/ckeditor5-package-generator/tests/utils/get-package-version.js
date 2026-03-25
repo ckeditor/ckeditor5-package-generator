@@ -8,12 +8,12 @@ import * as childProcess from 'node:child_process';
 import getPackageVersion from '../../lib/utils/get-package-version.js';
 
 vi.mock( 'node:child_process', () => ( {
-	execFile: vi.fn()
+	exec: vi.fn()
 } ) );
 
 describe( 'lib/utils/get-package-version', () => {
 	beforeEach( () => {
-		vi.mocked( childProcess.execFile ).mockImplementation( ( command, args, options, callback ) => {
+		vi.mocked( childProcess.exec ).mockImplementation( ( command, options, callback ) => {
 			callback( null, { stdout: '30.0.0', stderr: '' } );
 		} );
 	} );
@@ -23,25 +23,35 @@ describe( 'lib/utils/get-package-version', () => {
 	} );
 
 	it( 'returns a string', async () => {
-		const returnedValue = await getPackageVersion( 'ckeditor5', 'npm' );
+		const returnedValue = await getPackageVersion( 'ckeditor5' );
 
 		expect( returnedValue ).toBeTypeOf( 'string' );
 	} );
 
 	it( 'calls npm registry to determine the version', async () => {
-		await getPackageVersion( 'ckeditor5', 'npm' );
+		await getPackageVersion( 'ckeditor5' );
 
-		expect( childProcess.execFile ).toHaveBeenCalledTimes( 1 );
-		expect( childProcess.execFile ).toHaveBeenCalledWith(
-			'npm',
-			[ 'view', 'ckeditor5', 'version' ],
-			{ encoding: 'utf-8', shell: true, stdio: 'pipe' },
+		expect( childProcess.exec ).toHaveBeenCalledTimes( 1 );
+		expect( childProcess.exec ).toHaveBeenCalledWith(
+			'npm view ckeditor5 version',
+			{ encoding: 'utf-8' },
+			expect.any( Function )
+		);
+	} );
+
+	it( 'supports scoped package names', async () => {
+		await getPackageVersion( '@ckeditor/ckeditor5-inspector' );
+
+		expect( childProcess.exec ).toHaveBeenCalledTimes( 1 );
+		expect( childProcess.exec ).toHaveBeenCalledWith(
+			'npm view @ckeditor/ckeditor5-inspector version',
+			{ encoding: 'utf-8' },
 			expect.any( Function )
 		);
 	} );
 
 	it( 'returns a version matching semantic versioning specification', async () => {
-		const returnedValue = await getPackageVersion( 'ckeditor5', 'npm' );
+		const returnedValue = await getPackageVersion( 'ckeditor5' );
 
 		expect( returnedValue ).toEqual( '30.0.0' );
 	} );

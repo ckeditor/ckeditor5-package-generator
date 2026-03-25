@@ -18,13 +18,13 @@ importers:
         version: 55.0.0
       '@ckeditor/ckeditor5-dev-changelog':
         specifier: ^55.0.0
-        version: 55.0.0(@types/node@24.7.2)
+        version: 55.0.0(@babel/core@7.28.5)(@types/node@24.7.2)(webpack@5.105.2)
       '@ckeditor/ckeditor5-dev-ci':
         specifier: ^55.0.0
         version: 55.0.0
       '@ckeditor/ckeditor5-dev-release-tools':
         specifier: ^55.0.0
-        version: 55.0.0(@types/node@24.7.2)
+        version: 55.0.0(@babel/core@7.28.5)(@types/node@24.7.2)(webpack@5.105.2)
       '@ckeditor/ckeditor5-dev-web-crawler':
         specifier: ^55.0.0
         version: 55.0.0(typescript@5.9.3)
@@ -85,24 +85,18 @@ importers:
 
   packages/ckeditor5-package-generator:
     dependencies:
-      '@ckeditor/ckeditor5-dev-utils':
-        specifier: ^55.0.0
-        version: 55.0.0(@babel/core@7.28.5)(webpack@5.105.2)
-      chalk:
-        specifier: ^5.0.0
-        version: 5.6.2
-      commander:
-        specifier: ^14.0.2
-        version: 14.0.2
+      '@clack/prompts':
+        specifier: ^1.1.0
+        version: 1.1.0
+      cac:
+        specifier: ^7.0.0
+        version: 7.0.0
       fs-extra:
         specifier: ^11.2.0
         version: 11.3.2
       glob:
         specifier: ^13.0.6
         version: 13.0.6
-      inquirer:
-        specifier: ^12.0.0
-        version: 12.9.6(@types/node@24.7.2)
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.23
@@ -112,9 +106,6 @@ importers:
       upath:
         specifier: ^2.0.0
         version: 2.0.1
-      webpack:
-        specifier: ^5.94.0
-        version: 5.105.2
     devDependencies:
       '@types/node':
         specifier: ^24.3.0
@@ -221,6 +212,12 @@ packages:
   '@ckeditor/ckeditor5-dev-web-crawler@55.0.0':
     resolution: {integrity: sha512-7MInM6RGj+eGeT6o6GVwR3VGWV/WxhW8ViBZSDF1ha17bVJq758U8o4hmklO2eVGUEfk6c4hVPuIOnt90MDxQQ==}
     engines: {node: '>=24.11.0', npm: '>=5.7.1'}
+
+  '@clack/core@1.1.0':
+    resolution: {integrity: sha512-SVcm4Dqm2ukn64/8Gub2wnlA5nS2iWJyCkdNHcvNHPIeBTGojpdJ+9cZKwLfmqy7irD4N5qLteSilJlE0WLAtA==}
+
+  '@clack/prompts@1.1.0':
+    resolution: {integrity: sha512-pkqbPGtohJAvm4Dphs2M8xE29ggupihHdy1x84HNojZuMtFsHiUlRvqD24tM2+XmI+61LlfNceM3Wr7U5QES5g==}
 
   '@es-joy/jsdoccomment@0.50.2':
     resolution: {integrity: sha512-YAdE/IJSpwbOTiaURNCKECdAwqrJuFiZhylmesBcIRawtYKnBR2wxPhoIewMg+Yu+QuYvHfJNReWpoxGBKOChA==}
@@ -1322,6 +1319,10 @@ packages:
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
 
+  cac@7.0.0:
+    resolution: {integrity: sha512-tixWYgm5ZoOD+3g6UTea91eow5z6AAHaho3g0V9CNSNb45gM8SmflpAc+GRd1InC4AqN/07Unrgp56Y94N9hJQ==}
+    engines: {node: '>=20.19.0'}
+
   cacache@19.0.1:
     resolution: {integrity: sha512-hdsUxulXCi5STId78vRVYEtDAjq99ICAUktLTeTYsLoTE6Z8dS0c8pWNCxwdrk9YfJeobDZc2Y186hD/5ZQgFQ==}
     engines: {node: ^18.17.0 || >=20.5.0}
@@ -1424,10 +1425,6 @@ packages:
 
   colorette@2.0.20:
     resolution: {integrity: sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==}
-
-  commander@14.0.2:
-    resolution: {integrity: sha512-TywoWNNRbhoD0BXs1P3ZEScW8W5iKrnbithIl0YH+uCmBd0QpPOA8yc82DS3BIE5Ma6FnBVUsJ7wVUDz4dvOWQ==}
-    engines: {node: '>=20'}
 
   commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
@@ -2921,6 +2918,9 @@ packages:
   simple-git@3.32.3:
     resolution: {integrity: sha512-56a5oxFdWlsGygOXHWrG+xjj5w9ZIt2uQbzqiIGdR/6i5iococ7WQ/bNPzWxCJdEUGUCmyMH0t9zMpRJTaKxmw==}
 
+  sisteransi@1.0.5:
+    resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
+
   slack-notify@2.0.7:
     resolution: {integrity: sha512-DZ4J3RVszHUaJf5zXtAocxEhZRAvwWoswB6a/8sAG/QMWkuZdvk3e8d2YQQlPJNYNSbfak+rCtn3zrZ5UmMnYg==}
     engines: {node: '>=13.2.x'}
@@ -3525,7 +3525,7 @@ snapshots:
     dependencies:
       glob: 13.0.6
 
-  '@ckeditor/ckeditor5-dev-changelog@55.0.0(@types/node@24.7.2)':
+  '@ckeditor/ckeditor5-dev-changelog@55.0.0(@babel/core@7.28.5)(@types/node@24.7.2)(webpack@5.105.2)':
     dependencies:
       '@ckeditor/ckeditor5-dev-utils': 55.0.0(@babel/core@7.28.5)(webpack@5.105.2)
       date-fns: 4.1.0
@@ -3546,7 +3546,7 @@ snapshots:
       '@octokit/rest': 22.0.0
       slack-notify: 2.0.7
 
-  '@ckeditor/ckeditor5-dev-release-tools@55.0.0(@types/node@24.7.2)':
+  '@ckeditor/ckeditor5-dev-release-tools@55.0.0(@babel/core@7.28.5)(@types/node@24.7.2)(webpack@5.105.2)':
     dependencies:
       '@ckeditor/ckeditor5-dev-utils': 55.0.0(@babel/core@7.28.5)(webpack@5.105.2)
       '@octokit/rest': 22.0.0
@@ -3602,6 +3602,15 @@ snapshots:
       - supports-color
       - typescript
       - utf-8-validate
+
+  '@clack/core@1.1.0':
+    dependencies:
+      sisteransi: 1.0.5
+
+  '@clack/prompts@1.1.0':
+    dependencies:
+      '@clack/core': 1.1.0
+      sisteransi: 1.0.5
 
   '@es-joy/jsdoccomment@0.50.2':
     dependencies:
@@ -4697,6 +4706,8 @@ snapshots:
 
   buffer-from@1.1.2: {}
 
+  cac@7.0.0: {}
+
   cacache@19.0.1:
     dependencies:
       '@npmcli/fs': 4.0.0
@@ -4803,8 +4814,6 @@ snapshots:
   color-name@1.1.4: {}
 
   colorette@2.0.20: {}
-
-  commander@14.0.2: {}
 
   commander@2.20.3: {}
 
@@ -6577,6 +6586,8 @@ snapshots:
       debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
+
+  sisteransi@1.0.5: {}
 
   slack-notify@2.0.7: {}
 

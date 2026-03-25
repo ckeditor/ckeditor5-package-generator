@@ -8,10 +8,9 @@ import fs from 'node:fs';
 import { globSync } from 'glob';
 import copyFiles from '../../lib/utils/copy-files.js';
 
-vi.mock( 'chalk', () => ( {
-	default: {
-		gray: vi.fn()
-	}
+vi.mock( 'node:util', async importOriginal => ( {
+	...( await importOriginal() ),
+	styleText: vi.fn( ( _style, str ) => str )
 } ) );
 vi.mock( 'fs' );
 vi.mock( 'glob' );
@@ -143,12 +142,6 @@ describe( 'lib/utils/copy-files', () => {
 
 	it( 'should be a function', () => {
 		expect( copyFiles ).toBeTypeOf( 'function' );
-	} );
-
-	it( 'logs the process', () => {
-		copyFiles( stubs.logger, options );
-
-		expect( stubs.logger.process ).toHaveBeenCalledWith( 'Copying files...' );
 	} );
 
 	it( 'creates files for JavaScript', () => {

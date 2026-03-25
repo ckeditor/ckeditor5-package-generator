@@ -3,10 +3,10 @@
  * For licensing, see LICENSE.md.
  */
 
-import { execFile } from 'node:child_process';
+import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
 
-const execFileAsync = promisify( execFile );
+const execAsync = promisify( exec );
 
 /**
  * Returns version of the specified package.
@@ -15,10 +15,9 @@ const execFileAsync = promisify( execFile );
  * @return {Promise<String>}
  */
 export default async function getPackageVersion( packageName ) {
-	const { stdout } = await execFileAsync(
-		'npm',
-		[ 'view', packageName, 'version' ],
-		{ stdio: 'pipe', shell: true, encoding: 'utf-8' }
+	const { stdout } = await execAsync(
+		`npm view ${ packageName } version`,
+		{ encoding: 'utf-8' }
 	);
 
 	return stdout.trim();
