@@ -41,6 +41,10 @@ describe( 'lib/utils/prompt', () => {
 		expect( note ).toHaveBeenCalledWith( 'Helpful note', 'Package name', {
 			format: expect.any( Function )
 		} );
+
+		const { format } = vi.mocked( note ).mock.calls[ 0 ][ 2 ];
+
+		expect( format( 'Helpful note' ) ).toBe( 'Helpful note' );
 	} );
 
 	it( 'creates clack spinners', () => {
