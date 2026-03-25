@@ -20,7 +20,6 @@ cli.command( '[packageName]', 'name of the package (ckeditor5-* or @scope/ckedit
 	.option( '--lang <lang>', 'programming language to use' )
 	.option( '--plugin-name <name>', 'optional custom plugin name' )
 	.option( '--global-name <name>', 'global name for UMD' )
-	.allowUnknownOptions()
 	.action( async ( packageName, options ) => {
 		try {
 			await init( packageName, options );

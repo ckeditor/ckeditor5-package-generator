@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import Logger from './utils/logger.js';
 import choosePackageManager from './utils/choose-package-manager.js';
 import chooseProgrammingLanguage from './utils/choose-programming-language.js';
@@ -61,12 +61,12 @@ export default async function init( packageName, options ) {
 	await installGitHooks( directoryPath, verbose );
 
 	showNote( [
-		chalk.cyan( 'cd ' + directoryName ),
-		chalk.gray( selectedPackageManager + ' run start' ),
-		chalk.gray( selectedPackageManager + ' run test' )
+		'cd ' + directoryName,
+		selectedPackageManager + ' run start',
+		selectedPackageManager + ' run test'
 	].join( '\n' ), 'Next steps' );
 
-	showOutro( chalk.green( 'Done!' ) );
+	showOutro( styleText( 'green', 'Done!' ) );
 }
 
 /**

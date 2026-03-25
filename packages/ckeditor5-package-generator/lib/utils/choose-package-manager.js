@@ -3,9 +3,9 @@
  * For licensing, see LICENSE.md.
  */
 
+import { styleText } from 'node:util';
 import isYarnInstalled from './is-yarn-installed.js';
 import isPnpmInstalled from './is-pnpm-installed.js';
-import chalk from 'chalk';
 import { promptSelect } from './prompt.js';
 
 const SUPPORTED_PACKAGE_MANAGERS = [ 'npm', 'yarn', 'pnpm' ];
@@ -41,7 +41,7 @@ export default async function choosePackageManager( logger, packageManager ) {
 	}
 
 	if ( !yarnInstalled && !pnpmInstalled ) {
-		logger.info( chalk.yellow( 'Using npm as no other supported package manager is installed.' ) );
+		logger.info( styleText( 'yellow', 'Using npm as no other supported package manager is installed.' ) );
 
 		return 'npm';
 	}

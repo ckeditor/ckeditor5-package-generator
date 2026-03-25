@@ -6,16 +6,17 @@
 import { describe, it, expect, vi } from 'vitest';
 import Logger from '../../lib/utils/logger.js';
 
+const stubs = vi.hoisted( () => ( {
+	styleText: vi.fn( ( style, str ) => `${ JSON.stringify( style ) }:[${ str }]` )
+} ) );
+
 vi.stubGlobal( 'console', {
 	log: vi.fn()
 } );
 
-vi.mock( 'chalk', () => ( {
-	default: {
-		red: vi.fn( str => `red:[${ str }]` ),
-		gray: vi.fn( str => `gray:[${ str }]` ),
-		italic: vi.fn( str => `italic:[${ str }]` )
-	}
+vi.mock( 'node:util', async importOriginal => ( {
+	...( await importOriginal() ),
+	styleText: stubs.styleText
 } ) );
 
 describe( 'lib/utils/logger', () => {
@@ -61,7 +62,10 @@ describe( 'lib/utils/logger', () => {
 
 			expect( console.log ).not.toHaveBeenCalled();
 			expect( logger._genericLog ).toHaveBeenCalledTimes( 1 );
-			expect( logger._genericLog ).toHaveBeenCalledWith( 'gray:[italic:[Logging some information...]]', { startWithNewLine: true } );
+			expect( logger._genericLog ).toHaveBeenCalledWith(
+				'["gray","italic"]:[Logging some information...]',
+				{ startWithNewLine: true }
+			);
 		} );
 
 		it( 'does nothing if logger instance was created in non-verbose mode', () => {
@@ -86,7 +90,7 @@ describe( 'lib/utils/logger', () => {
 
 			expect( console.log ).not.toHaveBeenCalled();
 			expect( logger._genericLog ).toHaveBeenCalledTimes( 1 );
-			expect( logger._genericLog ).toHaveBeenCalledWith( 'red:[Logging some error...]', { startWithNewLine: false } );
+			expect( logger._genericLog ).toHaveBeenCalledWith( '"red":[Logging some error...]', { startWithNewLine: false } );
 		} );
 	} );
 

@@ -8,11 +8,9 @@ import { promptText, showNote } from '../../lib/utils/prompt.js';
 import validatePackageName from '../../lib/utils/validate-package-name.js';
 
 vi.mock( '../../lib/utils/prompt.js' );
-vi.mock( 'chalk', () => ( {
-	default: {
-		green: vi.fn( str => str ),
-		blue: vi.fn( str => str )
-	}
+vi.mock( 'node:util', async importOriginal => ( {
+	...( await importOriginal() ),
+	styleText: vi.fn( ( _style, str ) => str )
 } ) );
 
 describe( 'lib/utils/validate-package-name', () => {

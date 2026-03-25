@@ -38,7 +38,9 @@ describe( 'lib/utils/prompt', () => {
 	it( 'forwards note calls', () => {
 		showNote( 'Helpful note', 'Package name' );
 
-		expect( note ).toHaveBeenCalledWith( 'Helpful note', 'Package name' );
+		expect( note ).toHaveBeenCalledWith( 'Helpful note', 'Package name', {
+			format: expect.any( Function )
+		} );
 	} );
 
 	it( 'creates clack spinners', () => {

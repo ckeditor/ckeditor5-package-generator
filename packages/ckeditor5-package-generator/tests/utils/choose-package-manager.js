@@ -12,10 +12,9 @@ import choosePackageManager from '../../lib/utils/choose-package-manager.js';
 vi.mock( '../../lib/utils/prompt.js' );
 vi.mock( '../../lib/utils/is-yarn-installed.js' );
 vi.mock( '../../lib/utils/is-pnpm-installed.js' );
-vi.mock( 'chalk', () => ( {
-	default: {
-		yellow: vi.fn( str => str )
-	}
+vi.mock( 'node:util', async importOriginal => ( {
+	...( await importOriginal() ),
+	styleText: vi.fn( ( _style, str ) => str )
 } ) );
 
 describe( 'lib/utils/choose-package-manager', () => {

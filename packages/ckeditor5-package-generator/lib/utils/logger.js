@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 
 export default class Logger {
 	/**
@@ -38,8 +38,7 @@ export default class Logger {
 			return;
 		}
 
-		message = chalk.italic( message );
-		message = chalk.gray( message );
+		message = styleText( [ 'gray', 'italic' ], message );
 
 		this._genericLog( message, options );
 	}
@@ -49,7 +48,7 @@ export default class Logger {
 	 * @param {Options} options
 	 */
 	error( message, options ) {
-		this._genericLog( chalk.red( message ), options );
+		this._genericLog( styleText( 'red', message ), options );
 	}
 
 	/**

@@ -7,12 +7,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import fs from 'node:fs';
 import mkdirp from 'mkdirp';
 import createDirectory from '../../lib/utils/create-directory.js';
-
-vi.mock( 'chalk', () => ( {
-	default: {
-		cyan: str => str
-	}
-} ) );
 vi.mock( 'upath', () => ( {
 	default: {
 		resolve: ( ...chunks ) => [ 'resolved', ...chunks ].join( '/' )

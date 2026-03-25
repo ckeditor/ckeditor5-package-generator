@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 import { promptText, showNote } from './prompt.js';
 
 const SCOPED_PACKAGE_REGEXP = /^@([^/]+)\/ckeditor5-([^/]+)$/;
@@ -26,10 +26,10 @@ export default async function validatePackageName( packageName ) {
 		validationResult,
 		'',
 		'Accepted formats:',
-		'  ' + chalk.green( '@[scope]/ckeditor5-[feature-name]' ),
-		'  ' + chalk.green( 'ckeditor5-[feature-name]' ),
+		'  ' + styleText( 'green', '@[scope]/ckeditor5-[feature-name]' ),
+		'  ' + styleText( 'green', 'ckeditor5-[feature-name]' ),
 		'',
-		'Allowed characters: ' + chalk.blue( '0-9 a-z - . _' )
+		'Allowed characters: ' + styleText( 'blue', '0-9 a-z - . _' )
 	].join( '\n' ), 'Package name' );
 
 	return await promptText( {

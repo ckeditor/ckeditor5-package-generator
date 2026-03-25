@@ -21,30 +21,15 @@ import validatePluginName from '../lib/utils/validate-plugin-name.js';
 import index from '../lib/index.js';
 
 const stubs = vi.hoisted( () => {
-	const chalk = {
-		green: vi.fn( input => input ),
-		cyan: vi.fn( input => input ),
-		underline: vi.fn( input => input ),
-		gray: vi.fn( input => input ),
-		yellow: vi.fn( input => input ),
-		inverse: vi.fn( input => input )
-	};
-
-	// To make `chalk.bold.yellow.red()` working.
-	for ( const rootKey of Object.keys( chalk ) ) {
-		for ( const nestedKey of Object.keys( chalk ) ) {
-			chalk[ rootKey ][ nestedKey ] = chalk[ nestedKey ];
-		}
-	}
-
 	return {
-		chalk,
+		styleText: vi.fn( ( _style, input ) => input ),
 		loggerInfo: vi.fn()
 	};
 } );
 
-vi.mock( 'chalk', () => ( {
-	default: stubs.chalk
+vi.mock( 'node:util', async importOriginal => ( {
+	...( await importOriginal() ),
+	styleText: stubs.styleText
 } ) );
 vi.mock( '../lib/utils/logger.js', () => ( {
 	default: class Logger {

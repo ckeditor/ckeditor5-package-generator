@@ -24,7 +24,9 @@ export function showOutro( message ) {
  * @param {string} title
  */
 export function showNote( message, title ) {
-	note( message, title );
+	note( message, title, {
+		format: value => value
+	} );
 }
 
 /**
