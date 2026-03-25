@@ -54,7 +54,7 @@ async function verifyBuild( { language, packageManager, customPluginName, global
 		'--verbose',
 		'--lang', language,
 		'--package-manager', packageManager,
-		`--global-name ${ globalName }`
+		'--global-name', globalName
 	];
 
 	if ( language === 'ts' ) {
