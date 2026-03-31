@@ -40,7 +40,8 @@ declare global {
 }
 
 ClassicEditor
-	.create( document.getElementById( 'editor' )!, {
+	.create( {
+		attachTo: document.querySelector<HTMLElement>( '#editor' )!,
 		licenseKey: 'GPL',
 		plugins: [
 			<%= formattedNames.plugin.pascalCase %>,

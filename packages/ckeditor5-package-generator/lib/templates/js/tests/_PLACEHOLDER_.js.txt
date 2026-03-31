@@ -14,7 +14,8 @@ describe( '<%= formattedNames.plugin.pascalCase %>', () => {
 			domElement = document.createElement( 'div' );
 			document.body.appendChild( domElement );
 
-			editor = await ClassicEditor.create( domElement, {
+			editor = await ClassicEditor.create( {
+				attachTo: domElement,
 				licenseKey: 'GPL',
 				plugins: [
 					Paragraph,

@@ -34,7 +34,8 @@ import 'ckeditor5/ckeditor5.css';
 import { <%= formattedNames.plugin.pascalCase %> } from '../src/index.js';
 
 ClassicEditor
-	.create( document.getElementById( 'editor' ), {
+	.create( {
+		attachTo: document.querySelector( '#editor' ),
 		licenseKey: 'GPL',
 		plugins: [
 			<%= formattedNames.plugin.pascalCase %>,
