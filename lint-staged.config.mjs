@@ -11,6 +11,8 @@ export default {
 			return [];
 		}
 
-		return [ `eslint --quiet ${ filtered.join( ' ' ) }` ];
+		const escaped = filtered.map( file => `"${ file.replaceAll( '"', '\\"' ) }"` );
+
+		return [ `eslint --quiet ${ escaped.join( ' ' ) }` ];
 	}
 };
