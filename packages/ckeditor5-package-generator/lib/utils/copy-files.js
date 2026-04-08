@@ -10,7 +10,7 @@ import mkdirp from 'mkdirp';
 import upath from 'upath';
 import { template } from 'lodash-es';
 
-const TEMPLATE_PATH = upath.join( import.meta.dirname, '..', 'templates' );
+const TEMPLATES_DIR = upath.join( import.meta.dirname, '..', 'templates' );
 
 /**
  * If the package name is not valid, prints the error and exits the process.
@@ -34,7 +34,7 @@ export default function copyFiles( logger, options ) {
 	const templatesToCopy = templateGlobs
 		.flatMap( globPattern => {
 			return globSync( globPattern, {
-				cwd: TEMPLATE_PATH,
+				cwd: TEMPLATES_DIR,
 				dot: true,
 				nodir: true
 			} );
@@ -62,8 +62,7 @@ export default function copyFiles( logger, options ) {
  * @param {Object} data The data to fill in the template file.
  */
 function copyTemplate( templatePath, packagePath, data ) {
-	const rawFile = fs.readFileSync( upath.join( TEMPLATE_PATH, templatePath ), 'utf-8' );
-	const filledFile = template( rawFile )( data );
+	const fullTemplatePath = upath.join( TEMPLATES_DIR, templatePath );
 
 	const processedTemplatePath = templatePath
 		// Remove sub-directory inside templates to merge results into one directory.
@@ -77,5 +76,16 @@ function copyTemplate( templatePath, packagePath, data ) {
 
 	// Make sure that the destination directory exists.
 	mkdirp.sync( upath.dirname( destinationPath ) );
-	fs.writeFileSync( destinationPath, filledFile );
+
+	// Recreate symlinks as symlinks instead of reading their content.
+	const lstat = fs.lstatSync( fullTemplatePath );
+
+	if ( lstat.isSymbolicLink() ) {
+		const linkTarget = fs.readlinkSync( fullTemplatePath );
+		fs.symlinkSync( linkTarget, destinationPath );
+	} else {
+		const rawFile = fs.readFileSync( fullTemplatePath, 'utf-8' );
+		const filledFile = template( rawFile )( data );
+		fs.writeFileSync( destinationPath, filledFile );
+	}
 }

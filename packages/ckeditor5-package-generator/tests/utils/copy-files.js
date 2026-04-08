@@ -62,6 +62,10 @@ describe( 'lib/utils/copy-files', () => {
 			}
 		} );
 
+		vi.mocked( fs.lstatSync ).mockReturnValue( {
+			isSymbolicLink: () => false
+		} );
+
 		vi.mocked( fs.readFileSync ).mockImplementation( path => {
 			if ( path.endsWith( 'templates/common/pnpm-workspace.yaml' ) ) {
 				return '# pnpm workspace file';
@@ -517,6 +521,44 @@ describe( 'lib/utils/copy-files', () => {
 
 		expect( fs.writeFileSync ).not.toHaveBeenCalledWith(
 			expect.stringContaining( 'pnpm-workspace.yaml' ),
+			expect.any( String )
+		);
+	} );
+
+	it( 'recreates symlinks instead of reading their content', () => {
+		const globSyncMock = vi.mocked( globSync ).getMockImplementation();
+
+		vi.mocked( globSync ).mockImplementation( pattern => {
+			if ( pattern === 'common/**/*' ) {
+				return [ ...globSyncMock( pattern ), 'common/CLAUDE.md' ];
+			}
+
+			return globSyncMock( pattern );
+		} );
+
+		vi.mocked( fs.lstatSync ).mockImplementation( path => {
+			if ( path.endsWith( 'templates/common/CLAUDE.md' ) ) {
+				return { isSymbolicLink: () => true };
+			}
+
+			return { isSymbolicLink: () => false };
+		} );
+
+		vi.mocked( fs.readlinkSync ).mockReturnValue( 'AGENTS.md' );
+
+		copyFiles( stubs.logger, options );
+
+		expect( fs.readlinkSync ).toHaveBeenCalledWith(
+			expect.stringContaining( 'templates/common/CLAUDE.md' )
+		);
+
+		expect( fs.symlinkSync ).toHaveBeenCalledWith(
+			'AGENTS.md',
+			'directory/path/foo/CLAUDE.md'
+		);
+
+		expect( fs.writeFileSync ).not.toHaveBeenCalledWith(
+			'directory/path/foo/CLAUDE.md',
 			expect.any( String )
 		);
 	} );
