@@ -39,7 +39,15 @@ export default function copyFiles( logger, options ) {
 				nodir: true
 			} );
 		} )
-		.filter( file => options.packageManager !== 'pnpm' ? !file.includes( 'pnpm-workspace.yaml' ) : true );
+		.filter( file => options.packageManager !== 'pnpm' ? !file.includes( 'pnpm-workspace.yaml' ) : true )
+		// Process symlinks last so their targets are already written in the output directory.
+		// This lets the hard-link fallback (used when symlinks are unavailable on Windows) work.
+		.sort( ( a, b ) => {
+			const aIsSymlink = fs.lstatSync( upath.join( TEMPLATES_DIR, a ) ).isSymbolicLink();
+			const bIsSymlink = fs.lstatSync( upath.join( TEMPLATES_DIR, b ) ).isSymbolicLink();
+
+			return Number( aIsSymlink ) - Number( bIsSymlink );
+		} );
 
 	for ( const templatePath of templatesToCopy ) {
 		logger.verboseInfo( `* Copying "${ styleText( 'gray', templatePath ) }"...` );
@@ -82,7 +90,18 @@ function copyTemplate( templatePath, packagePath, data ) {
 
 	if ( lstat.isSymbolicLink() ) {
 		const linkTarget = fs.readlinkSync( fullTemplatePath );
-		fs.symlinkSync( linkTarget, destinationPath );
+
+		try {
+			fs.symlinkSync( linkTarget, destinationPath );
+		} catch ( err ) {
+			if ( err.code !== 'EPERM' ) {
+				throw err;
+			}
+
+			// Symlink creation requires Developer Mode or admin privileges on Windows.
+			// Fall back to a hard link pointing to the already-written target in the output directory.
+			fs.linkSync( upath.join( upath.dirname( destinationPath ), linkTarget ), destinationPath );
+		}
 	} else {
 		const rawFile = fs.readFileSync( fullTemplatePath, 'utf-8' );
 		const filledFile = template( rawFile )( data );

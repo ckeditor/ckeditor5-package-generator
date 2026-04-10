@@ -562,4 +562,100 @@ describe( 'lib/utils/copy-files', () => {
 			expect.any( String )
 		);
 	} );
+
+	it( 'falls back to hard link when symlink creation fails with EPERM (Windows without Developer Mode)', () => {
+		const globSyncMock = vi.mocked( globSync ).getMockImplementation();
+
+		vi.mocked( globSync ).mockImplementation( pattern => {
+			if ( pattern === 'common/**/*' ) {
+				return [ ...globSyncMock( pattern ), 'common/CLAUDE.md' ];
+			}
+
+			return globSyncMock( pattern );
+		} );
+
+		vi.mocked( fs.lstatSync ).mockImplementation( path => {
+			if ( path.endsWith( 'templates/common/CLAUDE.md' ) ) {
+				return { isSymbolicLink: () => true };
+			}
+
+			return { isSymbolicLink: () => false };
+		} );
+
+		vi.mocked( fs.readlinkSync ).mockReturnValue( 'AGENTS.md' );
+
+		const error = new Error( 'EPERM: operation not permitted, symlink' );
+		error.code = 'EPERM';
+		vi.mocked( fs.symlinkSync ).mockImplementation( () => {
+			throw error;
+		} );
+
+		copyFiles( stubs.logger, options );
+
+		expect( fs.linkSync ).toHaveBeenCalledWith(
+			'directory/path/foo/AGENTS.md',
+			'directory/path/foo/CLAUDE.md'
+		);
+	} );
+
+	it( 'rethrows unexpected errors from symlink creation', () => {
+		const globSyncMock = vi.mocked( globSync ).getMockImplementation();
+
+		vi.mocked( globSync ).mockImplementation( pattern => {
+			if ( pattern === 'common/**/*' ) {
+				return [ ...globSyncMock( pattern ), 'common/CLAUDE.md' ];
+			}
+
+			return globSyncMock( pattern );
+		} );
+
+		vi.mocked( fs.lstatSync ).mockImplementation( path => {
+			if ( path.endsWith( 'templates/common/CLAUDE.md' ) ) {
+				return { isSymbolicLink: () => true };
+			}
+
+			return { isSymbolicLink: () => false };
+		} );
+
+		vi.mocked( fs.readlinkSync ).mockReturnValue( 'AGENTS.md' );
+
+		const error = new Error( 'ENOENT: no such file or directory' );
+		error.code = 'ENOENT';
+		vi.mocked( fs.symlinkSync ).mockImplementation( () => {
+			throw error;
+		} );
+
+		expect( () => copyFiles( stubs.logger, options ) ).toThrow( error );
+	} );
+
+	it( 'processes symlinks after regular files', () => {
+		const globSyncMock = vi.mocked( globSync ).getMockImplementation();
+
+		vi.mocked( globSync ).mockImplementation( pattern => {
+			if ( pattern === 'common/**/*' ) {
+				// Return symlink before regular files to verify sorting.
+				return [ 'common/CLAUDE.md', ...globSyncMock( pattern ) ];
+			}
+
+			return globSyncMock( pattern );
+		} );
+
+		vi.mocked( fs.lstatSync ).mockImplementation( path => {
+			if ( path.endsWith( 'templates/common/CLAUDE.md' ) ) {
+				return { isSymbolicLink: () => true };
+			}
+
+			return { isSymbolicLink: () => false };
+		} );
+
+		vi.mocked( fs.readlinkSync ).mockReturnValue( 'AGENTS.md' );
+
+		copyFiles( stubs.logger, options );
+
+		// The symlink (CLAUDE.md) should be processed last despite appearing first in glob results.
+		const verboseCalls = stubs.logger.verboseInfo.mock.calls.map( call => call[ 0 ] );
+		const claudeIndex = verboseCalls.findIndex( msg => msg.includes( 'CLAUDE.md' ) );
+
+		expect( claudeIndex ).toBe( verboseCalls.length - 1 );
+	} );
 } );
