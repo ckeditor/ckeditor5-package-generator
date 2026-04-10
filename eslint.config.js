@@ -18,7 +18,8 @@ export default defineConfig( [
 	{
 		name: 'Ignored files config',
 		ignores: [
-			'coverage/**'
+			'coverage/**',
+			'packages/ckeditor5-package-generator/lib/templates/common/CLAUDE.md' // Symlink.
 		]
 	},
 	{
