@@ -10,7 +10,7 @@ This is a CKEditor 5 plugin package generated using [ckeditor5-package-generator
 | `pnpm test` | Run Vitest tests in headless Chrome (browser mode). **100% coverage enforced on `src/`** |
 | `pnpm lint` | Run ESLint |
 | `pnpm stylelint` | Run Stylelint on `theme/**/*.css` |
-| `pnpm build` | Full build: ESM bundle → ESM+UMD browser bundle |
+| `pnpm build` | Build ESM npm bundle and ESM+UMD browser bundles |
 | `pnpm translations:synchronize` | Sync translation files from `lang/contexts.json` |
 
 ## Project Structure
@@ -37,15 +37,8 @@ ckeditor5-metadata.json — Plugin metadata for tooling/integrators.
 **JavaScript.** All source is `.js`. The CKEditor docs tutorials are also in JS — the patterns shown there can be used directly.
 
 **Import extensions.** Always use `.js` extension in import paths. This is ESLint-enforced (`ckeditor5-rules/require-file-extensions-in-imports`).
-```js
-// ✅ Correct
-import Foo from './foo.js';
 
-// ❌ Wrong — will fail lint
-import Foo from './foo';
-```
-
-**All CKEditor imports from `'ckeditor5'`.** Do NOT import from individual `@ckeditor/*` packages in plugin source.
+**Use `'ckeditor5'` for all CKEditor imports.** Do NOT import from individual `@ckeditor/*` packages in plugin source.
 
 **Plugin class pattern.** Every plugin extends `Plugin` and has a static `pluginName` returning a string literal:
 ```js
@@ -65,121 +58,19 @@ export default class MyFeature extends Plugin {
 **Editing / UI split (for complex features).** Split into `MyFeatureEditing` (schema, converters, commands) + `MyFeatureUI` (toolbar buttons, dropdowns) + a glue `MyFeature` plugin:
 ```js
 export default class MyFeature extends Plugin {
-    static get pluginName() { return 'MyFeature'; }
-    static get requires() { return [ MyFeatureEditing, MyFeatureUI ]; }
+    static get pluginName() {
+        return 'MyFeature';
+    }
+
+    static get requires() {
+        return [ MyFeatureEditing, MyFeatureUI ];
+    }
 }
 ```
 
 **Event listeners in plugins.** Use `this.listenTo( emitter, event, callback )` instead of `emitter.on()`. Listeners registered with `listenTo` are automatically removed when the plugin is destroyed; `on()` listeners leak.
 
 **Translations.** Use `editor.t('Label')` for user-visible strings. Add the string as a key in `lang/contexts.json` with a description for translators.
-
-## Key CKEditor 5 Patterns
-
-### Schema
-Define what's allowed in the editor model:
-```js
-const schema = editor.model.schema;
-
-// Inline attribute on text (like bold, highlight, abbreviation):
-schema.extend( '$text', { allowAttributes: [ 'myAttribute' ] } );
-
-// Block element (like a callout, info box):
-schema.register( 'myBlock', {
-    inheritAllFrom: '$block',       // behaves like a paragraph
-    allowChildren: '$block'         // can contain other blocks (optional)
-} );
-```
-
-### Conversion (model ↔ view)
-```js
-const conversion = editor.conversion;
-
-// Simple symmetric conversion (attribute ↔ element):
-conversion.attributeToElement( { model: 'highlight', view: 'mark' } );
-
-// Simple symmetric conversion (element ↔ element):
-conversion.elementToElement( { model: 'myBlock', view: 'div' } );
-
-// Separate upcast/downcast for asymmetric cases:
-conversion.for( 'upcast' ).elementToAttribute( {
-    view: { name: 'abbr', attributes: [ 'title' ] },
-    model: {
-        key: 'abbreviation',
-        value: viewEl => viewEl.getAttribute( 'title' )
-    }
-} );
-conversion.for( 'downcast' ).attributeToElement( {
-    model: 'abbreviation',
-    view: ( value, conversionApi ) => {
-        return conversionApi.writer.createAttributeElement( 'abbr', { title: value } );
-    }
-} );
-```
-
-### Commands
-```js
-import { Command } from 'ckeditor5';
-
-class MyCommand extends Command {
-    execute( options ) {
-        const editor = this.editor;
-        editor.model.change( writer => {
-            // Modify the model...
-        } );
-    }
-
-    refresh() {
-        // Update this.isEnabled / this.value based on model state
-    }
-}
-
-// Register in plugin init():
-editor.commands.add( 'myCommand', new MyCommand( editor ) );
-```
-
-### UI — Toolbar Buttons
-```js
-import { ButtonView } from 'ckeditor5';
-
-editor.ui.componentFactory.add( 'myButton', locale => {
-    const view = new ButtonView( locale );
-    view.set( { label: t( 'My Button' ), icon: myIcon, tooltip: true } );
-
-    this.listenTo( view, 'execute', () => {
-        editor.execute( 'myCommand' );
-        editor.editing.view.focus();
-    } );
-
-    return view;
-} );
-```
-
-### Model Changes
-Always modify the document model inside `editor.model.change()`:
-```js
-editor.model.change( writer => {
-    const text = writer.createText( 'Hello', { bold: true } );
-    editor.model.insertContent( text );
-
-    // Or set an attribute on selection:
-    writer.setSelection( someRange );
-    writer.setSelectionAttribute( 'myAttribute', 'value' );
-} );
-```
-
-### Listening to Model/Document Events
-```js
-// React to document changes (useful for live-updating widgets):
-editor.model.document.on( 'change:data', () => {
-    // The document content changed
-} );
-
-// React to selection changes:
-editor.model.document.selection.on( 'change:range', () => {
-    // Selection moved
-} );
-```
 
 ## Test Pattern
 
