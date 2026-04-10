@@ -43,21 +43,6 @@ ckeditor5-metadata.json — Plugin metadata for tooling/integrators.
 
 **Use `'ckeditor5'` for all CKEditor imports.** Do NOT import from individual `@ckeditor/*` packages in plugin source. The one exception is the type augmentation file (`augmentation.ts`), which must `declare module '@ckeditor/ckeditor5-core'` to extend `PluginsMap`.
 
-**Plugin class pattern.** Every plugin extends `Plugin` and has a static `pluginName` returning a string literal `as const`:
-```ts
-import { Plugin } from 'ckeditor5';
-
-export default class MyFeature extends Plugin {
-    public static get pluginName() {
-        return 'MyFeature' as const;
-    }
-
-    public init(): void {
-        // Plugin initialization: schema, converters, commands, UI
-    }
-}
-```
-
 **Editing / UI split (for complex features).** Split into `MyFeatureEditing` (schema, converters, commands) + `MyFeatureUI` (toolbar buttons, dropdowns) + a glue `MyFeature` plugin:
 ```ts
 export default class MyFeature extends Plugin {

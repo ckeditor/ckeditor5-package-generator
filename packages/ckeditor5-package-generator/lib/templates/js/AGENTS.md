@@ -40,21 +40,6 @@ ckeditor5-metadata.json — Plugin metadata for tooling/integrators.
 
 **Use `'ckeditor5'` for all CKEditor imports.** Do NOT import from individual `@ckeditor/*` packages in plugin source.
 
-**Plugin class pattern.** Every plugin extends `Plugin` and has a static `pluginName` returning a string literal:
-```js
-import { Plugin } from 'ckeditor5';
-
-export default class MyFeature extends Plugin {
-    static get pluginName() {
-        return 'MyFeature';
-    }
-
-    init() {
-        // Plugin initialization: schema, converters, commands, UI
-    }
-}
-```
-
 **Editing / UI split (for complex features).** Split into `MyFeatureEditing` (schema, converters, commands) + `MyFeatureUI` (toolbar buttons, dropdowns) + a glue `MyFeature` plugin:
 ```js
 export default class MyFeature extends Plugin {
