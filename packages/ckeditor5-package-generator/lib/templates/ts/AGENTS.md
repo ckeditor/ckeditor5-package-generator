@@ -1,6 +1,6 @@
 # CKEditor 5 Plugin Package
 
-This is a CKEditor 5 plugin package generated using [ckeditor5-package-generator](https://ckeditor.com/docs/ckeditor5/latest/framework/develpment-tools/package-generator/using-package-generator.html). It contains a boilerplate example plugin (`<%= formattedNames.plugin.pascalCase %>`) and is set up for TypeScript, Vite, Vitest, and ESLint. When asked to implement specific functionality, **modify the existing plugin files** (`src/<%= formattedNames.plugin.lowerCaseMerged %>.ts`, `tests/<%= formattedNames.plugin.lowerCaseMerged %>.ts`, etc.) rather than creating a new plugin alongside it. The boilerplate plugin is a starting point to be replaced with real functionality.
+This is a CKEditor 5 plugin package generated using [ckeditor5-package-generator](https://ckeditor.com/docs/ckeditor5/latest/framework/develpment-tools/package-generator/using-package-generator.html). It contains a boilerplate example plugin (`<%= formattedNames.plugin.pascalCase %>`). When asked to implement specific functionality, **modify the existing plugin files** (`src/<%= formattedNames.plugin.lowerCaseMerged %>.ts`, `tests/<%= formattedNames.plugin.lowerCaseMerged %>.ts`, etc.) rather than creating a new plugin alongside it. The boilerplate plugin is a starting point to be replaced with real functionality.
 
 ## Commands
 
@@ -37,9 +37,7 @@ ckeditor5-metadata.json — Plugin metadata for tooling/integrators.
 
 **TypeScript.** All source is `.ts`. The CKEditor docs tutorials are in plain JS — adapt the patterns to TypeScript when following them.
 
-**Import extensions.** Always use `.js` extension in import paths, even for `.ts` files. This is ESLint-enforced (`ckeditor5-rules/require-file-extensions-in-imports`).
-
-**`import type` for type-only imports.** `verbatimModuleSyntax` is enabled in tsconfig — you must use `import type` when importing only types.
+**Finish by verifying the package.** After implementing changes, run `pnpm build` and `pnpm lint`.
 
 **Use `'ckeditor5'` for all CKEditor imports.** Do NOT import from individual `@ckeditor/*` packages in plugin source. The one exception is the type augmentation file (`augmentation.ts`), which must `declare module '@ckeditor/ckeditor5-core'` to extend `PluginsMap`.
 
@@ -59,44 +57,6 @@ export default class MyFeature extends Plugin {
 **Event listeners in plugins.** Use `this.listenTo( emitter, event, callback )` instead of `emitter.on()`. Listeners registered with `listenTo` are automatically removed when the plugin is destroyed; `on()` listeners leak.
 
 **Translations.** Use `editor.t('Label')` for user-visible strings. Add the string as a key in `lang/contexts.json` with a description for translators.
-
-## Test Pattern
-
-Tests use Vitest (browser mode) with Chai-style assertions. Each test creates a real `ClassicEditor`:
-```ts
-import { describe, expect, it, beforeEach, afterEach } from 'vitest';
-import { ClassicEditor, Essentials, Paragraph, Heading } from 'ckeditor5';
-import MyPlugin from '../src/myplugin.js';
-
-describe( 'MyPlugin', () => {
-    let domElement: HTMLElement, editor: ClassicEditor;
-
-    beforeEach( async () => {
-        domElement = document.createElement( 'div' );
-        document.body.appendChild( domElement );
-
-        editor = await ClassicEditor.create( {
-            attachTo: domElement,
-            licenseKey: 'GPL',
-            plugins: [ Paragraph, Heading, Essentials, MyPlugin ],
-            toolbar: [ 'myButton' ]
-        } );
-    } );
-
-    afterEach( () => {
-        domElement.remove();
-        return editor.destroy();
-    } );
-
-    it( 'should be named', () => {
-        expect( MyPlugin.pluginName ).to.equal( 'MyPlugin' );
-    } );
-
-    it( 'should be loaded', () => {
-        expect( editor.plugins.get( 'MyPlugin' ) ).to.be.an.instanceof( MyPlugin );
-    } );
-} );
-```
 
 ## Documentation Links
 
