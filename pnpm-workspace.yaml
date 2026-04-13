@@ -16,8 +16,6 @@ minimumReleaseAgeExclude:
   - '@ckeditor/*'
   - '@cksource/*'
   - '*ckeditor5*'
-  - 'basic-ftp' # Remove after 2026-04-12.
-  - 'vite' # Remove after 2026-04-10.
 
 linkWorkspacePackages: true
 preferFrozenLockfile: true
