@@ -75,23 +75,6 @@ Available scripts and their modifiers are described in the [`README.md` file of 
 
 The `ckeditor5-metadata.json` file contains data of the package that allows for an automated detection of plugins and processing them by external scripts. Information about how this file should be maintained is available in the [official guide](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/contributing/package-metadata.html). Keep in mind that this file has no effect on how the plugin work.
 
-## Releasing packages
-
-CircleCI automates the release process and can release both channels: stable (`X.Y.Z`) and pre-releases (`X.Y.Z-alpha.X`, etc.).
-
-Before you start, you need to prepare the changelog entries.
-
-1. Make sure the `#master` branch is up-to-date: `git fetch && git checkout master && git pull`.
-1. Prepare a release branch: `git checkout -b release-[YYYYMMDD]` where `YYYYMMDD` is the current day.
-1. Generate the changelog entries: `pnpm run release:prepare-changelog`.
-	* You can specify the release date by passing the `--date` option, e.g., `--date=2025-06-11`.
-	* By passing the `--dry-run` option, you can check what the script will do without actually modifying the files.
-	* Read all the entries, correct poor wording and other issues, wrap code names in backticks to format them, etc.
-	* Add the missing `the/a` articles, `()` to method names, "it's" -> "its", etc.
-	* A newly introduced feature should have just one changelog entry – something like "The initial implementation of the FOO feature." with a description of what it does.
-1. Commit all changes and prepare a new pull request targeting the `#master` branch.
-1. Ping the `@ckeditor/ckeditor-5-platform` team to review the pull request and trigger the release process.
-
 ## License
 
 The `ckeditor5-package-generator` tool is available under [MIT license](https://opensource.org/licenses/MIT).
