@@ -124,7 +124,7 @@ export default defineConfig( ( { mode } ) => {
 	 */
 	const browserConfig: ViteUserConfig = {
 		build: {
-			minify: 'terser',
+			minify: true,
 			outDir: resolve( import.meta.dirname, 'dist/browser' ),
 			lib: {
 				entry,
