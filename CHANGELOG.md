@@ -1,6 +1,33 @@
 Changelog
 =========
 
+## [6.1.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v6.0.0...v6.1.0) (June 8, 2026)
+
+### Features
+
+* Generated packages now include `AGENTS.md` and `CLAUDE.md` files with project-specific coding conventions, structure, and CKEditor 5 patterns for AI-assisted development.
+
+### Bug fixes
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Use the default Vite minifier (`oxc`) instead of `terser`.
+
+### Other changes
+
+* Readme simplification.
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Other releases:
+
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/6.1.0): v6.0.0 => v6.1.0
+</details>
+
+
 ## [6.0.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v6.0.0-alpha.1...v6.0.0) (March 31, 2026)
 
 ### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
@@ -136,26 +163,6 @@ Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/fra
 Major releases (contain major breaking changes):
 
 * [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/6.0.0-alpha.0): v5.0.1 => v6.0.0-alpha.0
-</details>
-
-
-## [5.0.1](https://github.com/ckeditor/ckeditor5-package-generator/compare/v5.0.0...v5.0.1) (November 14, 2025)
-
-### Bug fixes
-
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Add the `node:` prefix to built-in Node.js module imports.
-
-### Released packages
-
-Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
-
-<details>
-<summary>Released packages (summary)</summary>
-
-Other releases:
-
-* [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/5.0.1): v5.0.0 => v5.0.1
-* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/5.0.1): v5.0.0 => v5.0.1
 </details>
 
 ---
