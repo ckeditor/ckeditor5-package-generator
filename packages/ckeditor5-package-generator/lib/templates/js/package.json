@@ -48,7 +48,7 @@
     "stylelint": "^16.0.0",
     "stylelint-config-ckeditor5": "^<%= packageVersions.stylelintConfigCkeditor5 %>",
     "typescript": "5.5.4",
-    "vite": "^8.0.0",
+    "vite": "^8.1.2",
     "vite-plugin-svgo": "^2.0.0",
     "vitest": "^4.1.7",
     "webdriverio": "^9.19.2"
