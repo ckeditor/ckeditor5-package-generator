@@ -1,9 +1,10 @@
 packages:
   - packages/*
 
-onlyBuiltDependencies:
-  - esbuild
-  - puppeteer
+allowBuilds:
+  esbuild: true
+  puppeteer: true
+  snyk: true
 
 overrides:
   'diff@^7': '^8.0.3'
@@ -21,3 +22,4 @@ linkWorkspacePackages: true
 preferFrozenLockfile: true
 shamefullyHoist: true
 shellEmulator: true
+verifyDepsBeforeRun: false
