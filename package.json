@@ -18,11 +18,11 @@
   "homepage": "https://ckeditor.com/ckeditor-5",
   "type": "module",
   "devDependencies": {
-    "@ckeditor/ckeditor5-dev-bump-year": "^55.6.0",
-    "@ckeditor/ckeditor5-dev-changelog": "^55.6.0",
-    "@ckeditor/ckeditor5-dev-ci": "^55.6.0",
-    "@ckeditor/ckeditor5-dev-release-tools": "^55.6.0",
-    "@ckeditor/ckeditor5-dev-web-crawler": "^55.6.0",
+    "@ckeditor/ckeditor5-dev-bump-year": "^55.6.3",
+    "@ckeditor/ckeditor5-dev-changelog": "^55.6.3",
+    "@ckeditor/ckeditor5-dev-ci": "^55.6.3",
+    "@ckeditor/ckeditor5-dev-release-tools": "^55.6.3",
+    "@ckeditor/ckeditor5-dev-web-crawler": "^55.6.3",
     "@inquirer/prompts": "^7.5.0",
     "@listr2/prompt-adapter-inquirer": "^2.0.16",
     "@vitest/coverage-v8": "^4.1.7",
@@ -40,7 +40,7 @@
     "semver": "^7.0.0",
     "typescript": "^5.9.3",
     "upath": "^2.0.1",
-    "vitest": "^4.1.7"
+    "vitest": "^4.1.9"
   },
   "engines": {
     "node": ">=24.11.0",

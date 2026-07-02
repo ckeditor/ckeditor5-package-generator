@@ -8,9 +8,7 @@ allowBuilds:
 
 overrides:
   'diff@^7': '^8.0.3'
-  'qs@^6': '^6.14.2'
   'serialize-javascript@^6': '^7.0.5'
-  'yaml@^2': '^2.8.3'
 
 minimumReleaseAge: 4320 # 3 days
 minimumReleaseAgeExclude:
@@ -18,8 +16,8 @@ minimumReleaseAgeExclude:
   - '@cksource/*'
   - '*ckeditor5*'
 
-linkWorkspacePackages: true
-preferFrozenLockfile: true
-shamefullyHoist: true
 shellEmulator: true
+shamefullyHoist: true
+preferFrozenLockfile: true
+linkWorkspacePackages: true
 verifyDepsBeforeRun: false
