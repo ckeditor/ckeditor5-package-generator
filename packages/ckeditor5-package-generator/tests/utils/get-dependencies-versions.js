@@ -71,9 +71,19 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 		expect( returnedValue.eslintConfigCkeditor5 ).toEqual( '5.0.0' );
 	} );
 
+	it( 'pins "eslint-config-ckeditor5" to the ESLint 9 compatible major line', async () => {
+		await getDependenciesVersions();
+		expect( getPackageVersion ).toHaveBeenCalledWith( 'eslint-config-ckeditor5', '^17.0.0' );
+	} );
+
 	it( 'returns an object with a version of the "eslint-plugin-ckeditor5-rules"', async () => {
 		const returnedValue = await getDependenciesVersions();
 		expect( returnedValue.eslintPluginCkeditor5Rules ).toEqual( '5.0.0' );
+	} );
+
+	it( 'pins "eslint-plugin-ckeditor5-rules" to the ESLint 9 compatible major line', async () => {
+		await getDependenciesVersions();
+		expect( getPackageVersion ).toHaveBeenCalledWith( 'eslint-plugin-ckeditor5-rules', '^17.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "stylelint-config-ckeditor5" package', async () => {
