@@ -32,8 +32,8 @@ export default async function getDependenciesVersions() {
 		getPackageVersion( '@ckeditor/ckeditor5-inspector' ),
 		getPackageVersion( '@ckeditor/ckeditor5-dev-build-tools' ),
 		getPackageVersion( '@ckeditor/ckeditor5-dev-translations' ),
-		getPackageVersion( 'eslint-config-ckeditor5' ),
-		getPackageVersion( 'eslint-plugin-ckeditor5-rules' ),
+		getPackageVersion( 'eslint-config-ckeditor5', '^17.0.0' ),
+		getPackageVersion( 'eslint-plugin-ckeditor5-rules', '^17.0.0' ),
 		getPackageVersion( 'stylelint-config-ckeditor5' )
 	] );
 
