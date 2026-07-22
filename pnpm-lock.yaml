@@ -45,11 +45,11 @@ importers:
         specifier: ^10.0.0
         version: 10.7.0(jiti@2.6.1)
       eslint-config-ckeditor5:
-        specifier: ^18.0.0
-        version: 18.0.0(eslint@10.7.0(jiti@2.6.1))(typescript@5.9.3)
+        specifier: ^18.1.0
+        version: 18.1.0(eslint@10.7.0(jiti@2.6.1))(typescript@5.9.3)
       eslint-plugin-ckeditor5-rules:
-        specifier: ^18.0.0
-        version: 18.0.0
+        specifier: ^18.1.0
+        version: 18.1.0
       fs-extra:
         specifier: ^11.2.0
         version: 11.3.4
@@ -1203,10 +1203,6 @@ packages:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: '>=4.8.4 <6.1.0'
 
-  '@typescript-eslint/types@8.46.0':
-    resolution: {integrity: sha512-bHGGJyVjSE4dJJIO5yyEWt/cHyNwga/zXGJbJJ8TiO01aVREK6gCTu3L+5wrkb1FbDkQ+TKjMNe9R/QQQP9+rA==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
   '@typescript-eslint/types@8.64.0':
     resolution: {integrity: sha512-qjhfuTfLXjA4IOzXvz0rTjT01BqEiIgPoUeMwiEjnaHKJMTNo8rH5pYW1a2L/0Dnux2fPC85AeyJoWaGa8WxTA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -1762,15 +1758,15 @@ packages:
     engines: {node: '>=6.0'}
     hasBin: true
 
-  eslint-config-ckeditor5@18.0.0:
-    resolution: {integrity: sha512-6oZZ2AUTpX3u9ErLg9PUjNbVxLdcNy5NBe/dyZYT1Dpttn/KRjp/NOtnsB8JPMH3ztH1wH55IQBJsiMFn4jnsg==}
+  eslint-config-ckeditor5@18.1.0:
+    resolution: {integrity: sha512-65yQYs1SPjirxtMYGj3M1r0DhuGMmnfccDfFzjiqawunaMXer0HXbexYUqTaeM476mjiiAIaeRtV0Etz9hiM7Q==}
     engines: {node: '>=24.11.0'}
     peerDependencies:
       eslint: ^10.0.0
-      typescript: 5.5.4
+      typescript: ^5.5.4
 
-  eslint-plugin-ckeditor5-rules@18.0.0:
-    resolution: {integrity: sha512-rm/HNKv/vGexkq3/icLUoq8rf0Nkk5+ymKluGETH2BuBy0jiZ2d+IRvrVt+puQ4A16hR68kjV31ywb6CYVA9NA==}
+  eslint-plugin-ckeditor5-rules@18.1.0:
+    resolution: {integrity: sha512-arHlwq24iiktj8RMs5rxpnRGl/EgGoZUj7VBYvbHCA5Ku6jwh7fwjQJ5fhqDD4OMSBsxyGi4Pz4KuxN+a9T/iw==}
     engines: {node: '>=24.11.0'}
 
   eslint-plugin-mocha@11.2.0:
@@ -1820,10 +1816,6 @@ packages:
     resolution: {integrity: sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==}
     engines: {node: '>=4'}
     hasBin: true
-
-  esquery@1.6.0:
-    resolution: {integrity: sha512-ca9pw9fomFcKPvFLXhBKUK90ZvGibiGOvRJNbjljY7s7uq/5YO4BOzcYtJqExdx99rF6aAcnRxHmcUHcz6sQsg==}
-    engines: {node: '>=0.10'}
 
   esquery@1.7.0:
     resolution: {integrity: sha512-Ap6G0WQwcU/LHsvLwON1fAQX9Zp0A2Y6Y/cJBl9r/JbW90Zyg4/zbG6zzKa2OTALELarYHmKu0GhpM5EO+7T0g==}
@@ -3646,9 +3638,9 @@ snapshots:
   '@es-joy/jsdoccomment@0.50.2':
     dependencies:
       '@types/estree': 1.0.8
-      '@typescript-eslint/types': 8.46.0
+      '@typescript-eslint/types': 8.64.0
       comment-parser: 1.4.1
-      esquery: 1.6.0
+      esquery: 1.7.0
       jsdoc-type-pratt-parser: 4.1.0
 
   '@esbuild/aix-ppc64@0.25.12':
@@ -4494,8 +4486,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/types@8.46.0': {}
-
   '@typescript-eslint/types@8.64.0': {}
 
   '@typescript-eslint/typescript-estree@8.64.0(typescript@5.9.3)':
@@ -5096,14 +5086,14 @@ snapshots:
     optionalDependencies:
       source-map: 0.6.1
 
-  eslint-config-ckeditor5@18.0.0(eslint@10.7.0(jiti@2.6.1))(typescript@5.9.3):
+  eslint-config-ckeditor5@18.1.0(eslint@10.7.0(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
       '@eslint/css': 1.4.0
       '@eslint/js': 10.0.1(eslint@10.7.0(jiti@2.6.1))
       '@eslint/markdown': 6.6.0
       '@stylistic/eslint-plugin': 4.4.1(eslint@10.7.0(jiti@2.6.1))(typescript@5.9.3)
       eslint: 10.7.0(jiti@2.6.1)
-      eslint-plugin-ckeditor5-rules: 18.0.0
+      eslint-plugin-ckeditor5-rules: 18.1.0
       eslint-plugin-mocha: 11.2.0(eslint@10.7.0(jiti@2.6.1))
       globals: 16.5.0
       typescript: 5.9.3
@@ -5111,7 +5101,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-ckeditor5-rules@18.0.0:
+  eslint-plugin-ckeditor5-rules@18.1.0:
     dependencies:
       '@es-joy/jsdoccomment': 0.50.2
       '@eslint/css-tree': 4.0.4
@@ -5123,7 +5113,7 @@ snapshots:
 
   eslint-plugin-mocha@11.2.0(eslint@10.7.0(jiti@2.6.1)):
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.0(eslint@10.7.0(jiti@2.6.1))
+      '@eslint-community/eslint-utils': 4.9.1(eslint@10.7.0(jiti@2.6.1))
       eslint: 10.7.0(jiti@2.6.1)
       globals: 15.15.0
 
@@ -5195,10 +5185,6 @@ snapshots:
       eslint-visitor-keys: 5.0.1
 
   esprima@4.0.1: {}
-
-  esquery@1.6.0:
-    dependencies:
-      estraverse: 5.3.0
 
   esquery@1.7.0:
     dependencies:
