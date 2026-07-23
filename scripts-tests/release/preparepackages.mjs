@@ -45,7 +45,7 @@ describe( 'scripts/release/preparepackages', () => {
 
 				expect( result ).toEqual( undefined );
 			} catch ( err ) {
-				throw new Error( `Expected not to throw, instead threw: ${ err }` );
+				throw new Error( `Expected not to throw, instead threw: ${ err }`, { cause: err } );
 			}
 		} );
 

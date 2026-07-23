@@ -19,7 +19,13 @@ export default defineConfig( [
 		name: 'Ignored files config',
 		ignores: [
 			'coverage/**',
-			'packages/ckeditor5-package-generator/lib/templates/common/CLAUDE.md' // Symlink.
+
+			// Template files are generator payload rather than project source, so they are not linted here (they
+			// are validated by the `verify-build` job, which generates a package from them and lints it). Ignoring
+			// the whole directory also prevents ESLint from following the intentionally dangling `common/CLAUDE.md`
+			// symlink, which only resolves in a generated package once the language-specific `AGENTS.md` sits next
+			// to it.
+			'packages/ckeditor5-package-generator/lib/templates/**'
 		]
 	},
 	{
@@ -50,13 +56,6 @@ export default defineConfig( [
 			'ckeditor5-rules/require-file-extensions-in-imports': [ 'error', {
 				extensions: [ '.ts', '.js', '.json' ]
 			} ]
-		}
-	},
-	{
-		name: 'Templates config',
-		files: [ './packages/ckeditor5-package-generator/lib/templates/**/*.{js,cjs,ts}' ],
-		rules: {
-			'ckeditor5-rules/license-header': 'off'
 		}
 	},
 
