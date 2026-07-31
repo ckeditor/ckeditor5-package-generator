@@ -8,8 +8,7 @@ This is a CKEditor 5 plugin package generated using [ckeditor5-package-generator
 |---------|---------|
 | `pnpm start` | Start Vite dev server — opens `sample/index.html` with the editor and CKEditor Inspector |
 | `pnpm test` | Run Vitest tests in headless Chrome (browser mode). **100% coverage enforced on `src/`** |
-| `pnpm lint` | Run ESLint |
-| `pnpm stylelint` | Run Stylelint on `theme/**/*.css` |
+| `pnpm lint` | Run ESLint on TypeScript, Markdown and CSS (including `theme/**/*.css`) |
 | `pnpm build` | Build TypeScript declarations, ESM npm bundle, and ESM+UMD browser bundles |
 | `pnpm translations:synchronize` | Sync translation files from `lang/contexts.json` |
 

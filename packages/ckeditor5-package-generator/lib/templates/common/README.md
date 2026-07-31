@@ -10,7 +10,6 @@ This package was created by the [ckeditor5-package-generator](https://www.npmjs.
   * [`start`](#start)
   * [`test`](#test)
   * [`lint`](#lint)
-  * [`stylelint`](#stylelint)
   * [`build:dist`](#builddist)
   * [`translations:synchronize`](#translationssynchronize)
   * [`translations:validate`](#translationsvalidate)
@@ -55,7 +54,8 @@ Examples:
 
 ### `lint`
 
-Runs ESLint, which analyzes the code (all `*.<%= programmingLanguage %>` files) to quickly find problems.
+Runs ESLint, which analyzes the code to quickly find problems. It covers all `*.<%= programmingLanguage %>` files as well as
+the CSS code (`*.css` files in the `theme/` directory).
 
 Examples:
 
@@ -65,17 +65,6 @@ Examples:
 
 # Auto-fix problems.
 <%= packageManager %> run lint <%= cliSeparator %>--fix
-```
-
-### `stylelint`
-
-Similar to the `lint` task, stylelint analyzes the CSS code (`*.css` files in the `theme/` directory) in the package.
-
-Examples:
-
-```bash
-# Execute stylelint.
-<%= packageManager %> run stylelint
 ```
 
 ### `build`

@@ -31,9 +31,7 @@ describe( 'lib/utils/copy-files', () => {
 			'@ckeditor/ckeditor5-block-quote': '>=<%= packageVersions.ckeditor5 %>',
 			'@ckeditor/ckeditor5-inspector': '>=<%= packageVersions.ckeditor5Inspector %>',
 			'eslint': '^7.32.0',
-			'eslint-config-ckeditor5': '>=<%= packageVersions.eslintConfigCkeditor5 %>',
-			'stylelint': '^13.13.1',
-			'stylelint-config-ckeditor5': '>=<%= packageVersions.stylelintConfigCkeditor5 %>'
+			'eslint-config-ckeditor5': '>=<%= packageVersions.eslintConfigCkeditor5 %>'
 		},
 		'scripts': {
 			'build:dist': 'node ./scripts/build-dist.mjs',
@@ -184,9 +182,7 @@ describe( 'lib/utils/copy-files', () => {
 					'@ckeditor/ckeditor5-block-quote': '>=30.0.0',
 					'@ckeditor/ckeditor5-inspector': '>=',
 					'eslint': '^7.32.0',
-					'eslint-config-ckeditor5': '>=',
-					'stylelint': '^13.13.1',
-					'stylelint-config-ckeditor5': '>='
+					'eslint-config-ckeditor5': '>='
 				},
 				'scripts': {
 					'build:dist': 'node ./scripts/build-dist.mjs',
@@ -240,9 +236,7 @@ describe( 'lib/utils/copy-files', () => {
 					'@ckeditor/ckeditor5-block-quote': '>=30.0.0',
 					'@ckeditor/ckeditor5-inspector': '>=',
 					'eslint': '^7.32.0',
-					'eslint-config-ckeditor5': '>=',
-					'stylelint': '^13.13.1',
-					'stylelint-config-ckeditor5': '>='
+					'eslint-config-ckeditor5': '>='
 				},
 				'scripts': {
 					'build:dist': 'node ./scripts/build-dist.mjs',
@@ -474,9 +468,7 @@ describe( 'lib/utils/copy-files', () => {
 					'@ckeditor/ckeditor5-block-quote': '>=30.0.0',
 					'@ckeditor/ckeditor5-inspector': '>=',
 					'eslint': '^7.32.0',
-					'eslint-config-ckeditor5': '>=',
-					'stylelint': '^13.13.1',
-					'stylelint-config-ckeditor5': '>='
+					'eslint-config-ckeditor5': '>='
 				},
 				'scripts': {
 					'build:dist': 'node ./scripts/build-dist.mjs',
