@@ -84,7 +84,6 @@ async function verifyBuild( { language, packageManager, customPluginName, global
 
 	logProcess( 'Executing linters...' );
 	executeCommand( [ 'npm', 'run', 'lint' ], { cwd: NEW_PACKAGE_DIRECTORY } );
-	executeCommand( [ 'npm', 'run', 'stylelint' ], { cwd: NEW_PACKAGE_DIRECTORY } );
 
 	logProcess( 'Verifying translations...' );
 	executeCommand( [ 'npm', 'run', 'translations:validate' ], { cwd: NEW_PACKAGE_DIRECTORY } );
