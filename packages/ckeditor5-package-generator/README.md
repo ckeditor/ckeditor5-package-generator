@@ -12,7 +12,7 @@ The `ckeditor5-package-generator` is a tool dedicated for developers. It creates
 
 ## Requirements
 
-The minimal version of `Node.js` required by CKEditor 5 is `18`.
+The minimal version of `Node.js` required by CKEditor 5 and the package generator is `24.11.0`.
 
 While not necessary, it is also nice to have the latest version of `yarn 1.x` or `pnpm` installed globally.
 

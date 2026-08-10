@@ -98,7 +98,7 @@ export default defineConfig( ( { mode } ) => {
 	const npmConfig: ViteUserConfig = {
 		plugins: [
 			translations( {
-				source: '**/*.po'
+				source: '**/translations/*.ts'
 			} )
 		],
 		build: {

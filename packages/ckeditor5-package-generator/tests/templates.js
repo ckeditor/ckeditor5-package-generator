@@ -51,4 +51,30 @@ describe( 'templates', () => {
 		expect( tsPackageJson.peerDependencies[ '@ckeditor/ckeditor5-core' ] ).toBe( MINIMUM_CKEDITOR_VERSION );
 		expect( tsPackageJson.peerDependencies.ckeditor5 ).toBe( MINIMUM_CKEDITOR_VERSION );
 	} );
+
+	it( 'installs the translation source type dependency', () => {
+		const jsPackageJson = JSON.parse( readTemplate( 'js', 'package.json' ) );
+		const tsPackageJson = JSON.parse( readTemplate( 'ts', 'package.json' ) );
+
+		expect( jsPackageJson.devDependencies[ '@ckeditor/ckeditor5-utils' ] ).toBe( 'latest' );
+		expect( tsPackageJson.devDependencies[ '@ckeditor/ckeditor5-utils' ] ).toBe( 'latest' );
+	} );
+
+	it( 'configures TypeScript translation sources', () => {
+		const jsViteConfig = readTemplate( 'js', 'vite.config.js' );
+		const tsViteConfig = readTemplate( 'ts', 'vite.config.ts' );
+		const tsConfig = readTemplate( 'ts', 'tsconfig.json' );
+
+		expect( jsViteConfig ).toContain( 'source: \'**/translations/*.ts\'' );
+		expect( jsViteConfig ).not.toContain( '.po' );
+		expect( tsViteConfig ).toContain( 'source: \'**/translations/*.ts\'' );
+		expect( tsViteConfig ).not.toContain( '.po' );
+		expect( tsConfig ).toContain( '"translations"' );
+	} );
+
+	it( 'waits for translation synchronization to finish', () => {
+		const synchronizationScript = readTemplate( 'common', 'scripts', 'synchronize-translations.js' );
+
+		expect( synchronizationScript ).toContain( 'await synchronizeTranslations( {' );
+	} );
 } );

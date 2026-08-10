@@ -20,7 +20,7 @@ const cwd = process.cwd();
 // Glob handles posix paths.
 const sourceFilesGlob = join( cwd, 'src', '**', '*.[jt]s' );
 
-synchronizeTranslations( {
+await synchronizeTranslations( {
 	// An array containing absolute paths the package sources.
 	sourceFiles: globSync( sourceFilesGlob ),
 
