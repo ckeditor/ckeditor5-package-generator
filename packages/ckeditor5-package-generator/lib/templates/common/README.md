@@ -95,6 +95,8 @@ The task may end with an error if one of the following conditions is met:
 * Found the `Duplicated contex` error &ndash; some of the entries are duplicated. Consider removing them from the `lang/contexts.json` file, or rewriting them.
 * Found the `Missing context` error &ndash; entries specified in source files are not described in the `lang/contexts.json` file. They should be added.
 
+Generated translation sources import the `Translations` type from the package's existing `ckeditor5` dependency.
+
 Examples:
 
 ```bash

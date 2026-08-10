@@ -37,7 +37,10 @@ await synchronizeTranslations( {
 	validateOnly: args.values[ 'validate-only' ],
 
 	// Skip the license header.
-	skipLicenseHeader: true
+	skipLicenseHeader: true,
+
+	// Import the Translations type from the package that generated projects already depend on.
+	translationsTypeImportSource: 'ckeditor5'
 } );
 
 /**
