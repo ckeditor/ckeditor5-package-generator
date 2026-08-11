@@ -84,10 +84,10 @@ Synchronizes translation messages (arguments of the `t()` function) by performin
 
  * Collect all translation messages from the package by finding `t()` calls in source files.
  * Detect if translation context is valid, i.e. whether the provided values do not interfere with the values specified in the `@ckeditor/ckeditor5-core` package.
- * If there are no validation errors, update all translation source files (`translations/*.ts`) to be in sync with the context file:
+ * If there are no validation errors, update all translation source files (`lang/translations/*.ts`) to be in sync with the context file:
    * unused translation entries are removed,
    * missing translation entries are added with empty string as the message translation,
-   * missing translation files are created for languages that do not have their own `translations/*.ts` file yet.
+   * missing translation files are created for languages that do not have their own `lang/translations/*.ts` file yet.
 
 The task may end with an error if one of the following conditions is met:
 

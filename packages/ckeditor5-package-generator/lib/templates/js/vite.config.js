@@ -98,7 +98,7 @@ export default defineConfig( ( { mode } ) => {
 	const npmConfig = {
 		plugins: [
 			translations( {
-				source: '**/translations/*.ts'
+				source: '**/lang/translations/*.ts'
 			} )
 		],
 		build: {

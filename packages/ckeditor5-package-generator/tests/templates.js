@@ -57,11 +57,11 @@ describe( 'templates', () => {
 		const tsViteConfig = readTemplate( 'ts', 'vite.config.ts' );
 		const tsConfig = readTemplate( 'ts', 'tsconfig.json' );
 
-		expect( jsViteConfig ).toContain( 'source: \'**/translations/*.ts\'' );
+		expect( jsViteConfig ).toContain( 'source: \'**/lang/translations/*.ts\'' );
 		expect( jsViteConfig ).not.toContain( '.po' );
-		expect( tsViteConfig ).toContain( 'source: \'**/translations/*.ts\'' );
+		expect( tsViteConfig ).toContain( 'source: \'**/lang/translations/*.ts\'' );
 		expect( tsViteConfig ).not.toContain( '.po' );
-		expect( tsConfig ).toContain( '"translations"' );
+		expect( tsConfig ).toContain( '"lang/translations"' );
 	} );
 
 	it( 'uses the existing ckeditor5 dependency for the translation source type', () => {
