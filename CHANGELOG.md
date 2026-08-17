@@ -7,9 +7,6 @@ Changelog
 
 * **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Upgraded ESLint to v10 in the generated package and aligned the shared CKEditor 5 linter packages (`eslint-config-ckeditor5` and `eslint-plugin-ckeditor5-rules`) to their latest versions. See [ckeditor/ckeditor5-internal#4327](https://github.com/ckeditor/ckeditor5-internal/issues/4327).
 * **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Replaced Stylelint with ESLint in the generated package. The `stylelint` script, the `.stylelintrc` file and the `stylelint` and `stylelint-config-ckeditor5` dependencies are gone - the `lint` script now covers CSS as well. See [ckeditor/ckeditor5-internal#4523](https://github.com/ckeditor/ckeditor5-internal/issues/4523).
-
-### Other changes
-
 * **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Updated generated packages to store translation sources as TypeScript modules.
 
   To upgrade an existing package:
