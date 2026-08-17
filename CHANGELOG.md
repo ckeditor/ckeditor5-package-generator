@@ -1,6 +1,70 @@
 Changelog
 =========
 
+## [7.0.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v6.2.0...v7.0.0) (August 17, 2026)
+
+### MINOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
+
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Upgraded ESLint to v10 in the generated package and aligned the shared CKEditor 5 linter packages (`eslint-config-ckeditor5` and `eslint-plugin-ckeditor5-rules`) to their latest versions. See [ckeditor/ckeditor5-internal#4327](https://github.com/ckeditor/ckeditor5-internal/issues/4327).
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Replaced Stylelint with ESLint in the generated package. The `stylelint` script, the `.stylelintrc` file and the `stylelint` and `stylelint-config-ckeditor5` dependencies are gone - the `lint` script now covers CSS as well. See [ckeditor/ckeditor5-internal#4523](https://github.com/ckeditor/ckeditor5-internal/issues/4523).
+* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Updated generated packages to store translation sources as TypeScript modules.
+
+  To upgrade an existing package:
+
+  1. Generate a fresh project with the latest version of `ckeditor5-package-generator` and copy the following files to the existing project, preserving any project-specific changes:
+
+      * `AGENTS.md`
+      * `eslint.config.js`
+      * `README.md`
+      * `sample/index.html`
+      * `scripts/synchronize-translations.js`
+      * `tsconfig.json` (optional, TypeScript projects only)
+
+  2. Rewrite every `lang/translations/<language>.po` file as a TypeScript module. Map each PO `msgid` to a dictionary key and its `msgstr` to the value. For example, this `pl.po` entry:
+
+      ```po
+      msgid "Save"
+      msgstr "Zapisz"
+      ```
+
+      becomes `lang/translations/pl.ts`:
+
+      ```ts
+      import type { Translations } from 'ckeditor5';
+
+      const translations: Translations = {
+        'pl': {
+          dictionary: {
+            'Save': 'Zapisz'
+          }
+        }
+      };
+
+      export default translations;
+      ```
+
+  3. In `vite.config.js` or `vite.config.ts`, update the `translations` plugin source:
+
+      ```diff
+      * source: '**/*.po'
+      * source: '**/lang/translations/*.ts'
+      ```
+
+  4. Run `translations:synchronize` after converting the files. The command does not read the old `.po` files.
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+Minor releases (contain minor breaking changes):
+
+* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/7.0.0): v6.2.0 => v7.0.0
+</details>
+
+
 ## [6.2.0](https://github.com/ckeditor/ckeditor5-package-generator/compare/v6.1.0...v6.2.0) (July 20, 2026)
 
 ### Features
@@ -121,25 +185,6 @@ Releases containing new features:
 Other releases:
 
 * [@ckeditor/ckeditor5-package-tools](https://www.npmjs.com/package/@ckeditor/ckeditor5-package-tools/v/5.1.0): v5.0.1 => v5.1.0
-</details>
-
-
-## [6.0.0-alpha.1](https://github.com/ckeditor/ckeditor5-package-generator/compare/v6.0.0-alpha.0...v6.0.0-alpha.1) (February 12, 2026)
-
-### Bug fixes
-
-* **[generator](https://www.npmjs.com/package/ckeditor5-package-generator)**: Packages produced by the generator should include `.gitignore` that defines internal artifacts.
-
-### Released packages
-
-Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
-
-<details>
-<summary>Released packages (summary)</summary>
-
-Other releases:
-
-* [ckeditor5-package-generator](https://www.npmjs.com/package/ckeditor5-package-generator/v/6.0.0-alpha.1): v6.0.0-alpha.0 => v6.0.0-alpha.1
 </details>
 
 ---
