@@ -9,7 +9,10 @@ export default defineConfig( [
 		name: 'Ignored files config',
 		ignores: [
 			// Ignore the entire `dist/`.
-			'dist/**'
+			'dist/**',
+
+			// Ignore generated translation files.
+			'lang/translations/**'
 		]
 	},
 	{

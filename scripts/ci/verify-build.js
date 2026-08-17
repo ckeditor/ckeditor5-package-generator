@@ -79,6 +79,9 @@ async function verifyBuild( { language, packageManager, customPluginName, global
 	logProcess( 'Creating new package: "@ckeditor/ckeditor5-test-package"...' );
 	executeCommand( packageBuildCommand, { cwd: upath.join( REPOSITORY_DIRECTORY, '..' ) } );
 
+	logProcess( 'Synchronizing translations...' );
+	executeCommand( [ 'npm', 'run', 'translations:synchronize' ], { cwd: NEW_PACKAGE_DIRECTORY } );
+
 	logProcess( 'Executing tests...' );
 	executeCommand( [ 'npm', 'run', 'test' ], { cwd: NEW_PACKAGE_DIRECTORY } );
 
@@ -91,7 +94,7 @@ async function verifyBuild( { language, packageManager, customPluginName, global
 	logProcess( 'Verifying release process...' );
 	const { stderr } = executeCommand( [ 'npm', 'publish', '--dry-run' ], { cwd: NEW_PACKAGE_DIRECTORY, pipeStderr: true } );
 	console.log( stderr );
-	checkFileList( stderr, expectedPublishFiles );
+	checkFileList( stderr, [ ...expectedPublishFiles, ...getExpectedTranslationFiles() ] );
 
 	logProcess( 'Starting the development servers and verifying the sample builds...' );
 
@@ -276,6 +279,26 @@ function getExpectedFiles( expectedFilesObject, lang, customPluginName ) {
 	}
 
 	return expectedFilesObject[ lang ].map( filename => filename.replace( 'testpackage', customPluginName.toLowerCase() ) );
+}
+
+/**
+ * Returns the expected distributable files for generated translation sources.
+ *
+ * @returns {Array<String>}
+ */
+function getExpectedTranslationFiles() {
+	const translationsDirectory = upath.join( NEW_PACKAGE_DIRECTORY, 'lang', 'translations' );
+	const translationSources = fs.readdirSync( translationsDirectory ).filter( file => file.endsWith( '.ts' ) );
+
+	return translationSources.flatMap( file => {
+		const language = file.slice( 0, -'.ts'.length );
+
+		return [
+			`dist/translations/${ language }.js`,
+			`dist/translations/${ language }.umd.js`,
+			`dist/translations/${ language }.d.ts`
+		];
+	} );
 }
 
 /**

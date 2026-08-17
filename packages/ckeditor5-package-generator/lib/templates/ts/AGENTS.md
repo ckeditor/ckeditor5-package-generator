@@ -29,6 +29,8 @@ theme/
   styles/index.css — Plugin CSS (side-effect imported in src/index.ts).
 lang/
   contexts.json — Translation context descriptions (keys = translatable strings).
+  translations/
+    *.ts — Generated translation dictionaries. Edit dictionary values only.
 ckeditor5-metadata.json — Plugin metadata for tooling/integrators.
 ```
 
@@ -55,7 +57,7 @@ export default class MyFeature extends Plugin {
 
 **Event listeners in plugins.** Use `this.listenTo( emitter, event, callback )` instead of `emitter.on()`. Listeners registered with `listenTo` are automatically removed when the plugin is destroyed; `on()` listeners leak.
 
-**Translations.** Use `editor.t('Label')` for user-visible strings. Add the string as a key in `lang/contexts.json` with a description for translators.
+**Translations.** Use `editor.t('Label')` for user-visible strings. Add the string as a key in `lang/contexts.json` with a description for translators, then run `pnpm translations:synchronize` to update the generated TypeScript files in `lang/translations/`.
 
 ## Documentation Links
 

@@ -20,7 +20,7 @@ const cwd = process.cwd();
 // Glob handles posix paths.
 const sourceFilesGlob = join( cwd, 'src', '**', '*.[jt]s' );
 
-synchronizeTranslations( {
+await synchronizeTranslations( {
 	// An array containing absolute paths the package sources.
 	sourceFiles: globSync( sourceFilesGlob ),
 
@@ -37,7 +37,10 @@ synchronizeTranslations( {
 	validateOnly: args.values[ 'validate-only' ],
 
 	// Skip the license header.
-	skipLicenseHeader: true
+	skipLicenseHeader: true,
+
+	// Import the Translations type from the package that generated projects already depend on.
+	translationsTypeImportSource: 'ckeditor5'
 } );
 
 /**
