@@ -14,20 +14,20 @@ importers:
   .:
     devDependencies:
       '@ckeditor/ckeditor5-dev-bump-year':
-        specifier: ^58.0.0
-        version: 58.0.0
+        specifier: ^60.0.0
+        version: 60.0.0
       '@ckeditor/ckeditor5-dev-changelog':
-        specifier: ^58.0.0
-        version: 58.0.0(@types/node@25.5.2)
+        specifier: ^60.0.0
+        version: 60.0.0(@types/node@25.5.2)
       '@ckeditor/ckeditor5-dev-ci':
-        specifier: ^58.0.0
-        version: 58.0.0
+        specifier: ^60.0.0
+        version: 60.0.0
       '@ckeditor/ckeditor5-dev-release-tools':
-        specifier: ^58.0.0
-        version: 58.0.0(@types/node@25.5.2)
+        specifier: ^60.0.0
+        version: 60.0.0(@types/node@25.5.2)
       '@ckeditor/ckeditor5-dev-web-crawler':
-        specifier: ^58.0.0
-        version: 58.0.0(typescript@5.9.3)
+        specifier: ^60.0.0
+        version: 60.0.0(typescript@5.9.3)
       '@inquirer/prompts':
         specifier: ^7.5.0
         version: 7.10.1(@types/node@25.5.2)
@@ -145,30 +145,30 @@ packages:
     resolution: {integrity: sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==}
     engines: {node: '>=18'}
 
-  '@ckeditor/ckeditor5-dev-bump-year@58.0.0':
-    resolution: {integrity: sha512-Z7h1jrjoqcbDDQGqICyx1nfXxWM6XRsVfDTApcpxLSz8NPyL/we4i+3kt6LGKom1CnrZdVzr4ilNodH4n8y9Gw==}
+  '@ckeditor/ckeditor5-dev-bump-year@60.0.0':
+    resolution: {integrity: sha512-n6CkZSa5uA7Jd4O1blY1tgVx8sfPSvetdCXzI6pF5hXQihZ7Ndfc7idgND2uNm3+fVEy1SIHbgEE5Hi9+P/wIQ==}
     engines: {node: '>=24.11.0', npm: '>=5.7.1'}
 
-  '@ckeditor/ckeditor5-dev-changelog@58.0.0':
-    resolution: {integrity: sha512-H6um7KRtH3rHFJypRSwO1+spZhJHhXoLDWFA5VisP1mom5tdbRFJtU0NKahPMB+dug335j8YJp2H36HG20G3Wg==}
-    engines: {node: '>=24.11.0', npm: '>=5.7.1'}
-    hasBin: true
-
-  '@ckeditor/ckeditor5-dev-ci@58.0.0':
-    resolution: {integrity: sha512-aP9ykYebNviBQrzeOBLLbGdDmbKv5emxBjIwdoRwg4oHBaQQvUfi5d5m+FezUSdrtF/NQt/glE88eRs+qZP7ag==}
+  '@ckeditor/ckeditor5-dev-changelog@60.0.0':
+    resolution: {integrity: sha512-kv4f6sz7iKGnv/4xokKIL+likfm5hsrFjUXY7bEDx0AjQtYau3VbYCfMQ43ZYNvJf72Jg6YBAiDc0qK53UNJmw==}
     engines: {node: '>=24.11.0', npm: '>=5.7.1'}
     hasBin: true
 
-  '@ckeditor/ckeditor5-dev-release-tools@58.0.0':
-    resolution: {integrity: sha512-G5rEGg8PMQ1aBDa95n04UrF72F9Ro+FE6qUGjsQkil1M+uJdOuSktX6b1WoRSL4Gjunj+lxNJpXq/BkO8Hl/ow==}
+  '@ckeditor/ckeditor5-dev-ci@60.0.0':
+    resolution: {integrity: sha512-JCcGoPFPOhByffNMj5mD24uZ2TCZ1yCGxLiHia4v57TmMcQrw8Uw491OvP/IW0xtdz4u+WstL2f27qNoMrQcKw==}
+    engines: {node: '>=24.11.0', npm: '>=5.7.1'}
+    hasBin: true
+
+  '@ckeditor/ckeditor5-dev-release-tools@60.0.0':
+    resolution: {integrity: sha512-zZ9BncdGvE23152HbAwXSI4pBJH4IozMJsKkjvgDbGEy80aC2zTxU6fqtkgCx0X0JCn1nn7+AUyFO+VtrFFvqg==}
     engines: {node: '>=24.11.0', npm: '>=5.7.1'}
 
-  '@ckeditor/ckeditor5-dev-utils@58.0.0':
-    resolution: {integrity: sha512-E54nWOz/mmFMeHc5mtzHYqIIrTn8UCOtZzYwtMrAVkGMC1TfKSaCCnblqAyrTGKro2dy1Rl/cy82FTeTBQ9DPQ==}
+  '@ckeditor/ckeditor5-dev-utils@60.0.0':
+    resolution: {integrity: sha512-ebwbHqUZ8sezbb/u1wzFgHWDLfOqW2zbch54n2oLZ3KpvNpJtedpyu92osbZOvPSYyviSKT+VgYHXbrisb9Upw==}
     engines: {node: '>=24.11.0', npm: '>=5.7.1'}
 
-  '@ckeditor/ckeditor5-dev-web-crawler@58.0.0':
-    resolution: {integrity: sha512-AQ/Eykwy4LUnB+O93TDFs9cdfogtwfPoLc1nSgAsrbHdWiR/tdzUBmYdnlho6MaT67bimLTcbCeHCjZIz5kKaQ==}
+  '@ckeditor/ckeditor5-dev-web-crawler@60.0.0':
+    resolution: {integrity: sha512-ZlUju2woFTb0Edv8sw2LgTd386puxYtL7oRpBRqdFVRQdrJMBMOhrrAqT8ZcgByeeeHZFlu58JNtQLOtKZSPyw==}
     engines: {node: '>=24.11.0', npm: '>=5.7.1'}
 
   '@clack/core@1.2.0':
@@ -336,12 +336,6 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
-
-  '@eslint-community/eslint-utils@4.9.0':
-    resolution: {integrity: sha512-ayVFHdtZ+hsq1t2Dy24wCmGXGe4q9Gu3smhLYALJrr473ZH27MsnSL+LKUlimp4BWJqMDMLmPpx/Q9R3OAlL4g==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    peerDependencies:
-      eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
 
   '@eslint-community/eslint-utils@4.9.1':
     resolution: {integrity: sha512-phrYmNiYppR7znFEdqgfWHXR6NCkZEK7hwWDHZUjit/2/U0r6XvkDl0SYnoM51Hq7FhCGdLDT6zxCCOY1hexsQ==}
@@ -2889,14 +2883,14 @@ snapshots:
 
   '@bcoe/v8-coverage@1.0.2': {}
 
-  '@ckeditor/ckeditor5-dev-bump-year@58.0.0':
+  '@ckeditor/ckeditor5-dev-bump-year@60.0.0':
     dependencies:
       glob: 13.0.6
 
-  '@ckeditor/ckeditor5-dev-changelog@58.0.0(@types/node@25.5.2)':
+  '@ckeditor/ckeditor5-dev-changelog@60.0.0(@types/node@25.5.2)':
     dependencies:
       '@11ty/gray-matter': 2.1.0
-      '@ckeditor/ckeditor5-dev-utils': 58.0.0
+      '@ckeditor/ckeditor5-dev-utils': 60.0.0
       cac: 7.0.0
       date-fns: 4.1.0
       glob: 13.0.6
@@ -2907,15 +2901,15 @@ snapshots:
       - '@types/node'
       - supports-color
 
-  '@ckeditor/ckeditor5-dev-ci@58.0.0':
+  '@ckeditor/ckeditor5-dev-ci@60.0.0':
     dependencies:
       '@octokit/rest': 22.0.1
       slack-notify: 2.0.7
       snyk: 1.1303.2
 
-  '@ckeditor/ckeditor5-dev-release-tools@58.0.0(@types/node@25.5.2)':
+  '@ckeditor/ckeditor5-dev-release-tools@60.0.0(@types/node@25.5.2)':
     dependencies:
-      '@ckeditor/ckeditor5-dev-utils': 58.0.0
+      '@ckeditor/ckeditor5-dev-utils': 60.0.0
       '@octokit/rest': 22.0.1
       cli-columns: 4.0.0
       glob: 13.0.6
@@ -2928,7 +2922,7 @@ snapshots:
       - '@types/node'
       - supports-color
 
-  '@ckeditor/ckeditor5-dev-utils@58.0.0':
+  '@ckeditor/ckeditor5-dev-utils@60.0.0':
     dependencies:
       '@types/shelljs': 0.10.0
       '@types/through2': 2.0.41
@@ -2944,7 +2938,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@ckeditor/ckeditor5-dev-web-crawler@58.0.0(typescript@5.9.3)':
+  '@ckeditor/ckeditor5-dev-web-crawler@60.0.0(typescript@5.9.3)':
     dependencies:
       puppeteer: 24.43.1(typescript@5.9.3)
       puppeteer-cluster: 0.24.0(puppeteer@24.43.1(typescript@5.9.3))
@@ -3054,11 +3048,6 @@ snapshots:
 
   '@esbuild/win32-x64@0.25.12':
     optional: true
-
-  '@eslint-community/eslint-utils@4.9.0(eslint@10.7.0(jiti@2.6.1))':
-    dependencies:
-      eslint: 10.7.0(jiti@2.6.1)
-      eslint-visitor-keys: 3.4.3
 
   '@eslint-community/eslint-utils@4.9.1(eslint@10.7.0(jiti@2.6.1))':
     dependencies:
@@ -4188,7 +4177,7 @@ snapshots:
 
   eslint@10.7.0(jiti@2.6.1):
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.0(eslint@10.7.0(jiti@2.6.1))
+      '@eslint-community/eslint-utils': 4.9.1(eslint@10.7.0(jiti@2.6.1))
       '@eslint-community/regexpp': 4.12.2
       '@eslint/config-array': 0.23.5
       '@eslint/config-helpers': 0.6.0
