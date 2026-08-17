@@ -46,8 +46,8 @@ Changelog
   3. In `vite.config.js` or `vite.config.ts`, update the `translations` plugin source:
 
       ```diff
-      * source: '**/*.po'
-      * source: '**/lang/translations/*.ts'
+      - source: '**/*.po'
+      + source: '**/lang/translations/*.ts'
       ```
 
   4. Run `translations:synchronize` after converting the files. The command does not read the old `.po` files.
