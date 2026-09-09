@@ -102,6 +102,9 @@ importers:
       mkdirp:
         specifier: ^1.0.4
         version: 1.0.4
+      semver:
+        specifier: ^7.0.0
+        version: 7.7.4
       upath:
         specifier: ^2.0.0
         version: 2.0.1
