@@ -5,9 +5,7 @@
 
 import getPackageVersion from './get-package-version.js';
 
-// These pins are temporary. They keep the generated packages on the major lines that the templates
-// support now. Thus the generator does not install a future major release. Remove the pins after
-// the templates support the next major line.
+// These pins are temporary. Remove them after the templates support the next major line.
 // See https://github.com/ckeditor/ckeditor5-internal/issues/4704.
 const CKEDITOR5_DEV_VERSION_RANGE = '^61.0.0';
 const LINTERS_VERSION_RANGE = '^20.0.0';

@@ -33,7 +33,7 @@ describe( 'lib/utils/get-package-version', () => {
 
 		expect( childProcess.exec ).toHaveBeenCalledTimes( 1 );
 		expect( childProcess.exec ).toHaveBeenCalledWith(
-			'npm view ckeditor5 version --json',
+			'npm view "ckeditor5" version --json',
 			{ encoding: 'utf-8' },
 			expect.any( Function )
 		);
@@ -44,7 +44,7 @@ describe( 'lib/utils/get-package-version', () => {
 
 		expect( childProcess.exec ).toHaveBeenCalledTimes( 1 );
 		expect( childProcess.exec ).toHaveBeenCalledWith(
-			'npm view @ckeditor/ckeditor5-inspector version --json',
+			'npm view "@ckeditor/ckeditor5-inspector" version --json',
 			{ encoding: 'utf-8' },
 			expect.any( Function )
 		);
@@ -61,7 +61,17 @@ describe( 'lib/utils/get-package-version', () => {
 
 		expect( childProcess.exec ).toHaveBeenCalledTimes( 1 );
 		expect( childProcess.exec ).toHaveBeenCalledWith(
-			'npm view eslint-config-ckeditor5@^20.0.0 version --json',
+			'npm view "eslint-config-ckeditor5@^20.0.0" version --json',
+			{ encoding: 'utf-8' },
+			expect.any( Function )
+		);
+	} );
+
+	it( 'wraps the package identifier in quotes, as cmd.exe on Windows removes an unquoted caret', async () => {
+		await getPackageVersion( '@ckeditor/ckeditor5-dev-build-tools', '^61.0.0' );
+
+		expect( childProcess.exec ).toHaveBeenCalledWith(
+			'npm view "@ckeditor/ckeditor5-dev-build-tools@^61.0.0" version --json',
 			{ encoding: 'utf-8' },
 			expect.any( Function )
 		);

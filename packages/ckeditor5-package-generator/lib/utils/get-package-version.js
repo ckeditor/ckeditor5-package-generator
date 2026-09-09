@@ -23,14 +23,11 @@ export default async function getPackageVersion( packageName, versionRange = nul
 	const packageIdentifier = versionRange ? `${ packageName }@${ versionRange }` : packageName;
 
 	const { stdout } = await execAsync(
-		`npm view ${ packageIdentifier } version --json`,
+		`npm view "${ packageIdentifier }" version --json`,
 		{ encoding: 'utf-8' }
 	);
 
 	const versions = JSON.parse( stdout.trim() );
 
-	// npm returns a single match as a string. For multiple matches it returns an array in
-	// publication order, which is not always the ascending version order. Thus this function must
-	// select the highest version.
 	return Array.isArray( versions ) ? semver.maxSatisfying( versions, versionRange ) : versions;
 }
