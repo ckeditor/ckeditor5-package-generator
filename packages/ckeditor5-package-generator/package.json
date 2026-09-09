@@ -17,6 +17,7 @@
     "glob": "^13.0.6",
     "lodash-es": "^4.17.21",
     "mkdirp": "^1.0.4",
+    "semver": "^7.0.0",
     "upath": "^2.0.0"
   },
   "devDependencies": {

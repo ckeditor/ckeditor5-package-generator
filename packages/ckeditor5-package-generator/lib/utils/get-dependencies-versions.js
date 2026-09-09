@@ -5,6 +5,13 @@
 
 import getPackageVersion from './get-package-version.js';
 
+// These pins are temporary. They keep the generated packages on the major lines that the templates
+// support now. Thus the generator does not install a future major release. Remove the pins after
+// the templates support the next major line.
+// See https://github.com/ckeditor/ckeditor5-internal/issues/4704.
+const CKEDITOR5_DEV_VERSION_RANGE = '^61.0.0';
+const LINTERS_VERSION_RANGE = '^20.0.0';
+
 /**
  * Returns an object containing version for the packages listed below:
  *
@@ -28,10 +35,10 @@ export default async function getDependenciesVersions() {
 	] = await Promise.all( [
 		getPackageVersion( 'ckeditor5' ),
 		getPackageVersion( '@ckeditor/ckeditor5-inspector' ),
-		getPackageVersion( '@ckeditor/ckeditor5-dev-build-tools' ),
-		getPackageVersion( '@ckeditor/ckeditor5-dev-translations' ),
-		getPackageVersion( 'eslint-config-ckeditor5' ),
-		getPackageVersion( 'eslint-plugin-ckeditor5-rules' )
+		getPackageVersion( '@ckeditor/ckeditor5-dev-build-tools', CKEDITOR5_DEV_VERSION_RANGE ),
+		getPackageVersion( '@ckeditor/ckeditor5-dev-translations', CKEDITOR5_DEV_VERSION_RANGE ),
+		getPackageVersion( 'eslint-config-ckeditor5', LINTERS_VERSION_RANGE ),
+		getPackageVersion( 'eslint-plugin-ckeditor5-rules', LINTERS_VERSION_RANGE )
 	] );
 
 	return {

@@ -14,7 +14,7 @@ vi.mock( 'node:child_process', () => ( {
 describe( 'lib/utils/get-package-version', () => {
 	beforeEach( () => {
 		vi.mocked( childProcess.exec ).mockImplementation( ( command, options, callback ) => {
-			callback( null, { stdout: '30.0.0', stderr: '' } );
+			callback( null, { stdout: '"30.0.0"', stderr: '' } );
 		} );
 	} );
 
@@ -33,7 +33,7 @@ describe( 'lib/utils/get-package-version', () => {
 
 		expect( childProcess.exec ).toHaveBeenCalledTimes( 1 );
 		expect( childProcess.exec ).toHaveBeenCalledWith(
-			'npm view ckeditor5 version',
+			'npm view ckeditor5 version --json',
 			{ encoding: 'utf-8' },
 			expect.any( Function )
 		);
@@ -44,7 +44,7 @@ describe( 'lib/utils/get-package-version', () => {
 
 		expect( childProcess.exec ).toHaveBeenCalledTimes( 1 );
 		expect( childProcess.exec ).toHaveBeenCalledWith(
-			'npm view @ckeditor/ckeditor5-inspector version',
+			'npm view @ckeditor/ckeditor5-inspector version --json',
 			{ encoding: 'utf-8' },
 			expect.any( Function )
 		);
@@ -54,5 +54,37 @@ describe( 'lib/utils/get-package-version', () => {
 		const returnedValue = await getPackageVersion( 'ckeditor5' );
 
 		expect( returnedValue ).toEqual( '30.0.0' );
+	} );
+
+	it( 'narrows the resolved version down to the provided semver range', async () => {
+		await getPackageVersion( 'eslint-config-ckeditor5', '^20.0.0' );
+
+		expect( childProcess.exec ).toHaveBeenCalledTimes( 1 );
+		expect( childProcess.exec ).toHaveBeenCalledWith(
+			'npm view eslint-config-ckeditor5@^20.0.0 version --json',
+			{ encoding: 'utf-8' },
+			expect.any( Function )
+		);
+	} );
+
+	it( 'returns the highest version when the range matches multiple versions', async () => {
+		vi.mocked( childProcess.exec ).mockImplementation( ( command, options, callback ) => {
+			callback( null, { stdout: '[ "20.0.0", "20.1.0", "20.1.1" ]', stderr: '' } );
+		} );
+
+		const returnedValue = await getPackageVersion( 'eslint-config-ckeditor5', '^20.0.0' );
+
+		expect( returnedValue ).toEqual( '20.1.1' );
+	} );
+
+	it( 'returns the highest version even if npm does not list the versions in the ascending order', async () => {
+		// npm uses this order after a patch release to an older minor line.
+		vi.mocked( childProcess.exec ).mockImplementation( ( command, options, callback ) => {
+			callback( null, { stdout: '[ "20.0.0", "20.2.0", "20.1.1" ]', stderr: '' } );
+		} );
+
+		const returnedValue = await getPackageVersion( 'eslint-config-ckeditor5', '^20.0.0' );
+
+		expect( returnedValue ).toEqual( '20.2.0' );
 	} );
 } );
