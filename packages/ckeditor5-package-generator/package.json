@@ -1,6 +1,6 @@
 {
   "name": "ckeditor5-package-generator",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "A tool for creating a new package for CKEditor 5.",
   "author": "CKSource (http://cksource.com/)",
   "license": "MIT",
@@ -17,6 +17,7 @@
     "glob": "^13.0.6",
     "lodash-es": "^4.17.21",
     "mkdirp": "^1.0.4",
+    "semver": "^7.0.0",
     "upath": "^2.0.0"
   },
   "devDependencies": {

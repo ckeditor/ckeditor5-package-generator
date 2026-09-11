@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es2022",
+    "target": "es2023",
     "module": "esnext",
     "lib": [
-      "ES2022", // Must match the "target".
+      "ES2023", // Must match the "target".
       "DOM",
       "DOM.Iterable"
     ],
