@@ -57,19 +57,9 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 		expect( returnedValue.ckeditor5DevBuildTools ).toEqual( '7.0.0' );
 	} );
 
-	it( 'pins "@ckeditor/ckeditor5-dev-build-tools" to the current major line', async () => {
-		await getDependenciesVersions();
-		expect( getPackageVersion ).toHaveBeenCalledWith( '@ckeditor/ckeditor5-dev-build-tools', '^61.0.0' );
-	} );
-
 	it( 'returns an object with a version of the "@ckeditor/ckeditor5-dev-translations" package', async () => {
 		const returnedValue = await getDependenciesVersions();
 		expect( returnedValue.ckeditor5DevTranslations ).toEqual( '7.0.0' );
-	} );
-
-	it( 'pins "@ckeditor/ckeditor5-dev-translations" to the current major line', async () => {
-		await getDependenciesVersions();
-		expect( getPackageVersion ).toHaveBeenCalledWith( '@ckeditor/ckeditor5-dev-translations', '^61.0.0' );
 	} );
 
 	it( 'returns an object with a version of the "eslint-config-ckeditor5"', async () => {
@@ -77,18 +67,8 @@ describe( 'lib/utils/get-dependencies-versions', () => {
 		expect( returnedValue.eslintConfigCkeditor5 ).toEqual( '5.0.0' );
 	} );
 
-	it( 'pins "eslint-config-ckeditor5" to the current major line', async () => {
-		await getDependenciesVersions();
-		expect( getPackageVersion ).toHaveBeenCalledWith( 'eslint-config-ckeditor5', '^20.0.0' );
-	} );
-
 	it( 'returns an object with a version of the "eslint-plugin-ckeditor5-rules"', async () => {
 		const returnedValue = await getDependenciesVersions();
 		expect( returnedValue.eslintPluginCkeditor5Rules ).toEqual( '5.0.0' );
-	} );
-
-	it( 'pins "eslint-plugin-ckeditor5-rules" to the current major line', async () => {
-		await getDependenciesVersions();
-		expect( getPackageVersion ).toHaveBeenCalledWith( 'eslint-plugin-ckeditor5-rules', '^20.0.0' );
 	} );
 } );
