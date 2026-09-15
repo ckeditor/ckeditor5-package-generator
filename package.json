@@ -40,7 +40,7 @@
     "semver": "^7.0.0",
     "typescript": "^5.9.3",
     "upath": "^2.0.1",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.11"
   },
   "engines": {
     "node": ">=24.11.0",
