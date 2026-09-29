@@ -61,7 +61,7 @@ export default defineConfig( ( { mode } ) => {
 		 * Vitest configuration.
 		 */
 		test: {
-			dir: resolve( import.meta.dirname ),
+			root: resolve( import.meta.dirname ),
 			include: [
 				'tests/**/*.[jt]s'
 			],
