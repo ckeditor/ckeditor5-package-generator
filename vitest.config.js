@@ -19,7 +19,7 @@ export default defineConfig( {
 				'packages/*/lib/**'
 			],
 			exclude: [
-				'templates'
+				'**/templates/**'
 			],
 			reporter: [ 'text', 'json', 'html', 'lcov' ]
 		}
