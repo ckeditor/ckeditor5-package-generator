@@ -49,6 +49,8 @@ This repository follows the mono-repository structure. It contains multiple npm 
 * Clone the repository: `git clone git@github.com:ckeditor/ckeditor5-package-generator.git`
 * Install required dependencies: `pnpm install`
 
+> This project requires **pnpm v12.8.2**. You can check your version with `pnpm --version` and update if needed with `npm install -g pnpm@12.8.2`.
+
 ### Creating a package
 
 To create a new package, call the `ckeditor5-package-generator` executable file. It requires a single argument which is the package name. It must follow the schema: `@scope/ckeditor5-package`, where [@scope](https://docs.npmjs.com/about-scopes) is an owner of the package, and `ckeditor5-package` is the package name. It must start with the `ckeditor5-` prefix.
