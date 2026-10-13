@@ -8,7 +8,6 @@ allowBuilds:
 
 overrides:
   '@puppeteer/browsers@^2': '^3.0.6'
-  'simple-git@^3': '^4.0.2'
 
 minimumReleaseAge: 4320 # 3 days
 minimumReleaseAgeExclude:
