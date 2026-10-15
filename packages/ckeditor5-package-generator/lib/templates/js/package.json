@@ -36,7 +36,7 @@
     "@ckeditor/ckeditor5-dev-build-tools": "<%= packageVersions.ckeditor5DevBuildTools %>",
     "@ckeditor/ckeditor5-dev-translations": "<%= packageVersions.ckeditor5DevTranslations %>",
     "@ckeditor/ckeditor5-inspector": "^<%= packageVersions.ckeditor5Inspector %>",
-    "@vitest/browser-webdriverio": "^5.0.0",
+    "@vitest/browser-playwright": "^5.0.0",
     "@vitest/coverage-istanbul": "^5.0.0",
     "ckeditor5": "latest",
     "eslint": "^10.0.0",
@@ -45,11 +45,11 @@
     "globals": "^16.1.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.6",
+    "playwright": "^1.52.0",
     "typescript": "5.8.3",
     "vite": "^8.1.2",
     "vite-plugin-svgo": "^2.0.0",
-    "vitest": "^5.0.0",
-    "webdriverio": "^10.0.0"
+    "vitest": "^5.0.0"
   },
   "overrides": {
     "sugarss": "^5.0.1"
