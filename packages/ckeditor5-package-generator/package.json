@@ -14,7 +14,7 @@
     "@clack/prompts": "^1.1.0",
     "cac": "^7.0.0",
     "fs-extra": "^11.2.0",
-    "glob": "^13.0.6",
+    "glob": "^14.0.3",
     "lodash-es": "^4.17.21",
     "mkdirp": "^1.0.4",
     "semver": "^7.0.0",
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
-    "vitest": "^5.0.0"
+    "vitest": "^5.0.5"
   },
   "bin": {
     "ckeditor5-package-generator": "bin/index.js"
