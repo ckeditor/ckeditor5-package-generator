@@ -7,8 +7,9 @@ allowBuilds:
   snyk: true
 
 overrides:
-  '@puppeteer/browsers@^2': '^3.0.6'
   'esbuild@^0.25': '^0.28.1'
+  'glob@^13': '^14.0.3'
+  'minimatch@^10': '^11.0.3'
 
 minimumReleaseAge: 4320 # 3 days
 minimumReleaseAgeExclude:
