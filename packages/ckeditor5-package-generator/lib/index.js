@@ -14,6 +14,7 @@ import getDependenciesVersions from './utils/get-dependencies-versions.js';
 import getPackageNameFormats from './utils/get-package-name-formats.js';
 import initializeGitRepository from './utils/initialize-git-repository.js';
 import installDependencies from './utils/install-dependencies.js';
+import installBrowser from './utils/install-browser.js';
 import installGitHooks from './utils/install-git-hooks.js';
 import validatePackageName from './utils/validate-package-name.js';
 import validatePluginName from './utils/validate-plugin-name.js';
@@ -56,6 +57,7 @@ export default async function init( packageName, options ) {
 	} );
 
 	await installDependencies( directoryPath, selectedPackageManager, verbose );
+	await installBrowser( directoryPath, selectedPackageManager, verbose );
 	initializeGitRepository( directoryPath );
 	await installGitHooks( directoryPath, verbose );
 

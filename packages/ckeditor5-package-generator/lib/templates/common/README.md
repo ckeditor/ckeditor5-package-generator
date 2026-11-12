@@ -42,6 +42,19 @@ Examples:
 
 Allows executing unit tests for the package specified in the `tests/` directory. To check the code coverage, add the `--coverage` modifier. See other [CLI flags](https://vitest.dev/guide/cli.html) in Vitest.
 
+The tests run in Chromium downloaded by [Playwright](https://playwright.dev/). The package generator downloads it when it creates the package. In a fresh clone of the package or on a CI server, download it once before running the tests:
+
+<% const execCommand = { npm: 'npx', yarn: 'yarn', pnpm: 'pnpm exec' }[ packageManager ]; %>```bash
+<%= execCommand %> playwright install chromium
+```
+
+On Linux, Chromium also needs system libraries. If the tests cannot start the browser, install them (the command uses `apt-get` and asks for `sudo` permissions) and download Chromium again:
+
+```bash
+<%= execCommand %> playwright install-deps chromium
+<%= execCommand %> playwright install chromium
+```
+
 Examples:
 
 ```bash

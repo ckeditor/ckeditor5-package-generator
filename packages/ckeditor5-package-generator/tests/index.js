@@ -14,6 +14,7 @@ import getDependenciesVersions from '../lib/utils/get-dependencies-versions.js';
 import getPackageNameFormats from '../lib/utils/get-package-name-formats.js';
 import initializeGitRepository from '../lib/utils/initialize-git-repository.js';
 import installDependencies from '../lib/utils/install-dependencies.js';
+import installBrowser from '../lib/utils/install-browser.js';
 import installGitHooks from '../lib/utils/install-git-hooks.js';
 import { showIntro, showNote, showOutro } from '../lib/utils/prompt.js';
 import validatePackageName from '../lib/utils/validate-package-name.js';
@@ -48,6 +49,7 @@ vi.mock( '../lib/utils/get-dependencies-versions.js' );
 vi.mock( '../lib/utils/get-package-name-formats.js' );
 vi.mock( '../lib/utils/initialize-git-repository.js' );
 vi.mock( '../lib/utils/install-dependencies.js' );
+vi.mock( '../lib/utils/install-browser.js' );
 vi.mock( '../lib/utils/install-git-hooks.js' );
 vi.mock( '../lib/utils/prompt.js' );
 vi.mock( '../lib/utils/validate-package-name.js' );
@@ -90,6 +92,8 @@ describe( 'lib/index', () => {
 		vi.mocked( setGlobalName ).mockResolvedValue( 'GLOBAL' );
 
 		vi.mocked( installDependencies ).mockResolvedValue();
+
+		vi.mocked( installBrowser ).mockResolvedValue();
 
 		vi.mocked( installGitHooks ).mockResolvedValue();
 
@@ -242,6 +246,14 @@ describe( 'lib/index', () => {
 
 		expect( installDependencies ).toHaveBeenCalledTimes( 1 );
 		expect( installDependencies ).toHaveBeenCalledWith( 'directoryPath', 'npm', true );
+	} );
+
+	it( 'installs the browser for tests after installing the dependencies', async () => {
+		await index( packageName, options );
+
+		expect( installBrowser ).toHaveBeenCalledTimes( 1 );
+		expect( installBrowser ).toHaveBeenCalledWith( 'directoryPath', 'yarn', true );
+		expect( installBrowser.mock.invocationCallOrder[ 0 ] ).toBeGreaterThan( installDependencies.mock.invocationCallOrder[ 0 ] );
 	} );
 
 	it( 'initializes the git repository', async () => {
