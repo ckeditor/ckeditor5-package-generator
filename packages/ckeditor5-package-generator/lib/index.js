@@ -19,6 +19,9 @@ import validatePackageName from './utils/validate-package-name.js';
 import validatePluginName from './utils/validate-plugin-name.js';
 import { showIntro, showNote, showOutro } from './utils/prompt.js';
 
+// The number of the last lines of the installation output shown when the installation fails.
+const MAX_OUTPUT_LINES = 20;
+
 /**
  * @param {String|undefined} packageName
  * @param {CKeditor5PackageGeneratorOptions} options
@@ -55,8 +58,26 @@ export default async function init( packageName, options ) {
 		validatedGlobalName
 	} );
 
-	await installDependencies( directoryPath, selectedPackageManager, verbose );
+	let installError = null;
+
+	try {
+		await installDependencies( directoryPath, selectedPackageManager, verbose );
+	} catch ( error ) {
+		installError = error;
+	}
+
 	initializeGitRepository( directoryPath );
+
+	if ( installError ) {
+		// The installation can fail after the dependencies are installed, for example when the `postprepare` script cannot
+		// download the browser for tests. Try to install the git hooks anyway, so retrying the installation is enough.
+		await installGitHooks( directoryPath, verbose ).catch( () => {} );
+
+		showInstallationFailure( installError, directoryName, selectedPackageManager );
+
+		return;
+	}
+
 	await installGitHooks( directoryPath, verbose );
 
 	showNote( [
@@ -66,6 +87,31 @@ export default async function init( packageName, options ) {
 	].join( '\n' ), 'Next steps' );
 
 	showOutro( styleText( 'green', 'Done!' ) );
+}
+
+/**
+ * @param {Error} error
+ * @param {String} directoryName
+ * @param {'npm'|'pnpm'} packageManager
+ */
+function showInstallationFailure( error, directoryName, packageManager ) {
+	const outputLines = ( error.output || '' ).trim().split( '\n' ).slice( -MAX_OUTPUT_LINES );
+	const message = [
+		'The package was created, but installing its dependencies failed.',
+		'Fix the problem and run the installation again:',
+		'',
+		'cd ' + directoryName,
+		packageManager + ' install'
+	];
+
+	if ( outputLines.join( '' ) ) {
+		message.unshift( ...outputLines, '' );
+	}
+
+	showNote( message.join( '\n' ), 'Installing dependencies failed' );
+	showOutro( styleText( 'red', 'Failed.' ) );
+
+	process.exitCode = 1;
 }
 
 /**

@@ -127,6 +127,31 @@ describe( 'lib/utils/install-dependencies', () => {
 			} );
 	} );
 
+	it( 'attaches the output of the installation to the error', async () => {
+		stubs.installTask.stdout = { on: vi.fn() };
+		stubs.installTask.stderr = { on: vi.fn() };
+
+		const promise = installDependencies( defaultDirectoryPath, 'npm', false );
+		const [ , onStdout ] = stubs.installTask.stdout.on.mock.calls[ 0 ];
+		const [ , onStderr ] = stubs.installTask.stderr.on.mock.calls[ 0 ];
+		const [ , onClose ] = stubs.installTask.on.mock.calls[ 0 ];
+
+		onStdout( Buffer.from( 'Installing...\n' ) );
+		onStderr( Buffer.from( 'Download failed.\n' ) );
+		onClose( 1 );
+
+		await expect( promise ).rejects.toMatchObject( {
+			message: 'Installing dependencies finished with an error.',
+			output: 'Installing...\nDownload failed.\n'
+		} );
+	} );
+
+	it( 'treats an installation terminated by a signal as a failure', async () => {
+		await expect( runTest( { exitCode: null } ) ).rejects.toThrow( 'Installing dependencies finished with an error.' );
+
+		expect( stubs.spinner.stop ).toHaveBeenCalledWith( 'Installing dependencies failed.', 1 );
+	} );
+
 	it.each( [ 'unknown', 'yarn' ] )( 'shows spinner error for unhandled package manager (%s)', async packageManager => {
 		await expect( installDependencies( defaultDirectoryPath, packageManager, false ) ).rejects.toThrow(
 			`Unknown package manager: ${ packageManager }.`

@@ -70,11 +70,7 @@ export default defineConfig( ( { mode } ) => {
 				instances: [
 					{ browser: 'chromium' }
 				],
-				provider: playwright( {
-					launchOptions: {
-						channel: 'chrome'
-					}
-				} ),
+				provider: playwright(),
 				headless: true,
 				ui: false
 			},
