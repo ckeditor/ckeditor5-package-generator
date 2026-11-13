@@ -123,7 +123,7 @@ describe( 'lib/utils/copy-files', () => {
 					lowerCaseMerged: 'barbaz'
 				}
 			},
-			packageManager: 'yarn',
+			packageManager: 'npm',
 			directoryPath: 'directory/path/foo',
 			packageVersions: {
 				ckeditor5: '30.0.0'
@@ -186,7 +186,7 @@ describe( 'lib/utils/copy-files', () => {
 				},
 				'scripts': {
 					'build:dist': 'node ./scripts/build-dist.mjs',
-					'prepare': 'yarn run build:dist'
+					'prepare': 'npm run build:dist'
 				}
 			}, null, 2 )
 		);
@@ -240,7 +240,7 @@ describe( 'lib/utils/copy-files', () => {
 				},
 				'scripts': {
 					'build:dist': 'node ./scripts/build-dist.mjs',
-					'prepare': 'yarn run build:dist'
+					'prepare': 'npm run build:dist'
 				}
 			}, null, 2 )
 		);
@@ -430,12 +430,12 @@ describe( 'lib/utils/copy-files', () => {
 		);
 	} );
 
-	it( 'works with npm instead of yarn', () => {
-		options.packageManager = 'npm';
+	it( 'works with pnpm instead of npm', () => {
+		options.packageManager = 'pnpm';
 
 		copyFiles( stubs.logger, options );
 
-		expect( fs.writeFileSync ).toHaveBeenCalledTimes( 4 );
+		expect( fs.writeFileSync ).toHaveBeenCalledTimes( 5 );
 
 		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
 			1,
@@ -455,6 +455,12 @@ describe( 'lib/utils/copy-files', () => {
 
 		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
 			3,
+			'directory/path/foo/pnpm-workspace.yaml',
+			'# pnpm workspace file'
+		);
+
+		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
+			4,
 			'directory/path/foo/package.json',
 			JSON.stringify( {
 				'name': '@foo/ckeditor5-featurename',
@@ -472,13 +478,13 @@ describe( 'lib/utils/copy-files', () => {
 				},
 				'scripts': {
 					'build:dist': 'node ./scripts/build-dist.mjs',
-					'prepare': 'npm run build:dist'
+					'prepare': 'pnpm run build:dist'
 				}
 			}, null, 2 )
 		);
 
 		expect( fs.writeFileSync ).toHaveBeenNthCalledWith(
-			4,
+			5,
 			'directory/path/foo/src/index.js',
 			'/* JS CODE */'
 		);
@@ -497,17 +503,6 @@ describe( 'lib/utils/copy-files', () => {
 
 	it( 'does not copy "pnpm-workspace.yaml" for npm', () => {
 		options.packageManager = 'npm';
-
-		copyFiles( stubs.logger, options );
-
-		expect( fs.writeFileSync ).not.toHaveBeenCalledWith(
-			expect.stringContaining( 'pnpm-workspace.yaml' ),
-			expect.any( String )
-		);
-	} );
-
-	it( 'does not copy "pnpm-workspace.yaml" for yarn', () => {
-		options.packageManager = 'yarn';
 
 		copyFiles( stubs.logger, options );
 
