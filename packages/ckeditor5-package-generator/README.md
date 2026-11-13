@@ -14,14 +14,14 @@ The `ckeditor5-package-generator` is a tool dedicated for developers. It creates
 
 The minimal version of `Node.js` required by CKEditor 5 and the package generator is `26.10.0`.
 
-While not necessary, it is also nice to have the latest version of `yarn 1.x` or `pnpm` installed globally.
+While not necessary, it is also nice to have the latest version of `pnpm` installed globally.
 
 ## Creating a package
 
 To create a new package without installing the tool, simply execute the following command:
 
 ```bash
-npx ckeditor5-package-generator [packageName] [--package-manager <npm|yarn|pnpm>] [--plugin-name <...>] [--lang <js|ts>] [--global-name <...>] [--verbose]
+npx ckeditor5-package-generator [packageName] [--package-manager <npm|pnpm>] [--plugin-name <...>] [--lang <js|ts>] [--global-name <...>] [--verbose]
 ```
 
 If `packageName` is omitted, the generator will ask for it interactively.
@@ -42,7 +42,7 @@ As a result of executing the command, a new directory with a package in it will 
 
 ### Modifiers
 
-* `--package-manager` &ndash; (values: `npm` | `yarn` | `pnpm`) choose the package manager used to install dependencies in a newly created package. If omitted, the script will ask the user to choose one manually.
+* `--package-manager` &ndash; (values: `npm` | `pnpm`) choose the package manager used to install dependencies in a newly created package. If omitted, the script will ask the user to choose one manually.
 * `--global-name` &ndash; define a global name of the package to be used in UMD build.
 * `--plugin-name` &ndash; define a class name to be different from the package name.
 * `--lang` &ndash; (values: `js` | `ts`) choose whether the created package should use JavaScript or TypeScript. If omitted, the script will ask the user to choose it manually.
