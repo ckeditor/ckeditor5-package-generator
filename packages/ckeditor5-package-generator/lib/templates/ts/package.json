@@ -67,7 +67,7 @@
     "lint": "eslint",
     "translations:synchronize": "node ./scripts/synchronize-translations.js",
     "translations:validate": "node ./scripts/synchronize-translations.js --validate-only",
-    "prepare": "playwright install chromium",
+    "postprepare": "playwright install chromium",
     "prepublishOnly": "<%= packageManager %> run build"
   },
   "lint-staged": {

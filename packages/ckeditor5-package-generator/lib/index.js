@@ -69,7 +69,7 @@ export default async function init( packageName, options ) {
 	initializeGitRepository( directoryPath );
 
 	if ( installError ) {
-		// The installation can fail after the dependencies are installed, for example when the `prepare` script cannot
+		// The installation can fail after the dependencies are installed, for example when the `postprepare` script cannot
 		// download the browser for tests. Try to install the git hooks anyway, so retrying the installation is enough.
 		await installGitHooks( directoryPath, verbose ).catch( () => {} );
 
