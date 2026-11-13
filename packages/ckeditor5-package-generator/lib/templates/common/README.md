@@ -42,7 +42,7 @@ Examples:
 
 Allows executing unit tests for the package specified in the `tests/` directory. To check the code coverage, add the `--coverage` modifier. See other [CLI flags](https://vitest.dev/guide/cli.html) in Vitest.
 
-The tests run in Chromium, which is downloaded when you install the dependencies. On Linux, if Chromium cannot start because of missing system libraries, install them with `<%= { npm: 'npx', yarn: 'yarn', pnpm: 'pnpm exec' }[ packageManager ] %> playwright install-deps chromium`.
+The tests run in Chromium, which is downloaded when you install the dependencies. On Linux, if Chromium cannot start because of missing system libraries, install them with `<%= packageManager === 'pnpm' ? 'pnpm exec' : 'npx' %> playwright install-deps chromium`.
 
 Examples:
 

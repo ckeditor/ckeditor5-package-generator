@@ -92,7 +92,7 @@ export default async function init( packageName, options ) {
 /**
  * @param {Error} error
  * @param {String} directoryName
- * @param {'npm'|'yarn'|'pnpm'} packageManager
+ * @param {'npm'|'pnpm'} packageManager
  */
 function showInstallationFailure( error, directoryName, packageManager ) {
 	const outputLines = ( error.output || '' ).trim().split( '\n' ).slice( -MAX_OUTPUT_LINES );

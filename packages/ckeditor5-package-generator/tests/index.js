@@ -316,7 +316,7 @@ describe( 'lib/index', () => {
 					'Fix the problem and run the installation again:',
 					'',
 					'cd directoryName',
-					'yarn install'
+					'npm install'
 				].join( '\n' ),
 				'Installing dependencies failed'
 			);
