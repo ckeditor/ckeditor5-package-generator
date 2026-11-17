@@ -53,9 +53,24 @@ function installPackages( directoryPath, packageManager, verbose ) {
 
 		const installTask = spawn( `${ packageManager } install`, spawnOptions );
 
+		// Collect the output that is not shown in the non-verbose mode, so it can be shown when the installation fails.
+		let output = '';
+
+		installTask.stdout?.on( 'data', data => {
+			output += data;
+		} );
+
+		installTask.stderr?.on( 'data', data => {
+			output += data;
+		} );
+
 		installTask.on( 'close', exitCode => {
-			if ( exitCode ) {
-				return reject( new Error( 'Installing dependencies finished with an error.' ) );
+			if ( exitCode !== 0 ) {
+				const error = new Error( 'Installing dependencies finished with an error.' );
+
+				error.output = output;
+
+				return reject( error );
 			}
 
 			return resolve();

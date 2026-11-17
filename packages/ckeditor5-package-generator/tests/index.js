@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import Logger from '../lib/utils/logger.js';
 import choosePackageManager from '../lib/utils/choose-package-manager.js';
 import chooseProgrammingLanguage from '../lib/utils/choose-programming-language.js';
@@ -273,5 +273,76 @@ describe( 'lib/index', () => {
 
 		expect( showOutro ).toHaveBeenCalledTimes( 1 );
 		expect( showOutro ).toHaveBeenCalledWith( 'Done!' );
+	} );
+
+	describe( 'when installing the dependencies fails', () => {
+		let installError;
+
+		beforeEach( () => {
+			installError = new Error( 'Installing dependencies finished with an error.' );
+			installError.output = 'line 1\nline 2\nDownload failed.\n';
+
+			vi.mocked( installDependencies ).mockRejectedValue( installError );
+		} );
+
+		afterEach( () => {
+			process.exitCode = undefined;
+		} );
+
+		it( 'still initializes the git repository and installs the git hooks', async () => {
+			await index( packageName, options );
+
+			expect( initializeGitRepository ).toHaveBeenCalledWith( 'directoryPath' );
+			expect( installGitHooks ).toHaveBeenCalledWith( 'directoryPath', true );
+		} );
+
+		it( 'ignores an error from installing the git hooks', async () => {
+			vi.mocked( installGitHooks ).mockRejectedValue( new Error( 'Rebuilding finished with an error.' ) );
+
+			await expect( index( packageName, options ) ).resolves.toBeUndefined();
+		} );
+
+		it( 'shows the end of the installation output and how to retry, and sets a failure exit code', async () => {
+			await index( packageName, options );
+
+			expect( showNote ).toHaveBeenCalledTimes( 1 );
+			expect( showNote ).toHaveBeenCalledWith(
+				[
+					'line 1',
+					'line 2',
+					'Download failed.',
+					'',
+					'The package was created, but installing its dependencies failed.',
+					'Fix the problem and run the installation again:',
+					'',
+					'cd directoryName',
+					'npm install'
+				].join( '\n' ),
+				'Installing dependencies failed'
+			);
+			expect( showOutro ).toHaveBeenCalledWith( 'Failed.' );
+			expect( process.exitCode ).toEqual( 1 );
+		} );
+
+		it( 'shows only the last 20 lines of the installation output', async () => {
+			installError.output = Array.from( { length: 30 }, ( _, i ) => `line ${ i + 1 }` ).join( '\n' );
+
+			await index( packageName, options );
+
+			const [ message ] = vi.mocked( showNote ).mock.calls[ 0 ];
+
+			expect( message ).not.toContain( 'line 10\n' );
+			expect( message.startsWith( 'line 11\n' ) ).toEqual( true );
+		} );
+
+		it( 'shows only how to retry when there is no installation output', async () => {
+			installError.output = undefined;
+
+			await index( packageName, options );
+
+			const [ message ] = vi.mocked( showNote ).mock.calls[ 0 ];
+
+			expect( message.startsWith( 'The package was created' ) ).toEqual( true );
+		} );
 	} );
 } );
