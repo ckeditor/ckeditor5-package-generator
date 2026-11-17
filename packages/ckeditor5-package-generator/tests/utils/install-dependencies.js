@@ -53,37 +53,6 @@ describe( 'lib/utils/install-dependencies', () => {
 		expect( stubs.spinner.stop ).not.toHaveBeenCalled();
 	} );
 
-	it( 'installs dependencies using yarn', async () => {
-		await runTest( {} );
-
-		expect( spawn ).toHaveBeenCalledTimes( 1 );
-		expect( spawn ).toHaveBeenCalledWith(
-			'yarnpkg install',
-			{
-				encoding: 'utf8',
-				shell: true,
-				cwd: defaultDirectoryPath,
-				stderr: 'inherit'
-			}
-		);
-	} );
-
-	it( 'installs dependencies using yarn in verbose mode', async () => {
-		await runTest( { verbose: true } );
-
-		expect( spawn ).toHaveBeenCalledTimes( 1 );
-		expect( spawn ).toHaveBeenCalledWith(
-			'yarnpkg install',
-			{
-				encoding: 'utf8',
-				shell: true,
-				cwd: defaultDirectoryPath,
-				stderr: 'inherit',
-				stdio: 'inherit'
-			}
-		);
-	} );
-
 	it( 'installs dependencies using npm', async () => {
 		await runTest( { packageManager: 'npm' } );
 
@@ -158,9 +127,9 @@ describe( 'lib/utils/install-dependencies', () => {
 			} );
 	} );
 
-	it( 'shows spinner error for unhandled package manager', async () => {
-		await expect( installDependencies( defaultDirectoryPath, 'unknown', false ) ).rejects.toThrow(
-			'Unknown package manager: unknown.'
+	it.each( [ 'unknown', 'yarn' ] )( 'shows spinner error for unhandled package manager (%s)', async packageManager => {
+		await expect( installDependencies( defaultDirectoryPath, packageManager, false ) ).rejects.toThrow(
+			`Unknown package manager: ${ packageManager }.`
 		);
 
 		expect( stubs.spinner.stop ).toHaveBeenCalledTimes( 1 );
@@ -170,7 +139,7 @@ describe( 'lib/utils/install-dependencies', () => {
 	/**
 	 * @param {Object} options
 	 */
-	async function runTest( { packageManager = 'yarn', exitCode = 0, verbose = false } ) {
+	async function runTest( { packageManager = 'npm', exitCode = 0, verbose = false } ) {
 		const promise = installDependencies( defaultDirectoryPath, packageManager, verbose );
 		const [ , installTaskCloseCallback ] = stubs.installTask.on.mock.calls[ 0 ];
 		await installTaskCloseCallback( exitCode );

@@ -81,7 +81,7 @@ describe( 'lib/index', () => {
 			directoryPath: 'directoryPath'
 		} );
 
-		vi.mocked( choosePackageManager ).mockResolvedValue( 'yarn' );
+		vi.mocked( choosePackageManager ).mockResolvedValue( 'npm' );
 
 		vi.mocked( chooseProgrammingLanguage ).mockResolvedValue( 'js' );
 
@@ -98,7 +98,7 @@ describe( 'lib/index', () => {
 
 		options = {
 			verbose: true,
-			packageManager: 'yarn',
+			packageManager: 'npm',
 			pluginName: 'FooBar',
 			lang: 'js',
 			globalName: 'GLOBAL'
@@ -178,40 +178,7 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( choosePackageManager ).toHaveBeenCalledTimes( 1 );
-		expect( choosePackageManager ).toHaveBeenCalledWith( expect.any( Logger ), 'yarn' );
-	} );
-
-	it( 'chooses npx for npm package manager', async () => {
-		vi.mocked( choosePackageManager ).mockResolvedValue( 'npm' );
-
-		await index( packageName, options );
-
-		expect( copyFiles ).toHaveBeenCalledWith(
-			expect.any( Logger ),
-			expect.objectContaining( { npxByPackageManager: 'npx' } )
-		);
-	} );
-
-	it( 'chooses npx for yarn package manager', async () => {
-		vi.mocked( choosePackageManager ).mockResolvedValue( 'yarn' );
-
-		await index( packageName, options );
-
-		expect( copyFiles ).toHaveBeenCalledWith(
-			expect.any( Logger ),
-			expect.objectContaining( { npxByPackageManager: 'npx' } )
-		);
-	} );
-
-	it( 'chooses pnpm dlx for pnpm package manager', async () => {
-		vi.mocked( choosePackageManager ).mockResolvedValue( 'pnpm' );
-
-		await index( packageName, options );
-
-		expect( copyFiles ).toHaveBeenCalledWith(
-			expect.any( Logger ),
-			expect.objectContaining( { npxByPackageManager: 'pnpm dlx' } )
-		);
+		expect( choosePackageManager ).toHaveBeenCalledWith( expect.any( Logger ), 'npm' );
 	} );
 
 	it( 'chooses the programming language', async () => {
@@ -261,8 +228,7 @@ describe( 'lib/index', () => {
 						lowerCaseMerged: 'barbaz'
 					}
 				},
-				packageManager: 'yarn',
-				npxByPackageManager: 'npx',
+				packageManager: 'npm',
 				directoryPath: 'directoryPath',
 				packageVersions: {
 					ckeditor5: '30.0.0'
@@ -275,7 +241,7 @@ describe( 'lib/index', () => {
 		await index( packageName, options );
 
 		expect( installDependencies ).toHaveBeenCalledTimes( 1 );
-		expect( installDependencies ).toHaveBeenCalledWith( 'directoryPath', 'yarn', true );
+		expect( installDependencies ).toHaveBeenCalledWith( 'directoryPath', 'npm', true );
 	} );
 
 	it( 'initializes the git repository', async () => {
@@ -299,8 +265,8 @@ describe( 'lib/index', () => {
 		expect( showNote ).toHaveBeenCalledWith(
 			[
 				'cd directoryName',
-				'yarn run start',
-				'yarn run test'
+				'npm run start',
+				'npm run test'
 			].join( '\n' ),
 			'Next steps'
 		);

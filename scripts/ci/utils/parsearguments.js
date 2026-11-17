@@ -27,7 +27,7 @@ export default function parseArguments( cliArguments ) {
 
 		default: {
 			language: 'js',
-			'package-manager': 'yarn',
+			'package-manager': 'npm',
 			'custom-plugin-name': '',
 			'global-name': ''
 		}

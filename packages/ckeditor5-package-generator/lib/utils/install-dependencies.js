@@ -5,10 +5,11 @@
 
 import { spawn } from 'node:child_process';
 import { createSpinner } from './prompt.js';
+import SUPPORTED_PACKAGE_MANAGERS from './supported-package-managers.js';
 
 /**
  * @param {String} directoryPath
- * @param {'npm'|'yarn'|'pnpm'} packageManager
+ * @param {'npm'|'pnpm'} packageManager
  * @param {Boolean} verbose
  * @returns {Promise}
  */
@@ -29,7 +30,7 @@ export default async function installDependencies( directoryPath, packageManager
 
 /**
  * @param {String} directoryPath
- * @param {'npm'|'yarn'|'pnpm'} packageManager
+ * @param {'npm'|'pnpm'} packageManager
  * @param {Boolean} verbose
  * @returns {Promise}
  */
@@ -46,19 +47,11 @@ function installPackages( directoryPath, packageManager, verbose ) {
 			spawnOptions.stdio = 'inherit';
 		}
 
-		const COMMAND_MAP = {
-			npm: 'npm',
-			yarn: 'yarnpkg',
-			pnpm: 'pnpm'
-		};
-
-		const pkgManager = COMMAND_MAP[ packageManager ];
-
-		if ( !pkgManager ) {
+		if ( !SUPPORTED_PACKAGE_MANAGERS.includes( packageManager ) ) {
 			return reject( new Error( `Unknown package manager: ${ packageManager }.` ) );
 		}
 
-		const installTask = spawn( `${ pkgManager } install`, spawnOptions );
+		const installTask = spawn( `${ packageManager } install`, spawnOptions );
 
 		installTask.on( 'close', exitCode => {
 			if ( exitCode ) {

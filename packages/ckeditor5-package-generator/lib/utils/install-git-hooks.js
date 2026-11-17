@@ -6,8 +6,9 @@
 import { spawn } from 'node:child_process';
 
 /**
- * @param {string} directoryPath
- * @param {CKeditor5PackageGeneratorOptions} options
+ * @param {String} directoryPath
+ * @param {Boolean} verbose
+ * @returns {Promise}
  */
 export default function installGitHooks( directoryPath, verbose ) {
 	return new Promise( ( resolve, reject ) => {
@@ -22,7 +23,6 @@ export default function installGitHooks( directoryPath, verbose ) {
 			spawnOptions.stdio = 'inherit';
 		}
 
-		// 'rebuild' was added to yarn in version 2, but we use yarn 1, thus only npm can be used.
 		const rebuildTask = spawn( 'npm rebuild husky', spawnOptions );
 
 		rebuildTask.on( 'close', exitCode => {

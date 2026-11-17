@@ -50,7 +50,6 @@ export default async function init( packageName, options ) {
 		formattedNames,
 		directoryPath,
 		packageManager: selectedPackageManager,
-		npxByPackageManager: selectedPackageManager === 'pnpm' ? 'pnpm dlx' : 'npx',
 		programmingLanguage,
 		packageVersions,
 		validatedGlobalName
@@ -74,7 +73,7 @@ export default async function init( packageName, options ) {
  *
  * @property {Boolean} [verbose=false]
  *
- * @property {'npm'|'yarn'|'pnpm'} [packageManager]
+ * @property {'npm'|'pnpm'} [packageManager]
  *
  * @property {String} lang
  *
