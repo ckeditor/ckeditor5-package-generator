@@ -6,7 +6,6 @@
  */
 
 const EXPECTED_DIST_PUBLISH_FILES = [
-	'dist/browser/index.css',
 	'dist/browser/index.es.js',
 	'dist/browser/index.umd.js',
 	'dist/index.css',
